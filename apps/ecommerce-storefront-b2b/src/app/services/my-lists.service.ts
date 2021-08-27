@@ -15,11 +15,7 @@ import { TranslateService } from "@ngx-translate/core";
 export class MyListsService implements OnDestroy {
     private apiRoot: string = 'ecommerce-api';
     private refreshSubs: Subscription;
-    public myLists: BehaviorSubject<any[]> = new BehaviorSubject([
-        {_id: 123123, data: { name: 'list 1'}},
-        {_id: 12312334, data: { name: 'list 2'}},
-        {_id: 12312334, data: { name: 'list 3'}}
-    ]);
+    public myLists: BehaviorSubject<any[]> = new BehaviorSubject([]);
     /**
      * todo: Count should be the total number of my lists or? @Oliver
      */
@@ -65,13 +61,15 @@ export class MyListsService implements OnDestroy {
         if (this.refreshSubs) {
             this.refreshSubs.unsubscribe();
         }
+        // -->Set: query
+        const query = {};
 
         // -->Execute:
-        this.refreshSubs = this.list({}).subscribe(res => {
+        this.refreshSubs = this.list(query).subscribe(res => {
             console.log("my lists response >>>>", res)
             if (res && Array.isArray(res.data)) {
                 // -->Set: my lists
-                this.myLists = res.data || [];
+                this.myLists.next(res.data || []);
                 // -->Set: count
                 this.count$.next(res.data.length);
             } else {
@@ -215,13 +213,27 @@ export class MyListsService implements OnDestroy {
         return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/get/${naoQueryOptions.docName}/data`, { data: { docId }, naoQueryOptions });
     }
 
-
     /**
      * Update a list
      */
     public update(docId: string, data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
         return this.naoHttp2ApiService.putJson<any>(`${this.apiRoot}/data/update/${naoQueryOptions.docName}/id`, { data: { docId, data }, naoQueryOptions });
     }
+
+    /**
+     * Create a list
+     */
+    public create(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
+        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/create/${naoQueryOptions.docName}/new`, { data: { data }, naoQueryOptions });
+    }
+
+    /**
+     * Delete a list
+     */
+    public delete(docId: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
+        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/delete/${naoQueryOptions.docName}/id`, { data: { docId }, naoQueryOptions });
+    }
+
 
 
     public ngOnDestroy(): void {

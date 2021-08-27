@@ -56,7 +56,7 @@ const routes: Routes = [
         component: PageMyListsComponent,
     },
     {
-        path: 'my-lists/:id',
+        path: 'my-list/:id',
         component: PageMyListComponent,
     },
     /*{

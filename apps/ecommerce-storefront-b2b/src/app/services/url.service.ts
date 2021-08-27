@@ -104,10 +104,11 @@ export class UrlService {
     /**
      * Get: my list url
      */
-    public myList(id: number): string {
-        // todo: update this code and receive a list type as param
-        // todo: check list id
+    public myList(id: string): string {
+        if (!id) {
+            return ''
+        }
 
-        return `/shop/my-lists/${id}`;
+        return `/shop/my-list/${id}`;
     }
 }

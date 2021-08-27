@@ -23,6 +23,7 @@ import { FilterColorComponent } from './filters/filter-color/filter-color.compon
 import { FilterRadioComponent } from './filters/filter-radio/filter-radio.component';
 import { FilterRangeComponent } from './filters/filter-range/filter-range.component';
 import { FilterRatingComponent } from './filters/filter-rating/filter-rating.component';
+import { EditMyListComponent } from './edit-my-list/edit-my-list.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { FilterRatingComponent } from './filters/filter-rating/filter-rating.com
         FilterRadioComponent,
         FilterRangeComponent,
         FilterRatingComponent,
+        EditMyListComponent
     ],
     exports: [
         ProductsViewComponent,
@@ -63,7 +65,8 @@ import { FilterRatingComponent } from './filters/filter-rating/filter-rating.com
         BreadcrumbComponent,
         SectionHeaderComponent,
         BlockBrandsComponent,
-        BlockProductsCarouselComponent
+        BlockProductsCarouselComponent,
+        EditMyListComponent
     ],
     imports: [
         NgxPayPalModule,
