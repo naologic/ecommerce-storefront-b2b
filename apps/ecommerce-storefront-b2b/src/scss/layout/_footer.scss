@@ -1,0 +1,358 @@
+/* ----------------------------------------
+// Footer
+// ---------------------------------------- */
+/* ----------------------------------------
+// Table of Contents:
+// - .footer-contacts
+// - .footer-links
+// - .footer-newsletter
+// - .site-footer
+// ---------------------------------------- */
+
+@import '../mixins/decor';
+
+// *****************************************************
+// Footer Contacts
+
+@mixin local-layout($columns, $gutter-x, $gutter-y: $gutter-x) {
+    .footer-contacts__contacts {
+        margin: #{-$gutter-y / 2} #{-$gutter-x / 2};
+
+        dl {
+            width: calc(100% / #{$columns} - #{$gutter-x});
+            margin: #{$gutter-y / 2} #{$gutter-x / 2};
+        }
+    }
+}
+
+.footer-contacts {
+    display: block;
+
+    &__title {
+        font-size: 20px;
+        color: map_get($footer-scheme, opposite);
+        margin-bottom: 26px;
+
+        @include scheme-font-weight($footer-scheme, opposite, $font-weight-medium);
+    }
+    &__text {
+        line-height: 22px;
+        list-style: none;
+        margin: 0;
+        font-size: 15px;
+
+        a {
+            color: inherit;
+        }
+    }
+    &__contacts {
+        font-size: 14px;
+        line-height: 20px;
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+
+        a {
+            color: inherit;
+        }
+
+        dt {
+            font-size: 12px;
+            font-weight: $font-weight-normal;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+        dd {
+            color: map_get($footer-scheme, opposite);
+            margin: 0;
+
+            @include scheme-font-weight($footer-scheme, opposite, $font-weight-medium);
+        }
+    }
+}
+
+@include media-breakpoint-up(xxl) {
+    .footer-contacts {
+        @include direction {
+            #{$padding-inline-end}: 36px;
+        }
+    }
+}
+@include media-breakpoint-up(xl) {
+    $local-columns: 2;
+    $local-gutter: 30px;
+
+    .footer-contacts__contacts {
+        margin: 24px #{-$local-gutter / 2} 0;
+
+        dl {
+            width: calc(100% / #{$local-columns} - #{$local-gutter} - 1px);
+            margin: 0 #{$local-gutter / 2};
+
+            &:nth-child(n + #{$local-columns + 1}) {
+                margin-top: 18px;
+            }
+        }
+    }
+}
+@include media-breakpoint-between(xs, lg) {
+    @include local-layout(4, 12px);
+
+    .footer-contacts {
+        text-align: center;
+        margin-bottom: 42px;
+
+        &__title {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        &__contacts {
+            padding-top: 28px;
+
+            dl {
+                background: $footer-contacts-card-bg-color;
+                padding: 16px 12px;
+                border-radius: 3px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    }
+}
+@include media-breakpoint-down(md) {
+    @include local-layout(2, 12px);
+
+    .footer-contacts__contacts {
+        dl {
+            padding: 20px 16px;
+        }
+    }
+}
+@include media-breakpoint-down(sm) {
+    .footer-contacts__contacts {
+        dl {
+            padding: 16px;
+        }
+    }
+}
+
+@media (max-width: 479px) {
+    @include local-layout(1, 8px);
+}
+
+// *****************************************************
+// Footer links
+
+.footer-links {
+    display: block;
+
+    &__title {
+        font-size: 20px;
+        color: map_get($footer-scheme, opposite);
+        margin-bottom: 22px;
+
+        @include scheme-font-weight($footer-scheme, opposite, $font-weight-medium);
+    }
+    &__list {
+        font-size: 15px;
+        line-height: 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        a {
+            color: inherit;
+            transition: .15s;
+        }
+        a:hover {
+            color: map_get($footer-scheme, opposite);
+        }
+    }
+    &__item {
+        padding: 5px 0;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .footer-links {
+        text-align: center;
+
+        &__title {
+            margin-bottom: 12px;
+        }
+    }
+}
+
+// *****************************************************
+// Footer Newsletter
+
+.footer-newsletter {
+    display: block;
+
+    &__title {
+        font-size: 20px;
+        color: map_get($footer-scheme, opposite);
+        margin-bottom: 26px;
+
+        @include scheme-font-weight($footer-scheme, opposite, $font-weight-medium);
+    }
+    &__text {
+        font-size: 15px;
+        line-height: 22px;
+        margin-bottom: 14px;
+
+        &--social {
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+    }
+    &__social-links {
+        margin-top: 8px;
+    }
+    &__form {
+        display: flex;
+        max-width: 380px;
+
+        &-input {
+            flex-shrink: 1;
+            border-radius: 2px;
+            font-size: 15px;
+            height: 38px;
+            padding: 0 12px;
+            flex-basis: 0;
+            min-width: 0;
+            flex-grow: 1;
+            font-family: inherit;
+            border-width: 2px;
+            border-style: solid;
+            border-color: transparent;
+            background-clip: padding-box;
+            transition:
+                border .2s,
+                background .2s;
+
+            @include define-input-scheme($form-control-dark-scheme, normal);
+
+            &::placeholder {
+                transition: color .2s;
+            }
+            &:hover {
+                @include define-input-scheme($form-control-dark-scheme, hover);
+            }
+            &:focus {
+                outline: none;
+
+                @include define-input-scheme($form-control-dark-scheme, focus);
+            }
+        }
+        &-button {
+            flex-shrink: 0;
+            border-radius: 2px;
+            border: none;
+            padding: 0 20px;
+            font-family: inherit;
+            font-size: 15px;
+            transition:
+                background .2s,
+                color .2s;
+
+            @include define-button-scheme($btn-dark-scheme);
+            @include direction {
+                #{$margin-inline-start}: 8px;
+            }
+
+            @include define-button-scheme($btn-dark-scheme);
+
+            &:active {
+                transition-duration: .1s,  .1s;
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .footer-newsletter {
+        text-align: center;
+        margin-top: 28px;
+
+        &__title {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        &__form {
+            margin: 0 auto;
+        }
+        &__text--social {
+            margin-top: 24px;
+        }
+        &__social-links {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+// *****************************************************
+// Site Footer
+
+.site-footer {
+    position: relative;
+    background-color: map_get($footer-scheme, main);
+    color: map_get($footer-scheme, muted);
+
+    &__decor {
+        position: absolute;
+        bottom: calc(100% - 1px);
+
+        @include decor-style(map_get($footer-scheme, main));
+    }
+    &__widgets {
+        padding: 56px 0 50px;
+    }
+    &__bottom {
+        background-color: map_get($footer-copyright-scheme, main);
+        font-size: 14px;
+        color: map_get($footer-copyright-scheme, muted);
+
+        @include scheme-font-weight($footer-copyright-scheme, muted, $font-weight-normal);
+
+        a {
+            color: map_get($footer-copyright-scheme, opposite);
+
+            @include scheme-font-weight($footer-copyright-scheme, opposite, $font-weight-medium);
+        }
+
+        &-row {
+            display: flex;
+            height: 72px;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .site-footer {
+        &__decor {
+            display: none;
+        }
+        &__widgets {
+            padding: 40px 0 36px;
+        }
+        &__bottom-row {
+            height: auto;
+            flex-direction: column;
+            padding: 20px 0 24px;
+        }
+        &__payments {
+            margin-top: 12px;
+        }
+    }
+}

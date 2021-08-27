@@ -1,0 +1,27 @@
+<div class="mobile-menu__settings-list">
+    <div class="mobile-menu__setting">
+        <button class="mobile-menu__setting-button" title="{{ 'TEXT_TOPBAR_LANGUAGE' | translate }}" (click)="menu.openPanel('TEXT_TOPBAR_LANGUAGE' , languagePanel)">
+            <span class="mobile-menu__setting-icon">
+                <img [src]="language.current.image" alt="">
+            </span>
+            <span class="mobile-menu__setting-title">{{ language.current.name }}</span>
+            <span class="mobile-menu__setting-arrow"><app-icon icon="arrow-rounded-right-6x9"></app-icon></span>
+        </button>
+    </div>
+    <div class="mobile-menu__setting">
+        <button class="mobile-menu__setting-button" title="{{ 'TEXT_TOPBAR_CURRENCY' | translate }}" (click)="menu.openPanel('TEXT_TOPBAR_CURRENCY', currencyPanelContent)">
+            <span class="mobile-menu__setting-icon mobile-menu__setting-icon--currency">
+                {{ currency.current.symbol }}
+            </span>
+            <span class="mobile-menu__setting-title">{{ currency.current.name }}</span>
+            <span class="mobile-menu__setting-arrow"><app-icon icon="arrow-rounded-right-6x9"></app-icon></span>
+        </button>
+    </div>
+
+    <ng-template #languagePanel>
+        <app-mobile-menu-links [items]="languages" (itemClick)="setLanguage($event)"></app-mobile-menu-links>
+    </ng-template>
+    <ng-template #currencyPanelContent>
+        <app-mobile-menu-links [items]="currencies" (itemClick)="setCurrency($event)"></app-mobile-menu-links>
+    </ng-template>
+</div>

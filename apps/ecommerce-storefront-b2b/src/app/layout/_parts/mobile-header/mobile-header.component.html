@@ -1,0 +1,74 @@
+<div class="mobile-header">
+    <div class="mobile-header__body">
+        <button class="mobile-header__menu-button" type="button" (click)="menu.open()">
+            <app-icon icon="menu-18x14"></app-icon>
+        </button>
+        <a class="mobile-header__logo" routerLink="/">
+            <img src='../../../../assets/images/logo/logo-simple.png' alt="logo" width="120">
+        </a>
+        <div
+            class="mobile-header__search mobile-search"
+            [class.mobile-header__search--open]="searchIsOpen"
+            #searchForm
+        >
+            <form class="mobile-search__body" (submit)="$event.preventDefault()">
+                <label class="sr-only" for="mobile-site-search">{{ 'INPUT_SEARCH_LABEL' | translate }}</label>
+                <input
+                    type="text"
+                    id="mobile-site-search"
+                    class="mobile-search__input"
+                    [value]="query$.getValue()"
+                    [placeholder]="searchPlaceholder$|async"
+                    (keyup)="onSearchKeyUp(searchInput.value)"
+                    #searchInput
+                >
+                <button type="submit" class="mobile-search__button mobile-search__button--search"
+                        [disabled]="disableSearch$.getValue()" (click)="searchAndRedirect()">
+                    <app-icon icon="search-20"></app-icon>
+                </button>
+                <button
+                    type="button"
+                    class="mobile-search__button mobile-search__button--close"
+                    (click)="closeSearch()"
+                >
+                    <app-icon icon="cross-20"></app-icon>
+                </button>
+                <div class="mobile-search__field"></div>
+            </form>
+        </div>
+        <div class="mobile-header__indicators">
+            <div class="mobile-indicator d-md-none" #searchIndicator>
+                <button type="button" class="mobile-indicator__button" (click)="openSearch()">
+                    <span class="mobile-indicator__icon"><app-icon icon="search-20"></app-icon></span>
+                </button>
+            </div>
+            <div class="mobile-indicator d-none d-md-block">
+                <a routerLink="/account" class="mobile-indicator__button">
+                    <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>
+                </a>
+            </div>
+            <!--<div class="mobile-indicator d-none d-md-block">
+                <a routerLink="/shop/wishlist" class="mobile-indicator__button">
+                    <span class="mobile-indicator__icon">
+                        <app-icon icon="heart-20"></app-icon>
+                        <span
+                            *ngIf="wishlist.count$|async"
+                            class="mobile-indicator__counter"
+                        >{{ wishlist.count$|async }}</span>
+                    </span>
+                </a>
+            </div>-->
+            <div class="mobile-indicator">
+                <a routerLink="/shop/cart" class="mobile-indicator__button">
+                    <span class="mobile-indicator__icon">
+                        <app-icon icon="cart-20"></app-icon>
+                        <span
+                            *ngIf="cart.quantity$|async"
+                            class="mobile-indicator__counter"
+                        >{{ cart.quantity$|async }}</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

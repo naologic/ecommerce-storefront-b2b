@@ -1,0 +1,39 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@naologic/nao-user-access": ["libs/nao-user-access/src/index.ts"],
+      "@naologic/nao-http2": ["libs/nao-http2/src/index.ts"],
+      "@naologic/nao-interfaces": ["libs/nao-interfaces/src/index.ts"],
+      "@naologic/nao-locale": ["libs/nao-locale/src/index.ts"],
+      "@naologic/nao-utils": ["libs/nao-utils/src/index.ts"]
+    },
+    "rootDir": "."
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
+}

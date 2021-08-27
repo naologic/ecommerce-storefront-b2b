@@ -1,0 +1,43 @@
+<div class="analogs-table">
+    <table>
+        <thead>
+        <tr>
+            <th class="analogs-table__column analogs-table__column--name">{{ 'TABLE_NAME' | translate }}</th>
+            <!--Show rating only if it's allowed in settings-->
+            <!--This will have to be connected to ecomm in the future-->
+            <th class="analogs-table__column analogs-table__column--rating" *ngIf="appSettings?.rating">{{ 'TABLE_RATING' | translate }}</th>
+            <th class="analogs-table__column analogs-table__column--brand">{{ 'TABLE_BRAND' | translate }}</th>
+            <th class="analogs-table__column analogs-table__column--price">{{ 'TABLE_PRICE' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let analog of analogs">
+            <td class="analogs-table__column analogs-table__column--name">
+                <a [routerLink]="url.product(analog)" class="analogs-table__product-name">{{ analog.name }}</a><br>
+                <div class="analogs-table__sku" [attr.data-title]="'TABLE_SKU' | translate">{{ analog.sku }}</div>
+            </td>
+
+            <!--Show rating only if it's allowed in settings-->
+            <!--This will have to be connected to ecomm in the future-->
+            <td class="analogs-table__column analogs-table__column--rating" *ngIf="appSettings?.rating">
+                <div class="analogs-table__rating">
+                    <div class="analogs-table__rating-stars">
+                        <app-rating [value]="analog.rating || 0"></app-rating>
+                    </div>
+                    <div class="analogs-table__rating-label">
+                        {{ 'TEXT_RATING_LABEL' | translate:{rating: analog.rating, reviews: analog.reviews} }}
+                    </div>
+                </div>
+            </td>
+
+            <td class="analogs-table__column analogs-table__column--brand" [attr.data-title]="'TABLE_BRAND' | translate">
+                {{ analog.brand?.name }}
+                <div class="analogs-table__country">({{ ('COUNTRY_NAME_' + analog.brand?.country)|translate }})</div>
+            </td>
+            <td class="analogs-table__column analogs-table__column--price">
+                {{ analog.price | currencyFormat }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

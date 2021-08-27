@@ -1,0 +1,17 @@
+<div class="filter-list">
+    <div class="filter-list__list" appRadioGroup [formControl]="control">
+        <label
+            *ngFor="let item of options.items"
+            class="filter-list__item"
+        >
+            <app-radio-button
+                class="filter-list__input"
+                [value]="item.slug"
+                [disabled]="item.count === 0"
+            ></app-radio-button>
+
+            <span class="filter-list__title">{{ item.name }}</span>
+            <span *ngIf="item.count" class="filter-list__counter">{{ item.count }}</span>
+        </label>
+    </div>
+</div>

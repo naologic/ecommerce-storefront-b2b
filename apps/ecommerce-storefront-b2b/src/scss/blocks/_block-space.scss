@@ -1,0 +1,63 @@
+/*
+// Nao spacing made consistent
+*/
+
+
+.block-space {
+    display: block;
+}
+
+.nao-spacer-after-header {
+    @include media-breakpoint-up(xl) {
+        height: (24px + 60px);
+
+        &.block-space--header--classic {
+            height: 72px;
+        }
+    }
+    @include media-breakpoint-down(lg) {
+        height: 56px;
+    }
+    @include media-breakpoint-down(sm) {
+        height: 48px;
+    }
+    @include media-breakpoint-down(xs) {
+        height: 36px;
+    }
+}
+
+.nao-spacer-before-footer {
+    height: 80px;
+
+    @include media-breakpoint-down(lg) {
+        height: 72px;
+    }
+    @include media-breakpoint-down(xs) {
+        height: 48px;
+    }
+}
+
+.nao-spacer-xl {
+    height: 72px;
+}
+
+.nao-spacer-lg {
+    height: 60px;
+}
+
+.nao-spacer-nl {
+    height: 52px;
+}
+
+.nao-spacer-sm {
+    height: 40px;
+}
+
+.nao-spacer-xs {
+    height: 36px;
+}
+
+.nao-spacer-ledge-height {
+    height: $ledge-height;
+    display: none;
+}

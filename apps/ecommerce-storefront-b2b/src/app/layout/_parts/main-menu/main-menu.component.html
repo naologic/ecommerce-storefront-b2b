@@ -1,0 +1,34 @@
+<ul class="main-menu main-menu__list">
+    <ng-container *ngFor="let item of items">
+        <li class="main-menu__item"
+            [class.main-menu__item--has-submenu]="item.submenu"
+            [class.main-menu__item--submenu--menu]="item.submenu?.type === 'menu'"
+            [class.main-menu__item--submenu--megamenu]="item.submenu?.type === 'megamenu'"
+            [class.main-menu__item--hover]="item === hoveredItem"
+            (mouseenter)="onItemEnter(item)"
+            (mouseleave)="onItemLeave(item)"
+        >
+            <ng-template #linkContent>
+                {{ item.title }}
+                <app-icon *ngIf="item.submenu" icon="arrow-down-sm-7x5"></app-icon>
+            </ng-template>
+
+            <a *ngIf="!item.external" [routerLink]="item.url" class="main-menu__link" (click)="onItemClick()">
+                <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+            </a>
+            <a *ngIf="item.external" [href]="item.url" class="main-menu__link" target="_blank" (click)="onItemClick()">
+                <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+            </a>
+
+            <div *ngIf="item.submenu" class="main-menu__submenu">
+                <app-menu *ngIf="item.submenu.type === 'menu'" [items]="item.submenu.links" (itemClick)="onItemClick()"></app-menu>
+                <div
+                    *ngIf="item.submenu.type === 'megamenu'"
+                    class="main-menu__megamenu main-menu__megamenu--size--{{ item.submenu.size }}"
+                >
+                    <app-megamenu [menu]="item.submenu" (itemClick)="onItemClick()"></app-megamenu>
+                </div>
+            </div>
+        </li>
+    </ng-container>
+</ul>

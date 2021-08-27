@@ -1,0 +1,15 @@
+<div class="product-tabs"
+     [class.product-tabs--layout--full]="layout === 'full'"
+     [class.product-tabs--layout--sidebar]="layout === 'sidebar'">
+    <ul class="product-tabs__list">
+        <li *ngFor="let tab of tabs" class="product-tabs__item" [class.product-tabs__item--active]="activeTab === tab">
+            <a [href]="getTabUrl(tab)" (click)="onTabClick($event, tab)">
+                {{ tab.label }}
+                <span class="product-tabs__item-counter" *ngIf="tab.showCounter">{{ tab.counter }}</span>
+            </a>
+        </li>
+    </ul>
+    <div class="product-tabs__content">
+        <ng-content></ng-content>
+    </div>
+</div>

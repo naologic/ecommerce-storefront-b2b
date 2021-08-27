@@ -1,0 +1,53 @@
+<div class="header">
+    <div class="header__megamenu-area megamenu-area"></div>
+    <!--<div class="header__topbar-bg"></div>
+    <div class="header__topbar">
+        <app-topbar></app-topbar>
+    </div>-->
+    <div class="header__navbar">
+        <div class="header__navbar-departments">
+            <app-departments [items]="categories" [label]="'BUTTON_DEPARTMENTS_LONG' | translate"></app-departments>
+        </div>
+        <div class="header__navbar-menu">
+            <app-main-menu></app-main-menu>
+        </div>
+        <div class="header__navbar-phone phone">
+            <div class="phone__body">
+                <div class="phone__title">{{ 'TEXT_CALL_US' | translate }}</div>
+                <div class="phone__number">{{ infoSupport?.supportPhoneNumber }}</div>
+            </div>
+        </div>
+    </div>
+    <app-logo class="header__logo"></app-logo>
+    <div class="header__search">
+        <app-search></app-search>
+    </div>
+    <div class="header__indicators">
+        <!--<app-indicator
+            link="/shop/wishlist"
+            icon="heart-32"
+            [counter]="(wishlist.count$|async) || 0"
+        ></app-indicator>-->
+        <app-indicator
+            link="/account"
+            icon="person-32"
+            [label]="userData?.email || ('TEXT_INDICATOR_ACCOUNT_LABEL' | translate)"
+            [value]="'TEXT_INDICATOR_ACCOUNT_VALUE' | translate"
+            trigger="click"
+            #accountIndicator="indicator"
+        >
+            <app-account-menu (closeMenu)="accountIndicator.close()"></app-account-menu>
+        </app-indicator>
+        <app-indicator
+            link="/shop/cart"
+            icon="cart-32"
+            [label]="'TEXT_INDICATOR_CART_LABEL' | translate"
+            [value]="(((cart.subtotal$|async) || 0) | currencyFormat) || ''"
+            [counter]="(cart.quantity$|async) || 0"
+            trigger="click"
+            #cartIndicator="indicator"
+        >
+            <app-dropcart (closeMenu)="cartIndicator.close()"></app-dropcart>
+        </app-indicator>
+    </div>
+</div>

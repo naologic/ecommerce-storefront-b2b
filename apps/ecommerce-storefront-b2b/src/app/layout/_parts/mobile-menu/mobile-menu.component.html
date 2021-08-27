@@ -1,0 +1,27 @@
+<div class="mobile-menu" [class.mobile-menu--open]="menu.isOpen">
+    <div class="mobile-menu__backdrop" (click)="menu.close()"></div>
+    <div class="mobile-menu__body" #body>
+        <button class="mobile-menu__close" type="button" (click)="menu.close()">
+            <app-icon icon="cross-12"></app-icon>
+        </button>
+
+        <div class="mobile-menu__conveyor" [style.transform]="'translateX(-' + currentLevel * 100 + '%)'" #conveyor>
+            <app-mobile-menu-panel label="{{ 'TEXT_MENU' | translate }}">
+    <!--            <app-mobile-menu-settings></app-mobile-menu-settings>-->
+    <!--            <div class="mobile-menu__divider"></div>-->
+                <app-mobile-menu-indicators></app-mobile-menu-indicators>
+                <div class="mobile-menu__divider"></div>
+                <app-mobile-menu-links [items]="links" (itemClick)="onLinkClick($event)"></app-mobile-menu-links>
+
+                <div class="mobile-menu__spring"></div>
+                <div class="mobile-menu__divider"></div>
+                <div class="mobile-menu__contacts">
+                    <div class="mobile-menu__contacts-subtitle">{{ 'TEXT_MOBILE_MENU_PHONE_TITLE' | translate }}</div>
+                    <div class="mobile-menu__contacts-title" *ngIf="infoSupport">{{ infoSupport.supportPhoneNumber }}</div>
+                </div>
+            </app-mobile-menu-panel>
+
+            <ng-container #panelsContainer></ng-container>
+        </div>
+    </div>
+</div>

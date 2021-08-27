@@ -1,0 +1,54 @@
+<div class="product-variants">
+    <div class="product-form__body" [formGroup]="form">
+        <div *ngFor="let option of optionsMapped; let optionLevel = index" class="product-form__row">
+            <div class="product-form__title">{{ option.name }}</div>
+            <div class="product-form__control">
+                <div class="input-radio-label">
+                    <div class="input-radio-label__list">
+
+                        <ng-container *ngFor="let value of option.values">
+                            <label class="input-radio-label__item">
+                                <input
+                                    type="radio"
+                                    class="input-radio-label__input"
+                                    (change)="remapOptionsOnVariantClick()"
+                                    [value]="value.id"
+                                    [formControlName]="option.id">
+
+                                <span class="input-radio-label__title">{{ value.name }}</span>
+                            </label>
+                        </ng-container>
+
+                    </div>
+                </div>
+
+
+                <!-- TODO: we would use this when we enable color filtering -->
+    <!--            <div *ngIf="option.type === 'color'" class="input-radio-color">-->
+    <!--                <div class="input-radio-color__list">-->
+    <!--                    <label-->
+    <!--                        *ngFor="let value of option.values"-->
+    <!--                        class="input-radio-color__item"-->
+    <!--                        [class.input-radio-color__item&#45;&#45;white]="isWhite(value.color)"-->
+    <!--                        [style.color]="value.color"-->
+    <!--                        [title]="value.name"-->
+    <!--                        [tooltip]="value.name"-->
+    <!--                        container="body"-->
+    <!--                    >-->
+    <!--                        <input-->
+    <!--                            type="radio"-->
+    <!--                            name="color"-->
+    <!--                            [value]="value.slug"-->
+    <!--                            [formControlName]="option.slug"-->
+    <!--                        >-->
+    <!--                        <span></span>-->
+    <!--                    </label>-->
+    <!--                </div>-->
+    <!--            </div>-->
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

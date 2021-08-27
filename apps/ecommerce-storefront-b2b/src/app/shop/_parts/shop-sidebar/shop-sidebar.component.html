@@ -1,0 +1,26 @@
+<div class="sidebar"
+     [class.sidebar--offcanvas--always]="offcanvas === 'always'"
+     [class.sidebar--offcanvas--mobile]="offcanvas === 'mobile'"
+     [class.sidebar--open]="sidebar.isOpen">
+    <div class="sidebar__backdrop" (click)="sidebar.close()"></div>
+    <div class="sidebar__body">
+        <div class="sidebar__header">
+            <div class="sidebar__title">{{ 'HEADER_FILTERS' | translate }}</div>
+            <button class="sidebar__close" type="button" (click)="sidebar.close()">
+                <app-icon icon="cross-12"></app-icon>
+            </button>
+        </div>
+        <div class="sidebar__content">
+            <app-widget-filters [offcanvasSidebar]="offcanvas"></app-widget-filters>
+
+    <!--        <app-widget-products-->
+    <!--            *ngIf="offcanvas !== 'always'"-->
+    <!--            [ngClass]="{-->
+    <!--                'd-none d-lg-block': offcanvas === 'mobile'-->
+    <!--            }"-->
+    <!--            [widgetTitle]="'HEADER_LATEST_PRODUCTS' | translate"-->
+    <!--            [products]="(latestProducts$|async) || []"-->
+    <!--        ></app-widget-products>-->
+        </div>
+    </div>
+</div>

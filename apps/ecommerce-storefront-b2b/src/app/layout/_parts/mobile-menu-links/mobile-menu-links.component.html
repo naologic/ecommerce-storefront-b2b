@@ -1,0 +1,45 @@
+<div class="mobile-menu__links">
+    <ul>
+        <li *ngFor="let item of items">
+            <ng-template #content>
+                <div *ngIf="item.image" class="mobile-menu__links-image">
+                    <img src="{{ item.image }}" alt="">
+                </div>
+                {{ item.title }}
+                <app-icon *ngIf="item.submenu" icon="arrow-rounded-right-7x11"></app-icon>
+            </ng-template>
+            <ng-container *ngIf="item.url && (item.external || item?.submenu?.length)">
+                <a
+                    [attr.target]="item.external ? '_blank' : undefined"
+                    [href]="item.url"
+                    [class.highlight]="item.customFields?.highlight"
+                    (click)="onItemClick($event, item, panel)"
+                >
+                    <ng-container *ngTemplateOutlet="content"></ng-container>
+                </a>
+            </ng-container>
+            <ng-container *ngIf="item.url && !(item.external || item?.submenu?.length)">
+                <a
+                    [routerLink]="item.url"
+                    [class.highlight]="item.customFields?.highlight"
+                    (click)="onItemClick($event, item, panel)"
+                >
+                    <ng-container *ngTemplateOutlet="content"></ng-container>
+                </a>
+            </ng-container>
+            <ng-container *ngIf="!item.url">
+                <button
+                    type="button"
+                    [class.highlight]="item.customFields?.highlight"
+                    (click)="onItemClick($event, item, panel)"
+                >
+                    <ng-container *ngTemplateOutlet="content"></ng-container>
+                </button>
+            </ng-container>
+
+            <ng-template #panel>
+                <app-mobile-menu-links *ngIf="item.submenu" [items]="item.submenu" (itemClick)="itemClick.emit($event)"></app-mobile-menu-links>
+            </ng-template>
+        </li>
+    </ul>
+</div>

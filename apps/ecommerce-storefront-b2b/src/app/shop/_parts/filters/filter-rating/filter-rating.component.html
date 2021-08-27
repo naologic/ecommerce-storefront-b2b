@@ -1,0 +1,24 @@
+<div class="filter-rating">
+    <ul class="filter-rating__list" appCheckboxGroup [formControl]="control">
+        <li
+            *ngFor="let item of options.items; trackBy: trackByRating"
+            class="filter-rating__item"
+            [class.filter-rating__item--disabled]="item.count === 0"
+        >
+            <label class="filter-rating__item-label">
+                <app-checkbox
+                    class="filter-rating__item-input"
+                    [value]="item.rating"
+                    [disabled]="item.count === 0"
+                ></app-checkbox>
+                <span class="filter-rating__item-stars">
+                    <app-rating [value]="item.rating"></app-rating>
+                </span>
+                <span class="filter-rating__item-title sr-only">
+                    {{ 'TEXT_STARS' | translate:{stars: item.rating} }}
+                </span>
+                <span *ngIf="item.count" class="filter-rating__item-counter">{{ item.count }}</span>
+            </label>
+        </li>
+    </ul>
+</div>

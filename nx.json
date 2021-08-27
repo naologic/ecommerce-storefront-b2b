@@ -1,0 +1,24 @@
+{
+  "npmScope": "ecommerce-storefront-b2b",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    ".eslintrc.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "ecommerce-storefront-b2b": { "tags": [] },
+    "nao-user-access": { "tags": [] },
+    "nao-http2": { "tags": [] },
+    "nao-interfaces": { "tags": [] },
+    "nao-utils": { "tags": [] },
+    "nao-locale": { "tags": [] }
+  },
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1
+}

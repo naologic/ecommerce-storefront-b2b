@@ -1,0 +1,180 @@
+/*
+// .nouislider
+*/
+@use 'sass:math';
+
+
+/* Functional styling;
+ * These styles are required for noUiSlider to function.
+ * You don't need to change these rules to apply your design.
+ */
+.noUi-target,
+.noUi-target * {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.noUi-target {
+    position: relative;
+}
+.noUi-base,
+.noUi-connects {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+/* Wrapper for all connect elements.
+ */
+.noUi-connects {
+    overflow: hidden;
+    z-index: 0;
+}
+.noUi-connect,
+.noUi-origin {
+    will-change: transform;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    -ms-transform-origin: 0 0;
+    -webkit-transform-origin: 0 0;
+    -webkit-transform-style: preserve-3d;
+    transform-origin: 0 0;
+    transform-style: flat;
+}
+.noUi-connect {
+    height: 100%;
+    width: 100%;
+}
+.noUi-origin {
+    height: 10%;
+    width: 10%;
+}
+/* Offset direction
+ */
+.noUi-txt-dir-rtl.noUi-horizontal .noUi-origin {
+    left: 0;
+    right: auto;
+}
+/* Give origins 0 height/width so they don't interfere with clicking the
+ * connect elements.
+ */
+.noUi-vertical .noUi-origin {
+    width: 0;
+}
+.noUi-horizontal .noUi-origin {
+    height: 0;
+}
+.noUi-handle {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+}
+.noUi-touch-area {
+    height: 100%;
+    width: 100%;
+}
+.noUi-state-tap .noUi-connect,
+.noUi-state-tap .noUi-origin {
+    -webkit-transition: transform 0.3s;
+    transition: transform 0.3s;
+}
+.noUi-state-drag * {
+    cursor: inherit !important;
+}
+/* Slider size and handle placement;
+ */
+.noUi-horizontal {
+    height: 18px;
+}
+.noUi-horizontal .noUi-handle {
+    width: 34px;
+    height: 28px;
+    right: -17px;
+    top: -6px;
+}
+.noUi-vertical {
+    width: 18px;
+}
+.noUi-vertical .noUi-handle {
+    width: 28px;
+    height: 34px;
+    right: -6px;
+    top: -17px;
+}
+.noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
+    left: -17px;
+    right: auto;
+}
+
+
+$local-connect-height: 6px;
+$local-handle-size: 16px;
+$local-height: math.max($local-connect-height, $local-handle-size);
+$local-handle-inner-size: 6px;
+
+
+.noUi-target {
+    height: $local-height;
+}
+.noUi-base {
+    padding-top: ($local-height - $local-connect-height) / 2;
+}
+.noUi-connects {
+    background: $nouislider-bg-color;
+    border-radius: ($local-connect-height) / 2;
+    height: $local-connect-height;
+}
+.noUi-connect {
+    border-radius: 2px;
+    background: $nouislider-connect-color;
+}
+.noUi-horizontal .noUi-handle {
+    cursor: ew-resize;
+    width: $local-handle-size;
+    height: $local-handle-size;
+    border-radius: $local-handle-size / 2;
+    background: $nouislider-border-color;
+    box-shadow: 0 0 0 0 rgba($nouislider-border-color, 0);
+    transition: box-shadow .2s;
+    left: auto;
+    right: (-$local-handle-size / 2);
+
+    &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        width: $local-handle-inner-size;
+        height: $local-handle-inner-size;
+        margin: ($local-handle-size - $local-handle-inner-size) / 2;
+        border-radius: $local-handle-inner-size / 2;
+        background: $nouislider-handle-color;
+        transition: transform .2s;
+        top: 0;
+    }
+}
+.noUi-horizontal .noUi-handle:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($nouislider-border-color, .3);
+
+    &:after {
+        transform: scale(0);
+    }
+}
+
+.noUi-horizontal .noUi-handle {
+    top: ($local-height - $local-handle-size) / 2;
+}
+
+.noUi-txt-dir-rtl.noUi-horizontal .noUi-handle {
+    left: (-$local-handle-size / 2);
+    right: auto;
+}

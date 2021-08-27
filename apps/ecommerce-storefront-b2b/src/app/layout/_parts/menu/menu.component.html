@@ -1,0 +1,26 @@
+<div class="menu">
+    <ul class="menu__list">
+        <li
+            *ngFor="let item of items"
+            class="menu__item"
+            [class.menu__item--has-submenu]="item.links"
+        >
+            <ng-template #linkContent>
+                {{ item.title }}
+                <span *ngIf="item.links" class="menu__arrow">
+                    <app-icon icon="arrow-rounded-right-6x9"></app-icon>
+                </span>
+            </ng-template>
+
+            <a *ngIf="!item.external" [routerLink]="item.url" class="menu__link" (click)="itemClick.emit(item)">
+                <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+            </a>
+            <a *ngIf="item.external" [href]="item.url" class="menu__link" target="_blank" (click)="itemClick.emit(item)">
+                <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+            </a>
+            <div *ngIf="item.links" class="menu__submenu">
+                <app-menu [items]="item.links" (itemClick)="itemClick.emit($event)"></app-menu>
+            </div>
+        </li>
+    </ul>
+</div>

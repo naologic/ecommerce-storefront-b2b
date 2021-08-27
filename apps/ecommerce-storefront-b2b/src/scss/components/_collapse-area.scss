@@ -1,0 +1,17 @@
+/*
+// .collapse-area
+*/
+
+
+.collapse-area {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition:
+        height .2s ease-in-out,
+        opacity .2s ease-in-out;
+}
+.collapse-area--open {
+    height: auto;
+    opacity: 1;
+}

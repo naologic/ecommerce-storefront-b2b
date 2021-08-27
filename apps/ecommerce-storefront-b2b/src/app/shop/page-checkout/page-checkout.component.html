@@ -1,0 +1,212 @@
+<!--Show success order-->
+<ng-container *ngIf="successOrder">
+    <!--Spacer-->
+    <div class="nao-spacer-ledge-height"></div>
+    <div class="block order-success">
+        <div class="container">
+            <div class="order-success__body">
+                <div class="order-success__header">
+                    <app-icon class="order-success__icon" icon="check-100"></app-icon>
+                    <h1 class="order-success__title">{{ 'HEADER_ORDER_SUCCESS_TITLE' | translate }}</h1>
+                    <div class="order-success__subtitle">{{ 'HEADER_ORDER_SUCCESS_SUBTITLE' | translate }}</div>
+                    <div class="order-success__actions">
+                        <a routerLink="/" class="btn btn-sm btn-secondary">{{ 'BUTTON_GO_TO_HOMEPAGE' | translate }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<!--Show checkout page-->
+<ng-container *ngIf="!successOrder">
+
+    <app-block-header
+        [pageTitle]="'HEADER_CHECKOUT' | translate"
+        [breadcrumb]="[
+        {label: 'LINK_HOME' | translate, url: url.home()},
+        {label: 'LINK_CART' | translate, url: url.cart()},
+        {label: 'LINK_CHECKOUT' | translate, url: url.checkout()}
+    ]"
+    ></app-block-header>
+
+    <div class="checkout block" [formGroup]="formGroup">
+        <div class="container container--max--xl">
+            <div class="row">
+                <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="card mb-lg-0">
+                        <div class="card-body card-body--padding--2">
+                            <h3 class="card-title">{{ 'HEADER_BILLING_DETAILS' | translate }}</h3>
+
+                            <div class="form-group">
+                                <label>Shipping Address<sup>*</sup></label>
+                                <select
+                                    class="form-control"
+                                    formControlName="shippingAddressId"
+                                    [class.is-invalid]="formGroup?.controls?.shippingAddressId|isInvalid"
+                                >
+                                    <option *ngFor="let item of addresses" [value]="item.id">
+                                        {{ item.line_1 }} {{ item.line_2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup?.controls?.shippingAddressId|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Billing Address<sup>*</sup></label>
+                                <select
+                                    class="form-control"
+                                    formControlName="billingAddressId"
+                                    [class.is-invalid]="formGroup?.controls?.billingAddressId|isInvalid"
+                                >
+                                    <option *ngFor="let item of addresses" [value]="item.id">
+                                        {{ item.line_1 }} {{ item.line_2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup?.controls?.billingAddressId|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Shipping Method<sup>*</sup></label>
+                                <select
+                                    class="form-control"
+                                    formControlName="shippingMethod"
+                                    [class.is-invalid]="formGroup?.controls?.shippingMethod|isInvalid"
+                                >
+                                    <option *ngFor="let item of shippingMethods" [value]="item.id">
+                                        {{ item.name }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup?.controls?.shippingMethod|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Customer purchase order</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    formControlName="customerPurchaseOrder"
+                                    placeholder="PO-65472223"
+                                >
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                    <div class="card mb-0">
+                        <div class="card-body card-body--padding--2">
+                            <h3 class="card-title">{{ 'HEADER_YOUR_ORDER' | translate }}</h3>
+
+                            <table class="checkout__totals">
+                                <thead class="checkout__totals-header">
+                                <tr>
+                                    <th>{{ 'TABLE_PRODUCT' | translate }}</th>
+                                    <th>{{ 'TABLE_TOTAL' | translate }}</th>
+                                </tr>
+                                </thead>
+                                <tbody class="checkout__totals-products">
+                                <tr *ngFor="let item of cart.items$|async">
+                                    <td>{{ item.product.data?.name }} {{ item.variant?.variantName }}
+                                        × {{ item.quantity }}</td>
+                                    <td>{{ item.variant.price * item.quantity | currencyFormat }}</td>
+                                </tr>
+                                </tbody>
+                                <tbody class="checkout__totals-subtotals">
+                                <tr>
+                                    <th>{{ 'TABLE_SUBTOTAL' | translate }}</th>
+                                    <td>{{ ((cart.subtotal$|async) || 0) | currencyFormat }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'TABLE_TOTAL_SHIPPING' | translate }}</th>
+                                    <td>{{ ((summary.shipping) || 0) | currencyFormat }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'TABLE_TOTAL_TAX' | translate }}</th>
+                                    <td>{{ ((summary.taxes) || 0) | currencyFormat }}</td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="checkout__totals-footer">
+                                <tr>
+                                    <th>{{ 'TABLE_TOTAL' | translate }}</th>
+                                    <td>{{ ((summary.total) || 0) | currencyFormat }}</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+
+                                <div class="checkout__payment-methods payment-methods" *ngIf="payments?.length">
+                                    <ul class="payment-methods__list" formControlName="paymentMethod" appRadioGroup>
+                                        <li
+                                            *ngFor="let payment of payments" class="payment-methods__item"
+                                            appCollapseItem="payment-methods__item--active"
+                                            [appCollapseItemIsOpen]="formGroup.controls.paymentMethod.value === payment.name"
+                                        >
+                                            <label class="payment-methods__item-header">
+                                                <app-radio-button class="payment-methods__item-radio" [value]="payment.name"></app-radio-button>
+                                                <span class="payment-methods__item-title">
+                                                    {{ payment.label|translate }}
+                                                </span>
+                                            </label>
+                                            <div class="payment-methods__item-container" appCollapseContent>
+                                                <div class="payment-methods__item-details text-muted">
+                                                    {{ payment.description|translate }}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            <!--Checkbox for terms-->
+                            <div class="checkout__agree form-group">
+                                <div class="form-check">
+                                    <app-checkbox
+                                        formControlName="agree"
+                                        class="form-check-input"
+                                        [class.is-invalid]="formGroup.controls.agree|isInvalid"
+                                        #termsCheckbox="appCheckbox"
+                                    ></app-checkbox>
+                                    <label
+                                        class="form-check-label"
+                                        [htmlFor]="termsCheckbox.inputId"
+                                        [appSplitString]="'INPUT_TERMS_AGREE_LABEL' | translate"
+                                        #string="splitString"
+                                    >
+                                        {{ string.getPart(0) }}
+                                        <a [href]="'site/terms'" (click)="showTerms($event)">{{ string.getPart(1) }}</a>
+                                        {{ string.getPart(2) }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-xl btn-block"
+                                [disabled]="checkoutInProgress || formGroup.invalid || checkOrderProgress"
+                                [class.btn-loading]="checkoutInProgress || checkOrderProgress"
+                                (click)="createOrder()">
+                                {{ (allowedPaymentMethodsForRedirect.includes(formGroup.get('paymentMethod').value) ? 'BUTTON_PROCEED_TO_PAYMENT' : 'BUTTON_PLACE_ORDER') | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

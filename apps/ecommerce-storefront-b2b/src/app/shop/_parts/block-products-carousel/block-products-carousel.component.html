@@ -1,0 +1,37 @@
+<div class="block block-products-carousel" [attr.data-layout]="layout">
+    <div class="container">
+        <app-section-header
+            [sectionTitle]="blockTitle"
+            [arrows]="true"
+            [groups]="groups"
+            [currentGroup]="currentGroup"
+            [links]="links"
+            (next)="carousel.next()"
+            (prev)="carousel.prev()"
+            (changeGroup)="changeGroup.emit($any($event))"
+        ></app-section-header>
+
+        <div
+            *ngIf="showCarousel"
+            class="block-products-carousel__carousel"
+            [class.block-products-carousel__carousel--loading]="loading"
+            [class.block-products-carousel__carousel--has-items]="columns.length > 0"
+        >
+            <div class="block-products__loader"></div>
+
+            <owl-carousel-o [options]="carouselOptions" appOwlPreventClick>
+                <ng-template *ngFor="let column of columns" carouselSlide>
+                    <div class="block-products-carousel__column">
+                        <app-product-card
+                            *ngFor="let product of column"
+                            class="block-products-carousel__cell"
+                            [product]="product"
+                            [layout]="productCardLayout"
+                            [exclude]="productCardExclude"
+                        ></app-product-card>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+</div>

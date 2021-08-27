@@ -1,0 +1,17 @@
+<div class="spec">
+    <div *ngFor="let group of groups" class="spec__section">
+        <h4 class="spec__section-title">{{ group.name }}</h4>
+        <div *ngFor="let attribute of group.attributes" class="spec__row">
+            <div class="spec__name">{{ attribute.name }}</div>
+            <div class="spec__value">
+                {{ attribute.value }}
+    <!--            <ng-container *ngFor="let value of attribute.values; let last=last">-->
+    <!--                {{ value.name }}<ng-container *ngIf="!last">, </ng-container>-->
+    <!--            </ng-container>-->
+            </div>
+        </div>
+    </div>
+    <div class="spec__disclaimer">
+        {{ 'TEXT_PRODUCT_DISCLAIMER' | translate }}
+    </div>
+</div>

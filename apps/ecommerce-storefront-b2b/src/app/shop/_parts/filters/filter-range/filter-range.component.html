@@ -1,0 +1,26 @@
+<div class="filter-range">
+    <ng-container *ngIf="isPlatformBrowser">
+        <div class="filter-range__slider">
+            <div class="ngx-slider-custom">
+                <ngx-slider
+                    [formControl]="control"
+                    [options]="{
+                    animate: false,
+                    mouseEventsInterval: 10,
+                    rightToLeft: isRTL(),
+                    floor: options.min,
+                    ceil: options.max,
+                    step: 1
+                }"
+                    #slider
+                ></ngx-slider>
+            </div>
+        </div>
+        <div class="filter-range__title-button">
+            <div class="filter-range__title">
+                <span class="filter-range__min-value">{{ slider.value | currencyFormat }}</span> –
+                <span class="filter-range__max-value">{{ slider.highValue | currencyFormat }}</span>
+            </div>
+        </div>
+    </ng-container>
+</div>

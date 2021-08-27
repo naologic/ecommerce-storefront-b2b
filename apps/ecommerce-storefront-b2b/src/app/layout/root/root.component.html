@@ -1,0 +1,40 @@
+<!-- site -->
+<div class="site">
+    <app-loading-bar></app-loading-bar>
+
+    <div class="site__container">
+        <!-- site__mobile-header -->
+        <header class="site__mobile-header">
+            <app-mobile-header></app-mobile-header>
+        </header>
+        <!-- site__mobile-header / end -->
+
+        <!-- site__header -->
+        <header class="site__header">
+            <app-header></app-header>
+        </header>
+        <!-- site__header / end -->
+
+        <!-- site__body -->
+        <div class="site__body">
+            <router-outlet></router-outlet>
+        </div>
+        <!-- site__body / end -->
+
+        <!-- site__footer -->
+        <footer class="site__footer">
+            <app-footer></app-footer>
+        </footer>
+        <!-- site__footer / end -->
+    </div>
+
+    <!-- mobile-menu -->
+    <app-mobile-menu></app-mobile-menu>
+    <!-- mobile-menu / end -->
+
+    <!-- quickview -->
+    <app-quickview></app-quickview>
+    <!-- quickview / end -->
+
+</div>
+<!-- site / end -->

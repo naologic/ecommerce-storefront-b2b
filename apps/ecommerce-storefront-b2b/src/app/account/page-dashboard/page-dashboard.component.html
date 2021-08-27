@@ -1,0 +1,42 @@
+<div class="dashboard" *ngIf="userData">
+    <div class="dashboard__profile card profile-card">
+        <div class="card-body profile-card__body">
+            <div class="profile-card__avatar">
+                <app-avatar-icon [userData]="userData" size="md"></app-avatar-icon>
+            </div>
+            <div class="profile-card__name">{{ userData.firstName }} {{ userData.lastName }}</div>
+            <div class="profile-card__email">{{ userData.email }}</div>
+            <div class="profile-card__edit">
+                <a routerLink="/account/profile" class="btn btn-secondary btn-sm">
+                    {{ 'BUTTON_EDIT_PROFILE' | translate }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!address" class="dashboard__address card">
+        <div class="card-body d-flex justify-content-center align-items-center">
+            <div class="text-center w-75">
+                <p>{{ 'TEXT_CALL_ADD_ADDRESS' | translate }}</p>
+
+                <a routerLink="/account/addresses/new" class="btn btn-secondary btn-sm">
+                    {{ 'BUTTON_ADD_ADDRESS' | translate }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="address">
+        <ng-template #footer>
+            <a [routerLink]="url.address(address)">{{ 'LINK_EDIT_ADDRESS' | translate }}</a>
+        </ng-template>
+
+        <app-address-card
+            class="dashboard__address"
+            [address]="address"
+            [label]="'TEXT_DEFAULT_ADDRESS' | translate"
+            [featured]="true"
+            [footer]="footer"
+        ></app-address-card>
+    </ng-container>
+</div>

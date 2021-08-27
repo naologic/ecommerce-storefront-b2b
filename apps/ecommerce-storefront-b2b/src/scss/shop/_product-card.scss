@@ -1,0 +1,29 @@
+/*
+// .product-card
+*/
+@import '../mixins/card';
+@import '../mixins/loader';
+@import '../mixins/product-card';
+@import '../mixins/status-badge';
+
+
+.product-card {
+    @include product-card-base;
+}
+.product-card--layout--grid {
+    @include product-card-grid-base;
+}
+.product-card--layout--horizontal {
+    @include product-card-horizontal-base;
+}
+
+// todo: move this to a file
+// todo: move this to a file
+// todo: move this to a file
+// todo: move this to a file
+.nao-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    gap: 20px
+}
+

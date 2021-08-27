@@ -1,0 +1,84 @@
+<div class="account-menu">
+    <form *ngIf="!userData" class="account-menu__form">
+        <form [formGroup]="formGroup" #loginForm="ngForm" (submit)="login()">
+            <div class="account-menu__form-title">
+                {{ 'HEADER_LOGIN_TO_YOUR_ACCOUNT' | translate }}
+            </div>
+            <div *ngIf="formGroup|hasError:'server'" class="alert alert-xs alert-danger mt-n2">
+                {{ (formGroup.errors?.server || '')|translate }}
+            </div>
+            <div class="form-group">
+                <label for="header-signin-email" class="sr-only">{{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}</label>
+                <input
+                    id="header-signin-email"
+                    type="email"
+                    class="form-control form-control-sm"
+                    placeholder="customer@example.com"
+                    formControlName="email"
+                    [class.is-invalid]="formGroup.controls.email|isInvalid"
+                >
+                <div class="invalid-feedback">
+                    <div *ngIf="formGroup.controls.email|hasError:'required'">
+                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label for="header-signin-password" class="sr-only">{{ 'INPUT_PASSWORD_LABEL' | translate }}</label>
+                <div class="account-menu__form-forgot" [class.is-invalid]="formGroup.controls.password|isInvalid">
+                    <input
+                        id="header-signin-password"
+                        type="password"
+                        class="form-control form-control-sm"
+                        formControlName="password"
+                        placeholder="********"
+                        [class.is-invalid]="formGroup.controls.password|isInvalid"
+                    >
+    <!--                <a routerLink="/account/forgot-password" class="account-menu__form-forgot-link">{{ 'LINK_FORGOT' | translate }}</a>-->
+                </div>
+                <div class="invalid-feedback">
+                    <div *ngIf="formGroup.controls.password|hasError:'required'">
+                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group account-menu__form-button">
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    [class.btn-loading]="loginInProgress"
+                >{{ 'BUTTON_LOGIN' | translate }}</button>
+            </div>
+            <div class="font-size-13 text-danger mt-3 mb-2" [hidden]="!loginForm.submitted || !formGroup.get('password').pristine || loginInProgress">
+                {{ errorMessage | translate }}
+            </div>
+            <div class="account-menu__form-link">
+                <a routerLink="/account/register" (click)="closeMenu.emit()">{{ 'LINK_CREATE_ACCOUNT' | translate }}</a>
+            </div>
+        </form>
+    </form>
+    <ng-container *ngIf="userData">
+        <a routerLink="/account/dashboard" class="account-menu__user" (click)="closeMenu.emit()">
+            <div class="account-menu__user-avatar">
+                <app-avatar-icon [userData]="userData"></app-avatar-icon>
+            </div>
+            <div class="account-menu__user-info">
+                <div class="account-menu__user-name">{{ userData.firstName }} {{ userData.lastName }}</div>
+                <div class="account-menu__user-email">{{ userData.email }}</div>
+            </div>
+        </a>
+        <div class="account-menu__divider"></div>
+        <ul class="account-menu__links">
+            <li><a routerLink="/account/dashboard" (click)="closeMenu.emit()">{{ 'LINK_ACCOUNT_DASHBOARD' | translate }}</a></li>
+            <li><a routerLink="/account/profile" (click)="closeMenu.emit()">{{ 'LINK_ACCOUNT_PROFILE' | translate }}</a></li>
+            <li><a routerLink="/account/invoices" (click)="closeMenu.emit()">{{ 'LINK_ACCOUNT_INVOICE' | translate }}</a></li>
+            <li><a routerLink="/account/addresses" (click)="closeMenu.emit()">{{ 'LINK_ACCOUNT_ADDRESSES' | translate }}</a></li>
+        </ul>
+        <div class="account-menu__divider"></div>
+        <ul class="account-menu__links">
+            <li><button type="button" (click)="logout();">{{ 'LINK_ACCOUNT_LOGOUT' | translate }}</button></li>
+        </ul>
+    </ng-container>
+</div>

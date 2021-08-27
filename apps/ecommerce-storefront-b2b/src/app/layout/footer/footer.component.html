@@ -1,0 +1,97 @@
+<div class="site-footer">
+    <app-decor type="bottom"></app-decor>
+    <div class="site-footer__widgets">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-xl-4 footer-contacts">
+                    <h5 class="footer-contacts__title">{{ 'HEADER_CONTACT_US' | translate }}</h5>
+
+                    <div class="footer-contacts__text">{{ 'TEXT_CONTACT_US_MESSAGE' | translate }}</div>
+
+                    <address class="footer-contacts__contacts">
+                        <dl>
+                            <dt>{{ 'TEXT_PHONE_NUMBER' | translate }}</dt>
+                            <dd>{{ infoSupport?.supportPhoneNumber }}</dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ 'TEXT_EMAIL_ADDRESS' | translate }}</dt>
+                            <dd *ngIf="infoSupport?.supportEmailAddress">
+                                <a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ 'TEXT_OUR_LOCATION' | translate }}</dt>
+                            <dd>Address: P.O. Box 1129
+                                Westhampton Beach, NY 11978
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt>{{ 'TEXT_WORKING_HOURS' | translate }}</dt>
+                            <dd >9am-5pm</dd>
+                        </dl>
+                    </address>
+                </div>
+                <!-- Links section -->
+                <div class="col-6 col-md-3 col-xl-2 footer-links">
+                    <div class="site-footer__widget">
+                        <h5 class="footer-links__title">{{ 'HEADER_INFORMATION' | translate }}</h5>
+                        <ul class="footer-links__list">
+                            <li class="footer-links__item" *ngFor="let link of [
+                                {title: 'LINK_ABOUT_US' | translate, url: '/site/about-us'},
+                                {title: 'LINK_FAQ' | translate, url: '/site/faq'},
+                                {title: 'LINK_TERMS_AND_CONDITIONS' | translate, url: '/site/terms'},
+                                {title: 'LINK_SITE_MAP' | translate}
+                            ]">
+                                <a [routerLink]="link.url" class="footer-links__link">{{ link.title }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Newsletter section -->
+                <!-- <div class="col-12 col-md-6 col-xl-4 footer-newsletter">
+                    <h5 class="footer-newsletter__title">{{ 'HEADER_NEWSLETTER' | translate }}</h5>
+                    <div class="footer-newsletter__text">{{ 'TEXT_NEWSLETTER_MESSAGE' | translate }}</div>
+
+                    <form class="footer-newsletter__form" (submit)="$event.preventDefault()">
+                        <label class="sr-only" for="footer-newsletter-address">
+                            {{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}
+                        </label>
+                        <input
+                            type="text"
+                            class="footer-newsletter__form-input"
+                            id="footer-newsletter-address"
+                            [placeholder]="'INPUT_EMAIL_ADDRESS_PLACEHOLDER' | translate"
+                        >
+                        <button type="submit" class="footer-newsletter__form-button">{{ 'BUTTON_SUBSCRIBE' | translate }}</button>
+                    </form>
+
+                    <div class="footer-newsletter__text footer-newsletter__text--social" *ngIf="socialLinks?.length">
+                        {{ 'TEXT_SOCIAL_LINKS_MESSAGE' | translate }}
+                    </div>
+
+                    <div class="footer-newsletter__social-links social-links">
+                        <ul class="social-links__list">
+                            <li *ngFor="let link of socialLinks" class="social-links__item social-links__item--{{ link.type }}">
+                                <a href="{{ link.url }}" target="_blank"><i [ngClass]="link.icon"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="site-footer__bottom">
+        <div class="container">
+            <div class="site-footer__bottom-row">
+                <div class="site-footer__copyright">
+                    <!-- copyright -->
+                    Powered by <a href="https://naologic.com/" target="_blank">Naologic</a>
+                    <!-- copyright / end -->
+                </div>
+<!--                <div class="site-footer__payments">-->
+<!--                    <img src="assets/images/payments.png" alt="">-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

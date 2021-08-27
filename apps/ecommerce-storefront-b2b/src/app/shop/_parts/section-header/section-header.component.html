@@ -1,0 +1,33 @@
+<div class="section-header">
+    <div class="section-header__body">
+        <h2 *ngIf="sectionTitle" class="section-header__title">{{ sectionTitle }}</h2>
+
+        <div class="section-header__spring"></div>
+
+        <ul *ngIf="!groups.length && links.length" class="section-header__links">
+            <li *ngFor="let link of links" class="section-header__links-item">
+                <a [routerLink]="link.url" class="section-header__links-link">{{ link.label }}</a>
+            </li>
+        </ul>
+
+        <ul *ngIf="groups.length" class="section-header__groups">
+            <li *ngFor="let group of groups" class="section-header__groups-item">
+                <button
+                    type="button"
+                    class="section-header__groups-button"
+                    [ngClass]="{'section-header__groups-button--active': group === currentGroup}"
+                    (click)="onGroupClick(group)"
+                >
+                    {{ group.label }}
+                </button>
+            </li>
+        </ul>
+
+        <div *ngIf="arrows" class="section-header__arrows">
+            <app-arrow class="section-header__arrow section-header__arrow--prev" direction="prev" (click)="prev.emit()"></app-arrow>
+            <app-arrow class="section-header__arrow section-header__arrow--next" direction="next" (click)="next.emit()"></app-arrow>
+        </div>
+
+        <div class="section-header__divider"></div>
+    </div>
+</div>

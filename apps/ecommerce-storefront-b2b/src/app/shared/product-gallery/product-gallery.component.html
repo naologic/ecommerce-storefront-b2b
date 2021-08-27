@@ -1,0 +1,46 @@
+<div class="product-gallery" [attr.data-layout]="layout"
+     [class.product-gallery--layout--product-full]="layout === 'product-full'"
+     [class.product-gallery--layout--product-sidebar]="layout === 'product-sidebar'"
+     [class.product-gallery--layout--quickview]="layout === 'quickview'">
+    <ng-container *ngIf="showGallery">
+        <div class="product-gallery__featured">
+            <button type="button" class="product-gallery__zoom" (click)="openPhotoSwipe(currentItem)">
+                <app-icon icon="zoom-in-24"></app-icon>
+            </button>
+            <owl-carousel-o [options]="carouselOptions" (changed)="featuredCarouselTranslated($event)" appOwlPreventClick #featuredCarousel>
+                <!--suppress AngularUndefinedBinding -->
+                <ng-template *ngFor="let item of items" carouselSlide [id]="item.id">
+                    <div class="image image--type--product">
+                        <a class="image__body" (click)="onFeaturedImageClick($event, item);" [href]="item.image" target="_blank">
+                            <img class="image__tag" [src]="item.image | checkImageFallback" alt="" #imageElement>
+                        </a>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+        <div class="product-gallery__thumbnails">
+            <owl-carousel-o
+                appOwlPreventClick
+                [options]="thumbnailsCarouselOptions"
+                [appFakeSlides]="items.length"
+                #fakeSlides="appFakeSlides"
+                #thumbnailsCarousel
+            >
+                <!--suppress AngularUndefinedBinding -->
+                <ng-template *ngFor="let item of items" carouselSlide [id]="item.id">
+                    <div
+                        class="product-gallery__thumbnails-item image image--type--product"
+                        [class.product-gallery__thumbnails-item--active]="item === currentItem"
+                        (click)="onThumbnailImageClick(item)"
+                    >
+                        <div class="image__body">
+                            <img class="image__tag" [src]="item.image | checkImageFallback" alt="">
+                        </div>
+                    </div>
+                </ng-template>
+                <!--suppress AngularUndefinedBinding -->
+                <ng-template *ngFor="let i of fakeSlides.slides" carouselSlide [id]="'fake-slide-'+i"></ng-template>
+            </owl-carousel-o>
+        </div>
+    </ng-container>
+</div>

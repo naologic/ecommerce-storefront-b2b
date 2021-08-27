@@ -1,0 +1,1927 @@
+/* ----------------------------------------
+// Header
+// ---------------------------------------- */
+/* ----------------------------------------
+// Table of Contents:
+// - .header
+// - .logo
+// - .menu
+// - .main-menu
+// - .megamenu
+// - .account-menu
+// - .search
+// - .departments
+// - .dropcart
+// - .indicator
+// - .phone
+// - .suggestions
+// - .topbar
+// ---------------------------------------- */
+
+@import '../mixins/grid';
+@import '../mixins/loader';
+@import '../svg';
+
+$header-variant-name: classic-one;
+
+// *****************************************************
+// Header
+
+.header {
+    $local-grid-padding-xxl: calc(100% / 2 - #{map_get($container-max-widths, xxl) - $grid-gutter-width} / 2);
+    $local-grid-padding-xl: calc(100% / 2 - #{map_get($container-max-widths, xl) - $grid-gutter-width} / 2);
+
+    display: grid;
+    grid-template-columns: $local-grid-padding-xxl min-content auto max-content $local-grid-padding-xxl;
+    grid-template-rows: 34px auto auto;
+    position: relative;
+    z-index: 10;
+    background: map_get($header-scheme, main);
+    color: map_get($header-scheme, opposite);
+    box-shadow: map_get($navbar-scheme, shadow);
+
+    @include media-breakpoint-only(xl) {
+        grid-template-columns: $local-grid-padding-xl min-content auto max-content $local-grid-padding-xl;
+    }
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+
+    &__megamenu-area {
+        grid-column: 2 / 5;
+        grid-row: 1;
+    }
+    &__topbar {
+        grid-column: 2 / 5;
+        grid-row: 1;
+
+        &-bg {
+            grid-column: 1 / 6;
+            grid-row: 1;
+            background: map_get($topbar-scheme, main);
+        }
+    }
+    &__logo {
+        grid-column: 2;
+        grid-row: 2;
+        min-width: 230px;
+
+        @include direction {
+            #{$margin-inline-end}: 24px;
+        }
+        @include media-breakpoint-only(xl) {
+            min-width: 210px;
+        }
+    }
+    &__search {
+        grid-column: 3 / 3;
+        grid-row: 2;
+        align-self: center;
+
+        @include direction {
+            #{$margin-inline-end}: 24px;
+            #{$padding-inline-end}: 50px;
+        }
+    }
+    &__navbar {
+        grid-column: 1 / 6;
+        grid-row: 3;
+        display: flex;
+        align-self: center;
+        align-items: center;
+        height: 52px;
+        background: map_get($navbar-scheme, main);
+        color: map_get($navbar-scheme, opposite);
+        padding: 7px calc((100% - #{map_get($container-max-widths, xxl) - $grid-gutter-width}) / 2);
+
+        @include media-breakpoint-only(xl) {
+            padding: 7px calc((100% - #{map_get($container-max-widths, xl) - $grid-gutter-width}) / 2);
+        }
+
+        &-menu {
+            flex-grow: 1;
+            height: 100%;
+        }
+        &-departments {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            position: relative;
+
+            @include direction {
+                #{$margin-inline-end}: 24px;
+            }
+
+            &:after {
+                display: block;
+                position: absolute;
+                content: '';
+                background: transparent;
+                width: 1px;
+                height: 100%;
+                top: 0;
+
+                @include direction {
+                    #{$inset-inline-end}: -12px;
+                }
+            }
+        }
+        &-phone {
+            height: 100%;
+        }
+    }
+    &__indicators {
+        grid-column: 4;
+        grid-row: 2;
+        align-self: center;
+        display: flex;
+        justify-content: flex-end;
+        padding: 16px 0;
+
+        & .indicator + .indicator {
+            @include direction {
+                #{$margin-inline-start}: 4px;
+            }
+        }
+    }
+}
+
+@if(map_get($header-scheme, main) == map_get($topbar-scheme, main)) {
+    .header {
+        // todo: uncomment next line when we add the topbar back in
+        //grid-template-rows: 36px auto auto;
+        grid-template-rows: auto auto;
+    }
+    .header__topbar-bg {
+        border-bottom: 1px solid map_get($header-scheme, divider);
+    }
+    .header__topbar {
+        padding-bottom: 1px;
+    }
+}
+@if(map_get($header-scheme, main) == map_get($navbar-scheme, main)) {
+    .header__navbar {
+        border-top: 1px solid map_get($header-scheme, divider);
+
+        @if ($navbar-stretch) {
+            height: 47px;
+            padding-top: 0;
+            padding-bottom: 0;
+        } @else {
+            height: 53px;
+        }
+    }
+} @else if($navbar-stretch) {
+    .header__navbar {
+        height: 46px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+@if (map_get($navbar-scheme, main) == map_get(map_get($departments-button-scheme, normal), main)) {
+    .header__navbar-departments:after {
+        background: map_get($navbar-scheme, divider);
+    }
+}
+
+// *****************************************************
+// Logo
+
+.logo {
+    &__slogan {
+        padding-top: 11px;
+        font-size: 11px;
+        line-height: 1;
+        text-transform: uppercase;
+        display: none;
+    }
+    &__image {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        height: 100%;
+    }
+}
+.logo__part-primary {
+    fill: map_get($logo-scheme, primary);
+}
+.logo__part-secondary {
+    fill: map_get($logo-scheme, secondary);
+}
+
+// *****************************************************
+// Menu
+
+$local-menu-padding-y: 8px;
+$local-menu-item-padding-y: 5px;
+$local-menu-item-padding-x: 14px;
+
+.menu {
+    display: block;
+    color: map_get($menu-small-scheme, opposite);
+    background-color: map_get($menu-small-scheme, main);
+    box-shadow: map_get($menu-small-scheme, shadow);
+    width: 200px;
+    font-size: 15px;
+    line-height: 22px;
+
+    @include scheme-font-weight($menu-small-scheme, opposite, $font-weight-medium);
+
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: $local-menu-padding-y 0;
+    }
+    &__item {
+        // item / hover
+        &:hover {
+            & > .menu__link {
+                background: map_get($menu-small-scheme, hover);
+            }
+            & > .menu__submenu {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        // item / has-submenu
+        &--has-submenu {
+            position: relative;
+        }
+    }
+    &__submenu {
+        position: absolute;
+        top: -$local-menu-padding-y;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .2s;
+
+        @include direction {
+            #{$inset-inline-start}: 100%;
+        }
+    }
+    &__link {
+        $local-padding-x: 15px;
+
+        display: block;
+        position: relative;
+        padding-top: $local-menu-item-padding-y;
+        padding-bottom: $local-menu-item-padding-y;
+
+        @include direction {
+            #{$padding-inline-start}: ($local-menu-item-padding-x + 2px);
+            #{$padding-inline-end}: ($local-menu-item-padding-x + 6px + 8px);
+        }
+
+        &,
+        &:hover {
+            color: inherit;
+        }
+    }
+    &__arrow {
+        fill: map_get($menu-small-scheme, arrow-color);
+        position: absolute;
+        top: calc(50% - 5px);
+
+        @include direction {
+            #{$inset-inline-end}: $local-menu-item-padding-x;
+        }
+
+        svg {
+            display: block;
+
+            @include direction {
+                transform: scaleX($transform-direction);
+            }
+        }
+    }
+}
+
+// *****************************************************
+// Main Menu
+
+$local-megamenu-sizes: (
+    xxl: 6,
+    xl:  5,
+    lg:  4,
+    md:  3,
+    nl:  2,
+    sm:  1,
+);
+@mixin local-mainmenu-define-scheme($scheme) {
+    .main-menu__link {
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+    .main-menu__item--has-submenu {
+        .main-menu__link {
+            svg {
+                color: map_get($scheme, arrow-color);
+            }
+        }
+    }
+    .main-menu__item:hover {
+        .main-menu__link {
+            background-color: map_get($scheme, hover)
+        }
+    }
+}
+
+.main-menu {
+    height: 100%;
+    @include local-mainmenu-define-scheme($navbar-scheme);
+
+    &__list {
+        position: relative;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+    }
+    &__item {
+        &--has-submenu {
+            .main-menu__link {
+                $padding: 9px;
+                $width: 5px;
+
+                position: relative;
+
+                @include direction {
+                    #{$padding-inline-end}: $padding * 2 + $width;
+                }
+
+                svg {
+                    top: calc(50% - 2px);
+                    position: absolute;
+                    fill: currentColor;
+
+                    @include direction {
+                        #{$inset-inline-end}: $padding + 1px;
+                    }
+                }
+            }
+        }
+        &--submenu--menu {
+            position: relative;
+
+            .main-menu__submenu {
+                position: absolute;
+                z-index: 1;
+                top: 100%;
+                opacity: 0;
+                visibility: hidden;
+                transform-origin: top;
+                transform: rotateX(45deg);
+                transition:
+                    transform .2s,
+                    opacity .2s;
+
+                @include direction {
+                    #{$inset-inline-start}: 0;
+                }
+            }
+        }
+        &--submenu--megamenu {
+            .main-menu__submenu {
+                position: absolute;
+                z-index: 1;
+                opacity: 0;
+                visibility: hidden;
+                transform-origin: top;
+                transform: rotateX(45deg);
+                transition:
+                    transform .2s,
+                    opacity .2s;
+            }
+        }
+        &--has-submenu.main-menu__item--hover {
+            .main-menu__submenu {
+                visibility: visible;
+                opacity: 1;
+                transform: rotateX(0);
+            }
+        }
+    }
+    &__submenu {
+        color: map_get($menu-scheme, opposite);
+    }
+    &__link {
+        padding: 5px 11px;
+        border-radius: 2px;
+        color: inherit;
+        white-space: nowrap;
+        font-size: 15px;
+        height: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+    &__megamenu {
+        padding: 26px 30px 30px;
+        background-color: map_get($menu-scheme, main);
+        box-shadow: map_get($menu-scheme, shadow);
+    }
+}
+
+@each $name, $size in $local-megamenu-sizes {
+    .main-menu__megamenu--size--#{$name} {
+        @include media-breakpoint-up(xxl) {
+            width: calc((#{map_get($container-max-widths, xxl) - $grid-gutter-width} - 30px) / 6 * #{$size} + 30px);
+        }
+        @include media-breakpoint-only(xl) {
+            width: calc((#{map_get($container-max-widths, xl) - $grid-gutter-width} - 30px) / 6 * #{$size} + 30px);
+        }
+    }
+}
+@if ($navbar-stretch) {
+    .main-menu__link {
+        border-radius: 0;
+    }
+}
+
+// *****************************************************
+// Mega Menu
+
+.megamenu {
+    position: relative;
+
+    &__image {
+        position: absolute;
+        bottom: 0;
+
+        @include direction {
+            #{$inset-inline-end}: 0;
+            transform-origin: bottom $inline-end;
+        }
+
+        img,
+        picture {
+            display: block;
+        }
+
+        @include media-breakpoint-only(xl) {
+            transform: scale(.81);
+        }
+    }
+    &-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        &__item {
+            line-height: 18px;
+            &  + .megamenu-links__item {
+                margin-top: 10px;
+            }
+
+            &--has-submenu + .megamenu-links__item {
+                margin-top: 24px;
+            }
+
+            &-link {
+                font-size: 16px;
+                color: inherit;
+                transition: color .15s;
+
+                @include scheme-font-weight($menu-scheme, opposite, $font-weight-medium);
+
+                &:hover {
+                    color: $link-color;
+                }
+
+                & + .megamenu-links {
+                    border-top: 1px solid map_get($menu-scheme, divider);
+                    padding-top: 12px;
+                    margin-top: 5px;
+                }
+            }
+        }
+
+        &:not(.megamenu-links--root) {
+            .megamenu-links__item {
+                line-height: 16px;
+
+                & + .megamenu-links__item {
+                    margin-top: 9px;
+                }
+
+                &-link {
+                    font-weight: $font-weight-normal;
+                    font-size: 14px;
+                    color: map_get($menu-scheme, opposite-alt);
+
+                    &:hover {
+                        color: $link-color;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@include media-breakpoint-only(xl) {
+    .megamenu-links__item-link {
+        font-size: 15px;
+    }
+}
+
+// *****************************************************
+// Account Menu
+
+.account-menu {
+    display: block;
+    width: 280px;
+    background-color: map_get($menu-scheme, main);
+    box-shadow: map_get($menu-scheme, shadow);
+    border-radius: 1.5px;
+    color: map_get($menu-scheme, opposite);
+
+    &__form {
+        padding: 0 30px 32px;
+
+        &-title {
+            padding: 32px 0 26px;
+
+            @include scheme-font-weight($menu-scheme, opposite, $font-weight-medium);
+        }
+        &-button {
+            .btn {
+                padding-left: 28px;
+                padding-right: 28px;
+            }
+        }
+        &-link {
+            font-size: 14px;
+
+            a {
+                color: map_get($menu-scheme, opposite-alt);
+                transition: color .1s;
+            }
+            a:hover {
+                color: inherit;
+            }
+        }
+        &-forgot {
+            position: relative;
+            &-link {
+                $local-offset: 5px;
+
+                position: absolute;
+                top: $local-offset;
+                bottom: $local-offset;
+                border-radius: 2px;
+                font-size: 12px;
+                background: map_get($form-control-button-scheme, normal-bg-color);
+                color: map_get($form-control-button-scheme, normal-font-color);
+                display: flex;
+                align-items: center;
+                padding: 0 7px;
+                transition:
+                    background .1s,
+                    color .1s;
+
+                @include direction {
+                    #{$inset-inline-end}: $local-offset;
+                }
+
+                &:hover {
+                    background: map_get($form-control-button-scheme, hover-bg-color);
+                    color: map_get($form-control-button-scheme, hover-font-color);
+                }
+                &:active {
+                    background: map_get($form-control-button-scheme, active-bg-color);
+                    color: map_get($form-control-button-scheme, active-font-color);
+                }
+            }
+        }
+    }
+    &__divider {
+        height: 1px;
+        background: map_get($menu-scheme, divider);
+    }
+    &__user {
+        display: flex;
+        align-items: center;
+        padding: 14px 20px;
+        color: inherit;
+
+        &:hover {
+            color: inherit;
+            background: map_get($menu-scheme, hover);
+        }
+
+        &-avatar {
+            width: 44px;
+            flex-shrink: 0;
+
+            @include direction {
+                #{$margin-inline-end}: 14px;
+            }
+
+            img {
+                border-radius: 100%;
+                max-width: 100%;
+            }
+        }
+        &-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        &-name {
+            font-size: 15px;
+            line-height: 20px;
+        }
+        &-email {
+            font-size: 14px;
+            line-height: 18px;
+            color: map_get($menu-scheme, opposite-alt);
+            margin-top: 1px;
+        }
+    }
+    &__links {
+        list-style: none;
+        padding: 12px 0;
+        margin: 0;
+
+        a,
+        button {
+            display: block;
+            color: inherit;
+            font-size: 15px;
+            font-family: inherit;
+            line-height: inherit;
+            padding: 5px 20px;
+            border: none;
+            width: 100%;
+            background: transparent;
+
+            @include direction {
+                text-align: $inline-start;
+            }
+            @include scheme-font-weight($menu-scheme, opposite, $font-weight-medium);
+
+            &:hover {
+                background: map_get($menu-scheme, hover);
+            }
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
+// *****************************************************
+// Search
+
+$local-height: 38px;
+$local-border-radius: 2.5px;
+$local-input-border-width: 1px;
+$local-gutter: 5px;
+
+@mixin local-define-search-button-scheme($state) {
+    $bg-color-key:    #{$state}-bg-color;
+    $font-color-key:  #{$state}-font-color;
+    $icon-color-key:  #{$state}-icon-color;
+    $arrow-color-key: #{$state}-arrow-color;
+
+    @if(map_has_key($search-button-scheme, $bg-color-key)) {
+        background-color: map_get($search-button-scheme, $bg-color-key);
+    }
+    @if(map_has_key($search-button-scheme, $font-color-key)) {
+        color: map_get($search-button-scheme, $font-color-key);
+    }
+    @if(map_has_key($search-button-scheme, $icon-color-key)) {
+        .search__button-icon {
+            fill: map_get($search-button-scheme, $icon-color-key);
+        }
+    }
+    @if(map_has_key($search-button-scheme, $arrow-color-key)) {
+        background-image: url(svg-select-arrow(map_get($search-button-scheme, $arrow-color-key)));
+    }
+}
+
+.search {
+    &__body {
+        display: flex;
+        z-index: 0;
+        position: relative;
+        //max-width: 560px;
+        height: $local-height;
+    }
+    &__dropdown {
+        $local-timing: cubic-bezier(0.645, 0.045, 0.355, 1);
+        $local-duration: .25s;
+
+        color: map_get($menu-scheme, opposite);
+        background-color: map_get($menu-scheme, main);
+        box-shadow: map_get($menu-scheme, shadow);
+        position: absolute;
+        top: 100%;
+        border-radius: 1.5px;
+        opacity: 0;
+        transform: translateY(26px);
+        visibility: hidden;
+        transition:
+            opacity $local-duration $local-timing,
+            transform $local-duration $local-timing,
+            visibility 0s $local-duration;
+
+        @include direction {
+            #{$inset-inline-start}: 0;
+            #{$inset-inline-end}: 0;
+        }
+
+        &--open {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        &-arrow {
+            $local-size: 7px;
+            $local-button-icon-width: 20px;
+            $local-button-icon-offset: 13px;
+
+            position: absolute;
+            width: ($local-button-icon-width + $local-button-icon-offset * 2);
+            height: 21px;
+            pointer-events: none;
+            bottom: 100%;
+            overflow: hidden;
+
+            &:before {
+                position: absolute;
+                display: block;
+                content: '';
+                width: $local-size;
+                height: $local-size;
+                top: 100%;
+                margin-top: -($local-size / 2);
+                background-color: map_get($menu-scheme, main);
+                border-radius: 1px;
+
+                @include direction {
+                    #{$inset-inline-start}: 50%;
+                    #{$margin-inline-start}: -($local-size / 2);
+                    transform: rotate(45deg) translateX(#{-.5px * $transform-direction}) translateY(-.5px);
+                }
+            }
+        }
+    }
+    &__button-icon svg {
+        display: block;
+    }
+}
+.search__input,
+.search__button {
+    background: transparent;
+    font-family: inherit;
+    flex-basis: 0;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    fill: currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 9px;
+    white-space: nowrap;
+
+    &:focus {
+        outline: none;
+    }
+}
+.search__input {
+    @include define-input-scheme($search-input-scheme, normal);
+
+    flex-grow: 1;
+    font-size: 15px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: $local-input-border-width;
+    border-style: solid;
+    border-radius: $local-border-radius;
+    transition:
+        background-color .2s,
+        border-color .2s,
+        color .2s;
+
+    @include direction {
+        #{$padding-inline-start}: 14px - $local-input-border-width;
+        #{$padding-inline-end}: $local-height - $local-input-border-width;
+    }
+
+    &:hover {
+        @include define-input-scheme($search-input-scheme, hover);
+    }
+    &:focus {
+        @include define-input-scheme($search-input-scheme, focus);
+    }
+}
+.search__button {
+    &-icon {
+        flex-shrink: 0;
+    }
+    &-title {
+        font-size: 14px;
+        font-weight: $font-weight-medium;
+        line-height: 1;
+        margin-top: 1px;
+
+        @include direction {
+            #{$margin-inline-start}: 9px;
+        }
+    }
+    &--start {
+        $local-padding-x: 12px;
+        $local-arrow-width: 10px;
+
+        order: -1;
+        padding-top: 0;
+        padding-bottom: 0;
+        border: 1px solid transparent;
+        background-repeat: no-repeat;
+        background-size: 5px 10px;
+        border-radius: $local-border-radius;
+        transition:
+            color .15s,
+            background-color .15s;
+
+        @include local-define-search-button-scheme(normal);
+
+        @include direction {
+            #{$padding-inline-start}: $local-padding-x;
+            #{$padding-inline-end}: ($local-padding-x + $local-arrow-width + 5px);
+            #{$margin-inline-end}: $local-gutter;
+            background-position: $inline-end $local-padding-x center;
+        }
+
+        &:hover {
+            @include local-define-search-button-scheme(hover);
+        }
+        &:active {
+            transition-duration: 0s;
+
+            @include local-define-search-button-scheme(active);
+        }
+    }
+    &--end {
+        transition: color .2s;
+        position: absolute;
+        height: $local-height;
+        width: $local-height;
+        border: none;
+
+        @include direction {
+            #{$inset-inline-end}: 0;
+        }
+
+        @if(map_has_key($search-input-scheme, normal-icon-scheme)) {
+            @include define-button-scheme(map_get($search-input-scheme, normal-icon-scheme));
+        }
+    }
+}
+
+@if(map_has_key($search-input-scheme, hover-icon-scheme)) {
+    .search__input:hover ~ .search__button--end {
+        @include define-button-scheme(map_get($search-input-scheme, hover-icon-scheme));
+    }
+}
+@if(map_has_key($search-input-scheme, focus-icon-scheme)) {
+    .search__input:focus ~ .search__button--end {
+        @include define-button-scheme(map_get($search-input-scheme, focus-icon-scheme));
+    }
+}
+
+// *****************************************************
+// Departments
+
+@mixin local-departments-layout($args) {
+    $container-width: map_get($args, container-width);
+    $list-width: map_get($args, list-width);
+    $list-padding-y: map_get($args, list-padding-y);
+    $megamenu-gutter: map_get($args, megamenu-gutter);
+    $item-padding-x: map_get($args, item-padding-x);
+    $item-padding-y: map_get($args, item-padding-y);
+
+    $local-column-width: ($container-width - $list-width - $megamenu-gutter * 2) / 5;
+    $local-megamenu-sizes: (
+        xl: 5,
+        lg: 4,
+        md: 3,
+        nl: 2,
+        sm: 1,
+    );
+
+    .departments__list {
+        width: $list-width;
+    }
+    .departments__list-padding {
+        height: $list-padding-y;
+    }
+    .departments__item-link {
+        padding-top: $item-padding-y;
+        padding-bottom: $item-padding-y;
+
+        @include direction {
+            #{$padding-inline-start}: ($item-padding-x + 6px);
+            #{$padding-inline-end}: ($item-padding-x + 8px + 7px);
+        }
+    }
+    .departments__item-arrow {
+        @include direction {
+            #{$inset-inline-end}: $item-padding-x;
+            transform: scaleX(#{$transform-direction});
+        }
+    }
+    .departments__megamenu {
+        padding: ($megamenu-gutter - 3px) $megamenu-gutter $megamenu-gutter;
+
+        @if ($megamenu-gutter != 30px) {
+            @include grid-override-gutter($megamenu-gutter);
+        }
+    }
+
+    @each $name, $size in $local-megamenu-sizes {
+        .departments__megamenu--size--#{$name} {
+            width: ($local-column-width * $size) + $megamenu-gutter;
+        }
+    }
+}
+@mixin local-define-departments-button($scheme, $is-normal-state: false) {
+    background: map_get($scheme, main);
+    color: map_get($scheme, opposite);
+
+    @if($is-normal-state) {
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+
+    .departments__button-icon {
+        color: map_get($scheme, icon-color);
+    }
+    .departments__button-arrow {
+        color: map_get($scheme, arrow-color);
+    }
+}
+
+.departments {
+    display: block;
+    position: relative;
+
+    &__button {
+        position: relative;
+        fill: currentColor;
+        border: none;
+        border-radius: 2px;
+        font-family: inherit;
+        font-size: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        transition:
+            background-color .2s,
+            color .2s;
+        height: 100%;
+        width: 230px;
+
+        &:focus {
+            outline: none;
+        }
+
+        @include media-breakpoint-only(xl) {
+            width: 210px;
+        }
+        @include direction {
+            #{$padding-inline-start}: (16px + 14px + 13px);
+            #{$padding-inline-end}: (15px + 7px + 15px);
+            text-align: $inline-start;
+        }
+        @include local-define-departments-button(map_get($departments-button-scheme, normal), $is-normal-state: true);
+
+        @if ($navbar-stretch) {
+            border-radius: 0;
+        }
+
+        &-icon {
+            top: calc(50% - 6px);
+            position: absolute;
+            fill: currentColor;
+            display: inline-block;
+            transition: color .2s;
+
+            @include direction {
+                #{$inset-inline-start}: 14px;
+                transform: scaleX($transform-direction);
+            }
+
+            svg {
+                display: block;
+            }
+        }
+        &-arrow {
+            display: block;
+            fill: currentColor;
+            position: absolute;
+            top: calc(50% - 4px);
+            transition:
+                transform .2s,
+                color .2s;
+
+            @include direction {
+                #{$inset-inline-end}: 14px;
+            }
+
+            svg {
+                display: block;
+            }
+        }
+    }
+    &__menu {
+        position: absolute;
+        z-index: 1;
+        visibility: hidden;
+        opacity: 0;
+        top: 100%;
+        transform: translateY(-10px);
+        transition:
+            opacity .2s,
+            transform .2s,
+            visibility 0s .2s;
+    }
+    &__body {
+        border-radius: 1.5px;
+        pointer-events: auto;
+        display: flex;
+        background-color: map_get($departments-menu-scheme, main);
+        box-shadow: map_get($departments-menu-scheme, shadow);
+        color: map_get($departments-menu-scheme, opposite);
+
+        @include direction {
+            float: $inline-start;
+        }
+    }
+    &__list {
+        flex-shrink: 0;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        font-size: 15px;
+        line-height: 20px;
+
+        @include scheme-font-weight($departments-menu-scheme, opposite, $font-weight-medium);
+    }
+    &__item {
+        &-link {
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+        &-arrow {
+            fill: map_get($departments-menu-scheme, arrow-color);
+            position: absolute;
+            top: calc(50% - 6px);
+
+            svg {
+                display: block;
+            }
+        }
+        &-menu {
+            display: none;
+        }
+        &--hover {
+            .departments__item-link {
+                background: map_get($departments-menu-scheme, hover);
+                color: inherit;
+            }
+        }
+    }
+    &__megamenu {
+        min-height: 100%;
+        display: none;
+
+        &--open {
+            display: block;
+        }
+
+        @include direction {
+            box-shadow: #{1px * $transform-direction} 0 map_get($departments-menu-scheme, divider) inset;
+        }
+    }
+    &__arrow {
+        $local-size: 7px;
+        $local-button-icon-width: 16px;
+        $local-button-icon-offset: 14px;
+
+        position: absolute;
+        width: ($local-button-icon-width + $local-button-icon-offset * 2) - 3px;
+        height: 21px;
+        pointer-events: none;
+        bottom: 100%;
+        overflow: hidden;
+
+        &:before {
+            position: absolute;
+            display: block;
+            content: '';
+            width: $local-size;
+            height: $local-size;
+            top: 100%;
+            margin-top: -($local-size / 2);
+            background-color: map_get($departments-menu-scheme, main);
+            box-shadow: map_get($departments-menu-scheme, shadow);
+            border-radius: 1px;
+
+            @include direction {
+                #{$inset-inline-start}: 50%;
+                #{$margin-inline-start}: -($local-size / 2);
+                transform: rotate(45deg) translateX(#{-.5px * $transform-direction}) translateY(-.5px);
+            }
+        }
+    }
+    &--open {
+        .departments__menu {
+            transition-delay: 0s;
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .departments__button-arrow {
+            transform: rotate(180deg);
+        }
+    }
+}
+.departments__button:hover,
+.departments--open .departments__button {
+    @include local-define-departments-button(map_get($departments-button-scheme, hover));
+}
+
+@include media-breakpoint-up(xxl) {
+    @include local-departments-layout((
+        container-width: map_get($container-max-widths, xxl),
+        list-width: 230px,
+        list-padding-y: 14px,
+        megamenu-gutter: 30px,
+        item-padding-x: 14px,
+        item-padding-y: 7px,
+    ));
+}
+@include media-breakpoint-only(xl) {
+    @include local-departments-layout((
+        container-width: map_get($container-max-widths, xl),
+        list-width: 210px,
+        list-padding-y: 10px,
+        megamenu-gutter: 20px,
+        item-padding-x: 11px,
+        item-padding-y: 6px,
+    ));
+}
+
+// *****************************************************
+// Dropcart
+
+$local-dropcart-padding: 24px;
+$local-dropcart-image-margin: 10px;
+$local-ribbon-height: 16px;
+$local-ribbon-padding-x: $local-ribbon-height * $TAN-20;
+$local-ribbon-border-radius: 2.5px;
+
+.dropcart {
+    display: block;
+    width: 320px;
+    background-color: map_get($menu-scheme, main);
+    box-shadow: map_get($menu-scheme, shadow);
+    border-radius: 1.5px;
+    padding: $local-dropcart-padding;
+    color: map_get($menu-scheme, opposite);
+
+    &__empty {
+        text-align: center;
+        font-size: 15px;
+        padding: 20px 0;
+    }
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: -8px 0 0;
+    }
+    &__divider {
+        height: 1px;
+        background: map_get($menu-scheme, divider);
+        margin: 8px 0;
+    }
+    &__totals {
+        font-size: 15px;
+        margin-top: 18px;
+        margin-bottom: 24px;
+
+        table {
+            width: 100%;
+        }
+        th, td {
+            padding: 0;
+        }
+        th {
+            font-weight: $font-weight-medium;
+        }
+        td {
+            @include direction {
+                text-align: $inline-end;
+            }
+        }
+        tr + tr > * {
+            padding-top: 4px;
+        }
+    }
+    &__actions {
+        display: flex;
+
+        & > * {
+            flex-grow: 1;
+        }
+        & > * + * {
+            @include direction {
+                #{$margin-inline-start}: 8px;
+            }
+        }
+    }
+}
+.dropcart__item {
+    display: flex;
+
+    &-image {
+        flex-shrink: 0;
+        width: 70px;
+
+        img {
+            max-width: 100%;
+        }
+    }
+    &-info {
+        padding: 4px 0 5px;
+        flex-grow: 1;
+        margin: 0 $local-dropcart-image-margin;
+    }
+    &-name {
+        font-size: 15px;
+        line-height: 18px;
+
+        a {
+            color: inherit;
+            transition: color .2s;
+        }
+        a:hover {
+            color: $link-color;
+        }
+    }
+    &-features {
+        list-style: none;
+        padding: 0;
+        margin-top: 2px;
+        font-size: 13px;
+        line-height: 17px;
+        color: map_get($menu-scheme, opposite-alt);
+    }
+    &-meta {
+        display: flex;
+        align-items: center;
+        margin-top: 4px;
+    }
+    &-remove {
+        $local-size: 26px;
+
+        position: relative;
+        flex-shrink: 0;
+        width: $local-size;
+        height: $local-size;
+        border-radius: $local-size / 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: none;
+        fill: currentColor;
+
+        @include define-button-scheme($btn-muted-light-scheme);
+        @include direction {
+            #{$margin-inline-end}: -($local-size / 2);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        svg {
+            display: block;
+        }
+
+        &-remove.dropcart__item-remove--loading {
+            fill: transparent;
+            cursor: default;
+            background: transparent;
+
+            &:after {
+                @include loader(16px, 2px, #000);
+            }
+        }
+    }
+}
+.dropcart__item-quantity,
+.dropcart__item-price {
+    position: relative;
+    height: $local-ribbon-height;
+    z-index: 0;
+    font-size: 11px;
+    padding: 1px ($local-ribbon-padding-x + 5px) 0;
+
+    &:before {
+        position: absolute;
+        display: block;
+        content: '';
+        width: calc(100% - #{$local-ribbon-padding-x});
+        height: 100%;
+        top: 0;
+        z-index: -1;
+        border-radius: $local-ribbon-border-radius ($local-ribbon-border-radius + .5px);
+
+        @include direction {
+            #{$inset-inline-start}: 0;
+            //transform: skewX(#{-20deg * $transform-direction});
+            //transform-origin: $inline-start bottom;
+        }
+    }
+}
+.dropcart__item-quantity {
+    color: map_get($dropcart-quantity-scheme, opposite);
+
+    @include scheme-font-weight($dropcart-quantity-scheme, opposite, $font-weight-medium);
+
+    @include direction {
+        #{$padding-inline-start}: 6px;
+        #{$margin-inline-end}: 3px - $local-ribbon-padding-x;
+    }
+
+    &:before,
+    &:after {
+        background: map_get($dropcart-quantity-scheme, main);
+    }
+
+    &:after {
+        position: absolute;
+        display: block;
+        content: '';
+        width: $local-ribbon-padding-x + $local-ribbon-border-radius;
+        height: 100%;
+        top: 0;
+        z-index: -1;
+
+        @include direction {
+            #{$inset-inline-start}: 0;
+            #{$border-start-start-radius}: $local-ribbon-border-radius;
+            #{$border-end-start-radius}: $local-ribbon-border-radius;
+        }
+    }
+}
+.dropcart__item-price {
+    color: map_get($dropcart-price-scheme, opposite);
+
+    @include scheme-font-weight($dropcart-price-scheme, opposite, $font-weight-medium);
+
+    &:before {
+        background: map_get($dropcart-price-scheme, main);
+    }
+}
+
+// *****************************************************
+// Indicator
+
+$local-open-transition-duration: .2s;
+
+@mixin local-indicator-define-scheme($scheme) {
+    .indicator__icon {
+        fill: map_get($scheme, opposite);
+    }
+    .indicator__title {
+        color: map_get($scheme, muted);
+    }
+    .indicator__value {
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+
+    .indicator:hover,
+    .indicator--open {
+        .indicator__button {
+            background: map_get($scheme, hover);
+        }
+    }
+}
+
+.indicator {
+    position: relative;
+
+    &__button {
+        padding: 3px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: 54px;
+        min-width: 54px;
+        color: inherit;
+        border-radius: 2px;
+        background: transparent;
+        border: none;
+
+        @include direction {
+            #{$padding-inline-end}: 12px;
+        }
+
+        &:focus {
+            outline: none;
+        }
+        &:hover {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+    &__icon {
+        position: absolute;
+        padding: 8px;
+        display: block;
+        width: 48px;
+        height: 48px;
+
+        svg {
+            display: block;
+
+            @include direction {
+                transform: scaleX($transform-direction);
+            }
+        }
+    }
+    &__counter {
+        position: absolute;
+        top: 5px;
+        font-size: 10px;
+        line-height: 1;
+        padding: 2px 3px 1px;
+        border-radius: (13px / 2);
+        text-align: center;
+        z-index: 0;
+        color: map_get($indicator-counter-scheme, opposite);
+
+        @include direction {
+            #{$inset-inline-end}: 4px;
+        }
+
+        &:before {
+            display: block;
+            position: absolute;
+            content: '';
+            top: 0;
+            bottom: 0;
+            z-index: -1;
+            border-radius: 2.5px;
+            background-color: map_get($indicator-counter-scheme, main);
+
+            @include direction {
+                #{$inset-inline-start}: 0;
+                #{$inset-inline-end}: 0;
+                transform: skewX(#{-11deg * $transform-direction});
+            }
+        }
+
+        @include scheme-font-weight($indicator-counter-scheme, opposite, $font-weight-medium);
+    }
+    &__content {
+        pointer-events: none;
+        top: 100%;
+        position: absolute;
+        visibility: hidden;
+        transform-origin: top;
+        transform: rotateX(60deg);
+        opacity: 0;
+        transition:
+            transform $local-open-transition-duration,
+            opacity $local-open-transition-duration,
+            visibility 0s $local-open-transition-duration;
+
+        @include direction {
+            #{$inset-inline-end}: 0;
+        }
+    }
+    &--mobile {
+        .indicator__button {
+            padding: 0 0 2px;
+            height: 50px;
+            width: 44px;
+            min-width: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0;
+        }
+        .indicator__icon {
+            padding: 0;
+            position: relative;
+            height: auto;
+            width: auto;
+        }
+        .indicator__counter {
+            top: -7px;
+
+            @include direction {
+                #{$inset-inline-end}: -7px;
+            }
+        }
+    }
+}
+.indicator__title,
+.indicator__value {
+    display: block;
+    white-space: nowrap;
+
+    @include direction {
+        #{$margin-inline-start}: 50px;
+    }
+}
+.indicator__title {
+    padding-top: 3px;
+    margin-bottom: -3px;
+    font-size: 13px;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.indicator__value {
+    font-size: 18px;
+    font-weight: $font-weight-medium;
+}
+.indicator--trigger--click.indicator--open,
+.indicator--trigger--hover:hover {
+    .indicator__content {
+        pointer-events: auto;
+        z-index: 1;
+        transition-delay: 0s, 0s, 0s;
+        opacity: 1;
+        visibility: visible;
+        transform: rotateX(0deg);
+    }
+}
+
+@include local-indicator-define-scheme($header-scheme);
+
+// *****************************************************
+// Phone
+
+@mixin local-phone-define-scheme($scheme) {
+    .phone__body {
+        //&:hover {
+        //    background: map_get($scheme, hover);
+        //}
+    }
+    .phone__title {
+        color: map_get($scheme, muted);
+    }
+    .phone__number {
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+}
+
+.phone {
+    &__body {
+        display: flex;
+        align-items: center;
+        color: inherit;
+        line-height: 1;
+        height: 100%;
+        padding: 4px 11px;
+        border-radius: 2px;
+        transition: background .12s;
+        font-size: 17px;
+
+        &:hover {
+            color: inherit;
+        }
+    }
+    &__title {
+        font-size: 15px;
+        margin-top: 1px;
+
+        @include direction {
+            #{$margin-inline-end}: 5px;
+        }
+    }
+}
+
+@include local-phone-define-scheme($navbar-scheme);
+@if ($navbar-stretch) {
+    .phone__body {
+        border-radius: 0;
+    }
+}
+
+// *****************************************************
+// Suggestions
+
+$local-suggestions-padding: 20px;
+
+.suggestions {
+    padding: ($local-suggestions-padding - 6px) 0;
+}
+.suggestions__group + .suggestions__group {
+    margin-top: 10px;
+}
+.suggestions__group-title {
+    padding: 3px $local-suggestions-padding 3px;
+    font-size: 11px;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+    color: map_get($menu-scheme, muted);
+}
+.suggestions__category {
+    display: block;
+    padding: 6px $local-suggestions-padding;
+    color: inherit;
+    font-size: 15px;
+    line-height: 17px;
+
+    &:hover {
+        color: inherit;
+        background: map_get($menu-scheme, hover);
+    }
+}
+.suggestions__product {
+    display: flex;
+    padding: 6px $local-suggestions-padding;
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+        background: map_get($menu-scheme, hover);
+    }
+
+    &-image {
+        position: relative;
+        border-radius: 1px;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        @include direction {
+            #{$margin-inline-end}: 10px;
+        }
+
+        &:before {
+            display: block;
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 100%;
+            border: 1px solid $image-border-color;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+    }
+    &-info {
+        flex-grow: 1;
+        flex-shrink: 1;
+        padding-top: 4px;
+        min-width: 0;
+    }
+    &-name {
+        font-size: 15px;
+        line-height: 17px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    &-rating {
+        display: flex;
+        margin-top: 2px;
+
+        &-stars {
+            @include direction {
+                #{$margin-inline-end}: 8px;
+            }
+        }
+        &-label {
+            font-size: 13px;
+            line-height: 1;
+            color: map_get($menu-scheme, opposite-alt);
+        }
+    }
+    &-price {
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-size: 13px;
+        font-weight: $font-weight-bold;
+        padding-top: 3px;
+        width: 70px;
+
+        @include direction {
+            #{$margin-inline-start}: 14px;
+            text-align: $inline-end;
+        }
+    }
+}
+
+// *****************************************************
+// Topbar
+
+$local-topbar-padding: 8px;
+$local-item-padding-x: 10px;
+$local-transition-duration: .2s;
+
+@mixin local-topbar-define-scheme($scheme) {
+    .topbar {
+        background: map_get($scheme, main);
+    }
+    .topbar__item-text {
+        color: map_get($scheme, opposite);
+
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+    .topbar__link {
+        color: map_get($scheme, muted);
+
+        @include scheme-font-weight($scheme, muted, $font-weight-normal);
+
+        &:hover {
+            color: map_get($scheme, opposite);
+        }
+    }
+    .topbar__button-label {
+        color: map_get($scheme, muted);
+
+        @include scheme-font-weight($scheme, muted, $font-weight-normal);
+    }
+    .topbar__button-title {
+        color: map_get($scheme, opposite);
+
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+    .topbar__button-arrow {
+        color: map_get($scheme, arrow-color);
+    }
+    .topbar__menu--open .topbar__menu-button,
+    .topbar__button:hover {
+        @if(map_has_key($scheme, hover)) {
+            background: map_get($scheme, hover);
+        }
+
+        .topbar__button-label {
+            color: map_get($scheme, opposite);
+        }
+    }
+}
+
+.topbar {
+    display: flex;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1;
+
+    &__item {
+        &-spring {
+            flex-grow: 1;
+        }
+        &-text {
+            display: flex;
+            align-items: center;
+            padding: 0 $local-item-padding-x;
+        }
+    }
+    &__link {
+        transition: color .12s;
+
+        &-label {
+            transition: inherit;
+        }
+    }
+}
+.topbar__button {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background: transparent;
+    font-family: inherit;
+    border: none;
+    padding: 0 $local-item-padding-x;
+    transition: background .12s;
+    height: 100%;
+
+    &:focus {
+        outline: none;
+    }
+
+    &-arrow {
+        position: absolute;
+        fill: currentColor;
+        top: calc(50% - 3px);
+
+        @include direction {
+            #{$inset-inline-end}: $local-topbar-padding;
+            #{$inset-inline-end}: ($local-topbar-padding + 2px);
+        }
+
+        svg {
+            display: block;
+        }
+    }
+    &--has-arrow {
+        @include direction {
+            #{$padding-inline-end}: $local-topbar-padding + 10px;
+            #{$padding-inline-end}: ($local-topbar-padding + 2px) + 12px;
+        }
+    }
+}
+.topbar__button-title,
+.topbar__button-label {
+    transition: color .12s;
+
+    @include direction {
+        #{$margin-inline-end}: 3px;
+    }
+}
+.topbar__menu {
+    position: relative;
+
+    &--open {
+        .topbar__menu-body {
+            visibility: visible;
+            transition-delay: 0s, 0s, 0s;
+            opacity: 1;
+            transform: rotateX(0deg);
+        }
+    }
+
+    &-body {
+        visibility: hidden;
+        transform-origin: top;
+        transform: rotateX(60deg);
+        opacity: 0;
+        transition:
+            transform $local-transition-duration,
+            opacity $local-transition-duration,
+            visibility 0s $local-transition-duration;
+        color: map_get($menu-small-scheme, opposite);
+        background-color: map_get($menu-small-scheme, main);
+        box-shadow: map_get($menu-small-scheme, shadow);
+        position: absolute;
+        width: 150px;
+        padding: .5rem 0;
+        font-size: 14px;
+        line-height: 26px;
+        z-index: 1;
+
+        .topbar__menu-item {
+            display: block;
+            padding: 3px 1rem;
+            background: transparent;
+            color: map_get($menu-small-scheme, opposite);
+            font-family: inherit;
+            font-weight: inherit;
+            border: none;
+            width: 100%;
+
+            @include direction {
+                text-align: $inline-start;
+            }
+
+            &:focus {
+                outline: none;
+            }
+            &:hover {
+                color: map_get($menu-small-scheme, opposite);
+                background: map_get($menu-small-scheme, hover);
+            }
+
+            img {
+                @include direction {
+                    #{$margin-inline-end}: 8px;
+                }
+            }
+
+            span {
+                position: relative;
+                top: 1px;
+            }
+        }
+
+        @include scheme-font-weight($menu-small-scheme, opposite, $font-weight-medium);
+        @include direction {
+            #{$inset-inline-end}: 0;
+        }
+    }
+}
+
+@include local-topbar-define-scheme($topbar-scheme);

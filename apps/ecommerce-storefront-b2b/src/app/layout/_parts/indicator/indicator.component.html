@@ -1,0 +1,15 @@
+<div class="indicator" [class.indicator--open]="classIndicatorOpen"
+     [class.indicator--trigger--click]="trigger === 'click'"
+     [class.indicator--trigger--hover]="trigger === 'hover'">
+    <a [attr.href]="href" class="indicator__button" (click)="onClick($event)">
+        <span class="indicator__icon">
+            <app-icon [icon]="icon"></app-icon>
+            <span class="indicator__counter" *ngIf="counter !== undefined && counter !== null">{{ counter }}</span>
+        </span>
+        <span *ngIf="label" class="indicator__title">{{ label }}</span>
+        <span *ngIf="value" class="indicator__value">{{ value }}</span>
+    </a>
+    <div class="indicator__content">
+        <ng-content></ng-content>
+    </div>
+</div>

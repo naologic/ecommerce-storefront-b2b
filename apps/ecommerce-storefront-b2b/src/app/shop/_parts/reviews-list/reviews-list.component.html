@@ -1,0 +1,29 @@
+<ng-template #empty>
+    {{ 'TEXT_REVIEWS_LIST_EMPTY' | translate }}
+</ng-template>
+<ng-container *ngIf="list && list.total > 0; else empty">
+    <ol class="reviews-list__content">
+        <li *ngFor="let review of list.items" class="reviews-list__item">
+            <div class="review">
+                <div class="review__body">
+                    <div class="review__avatar"><img [src]="review.avatar" alt=""></div>
+                    <div class="review__meta">
+                        <div class="review__author">{{ review.author }}</div>
+                        <div class="review__date">{{ 'FORMAT_DATE_MEDIUM' | translate:{date: review.date} }}</div>
+                    </div>
+                    <!--Show rating only if it's allowed in settings-->
+                    <!--This will have to be connected to ecomm in the future-->
+                    <div class="review__rating" *ngIf="appSettings?.rating">
+                        <app-rating [value]="review.rating"></app-rating>
+                    </div>
+                    <div class="review__content typography">
+                        {{ review.content }}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
+    <div class="reviews-list__pagination">
+        <app-pagination [formControl]="currentPage" [siblings]="2" [total]="list.pages"></app-pagination>
+    </div>
+</ng-container>

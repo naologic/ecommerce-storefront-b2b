@@ -1,0 +1,865 @@
+/* ----------------------------------------
+// Mobile Header
+// ---------------------------------------- */
+/* ----------------------------------------
+// Table of Contents:
+// - .mobile-header
+// - .mobile-indicator
+// - .mobile-logo
+// - .mobile-menu
+// - .mobile-search
+// ---------------------------------------- */
+
+$header-variant-name: mobile-one;
+
+// *****************************************************
+// Header
+
+.mobile-header {
+    display: block;
+    background: map_get($mobile-header-scheme, main);
+    box-shadow: map_get($mobile-header-scheme, shadow);
+    position: relative;
+    z-index: 100;
+
+    @include media-breakpoint-up(xl) {
+        display: none;
+    }
+
+    &__body {
+        height: 50px;
+        display: flex;
+    }
+    &__menu-button {
+        width: 52px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        border: none;
+        background: map_get($mobile-header-scheme, main);
+        fill: map_get($mobile-header-scheme, icon-color);
+
+        &:hover {
+            background: map_get($mobile-header-scheme, hover);
+        }
+        &:active {
+            background: map_get($mobile-header-scheme, active);
+        }
+        &:focus {
+            outline: none;
+        }
+
+        svg {
+            display: block;
+        }
+    }
+    &__logo {
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+    }
+    &__search {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        max-width: 440px;
+        flex-grow: 1;
+        padding: 0 12px;
+        margin: 0 auto;
+    }
+    &__indicators {
+        display: flex;
+
+        @include direction {
+            #{$margin-inline-start}: auto;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .mobile-header {
+        position: relative;
+
+        & .container {
+            padding: 0 8px;
+        }
+        &__menu-button {
+            width: 44px;
+        }
+        &__logo {
+            @include direction {
+                #{$padding-inline-start}: 10px;
+                #{$padding-inline-end}: 10px;
+            }
+        }
+        &__search {
+            top: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            padding: 0;
+            z-index: 1;
+            transform: translateY(-100%);
+            transition: transform .3s;
+
+            @include direction {
+                #{$inset-inline-start}: 0;
+            }
+        }
+        &__search--open {
+            transform: none;
+        }
+    }
+}
+
+// *****************************************************
+// Indicators
+
+@mixin local-define-scheme($scheme) {
+    .mobile-indicator__icon {
+        fill: map_get($scheme, opposite);
+    }
+    .mobile-indicator__title {
+        color: map_get($scheme, muted);
+    }
+    .mobile-indicator__value {
+        @include scheme-font-weight($scheme, opposite, $font-weight-medium);
+    }
+
+    .mobile-indicator:hover {
+        .mobile-indicator__button {
+            background: map_get($scheme, hover);
+        }
+    }
+}
+
+.mobile-indicator {
+    position: relative;
+
+    &__button {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        position: relative;
+        justify-content: center;
+        height: 50px;
+        width: 44px;
+        color: inherit;
+        background: transparent;
+        border: none;
+
+        &:focus {
+            outline: none;
+        }
+        &:hover {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
+    &__icon {
+        display: block;
+        position: relative;
+
+        svg {
+            display: block;
+
+            @include direction {
+                transform: scaleX($transform-direction);
+            }
+        }
+    }
+    &__counter {
+        position: absolute;
+        top: -7px;
+        font-size: 10px;
+        line-height: 1;
+        padding: 2px 3px 1px;
+        border-radius: (13px / 2);
+        text-align: center;
+        z-index: 0;
+
+        @include direction {
+            #{$inset-inline-end}: -7px;
+        }
+
+        &:before {
+            display: block;
+            position: absolute;
+            content: '';
+            top: 0;
+            bottom: 0;
+            z-index: -1;
+            border-radius: 2.5px;
+
+            @include direction {
+                #{$inset-inline-start}: 0;
+                #{$inset-inline-end}: 0;
+                transform: skewX(#{-11deg * $transform-direction});
+            }
+        }
+    }
+    &__title,
+    &__value {
+        display: block;
+
+        @include direction {
+            #{$margin-inline-start}: 50px;
+        }
+    }
+    &__title {
+        padding-top: 3px;
+        margin-bottom: -3px;
+        font-size: 13px;
+    }
+    &__value {
+        font-size: 18px;
+        font-weight: $font-weight-medium;
+    }
+}
+.mobile-indicator__counter {
+    color: map_get($mobile-indicator-counter-scheme, opposite);
+
+    @include scheme-font-weight($mobile-indicator-counter-scheme, opposite, $font-weight-medium);
+
+    &:before {
+        background-color: map_get($mobile-indicator-counter-scheme, main);
+    }
+}
+
+@include local-define-scheme($mobile-header-scheme);
+
+// *****************************************************
+// Logo
+
+.mobile-logo {
+    svg {
+        display: block;
+    }
+
+    &__part-one {
+        fill: map_get($logo-scheme, primary);
+    }
+    &__part-two {
+        fill: map_get($logo-scheme, secondary);
+    }
+}
+
+// *****************************************************
+// Menu
+
+$local-transition-duration: .25s;
+$local-transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$local-gutter: 0px;
+
+.mobile-menu {
+    visibility: hidden;
+    transition: visibility 0s $local-transition-duration;
+
+    &__backdrop {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: $modal-backdrop;
+        opacity: 0;
+        will-change: opacity;
+        transition: opacity $local-transition-duration $local-transition-timing-function;
+    }
+    &__body {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        background: map_get($card-scheme, main);
+        width: 300px;
+        transition: transform $local-transition-duration $local-transition-timing-function;
+        will-change: transform;
+        overflow: hidden;
+
+        @include direction {
+            #{$inset-inline-start}: 0;
+            transform: translateX(#{-100% * $transform-direction});
+        }
+    }
+    &--open {
+        visibility: visible;
+        transition-delay: 0s;
+
+        .mobile-menu__backdrop {
+            opacity: 1;
+        }
+        .mobile-menu__body {
+            transform: translateX(0);
+        }
+    }
+    &__close {
+        position: absolute;
+        top: 0;
+        width: 48px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        border: none;
+        padding: 0;
+        fill: currentColor;
+        transition:
+            background-color .15s,
+            color .15s;
+
+        @include define-button-scheme($btn-muted-scheme);
+        @include direction {
+            #{$inset-inline-end}: 0;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+    &__conveyor {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        transition: transform $local-transition-duration $local-transition-timing-function;
+    }
+    &__panel {
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        background: map_get($card-scheme, main);
+    }
+    &__panel-header {
+        flex-shrink: 0;
+        height: 51px;
+        border-bottom: 1px solid map_get($card-scheme, divider);
+        display: flex;
+        align-items: center;
+        padding-bottom: 2px;
+        position: relative;
+        backface-visibility: hidden;
+    }
+    &__panel-back {
+        position: absolute;
+        top: 0;
+        width: 48px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        border: none;
+        padding-top: 0;
+        padding-bottom: 0;
+        fill: currentColor;
+        transition:
+            background-color .15s,
+            color .15s;
+
+        @include define-button-scheme($btn-muted-scheme);
+        @include direction {
+            #{$inset-inline-start}: 0;
+            #{$padding-inline-start}: 0;
+            #{$padding-inline-end}: 2px;
+        }
+
+        svg {
+            @include direction {
+                transform: scaleX(#{1 * $transform-direction});
+            }
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+    &__panel-arrow {
+        position: absolute;
+    }
+    &__panel-title {
+        text-align: center;
+        margin: auto;
+        font-size: 15px;
+        font-weight: $font-weight-medium;
+    }
+    &__panel-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        backface-visibility: hidden;
+    }
+    &__divider {
+        flex-shrink: 0;
+        height: 1px;
+        background: map_get($card-scheme, divider);
+    }
+    &__spring {
+        flex-grow: 1;
+    }
+    &__indicators {
+        display: flex;
+        padding: 8px (11px + $local-gutter / 2);
+    }
+}
+.mobile-menu__indicator {
+    width: calc((100% - #{$local-gutter} * 3) / 4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    fill: map_get($card-scheme, icon-color);
+    border-radius: 2px;
+    padding: 8px 0 6px;
+
+    &:hover {
+        background: map_get($card-scheme, hover);
+    }
+
+    & + & {
+        @include direction {
+            #{$margin-inline-start}: $local-gutter;
+        }
+    }
+
+    &-title {
+        font-size: 9px;
+        font-weight: $font-weight-medium;
+        text-transform: uppercase;
+        color: map_get($card-scheme, muted);
+        margin-top: 5px;
+    }
+    &-icon {
+        position: relative;
+
+        svg {
+            display: block;
+        }
+    }
+    &-counter {
+        position: absolute;
+        bottom: calc(100% - 7px);
+        color: map_get($mobile-menu-indicator-counter-scheme, opposite);
+        font-size: 10px;
+        line-height: 1;
+        padding: 2px 3px 1px;
+        border-radius: (13px / 2);
+        text-align: center;
+        z-index: 0;
+
+        @include scheme-font-weight($mobile-menu-indicator-counter-scheme, opposite, $font-weight-medium);
+
+        @include direction {
+            #{$inset-inline-start}: calc(100% - 4px);
+        }
+
+        &:before {
+            display: block;
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color: map_get($mobile-menu-indicator-counter-scheme, main);
+            z-index: -1;
+            border-radius: 2.5px;
+
+            @include direction {
+                transform: skewX(#{-11deg * $transform-direction});
+            }
+        }
+    }
+}
+.mobile-menu__links {
+    ul {
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+        font-size: 15px;
+        line-height: 22px;
+        font-weight: $font-weight-medium;
+    }
+    ul > li > a,
+    ul > li > button {
+        position: relative;
+        color: inherit;
+        width: 100%;
+        border: none;
+        background: transparent;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        display: flex;
+        align-items: center;
+        padding-top: 7px;
+        padding-bottom: 7px;
+
+        @include direction {
+            #{$padding-inline-start}: 20px;
+            #{$padding-inline-end}: (16px + 7px + 10px);
+            text-align: $inline-start;
+        }
+
+        &:hover {
+            background: map_get($card-scheme, hover);
+        }
+        &:focus {
+            outline: none;
+        }
+        svg {
+            position: absolute;
+            top: calc(50% - 6px);
+            fill: map_get($card-scheme, arrow-color);
+
+            @include direction {
+                #{$inset-inline-end}: 16px;
+                transform: scaleX($transform-direction);
+            }
+        }
+
+        &.highlight:before {
+            $local-size: 5px;
+
+            position: absolute;
+            display: block;
+            content: '';
+            width: $local-size;
+            height: $local-size;
+            border-radius: ($local-size / 2);
+            background: $mobile-menu-link-highlight-color;
+            top: 15px;
+
+            @include direction {
+                #{$inset-inline-start}: 8px;
+            }
+        }
+    }
+
+    &-image {
+        display: block;
+        width: 22px;
+        height: 16px;
+        border-radius: 1.5px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        @include direction {
+            #{$margin-inline-end}: 9px;
+        }
+
+        img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+    }
+}
+.mobile-menu__contacts {
+    text-align: center;
+    padding: 16px 20px 14px;
+    transition: background .2s;
+
+    &:hover {
+        background: map_get($card-scheme, hover);
+    }
+    &,
+    &:hover {
+        color: inherit;
+    }
+
+    &-subtitle {
+        font-size: 13px;
+        color: map_get($card-scheme, muted);
+    }
+    &-title {
+        font-size: 18px;
+        font-weight: $font-weight-medium;
+    }
+}
+.mobile-menu__settings-list {
+    display: flex;
+}
+.mobile-menu__setting {
+    flex-basis: 0;
+    flex-grow: 1;
+    width: 50%;
+
+    & + & {
+        @include direction {
+            #{$border-inline-start}: 1px solid map_get($card-scheme, divider);
+        }
+    }
+
+    &-button {
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: inherit;
+        color: inherit;
+        position: relative;
+        width: 100%;
+        padding-top: 9px;
+        padding-bottom: 9px;
+
+        @include direction {
+            #{$padding-inline-start}: 14px;
+            #{$padding-inline-end}: (12px + 6px + 8px);
+        }
+
+        &:hover {
+            background: map_get($card-scheme, hover);
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+    &-panel {
+        display: none;
+    }
+    &-icon {
+        display: block;
+        width: 22px;
+        height: 16px;
+        border-radius: 1.5px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        @include direction {
+            #{$margin-inline-end}: 7px;
+        }
+
+        img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        &--currency {
+            background: $mobile-menu-currency-bg-color;
+            color: $mobile-menu-currency-font-color;
+            font-size: 10px;
+            line-height: 16px;
+        }
+    }
+    &-title {
+        font-size: 13px;
+        font-weight: $font-weight-medium;
+        line-height: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @include direction {
+            text-align: $inline-start;
+        }
+    }
+    &-arrow {
+        position: absolute;
+        top: calc(50% - 5px);
+        fill: map_get($card-scheme, arrow-color);
+
+        @include direction {
+            #{$inset-inline-end}: 12px;
+            transform: scaleX($transform-direction);
+        }
+
+        svg {
+            display: block;
+        }
+    }
+}
+
+// *****************************************************
+// Search
+
+$local-height: 36px;
+
+@mixin local-search-button-selector($state) {
+    @if ($state != normal) {
+        .mobile-search__input:#{$state} ~ {
+            @content;
+        }
+    } @else {
+        @content;
+    }
+}
+
+.mobile-search {
+    &__body {
+        display: flex;
+        position: relative;
+        z-index: 0;
+        width: 100%;
+    }
+    &__input,
+    &__button {
+        background: transparent;
+        border: none;
+        font-family: inherit;
+        color: inherit;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    &__input {
+        flex-grow: 1;
+        font-size: 15px;
+    }
+    &__field {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: -1;
+        transition:
+            color .2s,
+            background .2s,
+            border-color .2s;
+    }
+    &__button {
+        width: ($local-height + 2px);
+        flex-shrink: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color .2s;
+        fill: currentColor;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .mobile-search__input {
+        height: $local-height;
+        padding: 0 11px;
+        border-radius: 3px;
+        border-width: 1px;
+        border-style: solid;
+        transition:
+            color .2s,
+            background .2s,
+            border-color .2s;
+
+        @include define-input-scheme($mobile-search-scheme, normal);
+
+        @include direction {
+            #{$padding-inline-start}: 12px - 1px;
+            #{$padding-inline-end}: 38px - 1px;
+        }
+
+        &:hover {
+            @include define-input-scheme($mobile-search-scheme, hover);
+        }
+        &:focus {
+            @include define-input-scheme($mobile-search-scheme, focus);
+        }
+    }
+    .mobile-search__button--close {
+        display: none;
+    }
+    .mobile-search__button--search {
+        position: absolute;
+        top: 0;
+        height: 100%;
+
+        @include direction {
+            #{$inset-inline-end}: 0;
+        }
+    }
+
+    @each $state in (normal, focus, hover) {
+        @include local-search-button-selector($state) {
+            $local-button-scheme: map-get-default-map($mobile-search-scheme, #{$state}-icon-scheme);
+
+            .mobile-search__button--search {
+                color: map_get($local-button-scheme, normal-font-color);
+            }
+            .mobile-search__button--search:hover {
+                color: map_get($local-button-scheme, hover-font-color);
+            }
+        }
+    }
+}
+@include media-breakpoint-down(sm) {
+    .mobile-search__body {
+        height: 100%;
+    }
+    .mobile-search__input {
+        padding-top: 0;
+        padding-bottom: 0;
+        flex-basis: 0;
+        width: 0;
+
+        @include direction {
+            #{$padding-inline-start}: 12px;
+            #{$padding-inline-end}: 0;
+        }
+    }
+    .mobile-search__button {
+        width: 52px;
+    }
+    .mobile-search__button--close {
+        border-width: 0;
+        border-style: solid;
+
+        @include direction {
+            #{$border-inline-start}-width: 1px;
+        }
+    }
+
+    @each $state in (normal, focus, hover) {
+        $input-selector: '';
+
+        @if ($state != normal) {
+            $input-selector: ':' + $state;
+        }
+
+        .mobile-search__input#{$input-selector} {
+            color: map_get($mobile-search-overlay-scheme, #{$state}-font-color);
+
+            &::placeholder {
+                color: map_get($mobile-search-overlay-scheme, #{$state}-placeholder-color);
+            }
+
+            & ~ .mobile-search__field {
+                background: map_get($mobile-search-overlay-scheme, #{$state}-bg-color);
+            }
+
+            & ~ .mobile-search__button--close {
+                border-color: map_get($mobile-search-overlay-scheme, #{$state}-border-color);
+            }
+        }
+
+        @include local-search-button-selector($state) {
+            $local-button-scheme: map-get-default-map($mobile-search-overlay-scheme, #{$state}-icon-scheme);
+
+            .mobile-search__button {
+                color: map_get($local-button-scheme, normal-font-color);
+            }
+            .mobile-search__button:hover {
+                color: map_get($local-button-scheme, hover-font-color);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="section-header__body">
+        <h2 *ngIf="blockTitle" class="section-header__title">{{ blockTitle }}</h2>
+        <div class="section-header__divider"></div>
+    </div>
+
+    <!--TODO: connect with featured products-->
+    <div class="position-relative products-view__list products-list products-list--grid--5"
+         [class.block-products-carousel__carousel--loading]="loading">
+        <!--Loader-->
+        <div class="block-products__loader"></div>
+        <!--Products-->
+        <div class="products-list__content">
+            <app-product-card
+                *ngFor="let product of products"
+                layout="grid"
+                class="products-list__item"
+                [product]="product"
+            ></app-product-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+<div class="modal fade" tabindex="-1" role="dialog" bsModal #modal="bs-modal">
+    <div class="modal-dialog modal-dialog-centered quickview">
+        <div *ngIf="product" class="modal-content">
+            <button type="button" class="quickview__close" (click)="modal.hide()">
+                <app-icon icon="cross-12"></app-icon>
+            </button>
+            <div class="quickview__body" [formGroup]="form">
+                <app-product-gallery
+                    *ngIf="showGallery"
+                    class="quickview__gallery"
+                    layout="quickview"
+                    [images]="(product?.data?.variants[variantIndex]?.images?.length ? product?.data?.variants[variantIndex]?.images : product?.data?.images) || []"
+                ></app-product-gallery>
+
+                <div class="quickview__product">
+                    <div class="quickview__product-name">
+                        {{ product.data?.name }}
+                    </div>
+
+                    <!--Show rating only if it's allowed in settings-->
+                    <!--This will have to be connected to ecomm in the future-->
+                    <div class="quickview__product-rating" *ngIf="appSettings?.rating">
+                        <div class="quickview__product-rating-stars">
+                            <app-rating [value]="product?.data?.rating || 0"></app-rating>
+                        </div>
+                        <div class="quickview__product-rating-title">
+                            {{ 'TEXT_RATING_LABEL' | translate:{rating: product?.data?.rating, reviews: product?.data?.reviews} }}
+                        </div>
+                    </div>
+
+
+                    <div class="quickview__product-meta">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>{{ 'TABLE_SKU' | translate }}</th>
+                                    <td>{{ product?.data?.variants[variantIndex]?.sku || product.data?.sku }}</td>
+                                </tr>
+                                <tr *ngIf="product?.data?.manufacturer?.data?.name">
+                                    <th>{{ 'TABLE_BRAND' | translate }}</th>
+                                    <td>{{ product?.data?.manufacturer.data.name }}</td>
+                                </tr>
+                                <tr *ngIf="product?.data?.variants[variantIndex]?.countryOfOrigin">
+                                    <th>{{ 'TABLE_COUNTRY' | translate }}</th>
+                                    <td>{{ product.data.variants[variantIndex].countryOfOrigin }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ 'TABLE_PART_NUMBER' | translate }}</th>
+                                    <td>{{ product?.data?.variants[variantIndex]?.manufacturerItemCode }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="product.data?.shortDescription || product.data?.description" class="quickview__product-description">
+                        {{ product.data?.shortDescription || product.data?.description }}
+                    </div>
+
+                    <div class="quickview__product-prices-stock">
+                        <div class="quickview__product-prices">
+                            <div class="quickview__product-price quickview__product-price--current">
+                                {{ product?.data?.variants[variantIndex]?.price | currencyFormat }}
+                            </div>
+                        </div>
+                        <app-status-badge
+                            class="quickview__product-stock"
+                            [type]="product?.data?.availability | stockToStatusBadgeType"
+                            [text]="product?.data?.availability | stockToStatusBadgeText | translate"
+                        ></app-status-badge>
+                    </div>
+
+                    <app-product-variants
+                        *ngIf="product?.data?.options?.length > 0"
+                        formControlName="options"
+                        class="quickview__product-form"
+                        [options]="product?.data?.options"
+                        [variants]="product?.data?.variants"
+                    ></app-product-variants>
+
+                    <div class="quickview__product-actions">
+                        <div class="quickview__product-actions-item quickview__product-actions-item--quantity">
+                            <app-input-number formControlName="quantity" [min]="1"></app-input-number>
+                        </div>
+                        <div class="quickview__product-actions-item quickview__product-actions-item--addtocart">
+                            <button
+                                class="btn btn-primary btn-block"
+                                [class.btn-loading]="addToCartInProgress"
+                                [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)"
+                                (click)="addToCart()"
+                            >
+                                {{ 'BUTTON_ADD_TO_CART' | translate }}
+                            </button>
+                        </div>
+                        <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;wishlist">
+                            <button
+                                appAddToWishlist
+                                type="button"
+                                class="btn btn-muted btn-icon"
+                                [class.btn-loading]="addToWishlist.inProgress"
+                                (click)="addToWishlist.add(product, product.data?.variants[variantIndex])"
+                                #addToWishlist="addToWishlist"
+                            >
+                                <app-icon icon="wishlist-16"></app-icon>
+                            </button>
+                        </div>-->
+                        <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;compare">
+                            <button
+                                appAddToCompare
+                                type="button"
+                                class="btn btn-muted btn-icon"
+                                [class.btn-loading]="addToCompare.inProgress"
+                                (click)="addToCompare.add(product, product.data?.variants[variantIndex])"
+                                #addToCompare="addToCompare"
+                            >
+                                <app-icon icon="compare-16"></app-icon>
+                            </button>
+                        </div>-->
+                        <div class="message-text-not-logged" *ngIf="!isLoggedIn">
+                            {{ 'TEXT_YOU_NEED_TO_LOGIN_FOR_PRICE' | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a [routerLink]="url.product(product)" class="quickview__see-details">
+                {{ 'BUTTON_SEE_FULL_DETAILS' | translate }}
+            </a>
+        </div>
+    </div>
+</div>

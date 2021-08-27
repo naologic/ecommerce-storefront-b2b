@@ -1,0 +1,18 @@
+<div class="input-number">
+    <input
+        class="input-number__input form-control"
+        type="number"
+        [class.form-control-sm]="size === 'sm'"
+        [class.form-control-lg]="size === 'lg'"
+        [min]="options.min"
+        [max]="options.max"
+        [value]="value"
+        [disabled]="options.disabled"
+        [readOnly]="options.readonly"
+        (input)="input()"
+        (blur)="onTouched()"
+        #inputElement
+    >
+    <div class="input-number__add" (mousedown)="add()"></div>
+    <div class="input-number__sub" (mousedown)="sub()"></div>
+</div>

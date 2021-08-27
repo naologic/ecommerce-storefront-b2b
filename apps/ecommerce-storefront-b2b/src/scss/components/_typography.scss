@@ -1,0 +1,9 @@
+/*
+// .typography
+*/
+@import '../mixins/typography';
+
+
+.typography {
+    @include make-typography;
+}

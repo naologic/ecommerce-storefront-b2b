@@ -1,0 +1,23 @@
+<div class="addresses-list">
+    <a routerLink="/account/addresses/new" class="addresses-list__item addresses-list__item--new">
+        <div class="addresses-list__plus"></div>
+        <div class="btn btn-secondary btn-sm">{{ 'BUTTON_ADD_NEW' | translate }}</div>
+    </a>
+    <div class="addresses-list__divider"></div>
+
+    <ng-container *ngFor="let address of addresses">
+        <ng-template #footer>
+            <a [routerLink]="url.address(address)">{{ 'LINK_EDIT_ADDRESS' | translate }}</a>&nbsp;&nbsp;
+            <a href="" (click)="$event.preventDefault(); remove(address);">{{ 'LINK_REMOVE' | translate }}</a>
+        </ng-template>
+
+        <app-address-card
+            class="addresses-list__item"
+            [address]="address"
+            [footer]="footer"
+            [loading]="removeInProgress.includes(address.id)"
+        ></app-address-card>
+
+        <div class="addresses-list__divider"></div>
+    </ng-container>
+</div>

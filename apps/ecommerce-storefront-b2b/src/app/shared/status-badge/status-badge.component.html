@@ -1,0 +1,25 @@
+<div class="status-badge" [class.status-badge--style--success]="type === 'success'"
+     [class.status-badge--style--failure]="type === 'failure'"
+     [class.status-badge--style--warning]="type === 'warning'"
+     [class.status-badge--style--unknown]="type === 'unknown'"
+     [class.status-badge--has-text]="!!text"
+     [class.status-badge--has-icon]="!!icon">
+    <div class="status-badge__body">
+        <div *ngIf="icon" class="status-badge__icon">
+            <app-icon
+                [icon]="{
+                    'success': 'fit',
+                    'failure': 'no-fit'
+                }[icon]"
+            ></app-icon>
+        </div>
+        <div *ngIf="text" class="status-badge__text">{{ text }}</div>
+        <div
+            *ngIf="tooltipContent"
+            [tooltip]="tooltipContent"
+            class="status-badge__tooltip"
+            tabindex="0"
+            container="body"
+        ></div>
+    </div>
+</div>

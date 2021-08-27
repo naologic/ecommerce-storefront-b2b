@@ -1,0 +1,61 @@
+<div class="dropcart">
+    <div class="dropcart__empty" *ngIf="!(cart.items$|async)?.length">
+        {{ 'TEXT_YOUR_SHOPPING_CART_IS_EMPTY' | translate }}
+    </div>
+    <ng-container *ngIf="(cart.items$|async)?.length">
+        <ul class="dropcart__list">
+            <ng-container *ngFor="let item of cart.items$|async">
+                <li class="dropcart__item">
+                    <div class="dropcart__item-image image image--type--product">
+                        <a class="image__body" [routerLink]="url.product(item.product)" (click)="closeMenu.emit()">
+                            <img class="image__tag" [src]="item.product | getProductImage:item.variant" alt="">
+                        </a>
+                    </div>
+                    <div class="dropcart__item-info">
+                        <div class="dropcart__item-name">
+                            <a [routerLink]="url.product(item.product)" (click)="closeMenu.emit()">{{ item.product?.data?.name }}</a>
+                        </div>
+                        <div class="dropcart__item-features">Variant: {{ item.variant.variantName }}</div>
+                        <div class="dropcart__item-meta">
+                            <div class="dropcart__item-quantity">{{ item.quantity }}</div>
+                            <div class="dropcart__item-price">{{ item.variant?.price | currencyFormat }}</div>
+                        </div>
+                    </div>
+                    <button
+                        appRemoveFromCart
+                        type="button"
+                        class="dropcart__item-remove"
+                        [class.dropcart__item-remove--loading]="removeFromCart.inProgress"
+                        (click)="removeFromCart.remove(item)"
+                        #removeFromCart="removeFromCart"
+                    >
+                        <app-icon icon="cross-10"></app-icon>
+                    </button>
+                </li>
+                <li class="dropcart__divider" role="presentation"></li>
+            </ng-container>
+        </ul>
+        <div class="dropcart__totals">
+            <table>
+                <tbody>
+                <tr *ngIf="(cart.totals$|async)?.length">
+                    <th>{{ 'TABLE_SUBTOTAL' | translate }}</th>
+                    <td>{{ ((cart.subtotal$|async) || 0) | currencyFormat }}</td>
+                </tr>
+    <!--            <tr *ngFor="let total of cart.totals$|async">-->
+    <!--                <th>{{ 'TABLE_TOTAL_' + total.title|translate }}</th>-->
+    <!--                <td>{{ total.price | currencyFormat  }}</td>-->
+    <!--            </tr>-->
+                <tr>
+                    <th>{{ 'TABLE_TOTAL' | translate }}</th>
+                    <td>{{ ((cart.total$|async) || 0) | currencyFormat }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="dropcart__actions">
+            <a routerLink="/shop/cart" class="btn btn-secondary" (click)="closeMenu.emit()">{{ 'BUTTON_VIEW_CART' | translate }}</a>
+            <a routerLink="/shop/checkout" class="btn btn-primary" (click)="closeMenu.emit()">{{ 'BUTTON_CHECKOUT' | translate }}</a>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,77 @@
+<!--Spacer-->
+<div class="nao-spacer-xs"></div>
+
+<!--Featured product-->
+<div class="container">
+    <div class="home-showcase-primary-product row">
+        <div class="col-lg mb-5 mb-lg-0 align-self-center">
+            <h1 class="showcase-product-name">
+                {{ primaryFeaturedProduct?.data?.name }}
+            </h1>
+            <p class="showcase-product-description">
+                {{ primaryFeaturedProduct?.data?.description }}
+            </p>
+            <div>
+                <button
+                    type="button"
+                    class="btn btn-primary btn-xl"
+                    [routerLink]="url.product(primaryFeaturedProduct)">
+                    {{ 'TEXT_BANNER_ONE_BUTTON' | translate }}
+                </button>
+            </div>
+        </div>
+
+        <div class="col-lg">
+            <div class="d-flex">
+                <img class="ml-lg-auto featured-product-image" [src]="primaryFeaturedProduct?.data.images[0]" [alt]="primaryFeaturedProduct?.data?.name" *ngIf="primaryFeaturedProduct?.data?.images?.length">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--<app-block-slideshow-->
+<!--    [slides]="[-->
+<!--        {-->
+<!--            url: '/shop',-->
+<!--            desktopImage: 'assets/images/slides/slide-3.jpg',-->
+<!--            mobileImage: 'assets/images/slides/slide-3-mobile.jpg',-->
+<!--            title: 'When Buying Parts <br>With Installation',-->
+<!--            details: 'Installation of parts in the services of <br>our partners.',-->
+<!--            buttonLabel: 'Shop Now'-->
+<!--        },-->
+<!--        {-->
+<!--            url: '/shop',-->
+<!--            desktopImage: 'assets/images/slides/slide-2.jpg',-->
+<!--            mobileImage: 'assets/images/slides/slide-2-mobile.jpg',-->
+<!--            title: 'Not enough <br>spare parts?',-->
+<!--            details: 'We have everything you need – replacement parts, <br>performance parts, accessories, oil & fluids, <br>tools and much more...',-->
+<!--            buttonLabel: 'Shop Now'-->
+<!--        },-->
+<!--        {-->
+<!--            url: '/shop',-->
+<!--            desktopImage: 'assets/images/slides/slide-1.jpg',-->
+<!--            mobileImage: 'assets/images/slides/slide-1-mobile.jpg',-->
+<!--            title: 'Big Choice Of <br>Wheel Tires',-->
+<!--            details: 'Any size and diameter, with or without spikes, <br>summer or winter, rain or snow.',-->
+<!--            buttonLabel: 'Shop Now'-->
+<!--        }-->
+<!--    ]"-->
+<!--&gt;</app-block-slideshow>-->
+
+<!--Spacer-->
+<div class="nao-spacer-nl"></div>
+
+<!--Products carousel-->
+<app-featured-products-grid
+    [blockTitle]="'HEADER_FEATURED_PRODUCTS' | translate"
+    [loading]="featuredProducts.loading"
+    [products]="featuredProducts.products || []"
+></app-featured-products-grid>
+
+<!--Spacer-->
+<div class="nao-spacer-lg"></div>
+
+<!--Show features like Free shipping, support 24/7-->
+<app-block-features layout="bottom-strip"></app-block-features>
+

@@ -1,0 +1,58 @@
+<div class="topbar">
+    <!--<div class="topbar__item-text"><a class="topbar__link" routerLink="/site/about-us">{{ 'LINK_ABOUT_US' | translate }}</a></div>-->
+    <!--<div class="topbar__item-text"><a class="topbar__link" routerLink="/site/contact-us-v1">{{ 'LINK_CONTACTS' | translate }}</a></div>-->
+    <!--<div class="topbar__item-text"><a class="topbar__link" routerLink="/">{{ 'LINK_STORE_LOCATION' | translate }}</a></div>-->
+    <!--<div class="topbar__item-text"><a class="topbar__link" routerLink="/blog">{{ 'LINK_BLOG' | translate }}</a></div>-->
+    <div class="topbar__item-spring"></div>
+    <div class="topbar__item-button">
+        <a routerLink="/shop/compare" class="topbar__button">
+            <span class="topbar__button-label">{{ 'TEXT_TOPBAR_COMPARE' | translate }}:</span>
+            <span class="topbar__button-title">{{ compare.count$|async }}</span>
+        </a>
+    </div>
+    <!--<div
+        appDropdown
+        class="topbar__item-button topbar__menu"
+        [class.topbar__menu&#45;&#45;open]="currencyMenu.isOpen"
+        #currencyMenu="appDropdown"
+    >
+        <button class="topbar__button topbar__button&#45;&#45;has-arrow topbar__menu-button" type="button" (click)="currencyMenu.toggle()">
+            <span class="topbar__button-label">{{ 'TEXT_TOPBAR_CURRENCY' | translate }}:</span>
+            <span class="topbar__button-title">{{ currency?.current?.code }}</span>
+            <span class="topbar__button-arrow"><app-icon icon="arrow-down-sm-7x5"></app-icon></span>
+        </button>
+        <div class="topbar__menu-body">
+            <button
+                *ngFor="let item of currency.all"
+                class="topbar__menu-item"
+                type="button"
+                (click)="currency.set(item.code); currencyMenu.close()"
+            >
+                {{ item.symbol + ' ' + item.name }}
+            </button>
+        </div>
+    </div>-->
+    <!--Uncomment this when internationalization review is completed-->
+    <!--<div
+        appDropdown
+        class="topbar__item-button topbar__menu"
+        [class.topbar__menu--open]="languageMenu.isOpen"
+        #languageMenu="appDropdown"
+    >
+        <button class="topbar__button topbar__button--has-arrow topbar__menu-button" type="button" (click)="languageMenu.toggle()">
+            <span class="topbar__button-label">{{ 'TEXT_TOPBAR_LANGUAGE' | translate }}:</span>
+            <span class="topbar__button-title">{{ (language?.current?.code || '')|uppercase }}</span>
+            <span class="topbar__button-arrow"><app-icon icon="arrow-down-sm-7x5"></app-icon></span>
+        </button>
+        <div class="topbar__menu-body">
+            <button
+                *ngFor="let item of language.all"
+                class="topbar__menu-item"
+                type="button"
+                (click)="language.set(item.code); languageMenu.close()"
+            >
+                <img [src]="item.image" [alt]="item.name"><span>{{ item.name }}</span>
+            </button>
+        </div>
+    </div>-->
+</div>

@@ -1,0 +1,21 @@
+<div class="breadcrumb" aria-label='breadcrumb'>
+    <ol class="breadcrumb__list">
+        <li *ngIf="afterHeader" class="breadcrumb__classic-safe-area" role="presentation"></li>
+        <li *ngFor="let item of items; first as isFirst; last as isLast"
+            class="breadcrumb__item"
+            [class.breadcrumb__item--first]="isFirst"
+            [class.breadcrumb__item--last]="isLast"
+            [class.breadcrumb__item--parent]="!isLast"
+            [class.breadcrumb__item--current]="isLast"
+            [attr.aria-current]="isLast ? 'page' : undefined"
+        >
+            <ng-container *ngIf="isLast">
+                <span class="breadcrumb__item-link">{{ item.label }}</span>
+            </ng-container>
+            <ng-container *ngIf="!isLast">
+                <a [routerLink]="item.url" class="breadcrumb__item-link">{{ item.label }}</a>
+            </ng-container>
+        </li>
+        <li *ngIf="withPageTitle" class="breadcrumb__title-safe-area" role="presentation"></li>
+    </ol>
+</div>

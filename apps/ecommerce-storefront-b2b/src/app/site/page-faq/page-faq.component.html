@@ -1,0 +1,39 @@
+<!--Spacer-->
+<div class="nao-spacer-ledge-height"></div>
+
+<div class="block faq">
+    <div class="container container--max--xl">
+        <div class="faq__header">
+            <h1 class="faq__header-title">{{ 'TEXT_FAQ_TITLE' | translate }}</h1>
+        </div>
+
+        <div class="faq__section">
+            <div class="faq__section-body">
+
+                <div class="faq__question" *ngFor="let item of faq">
+                    <h5 class="faq__question-title">{{ item.question }}</h5>
+                    <div class="faq__question-answer">
+                        <div class="typography">
+                            <p>
+                                {{ item.answer }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="faq__footer">
+            <div class="faq__footer-title">{{ 'TEXT_FAQ_FOOTER_TITLE' | translate }}</div>
+            <div class="faq__footer-subtitle">{{ 'TEXT_FAQ_FOOTER_SUBTITLE' | translate }}</div>
+            <ng-container *ngIf="infoSupport?.supportEmailAddress">
+                <a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

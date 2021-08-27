@@ -1,0 +1,40 @@
+<div class="filter-category">
+    <ng-template #parent let-item="item">
+        <ng-container *ngIf="item.parent">
+            <ng-container *ngTemplateOutlet="parent; context: {item: item.parent}"></ng-container>
+        </ng-container>
+        <li class="filter-category__item filter-category__item--parent">
+            <span class="filter-category__arrow">
+                <app-icon icon="arrow-rounded-left-6x9"></app-icon>
+            </span>
+            <a [routerLink]="url.category(item)">{{ item.name }}</a>
+        </li>
+    </ng-template>
+    <ul class="filter-category__list">
+    <li
+        *ngIf="options.value"
+        class="filter-category__item filter-category__item--parent"
+    >
+        <span class="filter-category__arrow">
+            <app-icon icon="arrow-rounded-left-6x9"></app-icon>
+        </span>
+        <a [routerLink]="url.allProducts()">{{ 'LINK_ALL_PRODUCTS' | translate }}</a>
+    </li>
+    <ng-container *ngFor="let item of options.items">
+        <ng-container *ngIf="item.parent">
+            <ng-container *ngTemplateOutlet="parent; context: {item: item.parent}"></ng-container>
+        </ng-container>
+        <li
+            class="filter-category__item"
+            [class.filter-category__item--current]="+options.value === item.id"
+        >
+            <a [routerLink]="url.category(item)">{{ item.name }}</a>
+        </li>
+        <ng-container *ngFor="let child of item.children">
+            <li class="filter-category__item filter-category__item--child">
+                <a [routerLink]="url.category(child)">{{ child.name }}</a>
+            </li>
+        </ng-container>
+    </ng-container>
+</ul>
+</div>

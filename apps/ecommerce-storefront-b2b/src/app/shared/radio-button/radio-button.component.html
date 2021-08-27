@@ -1,0 +1,13 @@
+<span class="input-radio">
+    <span class="input-radio__body">
+        <input
+            class="input-radio__input"
+            type="radio"
+            [checked]="state.checked"
+            [disabled]="state.disabled || disabled"
+            [attr.name]="name"
+            (change)="onChange()"
+        >
+        <span class="input-radio__circle"></span>
+    </span>
+</span>

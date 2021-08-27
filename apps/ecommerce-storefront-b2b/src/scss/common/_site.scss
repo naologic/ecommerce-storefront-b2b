@@ -1,0 +1,23 @@
+/*
+// .site
+*/
+
+
+.site {
+    height: 100%;
+}
+.site__container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.site__header {
+    flex-shrink: 0;
+}
+.site__body {
+    flex-grow: 1;
+}
+.site__footer {
+    flex-shrink: 0;
+}

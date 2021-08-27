@@ -1,0 +1,42 @@
+<div class="card address-card"
+     [class.card--loading]="loading"
+     [class.address-card--featured]="featured">
+
+    <div class="card__loader"></div>
+
+    <div *ngIf="label" class="address-card__badge tag-badge tag-badge--theme">{{ label }}</div>
+
+    <div class="address-card__body">
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_COUNTRY_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.country }}</div>
+        </div>
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_LINE_1_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.line_1 }}</div>
+        </div>
+        <div class="address-card__row" *ngIf="address.line_2">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_LINE_2_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.line_2 }}</div>
+        </div>
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_CITY_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.city }}</div>
+        </div>
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_STATE_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.state }}</div>
+        </div>
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_ZIP_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.zip }}</div>
+        </div>
+        <div class="address-card__row">
+            <div class="address-card__row-title">{{ "ADDRESS_CARD_TYPE_TITLE" | translate }}</div>
+            <div class="address-card__row-content">{{ address.type | titlecase }}</div>
+        </div>
+        <div class="address-card__footer" *ngIf="footer">
+            <ng-container *ngTemplateOutlet="footer"></ng-container>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+<ng-container *ngIf="cart.items.length <= 0">
+    <app-block-header
+        [breadcrumb]="[
+            {label: 'LINK_HOME' | translate, url: url.home()},
+            {label: 'LINK_CART' | translate, url: url.cart()}
+        ]"
+    ></app-block-header>
+
+    <div class="block-empty">
+        <div class="container">
+            <div class="block-empty__body">
+                <h1 class="block-empty__title">{{ 'HEADER_SHOPPING_CART_EMPTY_TITLE' | translate }}</h1>
+                <div
+                    class="block-empty__message"
+                    [innerHTML]="'HEADER_SHOPPING_CART_EMPTY_SUBTITLE' | translate">
+                </div>
+                <div class="block-empty__action">
+                    <a routerLink="/" class="btn btn-primary btn-sm">{{ 'BUTTON_GO_TO_HOMEPAGE' | translate }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="cart.items.length > 0">
+    <app-block-header
+        [pageTitle]="'HEADER_SHOPPING_CART' | translate"
+        [breadcrumb]="[
+            {label: 'LINK_HOME' | translate, url: url.home()},
+            {label: 'LINK_CART' | translate, url: url.cart()}
+        ]"
+    ></app-block-header>
+
+    <div class="block">
+        <div class="container">
+            <div class="cart">
+                <div class="cart__table cart-table">
+                    <table class="cart-table__table">
+                        <thead class="cart-table__head">
+                        <tr class="cart-table__row">
+                            <th class="cart-table__column cart-table__column--image">{{ 'TABLE_IMAGE' | translate }}</th>
+                            <th class="cart-table__column cart-table__column--product">{{ 'TABLE_PRODUCT' | translate }}</th>
+                            <th class="cart-table__column cart-table__column--price">{{ 'TABLE_PRICE' | translate }}</th>
+                            <th class="cart-table__column cart-table__column--quantity">{{ 'TABLE_QUANTITY' | translate }}</th>
+                            <th class="cart-table__column cart-table__column--total">{{ 'TABLE_TOTAL' | translate }}</th>
+                            <th class="cart-table__column cart-table__column--remove"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="cart-table__body">
+                        <tr *ngFor="let item of cart.items; index as i" class="cart-table__row" appRemoveFromCart #removeFromCart="removeFromCart">
+                            <td class="cart-table__column cart-table__column--image">
+                                <div class="image image--type--product">
+                                    <a [routerLink]="url.product(item.product)" class="image__body">
+                                        <img class="image__tag" [src]="item.product | getProductImage: item.variant" alt="">
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="cart-table__column cart-table__column--product">
+                                <a [routerLink]="url.product(item.product)" class="cart-table__product-name">{{ item.product.data?.name }}</a>
+                                <div class="cart-table__options">Variant: {{ item.variant.variantName }}</div>
+                            </td>
+                            <td class="cart-table__column cart-table__column--price" [attr.data-title]="'TABLE_PRICE' | translate">
+                                {{ item.variant.price | currencyFormat }}
+                            </td>
+                            <td class="cart-table__column cart-table__column--quantity" [attr.data-title]="'TABLE_QUANTITY' | translate">
+                                <app-input-number class="cart-table__quantity" [min]="1" [formControl]="quantityControls[i]"></app-input-number>
+                            </td>
+                            <td class="cart-table__column cart-table__column--total" [attr.data-title]="'TABLE_TOTAL' | translate">
+                                {{ item.variant.price * item.quantity | currencyFormat }}
+                            </td>
+                            <td class="cart-table__column cart-table__column--remove">
+                                <button
+                                    type="button"
+                                    class="cart-table__remove btn btn-sm btn-icon btn-muted"
+                                    [class.btn-loading]="removeFromCart.inProgress"
+                                    (click)="removeFromCart.remove(item)"
+                                >
+                                    <app-icon icon="cross-12"></app-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot class="cart-table__foot">
+                        <tr>
+                            <td colspan="6">
+                                <div class="cart-table__actions justify-content-end">
+<!--                                    <form class="cart-table__coupon-form form-row">-->
+<!--                                        <div class="form-group mb-0 col flex-grow-1">-->
+<!--                                            <label for="coupon-code" class="sr-only">{{ 'INPUT_COUPON_CODE_LABEL' | translate }}</label>-->
+<!--                                            <input type="text" class="form-control form-control-sm" id="coupon-code" [placeholder]="'INPUT_COUPON_CODE_PLACEHOLDER' | translate">-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group mb-0 col-auto">-->
+<!--                                            <button type="button" class="btn btn-sm btn-primary">{{ 'BUTTON_APPLY_COUPON' | translate }}</button>-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+                                    <div class="cart-table__update-button">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-primary"
+                                            [class.btn-loading]="updating"
+                                            [disabled]="!needUpdate()"
+                                            (click)="update()"
+                                        >
+                                            {{ 'BUTTON_UPDATE_CART' | translate }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="cart__totals">
+                    <div class="card">
+                        <div class="card-body card-body--padding--2">
+                            <h3 class="card-title">{{ 'HEADER_CART_TOTAL' | translate }}</h3>
+
+                            <table class="cart__totals-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'TABLE_TOTAL' | translate }}</th>
+                                        <td>{{ ((cart.total$|async) || 0) | currencyFormat }}</td>
+                                    </tr>
+                                </thead>
+<!--                                <tbody *ngIf="(cart.totals$|async)?.length">-->
+<!--                                <tr *ngFor="let total of cart.totals$|async">-->
+<!--                                    <th>{{ 'TABLE_TOTAL_' + total.title|translate }}</th>-->
+<!--                                    <td>-->
+<!--                                        {{ total.price | currencyFormat }}-->
+<!--                                        <div *ngIf="total.type === 'shipping'">-->
+<!--                                            <a href="" (click)="$event.preventDefault()">{{ 'LINK_CALCULATE_SHIPPING' | translate }}</a>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                                <tfoot>-->
+<!--                                <tr>-->
+<!--                                    <th>{{ 'TABLE_TOTAL' | translate }}</th>-->
+<!--                                    <td>{{ ((cart.total$|async) || 0) | currencyFormat }}</td>-->
+<!--                                </tr>-->
+<!--                                </tfoot>-->
+                            </table>
+
+                            <a class="btn btn-primary btn-xl btn-block" [routerLink]="url.checkout()">
+                                {{ 'BUTTON_PROCEED_TO_CHECKOUT' | translate }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

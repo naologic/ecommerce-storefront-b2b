@@ -1,0 +1,35 @@
+<!--Spacer-->
+<div class="nao-spacer-after-header"></div>
+
+<div class="block">
+    <div class="container container--max--xl">
+        <div class="row">
+            <div class="col-12 col-lg-3 d-flex">
+                <div class="account-nav flex-grow-1">
+                    <h4 class="account-nav__title">{{ 'HEADER_NAVIGATION' | translate }}</h4>
+                    <ul class="account-nav__list">
+                        <ng-container *ngFor="let item of navigation">
+                            <li
+                                class="account-nav__item"
+                                routerLinkActive="account-nav__item--active"
+                                [routerLinkActiveOptions]="{exact: true}"
+                            >
+                                <a [routerLink]="item.url">{{ item.label }}</a>
+                            </li>
+                        </ng-container>
+                        <li class="account-nav__divider" role="presentation"></li>
+                        <li class="account-nav__item">
+                            <a (click)="logout()">{{ 'LINK_ACCOUNT_LOGOUT' | translate }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-9 mt-4 mt-lg-0">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

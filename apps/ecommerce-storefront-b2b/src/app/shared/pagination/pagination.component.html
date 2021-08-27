@@ -1,0 +1,30 @@
+<ul class="pagination">
+    <li class="page-item" [class.disabled]="current <= 1">
+        <a class="page-link page-link--with-arrow" aria-label="Previous" (click)="setPage(current - 1)">
+            <span class="page-link__arrow page-link__arrow--left" aria-hidden="true">
+                <app-icon icon="arrow-rounded-left-7x11"></app-icon>
+            </span>
+        </a>
+    </li>
+
+    <ng-container *ngFor="let page of pages">
+        <li *ngIf="page !== 0" class="page-item" [class.active]="page === current" aria-current="page">
+            <a *ngIf="page !== current" class="page-link" (click)="setPage(page)">{{ page }}</a>
+            <span *ngIf="page === current" class="page-link">
+                {{ page }}
+                <span class="sr-only">(current)</span>
+            </span>
+        </li>
+        <li *ngIf="page === 0" class="page-item page-item--dots">
+            <div class="pagination__dots"></div>
+        </li>
+    </ng-container>
+
+    <li class="page-item" [class.disabled]="current >= total">
+        <a class="page-link page-link--with-arrow" aria-label="Next" (click)="setPage(current + 1)">
+            <span class="page-link__arrow page-link__arrow--right" aria-hidden="true">
+                <app-icon icon="arrow-rounded-right-7x11"></app-icon>
+            </span>
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,101 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ (addressId ? 'HEADER_EDIT_ADDRESS' : 'HEADER_NEW_ADDRESS')|translate }}</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body card-body--padding--2">
+        <div class="row no-gutters" [formGroup]="formGroup">
+            <div class="col-12 col-lg-10 col-xl-8">
+                <!--Form-->
+                <div class="form-group" >
+                    <label>Address line 1<sup>*</sup></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="line_1"
+                        placeholder="123 Market St"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Address line 2</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="line_2"
+                        placeholder="Apt 903"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>City<sup>*</sup></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="city"
+                        placeholder="San Francisco"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>State<sup>*</sup></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="state"
+                        placeholder="CA"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Zip<sup>*</sup></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="zip"
+                        placeholder="94103"
+                    >
+                </div>
+                <div class="form-group">
+                    <label>Country<sup>*</sup></label>
+                    <select
+                        class="form-control"
+                        formControlName="country"
+                        [class.is-invalid]="formGroup?.controls?.country|isInvalid"
+                    >
+                        <option *ngFor="let country of countries" [value]="country.countryCode">
+                            {{ country.name }}
+                        </option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroup?.controls?.country|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address type<sup>*</sup></label>
+                    <select
+                        class="form-control"
+                        formControlName="type"
+                        [class.is-invalid]="formGroup?.controls?.type|isInvalid"
+                    >
+                        <option value="shipping">Shipping address</option>
+                        <option value="billing">Billing address</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroup?.controls?.type|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group mb-0 pt-3 mt-3">
+                    <button
+                        class="btn btn-primary"
+                        [class.btn-loading]="saveInProgress"
+                        [disabled]="saveInProgress || formGroup.invalid"
+                        (click)="save()"
+                    >{{ 'BUTTON_SAVE' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

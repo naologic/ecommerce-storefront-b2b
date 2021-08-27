@@ -1,0 +1,160 @@
+<!--Spacer-->
+<div class="nao-spacer-after-header"></div>
+
+<!--Register done-->
+<div class="block order-success" *ngIf="registerDone">
+    <div class="container">
+        <div class="order-success__body">
+            <div class="order-success__header">
+                <app-icon class="order-success__icon" icon="check-100"></app-icon>
+                <h1 class="order-success__title">{{ 'THANKS_FOR_SIGNING_UP' | translate }}</h1>
+                <div class="order-success__subtitle">{{ 'MESSAGE_FOR_SIGNING_UP' | translate }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Register form-->
+<div class="block" *ngIf="!registerDone">
+    <div class="container container--max--lg">
+        <div class="row">
+            <div class="col-md-6 d-flex mt-4 mt-md-0 mx-auto">
+                <div class="card flex-grow-1 mb-0 ml-0 ml-lg-3 mr-0 mr-lg-4">
+                    <div class="card-body card-body--padding--2">
+                        <h3 class="card-title">{{ 'HEADER_REGISTER' | translate }}</h3>
+                        <form [formGroup]="formGroup">
+                            <div *ngIf="formGroup.errors?.server" class="alert alert-sm alert-danger">
+                                {{ formGroup.errors?.server|translate }}
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">{{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-email"
+                                    type="email"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.email|isInvalid"
+                                    placeholder="elon@spacex.com"
+                                    formControlName="email"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.email|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                    <div *ngIf="formGroup.controls.email|hasError:'email'">
+                                        {{ 'ERROR_FORM_INCORRECT_EMAIL' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="signup-firstName">{{ 'INPUT_FIRST_NAME_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-firstName"
+                                    type="text"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.firstName|isInvalid"
+                                    placeholder="Elon"
+                                    formControlName="firstName"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.firstName|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="signup-lastName">{{ 'INPUT_LAST_NAME_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-lastName"
+                                    type="text"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.lastName|isInvalid"
+                                    placeholder="Musk"
+                                    formControlName="lastName"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.lastName|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="signup-companyName">{{ 'INPUT_COMPANY_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-companyName"
+                                    type="text"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.companyName|isInvalid"
+                                    placeholder="SpaceX"
+                                    formControlName="companyName"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.companyName|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="signup-password">{{ 'INPUT_PASSWORD_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-password"
+                                    type="password"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.password|isInvalid"
+                                    placeholder="********"
+                                    formControlName="password"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.password|hasError:'passwordNotStrongEnough'">
+                                        {{ 'ERROR_PASSWORD_STRENGTH' | translate }}
+                                    </div>
+                                    <div *ngIf="formGroup.controls.password|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="signup-confirm">{{ 'INPUT_PASSWORD_REPEAT_LABEL' | translate }}</label>
+                                <input
+                                    id="signup-confirm"
+                                    type="password"
+                                    class="form-control"
+                                    [class.is-invalid]="formGroup.controls.confirmPassword|isInvalid"
+                                    placeholder="********"
+                                    formControlName="confirmPassword"
+                                >
+                                <div class="invalid-feedback">
+                                    <div *ngIf="formGroup.controls.confirmPassword|hasError:'required'">
+                                        {{ 'ERROR_FORM_REQUIRED' | translate }}
+                                    </div>
+                                    <div *ngIf="formGroup.controls.confirmPassword|hasError:'mustMatch'">
+                                        {{ 'ERROR_FORM_PASSWORD_DOES_NOT_MATCH' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-0">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary mt-3"
+                                    [class.btn-loading]="registerInProgress"
+                                    (click)="register()"
+                                >
+                                    {{ 'BUTTON_REGISTER' | translate }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

@@ -1,0 +1,28 @@
+<div class="card widget widget-products">
+    <div *ngIf="widgetTitle" class="widget__header">
+        <h4>{{ widgetTitle }}</h4>
+    </div>
+    <div class="widget-products__list">
+    <div *ngFor="let product of products" class="widget-products__item">
+        <div class="widget-products__image">
+            <a [routerLink]="url.product(product)">
+<!--                <img [src]="product|getProductImage" alt="">-->
+            </a>
+        </div>
+        <div class="widget-products__info">
+            <div class="widget-products__name">
+                <a [routerLink]="url.product(product)">{{ product.data?.name }}</a>
+            </div>
+            <!-- <div class="widget-products__prices">
+                <ng-container *ngIf="product.compareAtPrice">
+                    <div class="widget-products__price widget-products__price--new">{{ product.data?.price|currency }}</div>
+                    <div class="widget-products__price widget-products__price--old">{{ product.compareAtPrice|currency }}</div>
+                </ng-container>
+                <ng-container *ngIf="!product.compareAtPrice">
+                    <div class="widget-products__price widget-products__price--current">{{ product.data?.price|currency }}</div>
+                </ng-container>
+            </div> -->
+        </div>
+    </div>
+</div>
+</div>

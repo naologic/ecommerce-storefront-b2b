@@ -1,0 +1,30 @@
+<!--Page header + breadcrumbs-->
+<app-block-header
+    [pageTitle]="pageTitle$ || ''"
+    [breadcrumb]="breadcrumbs || []"
+></app-block-header>
+
+<!--Content-->
+<div class="block-split block-split--has-sidebar">
+    <div class="container">
+        <div class="block-split__row row no-gutters">
+            <!--Sidebar-->
+            <div class="block-split__item block-split__item-sidebar col-auto">
+                <app-shop-sidebar [offcanvas]="offCanvasSidebar"></app-shop-sidebar>
+            </div>
+            <!--Products view-->
+            <div class="block-split__item block-split__item-content col-auto">
+                <div class="block">
+                    <app-products-view
+                        [layout]="layout"
+                        [gridLayout]="gridLayout"
+                        [offCanvasSidebar]="offCanvasSidebar"
+                    ></app-products-view>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

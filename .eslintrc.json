@@ -1,0 +1,47 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {
+        "max-len": 0,
+        "no-empty-function": "off",
+        "no-prototype-builtins": 0,
+        "@typescript-eslint/no-explicit-any": ["off"],
+        "allowEmptyCatch": 0,
+        "@typescript-eslint/no-namespace": "off",
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              { "sourceTag": "*", "onlyDependOnLibsWithTags": ["*"] }
+            ]
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          { "type": "attribute", "prefix": ["customize", "app", "nao", "file"], "style": "camelCase" }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          { "type": "element", "prefix": ["customize", "app", "nao", "file"], "style": "kebab-case" }
+        ],
+        "@angular-eslint/max-len": "off",
+        "experimentalDecorators": "off"
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {
+        "@angular-eslint/max-len": "off",
+        "max-len": "off"
+      }
+    }
+  ]
+}

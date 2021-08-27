@@ -1,0 +1,12 @@
+<div class="mobile-menu__panel" [style.transform]="'translateX(' + level * 100 + '%)'">
+    <div class="mobile-menu__panel-header">
+        <button *ngIf="level > 0" class="mobile-menu__panel-back" type="button" (click)="menu.closeCurrentPanel()">
+            <app-icon icon="arrow-rounded-left-7x11"></app-icon>
+        </button>
+        <div class="mobile-menu__panel-title">{{ label | translate }}</div>
+    </div>
+    <div class="mobile-menu__panel-body">
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <ng-content></ng-content>
+    </div>
+</div>

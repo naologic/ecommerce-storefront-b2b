@@ -1,0 +1,100 @@
+<div class="reviews-view">
+    <div class="reviews-view__list">
+        <!--<app-reviews-list [productId]="productId"></app-reviews-list>-->
+    </div>
+
+    <form class="reviews-view__form">
+        <h3 class="reviews-view__header">{{ 'HEADER_WRITE_REVIEW' | translate }}</h3>
+        <div class="row">
+            <div
+                [formGroup]="form"
+                [ngClass]="{
+                    'col-xxl-8 col-xl-10 col-lg-9 col-12': productPageLayout === 'full',
+                    'col-xxl-12 col-xl-10 col-12': productPageLayout === 'sidebar'
+                }"
+            >
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="review-stars">{{ 'INPUT_RATING_LABEL' | translate }}</label>
+                        <select
+                            id="review-stars"
+                            formControlName="rating"
+                            class="form-control"
+                            [class.is-invalid]="form.controls.rating|isInvalid"
+                        >
+                            <option value="">{{ 'INPUT_RATING_PLACEHOLDER' | translate }}</option>
+                            <option *ngFor="let stars of [5, 4, 3, 2, 1]" [value]="stars">
+                                {{ 'INPUT_RATING_OPTION' | translate:{stars: stars} }}
+                            </option>
+                        </select>
+                        <div class="invalid-feedback">
+                            <div *ngIf="form.controls.rating|hasError:'required'">
+                                {{ 'ERROR_FORM_REQUIRED' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="review-author">{{ 'INPUT_YOUR_NAME_LABEL' | translate }}</label>
+                        <input
+                            type="text"
+                            id="review-author"
+                            formControlName="author"
+                            class="form-control"
+                            [class.is-invalid]="form.controls.author|isInvalid"
+                            [placeholder]="'INPUT_YOUR_NAME_PLACEHOLDER' | translate"
+                        >
+                        <div class="invalid-feedback">
+                            <div *ngIf="form.controls.author|hasError:'required'">
+                                {{ 'ERROR_FORM_REQUIRED' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="review-email">{{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}</label>
+                        <input
+                            type="text"
+                            id="review-email"
+                            formControlName="email"
+                            class="form-control"
+                            [class.is-invalid]="form.controls.email|isInvalid"
+                            [placeholder]="'INPUT_EMAIL_ADDRESS_PLACEHOLDER' | translate"
+                        >
+                        <div class="invalid-feedback">
+                            <div *ngIf="form.controls.email|hasError:'required'">
+                                {{ 'ERROR_FORM_REQUIRED' | translate }}
+                            </div>
+                            <div *ngIf="form.controls.email|hasError:'email'">
+                                {{ 'ERROR_FORM_INCORRECT_EMAIL' | translate }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review-text">{{ 'INPUT_YOUR_REVIEW_LABEL' | translate }}</label>
+                    <textarea
+                        id="review-text"
+                        rows="6"
+                        formControlName="content"
+                        class="form-control"
+                        [class.is-invalid]="form.controls.content|isInvalid"
+                    >{{ 'INPUT_YOUR_REVIEW_PLACEHOLDER' | translate }}</textarea>
+                    <div class="invalid-feedback">
+                        <div *ngIf="form.controls.content|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-0 mt-4">
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [class.btn-loading]="submitInProgress"
+                        (click)="submit()"
+                    >
+                        {{ 'BUTTON_POST_REVIEW' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
