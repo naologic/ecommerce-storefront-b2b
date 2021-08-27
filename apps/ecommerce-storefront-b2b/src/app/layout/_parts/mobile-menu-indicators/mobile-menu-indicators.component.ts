@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../../services/cart.service';
-import { WishlistService } from '../../../services/wishlist.service';
+import { MyListsService } from '../../../services/my-lists.service';
 import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
 
 @Component({
@@ -12,6 +12,6 @@ export class MobileMenuIndicatorsComponent {
     constructor(
         public menu: LayoutMobileMenuService,
         public cart: CartService,
-        public wishlist: WishlistService,
+        public wishlist: MyListsService,
     ) { }
 }

@@ -91,18 +91,41 @@
                                 {{ 'BUTTON_ADD_TO_CART' | translate }}
                             </button>
                         </div>
-                        <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;wishlist">
+
+                        <div appDropdown
+                             class="position-relative quickview__product-actions-item quickview__product-actions-item&#45;&#45;wishlist"
+                             [class.topbar__menu--open]="myListsDropdown.isOpen"
+                             #myListsDropdown="appDropdown">
+
                             <button
                                 appAddToWishlist
                                 type="button"
                                 class="btn btn-muted btn-icon"
-                                [class.btn-loading]="addToWishlist.inProgress"
-                                (click)="addToWishlist.add(product, product.data?.variants[variantIndex])"
+                                [class.product__actions-item&#45;&#45;loading]="addToWishlist.inProgress"
+                                (click)="myListsDropdown.toggle()"
                                 #addToWishlist="addToWishlist"
                             >
                                 <app-icon icon="wishlist-16"></app-icon>
                             </button>
-                        </div>-->
+
+                            <div class="topbar__menu-body">
+                                <button
+                                    *ngFor="let item of addToWishlist.myLists"
+                                    class="topbar__menu-item"
+                                    type="button"
+                                    (click)="addToWishlist.add(item._id, product?._id, product.data?.variants[variantIndex]?.id); myListsDropdown.close()">
+                                    {{ item.data?.name }}
+                                </button>
+                                <!--Empty state-->
+                                <div class="p-3 text-center" *ngIf="!addToWishlist.myLists || addToWishlist.myLists.length === 0">
+                                    {{ 'MY_LISTS_EMPTY_STATE' | translate }}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
                         <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;compare">
                             <button
                                 appAddToCompare

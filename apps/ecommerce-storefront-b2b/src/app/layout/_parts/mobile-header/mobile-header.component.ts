@@ -16,7 +16,7 @@ import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/oper
 import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
 import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
 import { CartService } from '../../../services/cart.service';
-import { WishlistService } from '../../../services/wishlist.service';
+import { MyListsService } from '../../../services/my-lists.service';
 import { ShopService } from '../../../shop/shop.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         private translate: TranslateService,
         public menu: LayoutMobileMenuService,
         public cart: CartService,
-        public wishlist: WishlistService,
+        public wishlist: MyListsService,
         private page: ShopService,
         private router: Router
     ) { }

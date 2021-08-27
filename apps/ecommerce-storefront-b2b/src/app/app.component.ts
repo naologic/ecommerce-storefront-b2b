@@ -8,7 +8,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { LanguageService } from './shared/language/services/language.service';
 import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
-import { WishlistService } from './services/wishlist.service';
+import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private cart: CartService,
         private compare: CompareService,
-        private wishlist: WishlistService,
+        private wishlist: MyListsService,
         private translate: TranslateService,
         private appService: AppService
     ) {

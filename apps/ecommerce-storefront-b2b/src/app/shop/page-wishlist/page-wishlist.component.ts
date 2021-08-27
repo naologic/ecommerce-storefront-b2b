@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NaoSettingsInterface } from "@naologic/nao-interfaces";
-import { WishlistService } from '../../services/wishlist.service';
+import { MyListsService } from '../../services/my-lists.service';
 import { UrlService } from '../../services/url.service';
 import { AppService } from "../../app.service";
 
@@ -13,7 +13,7 @@ export class PageWishlistComponent implements OnInit {
 
 public appSettings: NaoSettingsInterface.Settings;
     constructor(
-        public wishlist: WishlistService,
+        public wishlist: MyListsService,
         public url: UrlService,
         private appService: AppService,
     ) { }

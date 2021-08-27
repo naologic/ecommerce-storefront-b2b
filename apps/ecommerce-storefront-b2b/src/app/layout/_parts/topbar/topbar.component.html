@@ -10,13 +10,13 @@
             <span class="topbar__button-title">{{ compare.count$|async }}</span>
         </a>
     </div>
-    <!--<div
+    <div
         appDropdown
         class="topbar__item-button topbar__menu"
-        [class.topbar__menu&#45;&#45;open]="currencyMenu.isOpen"
+        [class.topbar__menu--open]="currencyMenu.isOpen"
         #currencyMenu="appDropdown"
     >
-        <button class="topbar__button topbar__button&#45;&#45;has-arrow topbar__menu-button" type="button" (click)="currencyMenu.toggle()">
+        <button class="topbar__button topbar__button--has-arrow topbar__menu-button" type="button" (click)="currencyMenu.toggle()">
             <span class="topbar__button-label">{{ 'TEXT_TOPBAR_CURRENCY' | translate }}:</span>
             <span class="topbar__button-title">{{ currency?.current?.code }}</span>
             <span class="topbar__button-arrow"><app-icon icon="arrow-down-sm-7x5"></app-icon></span>
@@ -31,7 +31,7 @@
                 {{ item.symbol + ' ' + item.name }}
             </button>
         </div>
-    </div>-->
+    </div>
     <!--Uncomment this when internationalization review is completed-->
     <!--<div
         appDropdown

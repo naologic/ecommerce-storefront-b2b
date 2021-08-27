@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NaoUserAccessService } from "@naologic/nao-user-access";
-import { WishlistService } from '../../services/wishlist.service';
+import { MyListsService } from '../../services/my-lists.service';
 import { CartService } from '../../services/cart.service';
 import { UrlService } from '../../services/url.service';
 import { AppService } from "../../app.service";
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public userData = null;
 
     constructor(
-        public wishlist: WishlistService,
+        public wishlist: MyListsService,
         public cart: CartService,
         public url: UrlService,
         public appService: AppService,

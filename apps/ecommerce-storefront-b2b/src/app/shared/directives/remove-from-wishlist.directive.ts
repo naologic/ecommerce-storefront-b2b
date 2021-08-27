@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Directive, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { WishlistService } from '../../services/wishlist.service';
+import { MyListsService } from '../../services/my-lists.service';
 import { ProductVariant } from '../../interfaces/product';
 
 @Directive({
@@ -14,7 +14,7 @@ export class RemoveFromWishlistDirective implements OnDestroy {
     public inProgress = false;
 
     constructor(
-        private wishlist: WishlistService,
+        private wishlist: MyListsService,
         private cd: ChangeDetectorRef,
     ) { }
 
