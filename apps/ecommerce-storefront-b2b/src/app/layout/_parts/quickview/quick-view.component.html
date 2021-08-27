@@ -94,7 +94,7 @@
 
                         <div appDropdown
                              class="position-relative quickview__product-actions-item quickview__product-actions-item--my-list"
-                             [class.topbar__menu--open]="myListsDropdown.isOpen"
+                             [class.my-lists__menu--open]="myListsDropdown.isOpen"
                              #myListsDropdown="appDropdown"
                              *ngIf="isLoggedIn">
 
@@ -102,17 +102,17 @@
                                 appAddToMyLists
                                 type="button"
                                 class="btn btn-muted btn-icon"
-                                [class.product__actions-item&#45;&#45;loading]="addToMyLists.inProgress"
+                                [class.product__actions-item--loading]="addToMyLists.inProgress"
                                 (click)="myListsDropdown.toggle()"
                                 #addToMyLists="addToMyLists"
                             >
                                 <app-icon icon="wishlist-16"></app-icon>
                             </button>
 
-                            <div class="topbar__menu-body">
+                            <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
                                 <button
                                     *ngFor="let item of addToMyLists.myLists"
-                                    class="topbar__menu-item"
+                                    class="my-lists__menu-item"
                                     type="button"
                                     (click)="addToMyLists.add(item._id, product?._id, product.data?.variants[variantIndex]?.id); myListsDropdown.close()">
                                     {{ item.data?.name }}

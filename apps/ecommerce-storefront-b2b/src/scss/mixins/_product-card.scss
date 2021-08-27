@@ -326,7 +326,6 @@
     }
     .product-card__actions-list {
         position: absolute;
-        overflow: hidden;
         z-index: 1;
 
         @include direction {
@@ -566,7 +565,6 @@
     }
     .product-card__actions-list {
         position: absolute;
-        overflow: hidden;
         z-index: 1;
 
         @include direction {

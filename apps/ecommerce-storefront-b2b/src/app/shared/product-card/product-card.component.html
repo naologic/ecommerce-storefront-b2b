@@ -36,7 +36,7 @@
 
             <div appDropdown
                  class=""
-                 [class.topbar__menu--open]="myListsDropdown.isOpen"
+                 [class.my-lists__menu--open]="myListsDropdown.isOpen"
                  #myListsDropdown="appDropdown"
                  *ngIf="isLoggedIn">
 
@@ -44,7 +44,7 @@
                     appAddToMyLists
                     type="button"
                     class="product-card__action product-card__action--my-lists"
-                    [class.product__actions-item&#45;&#45;loading]="addToMyLists.inProgress"
+                    [class.product__actions-item--loading]="addToMyLists.inProgress"
                     [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"
                     (click)="myListsDropdown.toggle()"
                     #addToMyLists="addToMyLists"
@@ -52,10 +52,10 @@
                     <app-icon icon="wishlist-16"></app-icon>
                 </button>
 
-                <div class="topbar__menu-body" style='visibility: visible'>
+                <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
                     <button
                         *ngFor="let item of addToMyLists.myLists"
-                        class="topbar__menu-item"
+                        class="my-lists__menu-item"
                         type="button"
                         (click)="addToMyLists.add(item._id, product?._id, product.data?.variants[0]?.id); myListsDropdown.close()">
                         {{ item.data?.name }}

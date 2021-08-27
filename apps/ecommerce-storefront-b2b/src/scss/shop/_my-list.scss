@@ -1,23 +1,20 @@
-/*
-// .my-list
-*/
-@import '../mixins/card';
+// **********************************************
+// MyList and MyLists Pages
 
-
+// **********************************************
+// My List
 $local-row-padding-x: 28px;
-
+$local-gutter: 16px;
 
 .my-list {}
 .my-list__table {
     width: 100%;
     border-spacing: 0;
 }
-// columns
 .my-list__column--head {
     font-size: 13px;
     text-transform: uppercase;
 }
-// product
 .my-list__product-name {
     line-height: 20px;
 
@@ -43,8 +40,6 @@ $local-row-padding-x: 28px;
     }
 }
 
-
-// table state
 @include media-breakpoint-up(md) {
     .my-list {
         @include card;
@@ -154,11 +149,6 @@ $local-row-padding-x: 28px;
         }
     }
 }
-
-
-// grid state
-$local-gutter: 16px;
-
 @include media-breakpoint-down(sm) {
     .my-list__table {
         display: block;
@@ -229,5 +219,63 @@ $local-gutter: 16px;
 @media (max-width: 474px){
     .my-list__row {
         width: calc(100% - #{$local-gutter});
+    }
+}
+
+// **********************************************
+// My Lists
+.my-lists__menu {
+    position: relative;
+
+    &--open {
+        .my-lists__menu-body {
+            visibility: visible;
+            transition-delay: 0s, 0s, 0s;
+            opacity: 1;
+            transform: rotateX(0deg);
+        }
+    }
+
+    &-body {
+        visibility: hidden;
+        transform-origin: top;
+        transform: rotateX(60deg);
+        opacity: 0;
+        transition:
+            transform $local-transition-duration,
+            opacity $local-transition-duration,
+            visibility 0s $local-transition-duration;
+        color: map_get($menu-small-scheme, opposite);
+        background-color: map_get($menu-small-scheme, main);
+        box-shadow: map_get($menu-small-scheme, shadow);
+        position: absolute;
+        width: 150px;
+        padding: .5rem 0;
+        font-size: 14px;
+        line-height: 26px;
+        z-index: 1;
+
+        .my-lists__menu-item {
+            display: block;
+            padding: 3px 1rem;
+            background: transparent;
+            color: map_get($menu-small-scheme, opposite);
+            font-family: inherit;
+            font-weight: inherit;
+            border: none;
+            width: 100%;
+
+            @include direction {
+                text-align: $inline-start;
+            }
+
+            &:focus {
+                outline: none;
+            }
+            &:hover {
+                color: map_get($menu-small-scheme, opposite);
+                background: map_get($menu-small-scheme, hover);
+            }
+        }
     }
 }
