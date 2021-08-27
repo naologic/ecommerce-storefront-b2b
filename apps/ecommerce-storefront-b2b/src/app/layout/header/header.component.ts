@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public userData = null;
 
     constructor(
-        public wishlist: MyListsService,
+        public myLists: MyListsService,
         public cart: CartService,
         public url: UrlService,
         public appService: AppService,

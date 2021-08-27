@@ -3,7 +3,7 @@
   "BUTTON_ADD_NEW": "Add New",
   "BUTTON_ADD_TO_CART": "Add to cart",
   "BUTTON_ADD_TO_COMPARE": "Add to compare",
-  "BUTTON_ADD_TO_WISHLIST": "Add to wishlist",
+  "BUTTON_ADD_TO_MY_LISTS": "Add to my lists",
   "BUTTON_APPLY_COUPON": "Apply Coupon",
   "BUTTON_CHANGE": "Change",
   "BUTTON_CHECKOUT": "Checkout",
@@ -75,9 +75,9 @@
   "HEADER_SHOPPING_CART": "Shopping Cart",
   "HEADER_SHOPPING_CART_EMPTY_SUBTITLE": "You have no products in your shopping cart.<br>Go to the home page to start browsing our store.",
   "HEADER_SHOPPING_CART_EMPTY_TITLE": "Shopping Cart Is Empty",
-  "HEADER_WISHLIST": "Wishlist",
-  "HEADER_WISHLIST_EMPTY_SUBTITLE": "You have no products in your wishlist.<br>Go to the home page to start browsing our store.",
-  "HEADER_WISHLIST_EMPTY_TITLE": "Wishlist Is Empty",
+  "HEADER_MY_LISTS": "My Lists",
+  "HEADER_MY_LISTS_EMPTY_SUBTITLE": "You have no products in your lists.<br>Go to the home page to start browsing our store.",
+  "HEADER_MY_LISTS_EMPTY_TITLE": "My List \"{listId}\" Is Empty",
   "HEADER_WRITE_REVIEW": "Write A Review",
   "HEADER_YOUR_ORDER": "Your Order",
 
@@ -146,7 +146,7 @@
   "LINK_SHOP": "Shop",
   "LINK_SITE_MAP": "Site Map",
   "LINK_STORE_LOCATION": "Store Location",
-  "LINK_WISHLIST": "Wishlist",
+  "LINK_MY_LISTS": "My Lists",
 
   "TABLE_BRAND": "Brand",
   "TABLE_COUNTRY": "Country",
@@ -197,7 +197,7 @@
   "TEXT_KEY_FEATURES": "Key Features",
   "TEXT_MOBILE_INDICATOR_ACCOUNT": "Account",
   "TEXT_MOBILE_INDICATOR_CART": "Cart",
-  "TEXT_MOBILE_INDICATOR_WISHLIST": "Wishlist",
+  "TEXT_MOBILE_INDICATOR_MY_LISTS": "My Lists",
   "TEXT_MOBILE_MENU_PHONE_TITLE": "Free call 24/7",
   "TEXT_NEWSLETTER_MESSAGE": "Enter your email address below to subscribe to our newsletter and keep up to date with discounts and special offers.",
   "TEXT_NO_MATCHING_ITEMS_SUBTITLE": "Try resetting the filters",
@@ -241,8 +241,8 @@
   "TEXT_TOAST_PRODUCT_ADDED_TO_CART": "Product \"{productName}\" added to cart!",
   "TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE": "Product \"{productName}\" added to compare!",
   "TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE": "Product \"{productName}\" was already added to compare!",
-  "TEXT_TOAST_PRODUCT_ADDED_TO_WISHLIST": "Product \"{productName}\" added to wish list!",
-  "TEXT_TOAST_PRODUCT_NOT_ADDED_TO_WISHLIST": "Product \"{productName}\" was already added to the wishlist!",
+  "TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS": "Product \"{productName}\" added to \"{listName}\" list!",
+  "TEXT_TOAST_PRODUCT_NOT_ADDED_TO_MY_LISTS": "Product \"{productName}\" was already added to \"{listName}\" list!",
   "TEXT_TOAST_PROFILE_SAVED": "Your account information was saved successfully.",
   "TEXT_TOAST_REVIEW_ADDED": "Thank you, your review has been published!",
   "TEXT_TOPBAR_COMPARE": "Compare",
@@ -263,5 +263,6 @@
   "VARIANT_SPECIFICATION_DEPTH": "Depth",
   "VARIANT_SPECIFICATION_WEIGHT": "Weight",
   "VARIANT_SPECIFICATION_VOLUME": "Volume",
+
   "MY_LISTS_EMPTY_STATE": "You haven't created a my list yet"
 }

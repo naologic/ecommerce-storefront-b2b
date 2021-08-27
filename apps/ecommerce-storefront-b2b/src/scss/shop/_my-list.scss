@@ -1,5 +1,5 @@
 /*
-// .wishlist
+// .my-list
 */
 @import '../mixins/card';
 
@@ -7,18 +7,18 @@
 $local-row-padding-x: 28px;
 
 
-.wishlist {}
-.wishlist__table {
+.my-list {}
+.my-list__table {
     width: 100%;
     border-spacing: 0;
 }
 // columns
-.wishlist__column--head {
+.my-list__column--head {
     font-size: 13px;
     text-transform: uppercase;
 }
 // product
-.wishlist__product-name {
+.my-list__product-name {
     line-height: 20px;
 
     a {
@@ -29,11 +29,11 @@ $local-row-padding-x: 28px;
         color: $link-color;
     }
 }
-.wishlist__product-rating {
+.my-list__product-rating {
     display: flex;
     margin-top: 6px;
 }
-.wishlist__product-rating-title {
+.my-list__product-rating-title {
     font-size: 13px;
     line-height: 1;
     color: map_get($card-scheme, opposite-alt);
@@ -46,10 +46,10 @@ $local-row-padding-x: 28px;
 
 // table state
 @include media-breakpoint-up(md) {
-    .wishlist {
+    .my-list {
         @include card;
     }
-    .wishlist__column {
+    .my-list__column {
         padding: 14px 16px;
 
         &:first-child {
@@ -65,7 +65,7 @@ $local-row-padding-x: 28px;
     }
 
     // columns
-    .wishlist__column--image {
+    .my-list__column--image {
         text-align: center;
         width: 1px;
 
@@ -73,15 +73,15 @@ $local-row-padding-x: 28px;
             width: 80px;
         }
     }
-    .wishlist__column--body {
+    .my-list__column--body {
         border-top: 1px solid map_get($card-scheme, divider);
     }
-    .wishlist__column--stock {
+    .my-list__column--stock {
         text-align: center;
         width: 1px;
         white-space: nowrap;
     }
-    .wishlist__column--price {
+    .my-list__column--price {
         white-space: nowrap;
         width: 140px;
 
@@ -89,7 +89,7 @@ $local-row-padding-x: 28px;
             text-align: $inline-end;
         }
     }
-    .wishlist__column--button {
+    .my-list__column--button {
         white-space: nowrap;
         width: 200px;
 
@@ -97,7 +97,7 @@ $local-row-padding-x: 28px;
             text-align: $inline-end;
         }
     }
-    .wishlist__column--remove {
+    .my-list__column--remove {
         width: 1px;
         white-space: nowrap;
 
@@ -107,19 +107,19 @@ $local-row-padding-x: 28px;
     }
 
     // remove
-    .wishlist__remove {
+    .my-list__remove {
         @include direction {
             #{$margin-inline-end}: -12px;
         }
     }
 }
 @include media-breakpoint-between(md, lg) {
-    .wishlist__column--button {
+    .my-list__column--button {
         width: 1px;
     }
 }
 @include media-breakpoint-only(md) {
-    .wishlist__column {
+    .my-list__column {
         &:first-child {
             @include direction {
                 #{$padding-inline-start}: 16px;
@@ -132,19 +132,19 @@ $local-row-padding-x: 28px;
         }
     }
 
-    .wishlist__column--product,
-    .wishlist__column--stock,
-    .wishlist__column--price,
-    .wishlist__column--button {
+    .my-list__column--product,
+    .my-list__column--stock,
+    .my-list__column--price,
+    .my-list__column--button {
         @include direction {
             #{$padding-inline-start}: 0;
         }
     }
-    .wishlist__column--price {
+    .my-list__column--price {
         width: 1px;
     }
 
-    .wishlist__remove {
+    .my-list__remove {
         margin-top: 0;
         margin-bottom: 0;
 
@@ -160,25 +160,25 @@ $local-row-padding-x: 28px;
 $local-gutter: 16px;
 
 @include media-breakpoint-down(sm) {
-    .wishlist__table {
+    .my-list__table {
         display: block;
     }
-    .wishlist__head {
+    .my-list__head {
         display: none;
     }
-    .wishlist__body {
+    .my-list__body {
         display: flex;
         flex-wrap: wrap;
         margin: -($local-gutter / 2);
     }
-    .wishlist__row,
-    .wishlist__column {
+    .my-list__row,
+    .my-list__column {
         display: block;
     }
-    .wishlist__column {
+    .my-list__column {
         padding: 0;
     }
-    .wishlist__row {
+    .my-list__row {
         @include card;
 
         position: relative;
@@ -188,16 +188,16 @@ $local-gutter: 16px;
         padding: 16px;
     }
 
-    .wishlist__product-rating {
+    .my-list__product-rating {
         display: flex;
         justify-content: center;
     }
 
-    .wishlist__column--stock {
+    .my-list__column--stock {
         display: flex;
         justify-content: center;
     }
-    .wishlist__column--image {
+    .my-list__column--image {
         padding-bottom: 12px;
 
         .image {
@@ -205,19 +205,19 @@ $local-gutter: 16px;
             margin: 0 auto;
         }
     }
-    .wishlist__column--stock {
+    .my-list__column--stock {
         margin-top: 16px;
         display: none;
     }
-    .wishlist__column--price {
+    .my-list__column--price {
         margin-top: 8px;
         font-weight: $font-weight-medium;
     }
-    .wishlist__column--button {
+    .my-list__column--button {
         padding: 20px 0 12px;
     }
 
-    .wishlist__remove {
+    .my-list__remove {
         position: absolute;
         top: 0;
 
@@ -227,7 +227,7 @@ $local-gutter: 16px;
     }
 }
 @media (max-width: 474px){
-    .wishlist__row {
+    .my-list__row {
         width: calc(100% - #{$local-gutter});
     }
 }

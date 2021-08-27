@@ -4,34 +4,34 @@ import { takeUntil } from 'rxjs/operators';
 import { MyListsService } from '../../services/my-lists.service';
 
 @Directive({
-    selector: '[appAddToWishlist]',
-    exportAs: 'addToWishlist',
+    selector: '[appAddToMyLists]',
+    exportAs: 'addToMyLists',
 })
-export class AddToWishlistDirective implements OnInit, OnDestroy {
+export class AddToMyListsDirective implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
     public inProgress = false;
     public myLists = [];
     public subs = new Subscription();
 
     constructor(
-        private wishlist: MyListsService,
+        private myListsService: MyListsService,
         private cd: ChangeDetectorRef,
     ) { }
 
     public ngOnInit() {
         // -->Subscribe: to my lists changes
         this.subs.add(
-            this.wishlist.myLists.subscribe(value => {
+            this.myListsService.myLists.subscribe(value => {
                 this.myLists = Array.isArray(value) ? value : [];
             })
         )
     }
 
     /**
-     * Add: product to wishlist
+     * Add: product to myLists
      */
     public add(listId: string, productId: string, variantId: string): void {
-        console.log("adding to wishlist directive >>>>", {listId, productId, variantId})
+        console.log("adding to myLists directive >>>>", {listId, productId, variantId})
         // -->Check: product and if add is already in progress
         if (!listId || !productId || !variantId || this.inProgress) {
             return;
@@ -42,8 +42,8 @@ export class AddToWishlistDirective implements OnInit, OnDestroy {
 
         // -->Mark: add action as in progress
         this.inProgress = true;
-        // -->Add: product to wishlist
-        this.wishlist.add(listId, productId, variantId).pipe(takeUntil(this.destroy$)).subscribe({
+        // -->Add: product to myLists
+        this.myListsService.add(listId, productId, variantId).pipe(takeUntil(this.destroy$)).subscribe({
             complete: () => {
                 // -->Mark: add action as completed
                 this.inProgress = false;

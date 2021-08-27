@@ -152,16 +152,16 @@
 .product__actions-item--addtocart {
     margin-top: 20px;
 }
-.product__actions-item--wishlist,
+.product__actions-item--my-lists,
 .product__actions-item--compare {
     position: relative;
     margin-top: 14px;
     margin-bottom: -8px;
     font-size: 13px;
     line-height: 16px;
-    background: map_get($wishlist-button-scheme, normal-bg-color);
-    color: map_get($wishlist-button-scheme, normal-font-color);
-    fill: map_get($wishlist-button-scheme, normal-icon-color);
+    background: map_get($my-lists-button-scheme, normal-bg-color);
+    color: map_get($my-lists-button-scheme, normal-font-color);
+    fill: map_get($my-lists-button-scheme, normal-icon-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,16 +191,16 @@
         outline: none;
     }
     &:hover {
-        background: map_get($wishlist-button-scheme, hover-bg-color);
-        fill: map_get($wishlist-button-scheme, hover-icon-color);
+        background: map_get($my-lists-button-scheme, hover-bg-color);
+        fill: map_get($my-lists-button-scheme, hover-icon-color);
     }
     &:active {
-        background: map_get($wishlist-button-scheme, active-bg-color);
-        fill: map_get($wishlist-button-scheme, active-icon-color);
+        background: map_get($my-lists-button-scheme, active-bg-color);
+        fill: map_get($my-lists-button-scheme, active-icon-color);
     }
 
     &.product__actions-item--loading {
-        background: map_get($wishlist-button-scheme, normal-bg-color);
+        background: map_get($my-lists-button-scheme, normal-bg-color);
         fill: transparent;
         cursor: default;
 

@@ -5,20 +5,20 @@ import { MyListsService } from '../../services/my-lists.service';
 import { ProductVariant } from '../../interfaces/product';
 
 @Directive({
-    selector: '[appRemoveFromWishlist]',
-    exportAs: 'removeFromWishlist',
+    selector: '[appRemoveFromMyLists]',
+    exportAs: 'removeFromMyLists',
 })
-export class RemoveFromWishlistDirective implements OnDestroy {
+export class RemoveFromMyListsDirective implements OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
 
     public inProgress = false;
 
     constructor(
-        private wishlist: MyListsService,
+        private myLists: MyListsService,
         private cd: ChangeDetectorRef,
     ) { }
 
-    public remove(wishlistItem: ProductVariant): void {
+    public remove(myListsItem: ProductVariant): void {
         // -->Check: if remove action is already in progress
         if (this.inProgress) {
             return;
@@ -26,8 +26,8 @@ export class RemoveFromWishlistDirective implements OnDestroy {
 
         // -->Mark: remove actions as in progress
         this.inProgress = true;
-        // -->Remove: product from wishlist
-        this.wishlist.remove(wishlistItem).pipe(takeUntil(this.destroy$)).subscribe({
+        // -->Remove: product from myLists
+        this.myLists.remove(myListsItem).pipe(takeUntil(this.destroy$)).subscribe({
             complete: () => {
                 // -->Mark: remove actions as completed
                 this.inProgress = false;

@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private cart: CartService,
         private compare: CompareService,
-        private wishlist: MyListsService,
+        private myLists: MyListsService,
         private translate: TranslateService,
         private appService: AppService
     ) {
@@ -86,16 +86,16 @@ export class AppComponent implements OnInit, OnDestroy {
             );
         });
 
-        // -->Show: toaster when a variant is added to wishlist
-        this.wishlist.onAdding$.subscribe(variant => {
+        // -->Show: toaster when a variant is added to myLists
+        this.myLists.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_WISHLIST', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS', { productName: variant?.variantName })
             );
         });
-        // -->Show: toaster if a variant was already added to wishlist
-        this.wishlist.onAdded$.subscribe(variant => {
+        // -->Show: toaster if a variant was already added to myLists
+        this.myLists.onAdded$.subscribe(variant => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_WISHLIST', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_MY_LISTS', { productName: variant?.variantName })
             );
         });
     }

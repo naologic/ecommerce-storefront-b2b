@@ -48,7 +48,7 @@ The main children routes registered (using lazy loading) are the following:
         ├── 'products/:productSlug/:productId'              ->  PageProductComponent
         ├── 'cart'                                          ->  PageCartComponent
         ├── 'checkout'                                      ->  PageCheckoutComponent
-        ├── 'wishlist'                                      ->  PageWishlistComponent
+        ├── 'my-list'                                       ->  PageMyListComponent
         └── 'compare'                                       ->  PageCompareComponent
 
 ### Account routes
@@ -210,7 +210,7 @@ This directory contains some services that are being used across different modul
             ├── quickview.service.ts    # QuickviewService keeps track of the product to show on in the quick view. Used in QuickViewComponent and ProductCardComponent
             ├── resources.service.ts    # ResourcesService handles resources load tasks. Used by PhotoSwipeService
             ├── url.service.ts          # UrlService builds URLs (static and with params). Used in every module of the application
-            └── wishlist.service.ts     # WishlistService handles wishlist products operations. Used by LayoutModule, SharedModule and ShopModule
+            └── my-lists.service.ts     # MyListsService handles products operations in user lists. Used by LayoutModule, SharedModule and ShopModule
         └── ...
     └── ...
 
@@ -249,7 +249,7 @@ All of these files are being used by two or more modules within the application.
     └── ...
 
 ### Shop module
-`ShopModule` module handles all the shop logic which includes product listing and filtering, products comparison and the entire checkout process. It also manages user preferences concepts such as wishlist.
+`ShopModule` module handles all the shop logic which includes product listing and filtering, products comparison and the entire checkout process. It also manages user preferences concepts such as user lists.
 
     .
     ├── ...
@@ -261,7 +261,7 @@ All of these files are being used by two or more modules within the application.
             ├── page-product            # PageProduct component (full specification detailed product view)
             ├── page-shop               # PageShop component (main shop component. Displays products according to filters. Multiple layouts supported)
             ├── page-track-order        # PageTrackOrder component
-            └── page-wishlist           # PageWishlist component (displays products on the wishlist) 
+            └── page-my-list            # PageMyList component (displays products on user list) 
         └── ...
     └── ...
 

@@ -9,13 +9,13 @@ import { TranslateModule } from "@ngx-translate/core";
 import { CurrencyModule } from './currency/currency.module';
 import { AddToCartDirective } from './directives/add-to-cart.directive';
 import { AddToCompareDirective } from './directives/add-to-compare.directive';
-import { AddToWishlistDirective } from './directives/add-to-wishlist.directive';
+import { AddToMyListsDirective } from './directives/add-to-my-lists.directive';
 import { DropdownDirective } from './directives/dropdown.directive';
 import { FakeSlidesDirective } from './directives/fake-slides.directive';
 import { OwlPreventClickDirective } from './directives/owl-prevent-click.directive';
 import { RemoveFromCartDirective } from './directives/remove-from-cart.directive';
 import { RemoveFromCompareDirective } from './directives/remove-from-compare.directive';
-import { RemoveFromWishlistDirective } from './directives/remove-from-wishlist.directive';
+import { RemoveFromMyListsDirective } from './directives/remove-from-my-lists.directive';
 import { SplitStringDirective } from './directives/split-string.directive';
 import { ShowIfLoggedInDirective } from "./directives/show-if-logged-in.directive";
 import { CollapseItemDirective } from './directives/collapse-item.directive';
@@ -57,13 +57,13 @@ import { RadioButtonComponent } from './radio-button/radio-button.component';
     declarations: [
         AddToCartDirective,
         AddToCompareDirective,
-        AddToWishlistDirective,
+        AddToMyListsDirective,
         DropdownDirective,
         FakeSlidesDirective,
         OwlPreventClickDirective,
         RemoveFromCartDirective,
         RemoveFromCompareDirective,
-        RemoveFromWishlistDirective,
+        RemoveFromMyListsDirective,
         SplitStringDirective,
         ShowIfLoggedInDirective,
         CollapseItemDirective,
@@ -101,13 +101,13 @@ import { RadioButtonComponent } from './radio-button/radio-button.component';
         CurrencyModule,
         AddToCartDirective,
         AddToCompareDirective,
-        AddToWishlistDirective,
+        AddToMyListsDirective,
         DropdownDirective,
         FakeSlidesDirective,
         OwlPreventClickDirective,
         RemoveFromCartDirective,
         RemoveFromCompareDirective,
-        RemoveFromWishlistDirective,
+        RemoveFromMyListsDirective,
         SplitStringDirective,
         ShowIfLoggedInDirective,
         CollapseItemDirective,

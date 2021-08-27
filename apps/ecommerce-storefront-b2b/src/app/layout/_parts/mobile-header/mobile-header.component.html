@@ -47,14 +47,14 @@
                     <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>
                 </a>
             </div>
-            <div class="mobile-indicator d-none d-md-block">
-                <a routerLink="/shop/wishlist" class="mobile-indicator__button">
+            <div *ngIf='isLoggedIn' class="mobile-indicator d-none d-md-block">
+                <a routerLink="/shop/my-lists" class="mobile-indicator__button">
                     <span class="mobile-indicator__icon">
                         <app-icon icon="heart-20"></app-icon>
                         <span
-                            *ngIf="wishlist.count$|async"
+                            *ngIf="myLists.count$|async"
                             class="mobile-indicator__counter"
-                        >{{ wishlist.count$|async }}</span>
+                        >{{ myLists.count$|async }}</span>
                     </span>
                 </a>
             </div>

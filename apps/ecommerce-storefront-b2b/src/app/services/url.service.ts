@@ -100,4 +100,14 @@ export class UrlService {
     public login(): string {
         return '/account/login';
     }
+
+    /**
+     * Get: my list url
+     */
+    public myList(id: number): string {
+        // todo: update this code and receive a list type as param
+        // todo: check list id
+
+        return `/shop/my-lists/${id}`;
+    }
 }

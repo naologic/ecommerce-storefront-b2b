@@ -18,6 +18,7 @@ import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
 import { CartService } from '../../../services/cart.service';
 import { MyListsService } from '../../../services/my-lists.service';
 import { ShopService } from '../../../shop/shop.service';
+import { NaoUserAccessService } from '@naologic/nao-user-access';
 
 @Component({
     selector: 'app-mobile-header',
@@ -31,6 +32,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     public searchPlaceholder$!: Observable<string>;
     public query$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     public disableSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    public isLoggedIn = false;
 
     @ViewChild('searchForm') searchForm!: ElementRef<HTMLElement>;
     @ViewChild('searchInput') searchInput!: ElementRef<HTMLElement>;
@@ -42,14 +44,20 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         private translate: TranslateService,
         public menu: LayoutMobileMenuService,
         public cart: CartService,
-        public wishlist: MyListsService,
+        public myLists: MyListsService,
         private page: ShopService,
-        private router: Router
+        private router: Router,
+        private naoUsersService: NaoUserAccessService
     ) { }
 
 
     public ngOnInit(): void {
-        this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER')
+        this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER');
+
+        // -->Subscribe: to user LoggedIn state changes
+        this.naoUsersService.isLoggedIn$.subscribe((value) => {
+            this.isLoggedIn = value;
+        });
 
         // -->Subscribe: to searchTerm page option changes
         this.page.optionsChange$.subscribe(() => {

@@ -93,31 +93,32 @@
                         </div>
 
                         <div appDropdown
-                             class="position-relative quickview__product-actions-item quickview__product-actions-item&#45;&#45;wishlist"
+                             class="position-relative quickview__product-actions-item quickview__product-actions-item--my-list"
                              [class.topbar__menu--open]="myListsDropdown.isOpen"
-                             #myListsDropdown="appDropdown">
+                             #myListsDropdown="appDropdown"
+                             *ngIf="isLoggedIn">
 
                             <button
-                                appAddToWishlist
+                                appAddToMyLists
                                 type="button"
                                 class="btn btn-muted btn-icon"
-                                [class.product__actions-item&#45;&#45;loading]="addToWishlist.inProgress"
+                                [class.product__actions-item&#45;&#45;loading]="addToMyLists.inProgress"
                                 (click)="myListsDropdown.toggle()"
-                                #addToWishlist="addToWishlist"
+                                #addToMyLists="addToMyLists"
                             >
                                 <app-icon icon="wishlist-16"></app-icon>
                             </button>
 
                             <div class="topbar__menu-body">
                                 <button
-                                    *ngFor="let item of addToWishlist.myLists"
+                                    *ngFor="let item of addToMyLists.myLists"
                                     class="topbar__menu-item"
                                     type="button"
-                                    (click)="addToWishlist.add(item._id, product?._id, product.data?.variants[variantIndex]?.id); myListsDropdown.close()">
+                                    (click)="addToMyLists.add(item._id, product?._id, product.data?.variants[variantIndex]?.id); myListsDropdown.close()">
                                     {{ item.data?.name }}
                                 </button>
                                 <!--Empty state-->
-                                <div class="p-3 text-center" *ngIf="!addToWishlist.myLists || addToWishlist.myLists.length === 0">
+                                <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
                                     {{ 'MY_LISTS_EMPTY_STATE' | translate }}
                                 </div>
                             </div>

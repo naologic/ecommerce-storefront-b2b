@@ -14,6 +14,7 @@ import { UrlService } from '../../services/url.service';
 import { QuickviewService } from '../../services/quickview.service';
 import { AppService } from "../../app.service";
 import { Product, ProductAttribute } from '../../interfaces/product';
+import { NaoUserAccessService } from '@naologic/nao-user-access';
 
 export type ProductCardElement = 'actions' | 'status-badge' | 'meta' | 'features' | 'buttons' | 'list-buttons';
 
@@ -36,6 +37,7 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
     public appSettings: NaoSettingsInterface.Settings;
     public showingQuickview = false;
     public featuredAttributes: ProductAttribute[] = [];
+    public isLoggedIn = false;
 
     constructor(
         private cd: ChangeDetectorRef,
@@ -43,12 +45,16 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
         public currency: CurrencyService,
         public url: UrlService,
         private appService: AppService,
+        private naoUsersService: NaoUserAccessService,
     ) { }
 
 
     public ngOnInit(): void {
         // -->Set: app settings
         this.appSettings = this.appService.settings.getValue();
+
+        // -->Check: if the user is logged in
+        this.isLoggedIn = this.naoUsersService.isLoggedIn();
 
         // -->Subscribe: to currency changes
         this.currency.changes$.pipe(takeUntil(this.destroy$)).subscribe(() => {

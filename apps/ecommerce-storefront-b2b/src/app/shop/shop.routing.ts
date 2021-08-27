@@ -5,8 +5,9 @@ import { PageShopComponent } from './page-shop/page-shop.component';
 import { PageProductComponent } from './page-product/page-product.component';
 import { PageCartComponent } from './page-cart/page-cart.component';
 import { PageCheckoutComponent } from './page-checkout/page-checkout.component';
-import { PageWishlistComponent } from './page-wishlist/page-wishlist.component';
+import { PageMyListComponent } from './page-my-list/page-my-list.component';
 import { PageCompareComponent } from './page-compare/page-compare.component';
+import { PageMyListsComponent } from './page-my-lists/page-my-lists.component';
 
 
 const routes: Routes = [
@@ -51,8 +52,12 @@ const routes: Routes = [
         canActivate: [NaoUserPermissionsGuard]
     },
     {
-        path: 'wishlist',
-        component: PageWishlistComponent,
+        path: 'my-lists',
+        component: PageMyListsComponent,
+    },
+    {
+        path: 'my-lists/:id',
+        component: PageMyListComponent,
     },
     /*{
         path: 'compare',

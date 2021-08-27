@@ -46,7 +46,7 @@ export class MyListsService implements OnDestroy {
         private translate: TranslateService,
         @Inject(PLATFORM_ID) private platformId: any,
     ) {
-        console.error("constructor wishlist >>>")
+        console.error("constructor my-lists >>>")
         if (isPlatformBrowser(this.platformId)) {
             this.naoUsersService.isLoggedIn$.subscribe(isLoggedIn => {
                 if (isLoggedIn) {
@@ -86,10 +86,10 @@ export class MyListsService implements OnDestroy {
 
 
     /**
-     * Add: product to wishlist
+     * Add: product to my lists
      */
     public add(listId: string, productId: string, variantId: string): Observable<void> {
-        console.log("adding to wishlist >>>>", {listId, productId, variantId})
+        console.log("adding to my lists >>>>", {listId, productId, variantId})
         // -->Check: product and variant
         if (!listId || !productId || !variantId) {
             return;
@@ -105,18 +105,18 @@ export class MyListsService implements OnDestroy {
         // // -->Find: index
         // const index = this.dataItems.findIndex(item => item.product._id === product._id && item.variant.id === variant.id);
         //
-        // // -->Check: if product variant is already on the wishlist
+        // // -->Check: if product variant is already on my lists
         // if (index === -1) {
         //     // -->Emit: variant is being added
         //     this.onAddingSubject$.next(variant);
         //
-        //     // -->Add: wishlist item
+        //     // -->Add: item to my lists
         //     this.dataItems.push({ product, variant });
         //     // -->Save
         //     this.save();
         // }
         // else {
-        //     // -->Emit: variant was already added to wishlist previously
+        //     // -->Emit: variant was already added to my lists previously
         //     this.onAddedSubject$.next(variant);
         // }
 
@@ -125,8 +125,8 @@ export class MyListsService implements OnDestroy {
     }
 
     /**
-     * Add: product to wishlist
-     * todo: delet this
+     * Add: product to my lists
+     * todo: delete this
      */
     public addOld(product: Product, variant: Variant): Observable<void> {
         // -->Check: product and variant
@@ -137,18 +137,18 @@ export class MyListsService implements OnDestroy {
         // -->Find: index
         const index = this.dataItems.findIndex(item => item.product._id === product._id && item.variant.id === variant.id);
 
-        // -->Check: if product variant is already on the wishlist
+        // -->Check: if product variant is already on my lists
         if (index === -1) {
             // -->Emit: variant is being added
             this.onAddingSubject$.next(variant);
 
-            // -->Add: wishlist item
+            // -->Add: item to my lists
             this.dataItems.push({ product, variant });
             // -->Save
             this.save();
         }
         else {
-            // -->Emit: variant was already added to wishlist previously
+            // -->Emit: variant was already added to my lists previously
             this.onAddedSubject$.next(variant);
         }
 
@@ -157,12 +157,12 @@ export class MyListsService implements OnDestroy {
     }
 
     /**
-     * Remove: product from wishlist
+     * Remove: product from my lists
      */
-    public remove(wishlistItem: ProductVariant): Observable<void> { //ProductVariant
-        // -->Check: if product is on the wishlist
+    public remove(myListsItem: ProductVariant): Observable<void> { //ProductVariant
+        // -->Check: if product is on my lists
         const index = this.dataItems.findIndex(item =>
-            item.product._id === wishlistItem.product._id && item.variant.id === wishlistItem.variant.id);
+            item.product._id === myListsItem.product._id && item.variant.id === myListsItem.variant.id);
 
         // -->Remove: product and save
         if (index !== -1) {
@@ -175,7 +175,7 @@ export class MyListsService implements OnDestroy {
     }
 
     /**
-     * Save: wishlist items to local storage
+     * Save: items on my lists to local storage
      */
     private save(): void {
         localStorage.setItem('wishlistItems', JSON.stringify(this.dataItems));
@@ -185,14 +185,14 @@ export class MyListsService implements OnDestroy {
     }
 
     /**
-     * Load: wishlist items from local storage
+     * Load: items from local storage
      */
     private load(): void {
         const items = localStorage.getItem('wishlistItems');
 
         // -->Check: items
         if (items) {
-            // -->Parse: and set wishlist items
+            // -->Parse: and set items
             this.dataItems = JSON.parse(items);
             // -->Emit: items
             this.itemsSubject$.next(this.dataItems);

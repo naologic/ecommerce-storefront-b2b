@@ -9,7 +9,8 @@ import { PageCheckoutComponent } from './page-checkout/page-checkout.component';
 import { PageCompareComponent } from './page-compare/page-compare.component';
 import { PageProductComponent } from './page-product/page-product.component';
 import { PageShopComponent } from './page-shop/page-shop.component';
-import { PageWishlistComponent } from './page-wishlist/page-wishlist.component';
+import { PageMyListComponent } from './page-my-list/page-my-list.component';
+import { PageMyListsComponent } from './page-my-lists/page-my-lists.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { PageWishlistComponent } from './page-wishlist/page-wishlist.component';
         PageCompareComponent,
         PageProductComponent,
         PageShopComponent,
-        PageWishlistComponent,
+        PageMyListComponent,
+        PageMyListsComponent,
     ],
     imports: [
         NgxPayPalModule,
