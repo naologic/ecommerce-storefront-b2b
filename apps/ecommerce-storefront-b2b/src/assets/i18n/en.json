@@ -56,6 +56,7 @@
   "HEADER_CONTACT_US": "Contact Us",
   "HEADER_EDIT_ADDRESS": "Edit Address",
   "HEADER_EDIT_PROFILE": "Edit Profile",
+  "HEADER_EDIT_MY_LIST": "Edit My List",
   "HEADER_FEATURED_PRODUCTS": "Featured Products",
   "HEADER_FILTERS": "Filters",
   "HEADER_INFORMATION": "Information",
@@ -77,7 +78,7 @@
   "HEADER_SHOPPING_CART_EMPTY_TITLE": "Shopping Cart Is Empty",
   "HEADER_MY_LISTS": "My Lists",
   "HEADER_MY_LISTS_EMPTY_SUBTITLE": "You have no products in your lists.<br>Go to the home page to start browsing our store.",
-  "HEADER_MY_LISTS_EMPTY_TITLE": "My List \"{listId}\" Is Empty",
+  "HEADER_MY_LISTS_EMPTY_TITLE": "My List Is Empty",
   "HEADER_WRITE_REVIEW": "Write A Review",
   "HEADER_YOUR_ORDER": "Your Order",
 
@@ -264,5 +265,9 @@
   "VARIANT_SPECIFICATION_WEIGHT": "Weight",
   "VARIANT_SPECIFICATION_VOLUME": "Volume",
 
-  "MY_LISTS_EMPTY_STATE": "You haven't created a my list yet"
+  "MY_LISTS_EMPTY_STATE": "You haven't created a my list yet",
+  "BUTTON_CREATE": "Create",
+  "HEADER_NEW_LIST": "Create List",
+  "BUTTON_EDIT": "Edit",
+  "BUTTON_DELETE": "Delete"
 }
