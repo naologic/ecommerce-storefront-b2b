@@ -102,6 +102,13 @@ export class UrlService {
     }
 
     /**
+     * Get: my lists url
+     */
+    public myLists(): string {
+        return '/shop/my-lists';
+    }
+
+    /**
      * Get: my list url
      */
     public myList(id: string): string {

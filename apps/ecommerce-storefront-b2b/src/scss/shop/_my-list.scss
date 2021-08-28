@@ -279,3 +279,26 @@ $local-gutter: 16px;
         }
     }
 }
+
+.my-lists {
+    margin: $local-gutter;
+
+    &__column {
+        &--button {
+            width: 200px;
+            white-space: nowrap;
+
+            @include direction {
+                text-align: $inline-end;
+            }
+        }
+        &--remove {
+            width: 1px;
+            white-space: nowrap;
+
+            @include direction {
+                #{$padding-inline-start}: 0;
+            }
+        }
+    }
+}

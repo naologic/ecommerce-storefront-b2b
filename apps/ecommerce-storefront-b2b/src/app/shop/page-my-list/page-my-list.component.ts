@@ -13,19 +13,21 @@ import { TranslateService } from '@ngx-translate/core';
     styleUrls: ['./page-my-list.component.scss'],
 })
 export class PageMyListComponent implements OnInit {
-private myListId: number;
+    private myListId: string;
 
-public emptyListHeader: string;
-public myListItems: ProductVariant[] = [];
+    public myListName: string = "List Name"; // todo: get list name from data
+    public emptyListHeader: string;
+    public myListItems: ProductVariant[] = [];
+    public refreshInProgress = true;
 
-public appSettings: NaoSettingsInterface.Settings;
-    constructor(
-        public myListsService: MyListsService,
-        public url: UrlService,
-        private appService: AppService,
-        private route: ActivatedRoute,
-        private translate: TranslateService,
-    ) { }
+    public appSettings: NaoSettingsInterface.Settings;
+        constructor(
+            public myListsService: MyListsService,
+            public url: UrlService,
+            private appService: AppService,
+            private route: ActivatedRoute,
+            private translate: TranslateService,
+        ) { }
 
     public ngOnInit(): void {
         // -->Set: app settings
@@ -49,6 +51,22 @@ public appSettings: NaoSettingsInterface.Settings;
      * Refresh: items on list
      */
     public refresh(): void {
-        // todo: get items for list and update myListItems
+        this.myListsService.get(this.myListId).subscribe((value) => {
+            console.log("myList>>>", value);
+
+            // todo: adapt after knowing more about my-list definition
+            //  Assuming something like { _id: string, name: string, items: ProductVariant[] }
+
+            // -->Check: value
+            if(value) {
+                // -->Set: myListName
+                this.myListName = value.name;
+                // -->Set: myListItems
+                this.myListItems = value.items;
+
+                // -->Done: loading
+                this.refreshInProgress = false;
+            }
+        });
     }
 }

@@ -15,7 +15,7 @@ import { TranslateService } from "@ngx-translate/core";
 export class MyListsService implements OnDestroy {
     private apiRoot: string = 'ecommerce-api';
     private refreshSubs: Subscription;
-    public myLists: BehaviorSubject<any[]> = new BehaviorSubject([]);
+    public myLists: BehaviorSubject<any[]> = new BehaviorSubject(null);
     /**
      * todo: Count should be the total number of my lists or? @Oliver
      */
@@ -64,6 +64,7 @@ export class MyListsService implements OnDestroy {
         // -->Set: query
         const query = {};
 
+
         // -->Execute:
         this.refreshSubs = this.list(query).subscribe(res => {
             console.log("my lists response >>>>", res)
@@ -79,7 +80,17 @@ export class MyListsService implements OnDestroy {
         }, err => {
             // -->Show: toaster
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        })
+        });
+
+        // todo: Remove this. Only added for testing purposes
+        setTimeout(() => {
+            // -->Set: my lists
+            this.myLists.next([
+                { _id: 111, data: { name: "My List 1" } },
+                { _id: 222, data: { name: "My List 2" } },
+                { _id: 333, data: { name: "My List 3" } }
+            ]);
+        }, 5000);
     }
 
 

@@ -54,10 +54,12 @@ const routes: Routes = [
     {
         path: 'my-lists',
         component: PageMyListsComponent,
+        canActivate: [NaoUserPermissionsGuard]
     },
     {
         path: 'my-list/:id',
         component: PageMyListComponent,
+        canActivate: [NaoUserPermissionsGuard]
     },
     /*{
         path: 'compare',

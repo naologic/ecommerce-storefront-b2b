@@ -3,6 +3,8 @@ import { MyListsService } from "../../services/my-lists.service";
 import { UrlService } from "../../services/url.service";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { EditMyListComponent } from "../_parts/edit-my-list/edit-my-list.component";
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: "app-page-my-lists",
@@ -11,19 +13,33 @@ import { EditMyListComponent } from "../_parts/edit-my-list/edit-my-list.compone
 })
 export class PageMyListsComponent implements OnInit {
     public myLists: any[];
+    public refreshInProgress = true;
 
     constructor(
         public myListsService: MyListsService,
         public url: UrlService,
-        private modalService: BsModalService
+        private modalService: BsModalService,
+        private toastr: ToastrService,
+        private translate: TranslateService,
     ) {}
 
     public ngOnInit(): void {
         // -->Subscribe: to My Lists updates
         this.myListsService.myLists.subscribe((value) => {
             console.log("myLists>>>", value);
-            this.myLists = value;
+
+            // -->Check: value
+            if(value) {
+                // -->Set: myLists
+                this.myLists = value;
+
+                // -->Done: loading
+                this.refreshInProgress = false;
+            }
         });
+
+        // -->Refresh
+        this.myListsService.refresh();
     }
 
     /**
@@ -35,8 +51,11 @@ export class PageMyListsComponent implements OnInit {
         // -->Subscribe: to onHide
         modalRef.onHide.subscribe((value) => {
             console.warn("on create my list >>>", value);
-            // todo: add loading only if the value is `done`
-            // todo: stop the loading when myLists refresh is done (add a flag with loading inside)
+            // -->Check: value
+            if(value === 'done'){
+                // -->Start: loading
+                this.refreshInProgress = true;
+            }
 
             // -->Refresh
             this.myListsService.refresh();
@@ -53,8 +72,12 @@ export class PageMyListsComponent implements OnInit {
         // -->Subscribe: to onHide
         modalRef.onHide.subscribe((value) => {
             console.warn("on edit my list >>>", value);
-            // todo: add loading only if the value is `done`
-            // todo: stop the loading when myLists refresh is done (add a flag with loading inside)
+            // -->Check: value
+            if(value === 'done'){
+                // -->Start: loading
+                this.refreshInProgress = true;
+            }
+
             // -->Refresh
             this.myListsService.refresh();
         });
@@ -67,20 +90,21 @@ export class PageMyListsComponent implements OnInit {
      * Delete: a my list
      */
     public onDeleteMyList(docId: string): void {
-        // todo: add loading
-        // todo:
+        // -->Start: loading
+        this.refreshInProgress = true;
+
         this.myListsService.delete(docId).subscribe(res => {
             if (res && res.ok) {
+
                 // -->Refresh
                 this.myListsService.refresh();
-                // -->todo: stop loading when my list service is done
             } else {
-                // todo: show toaster
+                // -->Show: toaster
+                this.toastr.success(this.translate.instant('TEXT_TOAST_PRODUCT_REMOVED_FROM_MY_LISTS'));
             }
         }, err => {
-            // todo: show toaster
             // -->Show: toaster
-            // this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         })
     }
 }
