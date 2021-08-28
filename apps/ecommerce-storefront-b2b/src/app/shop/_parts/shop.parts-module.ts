@@ -15,7 +15,6 @@ import { ArrowComponent } from './arrow/arrow.component';
 import { BlockHeaderComponent } from './block-header/block-header.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { SectionHeaderComponent } from './section-header/section-header.component';
-import { BlockBrandsComponent } from './block-brands/block-brands.component';
 import { BlockProductsCarouselComponent } from './block-products-carousel/block-products-carousel.component';
 import { FilterCategoryComponent } from './filters/filter-category/filter-category.component';
 import { FilterCheckComponent } from './filters/filter-check/filter-check.component';
@@ -40,7 +39,6 @@ import { EditMyListComponent } from './edit-my-list/edit-my-list.component';
         BlockHeaderComponent,
         BreadcrumbComponent,
         SectionHeaderComponent,
-        BlockBrandsComponent,
         BlockProductsCarouselComponent,
         FilterCategoryComponent,
         FilterCheckComponent,
@@ -64,7 +62,6 @@ import { EditMyListComponent } from './edit-my-list/edit-my-list.component';
         BlockHeaderComponent,
         BreadcrumbComponent,
         SectionHeaderComponent,
-        BlockBrandsComponent,
         BlockProductsCarouselComponent,
         EditMyListComponent
     ],

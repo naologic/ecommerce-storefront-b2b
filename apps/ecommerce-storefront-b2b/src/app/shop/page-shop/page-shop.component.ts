@@ -23,6 +23,7 @@ import { FilterHandler } from '../_parts/filters/filter.handler';
 import { filterHandlers } from '../_parts/filters/filter-handlers';
 import { BreadcrumbItem } from '../_parts/breadcrumb/breadcrumb.component';
 import { getBreadcrumbs } from '../../shared/functions/utils';
+import { NaoSettingsInterface } from "../../../../../../libs/nao-interfaces/src";
 
 export type PageShopLayout =
     'grid' |
@@ -60,10 +61,9 @@ export interface PageShopData {
 export class PageShopComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
     private refreshSubs = new Subscription();
-
+    public appSettings: NaoSettingsInterface.Settings = null;
     public layout: PageShopLayout = 'grid';
     public gridLayout: PageShopGridLayout = 'grid-4-sidebar';
-    public sidebarPosition: PageShopSidebarPosition = 'start';
     public pageTitle$!: string;
     public breadcrumbs: BreadcrumbItem[];
 
@@ -85,6 +85,9 @@ export class PageShopComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
+        // -->Set: app settings
+        this.appSettings = this.appService.settings.getValue();
+
         const data$: Observable<PageShopData> = this.route.data as Observable<PageShopData>;
         // -->Set: title
         this.pageTitle$ = this.translate.instant('HEADER_SHOP');
@@ -103,19 +106,13 @@ export class PageShopComponent implements OnInit, OnDestroy {
         // -->Set: page options from query params on landing
         this.setPageOptions();
 
-        // -->Subscribe: to page shop data updates
-        data$.subscribe((data: PageShopData) => {
-            this.layout = data.layout;
-            this.gridLayout = data.gridLayout;
-            this.sidebarPosition = data.sidebarPosition;
-        });
-
         // -->Refresh: page shop on options update
         this.page.optionsChange$.pipe(
             debounceTime(100),
             takeUntil(this.destroy$)
         )
-        .subscribe(() => {
+        .subscribe((value) => {
+            // console.log("this.page.optionsChange$ >>>", value)
             // -->Refresh: products according to options
             this.refresh();
         })
@@ -130,7 +127,8 @@ export class PageShopComponent implements OnInit, OnDestroy {
             debounceTime(100),
             takeUntil(this.destroy$)
         )
-        .subscribe(() => {
+        .subscribe((value) => {
+            // console.log("data$.pipe >>>>", value)
             // -->Clear: price filter
             if (this.page.options.filters?.hasOwnProperty('price')) {
                 // -->Set: filter value. This will trigger the refresh
@@ -203,8 +201,11 @@ export class PageShopComponent implements OnInit, OnDestroy {
                 const filters = [];
                 // -->Push: category filters
                 filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
-                // --->Push: price filter
-                filters.push(buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice));
+                // -->Check: if we show price filter
+                if (this.appSettings.showPriceFilter) {
+                    // --->Push: price filter
+                    filters.push(buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice));
+                }
                 // -->Push: manufacturers filter
                 filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
 

@@ -11,7 +11,7 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import {Router} from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
 import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
@@ -19,6 +19,7 @@ import { CartService } from '../../../services/cart.service';
 import { MyListsService } from '../../../services/my-lists.service';
 import { ShopService } from '../../../shop/shop.service';
 import { NaoUserAccessService } from '@naologic/nao-user-access';
+import { AppService } from "../../../app.service";
 
 @Component({
     selector: 'app-mobile-header',
@@ -27,7 +28,9 @@ import { NaoUserAccessService } from '@naologic/nao-user-access';
 })
 export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$: Subject<void> = new Subject<void>();
+    private subs = new Subscription();
 
+    public generalSettings;
     public searchIsOpen = false;
     public searchPlaceholder$!: Observable<string>;
     public query$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -47,7 +50,8 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         public myLists: MyListsService,
         private page: ShopService,
         private router: Router,
-        private naoUsersService: NaoUserAccessService
+        private naoUsersService: NaoUserAccessService,
+        public appService: AppService,
     ) { }
 
 
@@ -67,6 +71,14 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.disableSearch$.next(true);
             }
         });
+
+        // -->Subscribe: to appInfo changes
+        this.subs.add(
+            this.appService.appInfo.subscribe(value => {
+                // -->Set: generalSettings info
+                this.generalSettings = value?.generalSettings;
+            })
+        );
     }
 
 
@@ -133,6 +145,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     public ngOnDestroy(): void {
+        this.subs.unsubscribe();
         this.destroy$.next();
         this.destroy$.complete();
     }

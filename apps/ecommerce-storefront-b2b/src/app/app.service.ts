@@ -17,6 +17,7 @@ export class AppService implements OnDestroy {
         rating: false,
         freeShipping: false,
         hotOffers: false,
+        showPriceFilter: false
     });
     /**
      * All the info you need
@@ -55,6 +56,8 @@ export class AppService implements OnDestroy {
             if (Array.isArray(info$)) {
                 // -->Set: app info
                 this.appInfo.next(info$);
+                // --.Set: settings
+                this.setSettings(info$)
             }
 
             // -->Fresh: the data
@@ -62,6 +65,8 @@ export class AppService implements OnDestroy {
                 if (info$ && info$.ok) {
                     // -->Set: app info
                     this.appInfo.next(info$.data);
+                    // --.Set: settings
+                    this.setSettings(info$.data)
                 } else {
                     // -->Emit: error
                     this.appInfo.error("The request didn't resolve correctly");
@@ -71,6 +76,27 @@ export class AppService implements OnDestroy {
                 this.appInfo.error(error);
             });
         });
+    }
+
+
+    /**
+     * Set: settings
+     */
+    public setSettings(info$: any): void {
+        const settings = {
+            rating: false,
+            freeShipping: false,
+            hotOffers: false,
+            showPriceFilter: true
+        };
+
+        // -->Check: if has price filter
+        if (info$?.generalSettings?.hasOwnProperty('showPriceFilter')) {
+            settings.showPriceFilter = info$.generalSettings.showPriceFilter;
+        }
+
+        // -->Set:
+        this.settings.next(settings);
     }
 
     public ngOnDestroy(): void {

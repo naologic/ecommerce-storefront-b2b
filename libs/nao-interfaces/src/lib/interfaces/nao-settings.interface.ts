@@ -3,5 +3,6 @@ export namespace NaoSettingsInterface {
         rating: boolean
         freeShipping: boolean
         hotOffers: boolean
+        showPriceFilter: boolean
     }
 }

@@ -41,6 +41,7 @@ import { AvatarIconComponent } from "./avatar-icon/avatar-icon.component";
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SanitizeHtmlPipe } from "./pipes/saniteze-html.pipe";
+import { BlockBrandsComponent } from "./block-brands/block-brands.component";
 
 @NgModule({
     imports: [
@@ -88,7 +89,8 @@ import { SanitizeHtmlPipe } from "./pipes/saniteze-html.pipe";
         AvatarIconComponent,
         CheckboxComponent,
         RadioButtonComponent,
-        SanitizeHtmlPipe
+        SanitizeHtmlPipe,
+        BlockBrandsComponent
     ],
     exports: [
         CommonModule,
@@ -132,7 +134,8 @@ import { SanitizeHtmlPipe } from "./pipes/saniteze-html.pipe";
         AvatarIconComponent,
         CheckboxComponent,
         RadioButtonComponent,
-        SanitizeHtmlPipe
+        SanitizeHtmlPipe,
+        BlockBrandsComponent
     ]
 })
 export class SharedModule { }

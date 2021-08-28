@@ -14,17 +14,16 @@ import { TranslateService } from "@ngx-translate/core";
 export class MyListsService implements OnDestroy {
     private apiRoot: string = 'ecommerce-api';
     private refreshSubs: Subscription;
-    public myLists: BehaviorSubject<any[]> = new BehaviorSubject(null);
+    public myLists: BehaviorSubject<any[]> = new BehaviorSubject([]);
     public readonly count$: BehaviorSubject<number> = new BehaviorSubject(0);
     private destroy$: Subject<void> = new Subject();
+    /**
+     * for triggering toaster events
+     */
     private onAddingSubject$: Subject<MyListToaster> = new Subject();
     private onAddedSubject$: Subject<MyListToaster> = new Subject();
-
     public readonly onAdding$: Observable<MyListToaster> = this.onAddingSubject$.asObservable();
     public readonly onAdded$: Observable<MyListToaster> = this.onAddedSubject$.asObservable();
-
-
-
 
 
     constructor(
@@ -132,7 +131,6 @@ export class MyListsService implements OnDestroy {
         return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/list/${naoQueryOptions.docName}/filter`, { data, naoQueryOptions });
     }
 
-
     /**
      * Get: a single list
      */
@@ -160,7 +158,6 @@ export class MyListsService implements OnDestroy {
     public delete(docId: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
         return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/delete/${naoQueryOptions.docName}/id`, { data: { docId }, naoQueryOptions });
     }
-
 
 
     public ngOnDestroy(): void {
