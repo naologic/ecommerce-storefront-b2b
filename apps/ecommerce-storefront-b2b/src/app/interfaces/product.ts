@@ -139,3 +139,9 @@ export interface ProductVariant {
     product: Product;
     variant: Variant;
 }
+
+export interface MyListToaster {
+    productName: string;
+    variantName: string;
+    listName: string;
+}

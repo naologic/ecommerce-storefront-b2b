@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Directive, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MyListsService } from '../../services/my-lists.service';
+import { Product, Variant } from "../../interfaces/product";
 
 @Directive({
     selector: '[appAddToMyLists]',
@@ -30,20 +31,16 @@ export class AddToMyListsDirective implements OnInit, OnDestroy {
     /**
      * Add: product to myLists
      */
-    public add(listId: string, productId: string, variantId: string): void {
-        console.log("adding to myLists directive >>>>", {listId, productId, variantId})
+    public add(listId: string, product: Product, variant: Variant): void {
         // -->Check: product and if add is already in progress
-        if (!listId || !productId || !variantId || this.inProgress) {
+        if (!listId || !product || !variant || this.inProgress) {
             return;
         }
-
-        // todo: @barbara: check if that product/variant already exists in the selected list
-        //          > if it exists, show the toaster and then return
 
         // -->Mark: add action as in progress
         this.inProgress = true;
         // -->Add: product to myLists
-        this.myListsService.add(listId, productId, variantId).pipe(takeUntil(this.destroy$)).subscribe({
+        this.myListsService.add(listId, product, variant).pipe(takeUntil(this.destroy$)).subscribe({
             complete: () => {
                 // -->Mark: add action as completed
                 this.inProgress = false;

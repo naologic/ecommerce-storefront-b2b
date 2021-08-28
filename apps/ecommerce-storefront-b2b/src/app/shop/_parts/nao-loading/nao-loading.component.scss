@@ -20,6 +20,10 @@
     opacity: 1;
     height: 65vh;
 
+    @include media-breakpoint-down(sm) {
+        height: 80vh;
+    }
+
     &::before {
         box-sizing: border-box;
         content: '';
@@ -40,8 +44,4 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
-    .nao-site-preloader {
-        height: 80vh;
-    }
-}
+

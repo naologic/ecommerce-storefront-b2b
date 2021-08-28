@@ -87,15 +87,15 @@ export class AppComponent implements OnInit, OnDestroy {
         });
 
         // -->Show: toaster when a variant is added to myLists
-        this.myLists.onAdding$.subscribe(variant => {
+        this.myLists.onAdding$.subscribe(value => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS', value)
             );
         });
         // -->Show: toaster if a variant was already added to myLists
-        this.myLists.onAdded$.subscribe(variant => {
+        this.myLists.onAdded$.subscribe(value => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_MY_LISTS', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_MY_LISTS', value)
             );
         });
     }

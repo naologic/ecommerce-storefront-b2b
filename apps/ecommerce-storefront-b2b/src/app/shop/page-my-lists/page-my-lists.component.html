@@ -1,12 +1,20 @@
-<div *ngIf="!refreshInProgress">
-    <ng-container *ngIf="!(myListsService.myLists|async)?.length">
-        <app-block-header
-            [breadcrumb]="[
+<!--Loading-->
+<nao-loading *ngIf="refreshInProgress"></nao-loading>
+
+<!--Content-->
+<div class="page-my-lists-content-wrapper" *ngIf="!refreshInProgress">
+    <app-block-header
+        [breadcrumb]="[
                 {label: 'LINK_HOME' | translate, url: '/'},
                 {label: 'LINK_MY_LISTS' | translate, url: ''}
             ]"
-        ></app-block-header>
+    ></app-block-header>
 
+    <!--Spacer-->
+    <div class="nao-spacer-after-header"></div>
+
+    <!--Empty state-->
+    <ng-container *ngIf="!(myListsService.myLists|async)?.length">
         <div class="block-empty">
             <div class="container">
                 <div class="block-empty__body">
@@ -16,13 +24,14 @@
                         [innerHTML]="'HEADER_MY_LISTS_EMPTY_SUBTITLE' | translate">
                     </div>
                     <div class="block-empty__action">
-                        <a (click)="onCreateMyList()" href="javascript:Void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_CREATE' | translate }}</a>
+                        <a (click)="onCreateMyList()" href="javascript:void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_CREATE' | translate }}</a>
                     </div>
                 </div>
             </div>
         </div>
     </ng-container>
 
+    <!--Content state-->
     <ng-container *ngIf="(myListsService.myLists|async)?.length">
         <div class="card my-lists">
             <div class="card-header">
@@ -36,32 +45,35 @@
             <div class="card-table">
                 <div class="table-responsive-sm">
                     <table>
-                            <thead>
-                                <tr>
-                                    <th>{{ 'TABLE_NAME' | translate }}</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let myListItem of myListsService.myLists|async">
-                                    <td>
-                                        <div>
-                                            <a [routerLink]="url.myList(myListItem._id)">{{ myListItem.data?.name }}</a>
-                                        </div>
-                                    </td>
-                                    <td class="my-list__column--button">
-                                        <a (click)="onEditMyList(myListItem)" href="javascript:Void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_EDIT' | translate }}</a>
-                                    </td>
-                                    <td class="my-list__column--remove">
-                                        <a (click)="onDeleteMyList(myListItem._id)" href="javascript:Void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_DELETE' | translate }}</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <thead>
+                            <tr>
+                                <th>{{ 'TABLE_NAME' | translate }}</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let myListItem of myListsService.myLists|async">
+                                <td>
+                                    <div>
+                                        <a [routerLink]="url.myList(myListItem._id)">{{ myListItem.data?.name }}</a>
+                                    </div>
+                                </td>
+                                <td class="my-list__column--button">
+                                    <a (click)="onEditMyList(myListItem)" href="javascript:Void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_EDIT' | translate }}</a>
+                                </td>
+                                <td class="my-list__column--remove">
+                                    <a (click)="onDeleteMyList(myListItem._id)" href="javascript:Void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_DELETE' | translate }}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </ng-container>
+
+
+    <!--Spacer-->
+    <div class="nao-spacer-before-footer"></div>
 </div>
-<nao-loading *ngIf="refreshInProgress"></nao-loading>

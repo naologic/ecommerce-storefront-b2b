@@ -1,17 +1,22 @@
-<div *ngIf="!refreshInProgress">
-    <ng-container *ngIf="!myListItems?.length">
-        <app-block-header
-            [breadcrumb]="[
+<!--Loading-->
+<nao-loading *ngIf="inProgress"></nao-loading>
+
+<!--Content-->
+<div class="page-my-lists-content-wrapper" *ngIf="!inProgress">
+    <app-block-header
+        [breadcrumb]="[
                 {label: 'LINK_HOME' | translate, url: '/'},
                 {label: 'LINK_MY_LISTS' | translate, url: url.myLists()},
-                {label: myListName, url: ''},
+                {label: data?.name, url: ''},
             ]"
-        ></app-block-header>
+    ></app-block-header>
 
+    <!--Empty state-->
+    <ng-container *ngIf="!data?.products?.length">
         <div class="block-empty">
             <div class="container">
                 <div class="block-empty__body">
-                    <h1 class="block-empty__title">{{ emptyListHeader }}</h1>
+                    <h1 class="block-empty__title">{{ 'HEADER_MY_LISTS_EMPTY_TITLE' | translate }}</h1>
                     <div
                         class="block-empty__message"
                         [innerHTML]="'HEADER_MY_LISTS_EMPTY_SUBTITLE' | translate">
@@ -23,14 +28,12 @@
             </div>
         </div>
     </ng-container>
-    <ng-container *ngIf="myListItems?.length">
-        <app-block-header
-            [pageTitle]="'HEADER_MY_LISTS' | translate"
-            [breadcrumb]="[
-                {label: 'LINK_HOME' | translate, url: '/'},
-                {label: 'LINK_MY_LISTS' | translate, url: ''}
-            ]"
-        ></app-block-header>
+
+    <!--Content state-->
+    <ng-container *ngIf="data?.products?.length">
+
+        <!--Spacer-->
+        <div class="nao-spacer-after-header"></div>
 
         <div class="block">
             <div class="container container--max--xl">
@@ -40,6 +43,7 @@
                             <tr class='my-list__row my-list__row--head'>
                                 <th class='my-list__column my-list__column--head my-list__column--image'>{{ 'TABLE_IMAGE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_PRODUCT' | translate }}</th>
+                                <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_VARIANT' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--stock'>{{ 'TABLE_STOCK_STATUS' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--price'>{{ 'TABLE_PRICE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--button'></th>
@@ -47,17 +51,17 @@
                             </tr>
                         </thead>
                         <tbody class='my-list__body'>
-                            <tr *ngFor="let myListItem of myListItems" class='my-list__row my-list__row--body'>
+                            <tr *ngFor="let item of data.products; let index = index" class='my-list__row my-list__row--body'>
                                 <td class='my-list__column my-list__column--body my-list__column--image'>
                                     <div class="image image--type--product">
-                                        <a [routerLink]="url.product(myListItem?.product)" class="image__body">
-                                            <img class="image__tag" [src]="myListItem?.product | getProductImage:myListItem?.variant" alt="">
+                                        <a [routerLink]="url.product(item.product)" class="image__body">
+                                            <img class="image__tag" [src]="item.product | getProductImage:item.variant" alt="">
                                         </a>
                                     </div>
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--product'>
                                     <div class='my-list__product-name'>
-                                        <a [routerLink]="url.product(myListItem?.product)">{{ myListItem?.variant?.variantName }}</a>
+                                        <a [routerLink]="url.product(item.product)">{{ item.product?.data?.name }}</a>
                                     </div>
                                     <!--This will have to be connected to ecomm in the future-->
                                     <!--Show rating only if it's allowed in settings-->
@@ -70,15 +74,22 @@
                                         </div>
                                     </div> -->
                                 </td>
+                                <td class='my-list__column my-list__column--body my-list__column--product'>
+                                    <div class='my-list__product-name'>
+                                        {{ item.variant?.variantName }}
+                                    </div>
+                                </td>
+
+
                                 <td class='my-list__column my-list__column--body my-list__column--stock'>
                                     <app-status-badge
                                         class="product__stock"
-                                        [type]="myListItem?.product?.data?.availability|stockToStatusBadgeType"
-                                        [text]="myListItem?.product?.data?.availability|stockToStatusBadgeText|translate"
+                                        [type]="item.product?.data?.availability|stockToStatusBadgeType"
+                                        [text]="item.product?.data?.availability|stockToStatusBadgeText|translate"
                                     ></app-status-badge>
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--price'>
-                                    {{ myListItem?.variant?.price | currencyFormat }}
+                                    {{ item.variant?.price | currencyFormat }}
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--button'>
                                     <button
@@ -86,21 +97,18 @@
                                         type="button"
                                         class="btn btn-sm btn-primary"
                                         [class.btn-loading]="addToCart.inProgress"
-                                        (click)="addToCart.add(myListItem?.product, myListItem?.variant)"
+                                        (click)="addToCart.add(item.product, item.variant)"
                                         #addToCart="addToCart"
-                                        [disabled]="!(myListItem?.variant?.price >= 0)"
+                                        [disabled]="!(item.variant?.price >= 0)"
                                     >
                                         {{ 'BUTTON_ADD_TO_CART' | translate }}
                                     </button>
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--remove'>
                                     <button
-                                        appRemoveFromMyLists
                                         type="button"
                                         class='my-list__remove btn btn-sm btn-muted btn-icon'
-                                        [class.btn-loading]="removeFromMyLists.inProgress"
-                                        (click)="removeFromMyLists.remove(myListItem)"
-                                        #removeFromMyLists="removeFromMyLists"
+                                        (click)="remove(index)"
                                     >
                                         <app-icon icon="cross-12"></app-icon>
                                     </button>
@@ -112,8 +120,10 @@
             </div>
         </div>
     </ng-container>
-</div>
-<nao-loading *ngIf="refreshInProgress"></nao-loading>
 
-<!--Spacer-->
-<div class="nao-spacer-before-footer"></div>
+    <!--Spacer-->
+    <div class="nao-spacer-before-footer"></div>
+</div>
+
+
+

@@ -26,13 +26,10 @@ export class PageMyListsComponent implements OnInit {
     public ngOnInit(): void {
         // -->Subscribe: to My Lists updates
         this.myListsService.myLists.subscribe((value) => {
-            console.log("myLists>>>", value);
-
             // -->Check: value
-            if(value) {
+            if (value) {
                 // -->Set: myLists
                 this.myLists = value;
-
                 // -->Done: loading
                 this.refreshInProgress = false;
             }
@@ -47,12 +44,11 @@ export class PageMyListsComponent implements OnInit {
      */
     public onCreateMyList(): void {
         // -->Open: modal
-        const modalRef = this.modalService.show(EditMyListComponent, { class: "modal-lg modal-dialog-centered", })
+        const modalRef = this.modalService.show(EditMyListComponent, { class: "modal-md modal-dialog-centered", })
         // -->Subscribe: to onHide
         modalRef.onHide.subscribe((value) => {
-            console.warn("on create my list >>>", value);
             // -->Check: value
-            if(value === 'done'){
+            if (value === 'done'){
                 // -->Start: loading
                 this.refreshInProgress = true;
             }
@@ -66,14 +62,18 @@ export class PageMyListsComponent implements OnInit {
      * Edit: a my list
      */
     public onEditMyList(list: any): void {
-        console.log("list >>>", list)
+        if (!list._id || !list.data) {
+            return
+        }
         // -->Open: modal
-        const modalRef = this.modalService.show(EditMyListComponent, { class: "modal-lg modal-dialog-centered", })
+        const modalRef = this.modalService.show(EditMyListComponent, { class: "modal-md modal-dialog-centered", })
+        // -->Set: content
+        modalRef.content.docId = list._id;
+        modalRef.content.data = list.data || {};
         // -->Subscribe: to onHide
         modalRef.onHide.subscribe((value) => {
-            console.warn("on edit my list >>>", value);
             // -->Check: value
-            if(value === 'done'){
+            if (value === 'done'){
                 // -->Start: loading
                 this.refreshInProgress = true;
             }
@@ -81,21 +81,20 @@ export class PageMyListsComponent implements OnInit {
             // -->Refresh
             this.myListsService.refresh();
         });
-        // -->Set: content
-        modalRef.content.docId = list._id;
-        modalRef.content.data = list.data || {};
     }
 
     /**
      * Delete: a my list
      */
     public onDeleteMyList(docId: string): void {
+        if (!docId) {
+            return;
+        }
         // -->Start: loading
         this.refreshInProgress = true;
-
+        // -->Execute:
         this.myListsService.delete(docId).subscribe(res => {
             if (res && res.ok) {
-
                 // -->Refresh
                 this.myListsService.refresh();
             } else {

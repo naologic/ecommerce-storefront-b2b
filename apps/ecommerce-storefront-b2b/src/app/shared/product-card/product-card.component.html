@@ -57,7 +57,7 @@
                         *ngFor="let item of addToMyLists.myLists"
                         class="my-lists__menu-item"
                         type="button"
-                        (click)="addToMyLists.add(item._id, product?._id, product.data?.variants[0]?.id); myListsDropdown.close()">
+                        (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
                         {{ item.data?.name }}
                     </button>
                     <!--Empty state-->

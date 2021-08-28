@@ -1,46 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NaoSettingsInterface } from "@naologic/nao-interfaces";
 import { MyListsService } from '../../services/my-lists.service';
 import { UrlService } from '../../services/url.service';
 import { AppService } from "../../app.service";
 import { ActivatedRoute } from '@angular/router';
-import { ProductVariant } from '../../interfaces/product';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from "rxjs";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
     selector: 'app-page-my-list',
     templateUrl: './page-my-list.component.html',
     styleUrls: ['./page-my-list.component.scss'],
 })
-export class PageMyListComponent implements OnInit {
-    private myListId: string;
-
-    public myListName: string = "List Name"; // todo: get list name from data
-    public emptyListHeader: string;
-    public myListItems: ProductVariant[] = [];
-    public refreshInProgress = true;
-
+export class PageMyListComponent implements OnInit, OnDestroy {
+    private refreshSubs: Subscription;
+    public docId: string;
+    public inProgress = true;
+    public data: any = null;
     public appSettings: NaoSettingsInterface.Settings;
-        constructor(
-            public myListsService: MyListsService,
-            public url: UrlService,
-            private appService: AppService,
-            private route: ActivatedRoute,
-            private translate: TranslateService,
-        ) { }
+
+    constructor(
+        public myListsService: MyListsService,
+        public url: UrlService,
+        private appService: AppService,
+        private route: ActivatedRoute,
+        private toastr: ToastrService,
+        private translate: TranslateService,
+    ) { }
 
     public ngOnInit(): void {
         // -->Set: app settings
         this.appSettings = this.appService.settings.getValue();
-
+        // -->subscribe: to params change
         this.route.params.subscribe(params => {
-            console.log(params);
                 // -->Set: my list id
-                this.myListId = params.id;
-
-                // todo: Remove or rework emptyListHeader when this page gets properly connected
-                this.emptyListHeader = this.translate.instant('HEADER_MY_LISTS_EMPTY_TITLE', { listId: this.myListId })
-
+                this.docId = params.id;
                 // -->Get: and refresh items
                 this.refresh();
             }
@@ -51,22 +46,79 @@ export class PageMyListComponent implements OnInit {
      * Refresh: items on list
      */
     public refresh(): void {
-        this.myListsService.get(this.myListId).subscribe((value) => {
-            console.log("myList>>>", value);
+        // -->Check: refresh subscriptions
+        if (this.refreshSubs) {
+            this.refreshSubs.unsubscribe();
+        }
+        // -->Start: loading
+        this.inProgress = true;
 
-            // todo: adapt after knowing more about my-list definition
-            //  Assuming something like { _id: string, name: string, items: ProductVariant[] }
-
-            // -->Check: value
-            if(value) {
-                // -->Set: myListName
-                this.myListName = value.name;
-                // -->Set: myListItems
-                this.myListItems = value.items;
-
-                // -->Done: loading
-                this.refreshInProgress = false;
+        // -->Execute
+        this.myListsService.get(this.docId).subscribe((res) => {
+            if (res && res.data) {
+                // -->Set: data
+                this.data = res.data;
+            } else {
+                // -->Show: toaster
+                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
             }
+            // -->Done: loading
+            this.inProgress = false;
+
+        }, err => {
+            // -->Show: toaster
+            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         });
+    }
+
+    /**
+     * Remove: product
+     */
+    public remove(index: number): void {
+        // -->Check
+        if (this.inProgress || !Array.isArray(this.data.products)) {
+            return;
+        }
+
+        // -->Get: list
+        const list = this.myListsService.myLists?.getValue().find(f => f._id === this.docId);
+        if (!list) {
+            return;
+        }
+
+        // -->Mark: as in progress
+        this.inProgress = true;
+
+        // -->Check: if product exists
+        if (this.data.products[index]) {
+            // -->Remove: product
+            this.data.products.splice(index, 1);
+            list.data.products.splice(index, 1);
+            // -->Save:
+            this.myListsService.update(this.docId, list.data).subscribe(res => {
+                if (res && res.ok) {
+
+                } else {
+                    // -->Show: toaster
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                }
+                // -->Done:
+                this.inProgress = false;
+            }, err => {
+                // -->Done:
+                this.inProgress = false;
+                // -->Show: toaster
+                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+            })
+        }
+    }
+
+    /**
+     * On destroy
+     */
+    public ngOnDestroy(): void {
+        if (this.refreshSubs) {
+            this.refreshSubs.unsubscribe();
+        }
     }
 }

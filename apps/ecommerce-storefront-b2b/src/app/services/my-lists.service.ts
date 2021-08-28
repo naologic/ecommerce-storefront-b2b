@@ -1,8 +1,7 @@
 import { Inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, EMPTY, Observable, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Product, Variant, ProductVariant } from '../interfaces/product';
+import { MyListToaster, Product, Variant } from "../interfaces/product";
 import { NaoDocumentInterface } from "@naologic/nao-interfaces";
 import { NaoHttp2ApiService } from "@naologic/nao-http2";
 import { NaoUserAccessService } from "@naologic/nao-user-access";
@@ -16,20 +15,13 @@ export class MyListsService implements OnDestroy {
     private apiRoot: string = 'ecommerce-api';
     private refreshSubs: Subscription;
     public myLists: BehaviorSubject<any[]> = new BehaviorSubject(null);
-    /**
-     * todo: Count should be the total number of my lists or? @Oliver
-     */
     public readonly count$: BehaviorSubject<number> = new BehaviorSubject(0);
-
-    private dataItems: ProductVariant[] = [];
     private destroy$: Subject<void> = new Subject();
-    private itemsSubject$: BehaviorSubject<ProductVariant[]> = new BehaviorSubject<ProductVariant[]>([]);
-    private onAddingSubject$: Subject<Variant> = new Subject();
-    private onAddedSubject$: Subject<Variant> = new Subject();
+    private onAddingSubject$: Subject<MyListToaster> = new Subject();
+    private onAddedSubject$: Subject<MyListToaster> = new Subject();
 
-    public readonly items$: Observable<ProductVariant[]> = this.itemsSubject$.pipe(takeUntil(this.destroy$));
-    public readonly onAdding$: Observable<Variant> = this.onAddingSubject$.asObservable();
-    public readonly onAdded$: Observable<Variant> = this.onAddedSubject$.asObservable();
+    public readonly onAdding$: Observable<MyListToaster> = this.onAddingSubject$.asObservable();
+    public readonly onAdded$: Observable<MyListToaster> = this.onAddedSubject$.asObservable();
 
 
 
@@ -42,7 +34,6 @@ export class MyListsService implements OnDestroy {
         private translate: TranslateService,
         @Inject(PLATFORM_ID) private platformId: any,
     ) {
-        console.error("constructor my-lists >>>")
         if (isPlatformBrowser(this.platformId)) {
             this.naoUsersService.isLoggedIn$.subscribe(isLoggedIn => {
                 if (isLoggedIn) {
@@ -64,10 +55,8 @@ export class MyListsService implements OnDestroy {
         // -->Set: query
         const query = {};
 
-
         // -->Execute:
         this.refreshSubs = this.list(query).subscribe(res => {
-            console.log("my lists response >>>>", res)
             if (res && Array.isArray(res.data)) {
                 // -->Set: my lists
                 this.myLists.next(res.data || []);
@@ -81,131 +70,58 @@ export class MyListsService implements OnDestroy {
             // -->Show: toaster
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         });
-
-        // todo: Remove this. Only added for testing purposes
-        setTimeout(() => {
-            // -->Set: my lists
-            this.myLists.next([
-                { _id: 111, data: { name: "My List 1" } },
-                { _id: 222, data: { name: "My List 2" } },
-                { _id: 333, data: { name: "My List 3" } }
-            ]);
-        }, 5000);
     }
 
 
     /**
      * Add: product to my lists
      */
-    public add(listId: string, productId: string, variantId: string): Observable<void> {
-        console.log("adding to my lists >>>>", {listId, productId, variantId})
+    public add(listId: string, product: Product, variant: Variant): Observable<void> {
         // -->Check: product and variant
-        if (!listId || !productId || !variantId) {
+        if (!listId || !product || !variant) {
             return;
         }
 
-        // todo: check if it's logegd in
+        // -->Find: list
+        const list = this.myLists.getValue().find(f => f._id === listId);
 
-        // todo: get list
+        if (list.data && Array.isArray(list.data.products)) {
+            // -->Create: toaster message
+            const toasterMessage: MyListToaster = {
+                variantName: variant.variantName,
+                productName: product?.data?.name,
+                listName: list.data.name
+            }
 
-        // todo: update the list
+            // -->Check: if this product + this variant already exists
+            const index = list.data.products.findIndex(item => item.productId === product._id && item.variantId === variant.id)
 
-        //
-        // // -->Find: index
-        // const index = this.dataItems.findIndex(item => item.product._id === product._id && item.variant.id === variant.id);
-        //
-        // // -->Check: if product variant is already on my lists
-        // if (index === -1) {
-        //     // -->Emit: variant is being added
-        //     this.onAddingSubject$.next(variant);
-        //
-        //     // -->Add: item to my lists
-        //     this.dataItems.push({ product, variant });
-        //     // -->Save
-        //     this.save();
-        // }
-        // else {
-        //     // -->Emit: variant was already added to my lists previously
-        //     this.onAddedSubject$.next(variant);
-        // }
-
-        // -->Complete
-        return EMPTY;
-    }
-
-    /**
-     * Add: product to my lists
-     * todo: delete this
-     */
-    public addOld(product: Product, variant: Variant): Observable<void> {
-        // -->Check: product and variant
-        if (!product || !variant) {
-            return;
-        }
-
-        // -->Find: index
-        const index = this.dataItems.findIndex(item => item.product._id === product._id && item.variant.id === variant.id);
-
-        // -->Check: if product variant is already on my lists
-        if (index === -1) {
-            // -->Emit: variant is being added
-            this.onAddingSubject$.next(variant);
-
-            // -->Add: item to my lists
-            this.dataItems.push({ product, variant });
-            // -->Save
-            this.save();
-        }
-        else {
-            // -->Emit: variant was already added to my lists previously
-            this.onAddedSubject$.next(variant);
+            if (index < 0) {
+                // -->Emit: variant is being added
+                this.onAddingSubject$.next(toasterMessage);
+                // -->Push: new product
+                list.data.products.push({ productId: product._id, variantId: variant.id })
+                // -->Save:
+                this.update(listId, list.data).subscribe(res => {
+                    if (res && res.ok) {
+                        // -->Refresh:
+                        this.refresh();
+                    } else {
+                        // -->Show: toaster
+                        this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                    }
+                }, err => {
+                    // -->Show: toaster
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                })
+            } else {
+                // -->Emit: variant was already added to my lists previously
+                this.onAddedSubject$.next(toasterMessage);
+            }
         }
 
         // -->Complete
         return EMPTY;
-    }
-
-    /**
-     * Remove: product from my lists
-     */
-    public remove(myListsItem: ProductVariant): Observable<void> { //ProductVariant
-        // -->Check: if product is on my lists
-        const index = this.dataItems.findIndex(item =>
-            item.product._id === myListsItem.product._id && item.variant.id === myListsItem.variant.id);
-
-        // -->Remove: product and save
-        if (index !== -1) {
-            this.dataItems.splice(index, 1);
-            this.save();
-        }
-
-        // -->Complete
-        return EMPTY;
-    }
-
-    /**
-     * Save: items on my lists to local storage
-     */
-    private save(): void {
-        localStorage.setItem('wishlistItems', JSON.stringify(this.dataItems));
-
-        // -->Emit: items
-        this.itemsSubject$.next(this.dataItems);
-    }
-
-    /**
-     * Load: items from local storage
-     */
-    private load(): void {
-        const items = localStorage.getItem('wishlistItems');
-
-        // -->Check: items
-        if (items) {
-            // -->Parse: and set items
-            this.dataItems = JSON.parse(items);
-            // -->Emit: items
-            this.itemsSubject$.next(this.dataItems);
-        }
     }
 
 

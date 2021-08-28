@@ -281,7 +281,8 @@ $local-gutter: 16px;
 }
 
 .my-lists {
-    margin: $local-gutter;
+    max-width: 800px;
+    margin: 0 auto;
 
     &__column {
         &--button {
@@ -302,3 +303,8 @@ $local-gutter: 16px;
         }
     }
 }
+
+.page-my-lists-content-wrapper {
+    min-height: 65vh;
+}
+

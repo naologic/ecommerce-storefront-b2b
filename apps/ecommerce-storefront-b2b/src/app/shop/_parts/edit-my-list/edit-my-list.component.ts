@@ -28,8 +28,10 @@ export class EditMyListComponent implements OnInit, OnDestroy {
     ) {}
 
     public ngOnInit(): void {
-        // -->Set: formGroup
-        this.formGroup = this.newMyListForm(this.data);
+        setTimeout(() => {
+            // -->Set: formGroup
+            this.formGroup = this.newMyListForm(this.data);
+        })
     }
 
     /**
