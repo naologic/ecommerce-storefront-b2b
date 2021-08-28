@@ -72,14 +72,19 @@
 <!--Spacer-->
 <div class="nao-spacer-lg"></div>
 
-<ng-container *ngIf="generalSettings?.partnersLogos?.length">
+<div class="container" *ngIf="generalSettings?.partnersLogos?.length">
+    <div class="section-header__body">
+        <h2 class="section-header__title">{{ 'HEADER_PARTNERS' | translate }}</h2>
+        <div class="section-header__divider"></div>
+    </div>
+
     <!--Partners logos-->
     <app-block-brands [partners]="generalSettings?.partnersLogos"></app-block-brands>
 
     <!--Spacer-->
     <div class="nao-spacer-lg"></div>
 
-</ng-container>
+</div>
 
 <!--Show features like Free shipping, support 24/7-->
 <app-block-features layout="bottom-strip"></app-block-features>
