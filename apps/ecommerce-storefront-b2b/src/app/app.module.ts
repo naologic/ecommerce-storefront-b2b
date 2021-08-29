@@ -26,6 +26,7 @@ import { AppComponent } from './app.component';
 import { RootComponent } from './layout/root/root.component';
 import { PageNotFoundComponent } from './default-pages/page-not-found/page-not-found.component';
 import { PageServerErrorComponent } from './default-pages/page-server-error/page-server-error.component';
+import { BrowserJsonLdModule } from "./shared/seo-helper/json-ld.module";
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PageServerErrorComponent } from './default-pages/page-server-error/page
         PageServerErrorComponent
     ],
     imports: [
+        BrowserJsonLdModule,
         BrowserModule.withServerTransition({ appId: 'serverApp' }),
         ModalModule.forRoot(),
         ToastrModule.forRoot({

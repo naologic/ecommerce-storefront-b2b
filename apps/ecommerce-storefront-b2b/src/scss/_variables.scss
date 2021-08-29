@@ -67,7 +67,7 @@
 //   - .product-gallery
 //   - .product-tabs
 //   - .product-card__addtocart-icon
-//   - .product-card__wishlist, .product-card__compare, .product__actions-item--wishlist, .product__actions-item--compare
+//   - .product-card__my-lists, .product-card__compare, .product__actions-item--my-lists, .product__actions-item--compare
 //   - .category-card
 //   - .quickview
 //   - .product-variants
@@ -1032,10 +1032,10 @@
       ), $addtocart-button-scheme);
 
    // ----------------------------------------
-   // -- .product-card__wishlist, .product-card__compare, .product__actions-item--wishlist, .product__actions-item--compare
+   // -- .product-card__my-lists, .product-card__compare, .product__actions-item--my-lists, .product__actions-item--compare
    // ----------------------------------------
-      $wishlist-button-scheme: () !default;
-      $wishlist-button-scheme: map_merge((
+      $my-lists-button-scheme: () !default;
+      $my-list-button-scheme: map_merge((
          // normal
          normal-bg-color:   transparent,
          normal-font-color: map_get($light-scheme, opposite),
@@ -1046,7 +1046,7 @@
          // active
          active-bg-color:   #f0f0f0,
          active-icon-color: #b3b3b3,
-      ), $wishlist-button-scheme);
+      ), $my-lists-button-scheme);
 
    // ----------------------------------------
    // -- .category-card

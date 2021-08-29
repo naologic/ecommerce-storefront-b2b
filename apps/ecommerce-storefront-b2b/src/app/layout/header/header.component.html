@@ -23,11 +23,12 @@
         <app-search></app-search>
     </div>
     <div class="header__indicators">
-        <!--<app-indicator
-            link="/shop/wishlist"
+        <app-indicator
+            *ngIf='userData'
+            link="/shop/my-lists"
             icon="heart-32"
-            [counter]="(wishlist.count$|async) || 0"
-        ></app-indicator>-->
+            [counter]="(myLists.count$|async) || 0"
+        ></app-indicator>
         <app-indicator
             link="/account"
             icon="person-32"

@@ -1,0 +1,31 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ (docId ? 'HEADER_EDIT_MY_LIST' : 'HEADER_NEW_LIST') | translate:{ name: data?.name } }}</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body card-body--padding--2">
+        <div class="row no-gutters" [formGroup]="formGroup">
+            <div class="col-12">
+                <!--Form-->
+                <div class="form-group" >
+                    <label>Name<sup>*</sup></label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        formControlName="name"
+                        placeholder="My new list"
+                    >
+                </div>
+
+                <div class="form-group mb-0 pt-3 mt-3">
+                    <button
+                        class="btn btn-primary"
+                        [class.btn-loading]="saveInProgress"
+                        [disabled]="saveInProgress || formGroup.invalid || formGroup.pristine"
+                        (click)="save()"
+                    >{{ (docId ? 'BUTTON_SAVE':  'BUTTON_CREATE') | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

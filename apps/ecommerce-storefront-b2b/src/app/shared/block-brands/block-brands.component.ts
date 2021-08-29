@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Brand } from '../../../interfaces/brand';
 
 export type BlockBrandsLayout = 'columns-8-full' | 'columns-7-sidebar';
 
@@ -9,8 +8,8 @@ export type BlockBrandsLayout = 'columns-8-full' | 'columns-7-sidebar';
     styleUrls: ['./block-brands.component.scss'],
 })
 export class BlockBrandsComponent {
-    @Input() public layout: BlockBrandsLayout = 'columns-8-full';
-    @Input() public brands: Brand[] = [];
+    @Input() public layout: BlockBrandsLayout = 'columns-7-sidebar';
+    @Input() public partners: string[] = [];
 
     constructor() { }
 }

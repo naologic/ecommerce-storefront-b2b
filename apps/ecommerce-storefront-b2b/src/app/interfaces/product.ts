@@ -103,7 +103,7 @@ export interface Variant {
 }
 
 export interface Product {
-    _id?: number;
+    _id: string;
     data?: {
         availability: string;
         available: true;
@@ -138,4 +138,10 @@ export interface Product {
 export interface ProductVariant {
     product: Product;
     variant: Variant;
+}
+
+export interface MyListToaster {
+    productName: string;
+    variantName: string;
+    listName: string;
 }

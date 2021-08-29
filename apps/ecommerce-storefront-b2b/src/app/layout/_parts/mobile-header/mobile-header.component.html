@@ -4,7 +4,7 @@
             <app-icon icon="menu-18x14"></app-icon>
         </button>
         <a class="mobile-header__logo" routerLink="/">
-            <img src='../../../../assets/images/logo/logo-simple.png' alt="logo" width="120">
+            <img [src]="generalSettings?.logo || '../../../../assets/images/logo/logo-simple.png'" alt="logo" width="120">
         </a>
         <div
             class="mobile-header__search mobile-search"
@@ -47,17 +47,17 @@
                     <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>
                 </a>
             </div>
-            <!--<div class="mobile-indicator d-none d-md-block">
-                <a routerLink="/shop/wishlist" class="mobile-indicator__button">
+            <div *ngIf='isLoggedIn' class="mobile-indicator d-none d-md-block">
+                <a routerLink="/shop/my-lists" class="mobile-indicator__button">
                     <span class="mobile-indicator__icon">
                         <app-icon icon="heart-20"></app-icon>
                         <span
-                            *ngIf="wishlist.count$|async"
+                            *ngIf="myLists.count$|async"
                             class="mobile-indicator__counter"
-                        >{{ wishlist.count$|async }}</span>
+                        >{{ myLists.count$|async }}</span>
                     </span>
                 </a>
-            </div>-->
+            </div>
             <div class="mobile-indicator">
                 <a routerLink="/shop/cart" class="mobile-indicator__button">
                     <span class="mobile-indicator__icon">

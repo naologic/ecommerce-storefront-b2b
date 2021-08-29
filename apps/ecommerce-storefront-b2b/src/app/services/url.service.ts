@@ -100,4 +100,22 @@ export class UrlService {
     public login(): string {
         return '/account/login';
     }
+
+    /**
+     * Get: my lists url
+     */
+    public myLists(): string {
+        return '/shop/my-lists';
+    }
+
+    /**
+     * Get: my list url
+     */
+    public myList(id: string): string {
+        if (!id) {
+            return ''
+        }
+
+        return `/shop/my-list/${id}`;
+    }
 }

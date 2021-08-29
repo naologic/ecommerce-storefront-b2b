@@ -15,7 +15,6 @@ import { ArrowComponent } from './arrow/arrow.component';
 import { BlockHeaderComponent } from './block-header/block-header.component';
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { SectionHeaderComponent } from './section-header/section-header.component';
-import { BlockBrandsComponent } from './block-brands/block-brands.component';
 import { BlockProductsCarouselComponent } from './block-products-carousel/block-products-carousel.component';
 import { FilterCategoryComponent } from './filters/filter-category/filter-category.component';
 import { FilterCheckComponent } from './filters/filter-check/filter-check.component';
@@ -23,6 +22,7 @@ import { FilterColorComponent } from './filters/filter-color/filter-color.compon
 import { FilterRadioComponent } from './filters/filter-radio/filter-radio.component';
 import { FilterRangeComponent } from './filters/filter-range/filter-range.component';
 import { FilterRatingComponent } from './filters/filter-rating/filter-rating.component';
+import { EditMyListComponent } from './edit-my-list/edit-my-list.component';
 
 @NgModule({
     declarations: [
@@ -39,7 +39,6 @@ import { FilterRatingComponent } from './filters/filter-rating/filter-rating.com
         BlockHeaderComponent,
         BreadcrumbComponent,
         SectionHeaderComponent,
-        BlockBrandsComponent,
         BlockProductsCarouselComponent,
         FilterCategoryComponent,
         FilterCheckComponent,
@@ -47,6 +46,7 @@ import { FilterRatingComponent } from './filters/filter-rating/filter-rating.com
         FilterRadioComponent,
         FilterRangeComponent,
         FilterRatingComponent,
+        EditMyListComponent
     ],
     exports: [
         ProductsViewComponent,
@@ -62,8 +62,8 @@ import { FilterRatingComponent } from './filters/filter-rating/filter-rating.com
         BlockHeaderComponent,
         BreadcrumbComponent,
         SectionHeaderComponent,
-        BlockBrandsComponent,
-        BlockProductsCarouselComponent
+        BlockProductsCarouselComponent,
+        EditMyListComponent
     ],
     imports: [
         NgxPayPalModule,

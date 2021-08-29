@@ -4,6 +4,8 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { NaoSettingsInterface } from "@naologic/nao-interfaces";
 import { NaoUserAccessService } from "@naologic/nao-user-access";
 import { ECommerceService } from "./e-commerce.service";
+import { MetasInterface } from "./interfaces/metas";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +19,7 @@ export class AppService implements OnDestroy {
         rating: false,
         freeShipping: false,
         hotOffers: false,
+        showPriceFilter: false
     });
     /**
      * All the info you need
@@ -27,6 +30,8 @@ export class AppService implements OnDestroy {
         private eCommerceService: ECommerceService,
         private readonly storageMap: StorageMap,
         private naoUsersService: NaoUserAccessService,
+        public readonly titleService: Title,
+        public readonly metaService: Meta,
     ) {
         this.subs.add(
             // @ts-ignore
@@ -52,9 +57,11 @@ export class AppService implements OnDestroy {
     public refreshInfo(): void {
         // -->Initial: check
         this.storageMap.get('uygsdf67ts76fguysdfsdf').subscribe((info$: any) => {
-            if (Array.isArray(info$)) {
+            if (info$) {
                 // -->Set: app info
                 this.appInfo.next(info$);
+                // --.Set: settings
+                this.setSettings(info$)
             }
 
             // -->Fresh: the data
@@ -62,6 +69,10 @@ export class AppService implements OnDestroy {
                 if (info$ && info$.ok) {
                     // -->Set: app info
                     this.appInfo.next(info$.data);
+                    // --.Set: settings
+                    this.setSettings(info$.data)
+                    // -->Set: Metas
+                    this.setMetas({title: info$.data?.generalSettings?.metaTitle, description: info$.data?.generalSettings?.metaDescription })
                 } else {
                     // -->Emit: error
                     this.appInfo.error("The request didn't resolve correctly");
@@ -71,6 +82,47 @@ export class AppService implements OnDestroy {
                 this.appInfo.error(error);
             });
         });
+    }
+
+
+    /**
+     * Set: settings
+     */
+    public setSettings(info$: any): void {
+        const settings = {
+            rating: false,
+            freeShipping: false,
+            hotOffers: false,
+            showPriceFilter: true
+        };
+
+        // -->Check: if has price filter
+        if (info$?.generalSettings?.hasOwnProperty('showPriceFilter')) {
+            settings.showPriceFilter = info$.generalSettings.showPriceFilter;
+        }
+
+        // -->Set:
+        this.settings.next(settings);
+    }
+
+    /**
+     * Set metas
+     */
+    public setMetas(metas: MetasInterface.Metas) {
+        if (!metas) {
+            throw new Error(`You have to send a meta tag object`);
+        }
+        // -->Set: title
+        this.titleService.setTitle(metas.title || MetasInterface.DefaultMetas.title);
+        // -->Set: description
+        this.metaService.updateTag({ name: 'description', content: metas.description || MetasInterface.DefaultMetas.description });
+        this.metaService.updateTag({ name: 'twitter:description', content: metas.twitterDescription || metas.description || MetasInterface.DefaultMetas.description });
+        this.metaService.updateTag({ property: 'og:description', content: metas.ogDescription || metas.description || MetasInterface.DefaultMetas.description });
+
+        // -->Check: share img
+        if (metas.shareImg) {
+            this.metaService.updateTag({ property: 'og:image', content: metas.shareImg });
+        }
     }
 
     public ngOnDestroy(): void {

@@ -159,13 +159,13 @@
             }
         }
     }
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare {
         position: relative;
         border: none;
-        background: map_get($wishlist-button-scheme, normal-bg-color);
-        color: map_get($wishlist-button-scheme, normal-font-color);
-        fill: map_get($wishlist-button-scheme, normal-icon-color);
+        background: map_get($my-lists-button-scheme, normal-bg-color);
+        color: map_get($my-lists-button-scheme, normal-font-color);
+        fill: map_get($my-lists-button-scheme, normal-icon-color);
         border-radius: 2px;
         transition:
             background .15s,
@@ -175,21 +175,21 @@
             outline: none;
         }
         &:hover {
-            background: map_get($wishlist-button-scheme, hover-bg-color);
-            fill: map_get($wishlist-button-scheme, hover-icon-color);
+            background: map_get($my-lists-button-scheme, hover-bg-color);
+            fill: map_get($my-lists-button-scheme, hover-icon-color);
         }
         &:active {
-            background: map_get($wishlist-button-scheme, active-bg-color);
-            fill: map_get($wishlist-button-scheme, active-icon-color);
+            background: map_get($my-lists-button-scheme, active-bg-color);
+            fill: map_get($my-lists-button-scheme, active-icon-color);
         }
     }
-    .product-card__wishlist.product-card__wishlist--loading,
+    .product-card__my-lists.product-card__my-lists--loading,
     .product-card__compare.product-card__compare--loading {
-        background: map_get($wishlist-button-scheme, normal-bg-color);
+        background: map_get($my-lists-button-scheme, normal-bg-color);
         fill: transparent;
         cursor: default;
     }
-    .product-card__wishlist--loading,
+    .product-card__my-lists--loading,
     .product-card__compare--loading {
         &:after {
             @include loader(16px, 2px, map_get($btn-muted-scheme, loader-color));
@@ -287,7 +287,7 @@
 
 @mixin product-card-grid-base() {
     .product-card__addtocart-full,
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare {
         display: none;
     }
@@ -326,7 +326,6 @@
     }
     .product-card__actions-list {
         position: absolute;
-        overflow: hidden;
         z-index: 1;
 
         @include direction {
@@ -402,7 +401,7 @@
     }
 
     @media (hover: hover) {
-        .product-card__action--wishlist,
+        .product-card__action--my-lists,
         .product-card__action--compare {
             transition:
                 transform $local-actions-transition-duration,
@@ -419,7 +418,7 @@
 
         &:hover,
         &:active {
-            .product-card__action--wishlist,
+            .product-card__action--my-lists,
             .product-card__action--compare {
                 transform: none;
                 opacity: 1;
@@ -430,12 +429,12 @@
 
 
 @mixin product-card-horizontal-base() {
-    .product-card__action--wishlist,
+    .product-card__action--my-lists,
     .product-card__action--compare,
     .product-card__features,
     .product-card__addtocart-icon,
     .product-card__addtocart-full,
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare,
     .product-card__meta,
     .product-card__fit {
@@ -542,7 +541,7 @@
 
 @mixin product-card-list-base() {
     .product-card__addtocart-icon,
-    .product-card__action--wishlist,
+    .product-card__action--my-lists,
     .product-card__action--compare {
         display: none;
     }
@@ -566,7 +565,6 @@
     }
     .product-card__actions-list {
         position: absolute;
-        overflow: hidden;
         z-index: 1;
 
         @include direction {
@@ -702,7 +700,7 @@
         width: 100%;
         margin-bottom: 10px;
     }
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare {
         font-size: 13px;
         line-height: 16px;
@@ -720,7 +718,7 @@
             }
         }
     }
-    .product-card__wishlist {
+    .product-card__my-lists {
         svg {
             @include direction {
                 #{$margin-inline-start}: -3px;
@@ -735,7 +733,7 @@
             }
         }
     }
-    .product-card__wishlist--loading:after {
+    .product-card__my-lists--loading:after {
         @include direction {
             #{$inset-inline-start}: 7px;
             #{$inset-inline-end}: auto;
@@ -780,7 +778,7 @@
             #{$inset-inline-end}: $local-footer-padding-x;
         }
     }
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare {
         margin-top: 1px;
     }
@@ -862,7 +860,7 @@
             }
         }
     }
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare {
         height: 30px;
         width: 32px;
@@ -888,7 +886,7 @@
         line-height: 36px;
         border-top: 1px solid map_get($card-scheme, divider);
     }
-    .product-card__wishlist--loading,
+    .product-card__my-lists--loading,
     .product-card__compare--loading {
         &:after {
             @include loader-size(18px);
@@ -919,7 +917,7 @@
 @mixin product-card-table-base() {
     .product-card__fit,
     .product-card__features,
-    .product-card__wishlist,
+    .product-card__my-lists,
     .product-card__compare,
     .product-card__action,
     .product-card__addtocart-full {

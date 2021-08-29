@@ -90,7 +90,6 @@ export class NaoUserAccessService {
         // -->Return
         if (checkSessionData(sessionData)) {
             // -->Set: session data
-            // todo: check this
             NaoUserAccessData.sessionStorage.setObject(NaoUserAccessData.sessionDataKey, sessionData);
             // -->Set: locale @NOTE: commented this until we add the locale settings as they match the ones below!
             // NaoUserAccessData.locale.next(sessionData.userData?.data?.locale);

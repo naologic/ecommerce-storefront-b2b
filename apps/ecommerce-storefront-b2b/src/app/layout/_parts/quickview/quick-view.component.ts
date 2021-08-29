@@ -47,8 +47,10 @@ export class QuickViewComponent implements OnDestroy, AfterViewInit, OnInit {
     public ngOnInit(): void {
         // -->Set: app settings
         this.appSettings = this.appService.settings.getValue();
-        // -->Check: if the user is logged in
-        this.isLoggedIn = this.naoUsersService.isLoggedIn();
+        // -->Subscribe: to user LoggedIn state changes
+        this.naoUsersService.isLoggedIn$.subscribe((value) => {
+            this.isLoggedIn = value;
+        });
 
     }
 

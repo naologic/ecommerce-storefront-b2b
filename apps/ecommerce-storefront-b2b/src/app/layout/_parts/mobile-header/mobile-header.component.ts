@@ -11,13 +11,15 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import {Router} from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
 import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
 import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
 import { CartService } from '../../../services/cart.service';
-import { WishlistService } from '../../../services/wishlist.service';
+import { MyListsService } from '../../../services/my-lists.service';
 import { ShopService } from '../../../shop/shop.service';
+import { NaoUserAccessService } from '@naologic/nao-user-access';
+import { AppService } from "../../../app.service";
 
 @Component({
     selector: 'app-mobile-header',
@@ -26,11 +28,14 @@ import { ShopService } from '../../../shop/shop.service';
 })
 export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$: Subject<void> = new Subject<void>();
+    private subs = new Subscription();
 
+    public generalSettings;
     public searchIsOpen = false;
     public searchPlaceholder$!: Observable<string>;
     public query$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     public disableSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+    public isLoggedIn = false;
 
     @ViewChild('searchForm') searchForm!: ElementRef<HTMLElement>;
     @ViewChild('searchInput') searchInput!: ElementRef<HTMLElement>;
@@ -42,14 +47,21 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         private translate: TranslateService,
         public menu: LayoutMobileMenuService,
         public cart: CartService,
-        public wishlist: WishlistService,
+        public myLists: MyListsService,
         private page: ShopService,
-        private router: Router
+        private router: Router,
+        private naoUsersService: NaoUserAccessService,
+        public appService: AppService,
     ) { }
 
 
     public ngOnInit(): void {
-        this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER')
+        this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER');
+
+        // -->Subscribe: to user LoggedIn state changes
+        this.naoUsersService.isLoggedIn$.subscribe((value) => {
+            this.isLoggedIn = value;
+        });
 
         // -->Subscribe: to searchTerm page option changes
         this.page.optionsChange$.subscribe(() => {
@@ -59,6 +71,14 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.disableSearch$.next(true);
             }
         });
+
+        // -->Subscribe: to appInfo changes
+        this.subs.add(
+            this.appService.appInfo.subscribe(value => {
+                // -->Set: generalSettings info
+                this.generalSettings = value?.generalSettings;
+            })
+        );
     }
 
 
@@ -125,6 +145,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     public ngOnDestroy(): void {
+        this.subs.unsubscribe();
         this.destroy$.next();
         this.destroy$.complete();
     }

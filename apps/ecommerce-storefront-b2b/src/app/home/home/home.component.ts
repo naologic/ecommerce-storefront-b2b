@@ -12,6 +12,7 @@ import { ProductsCarouselData } from '../home.interface';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
+    public generalSettings;
 
     public featuredProducts: ProductsCarouselData = {
         loading: false,
@@ -33,6 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.primaryFeaturedProduct = value?.primaryFeaturedProduct || {};
                 // -->Set: featured products
                 this.featuredProducts.products = value?.featuredProducts || [];
+                // -->Set: generalSettings info
+                this.generalSettings = value?.generalSettings;
             })
         )
     }

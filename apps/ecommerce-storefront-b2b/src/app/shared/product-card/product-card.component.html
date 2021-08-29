@@ -5,10 +5,8 @@
      [class.product-card--layout--horizontal]="layout === 'horizontal'">
     <ng-container
         appAddToCart
-        appAddToWishlist
         appAddToCompare
         #cart="addToCart"
-        #wishlist="addToWishlist"
         #compare="addToCompare"
     >
         <div class="product-card__actions-list">
@@ -22,26 +20,68 @@
                 <app-icon icon="quickview-16"></app-icon>
             </button>
 
-            <ng-container *ngIf="!exclude.includes('actions')">
-                <!--<button
+<!--            <button-->
+<!--                type="button"-->
+<!--                appAddToMyLists-->
+<!--                #myLists="addToMyLists"-->
+<!--                class="product-card__action product-card__action--my-lists"-->
+<!--                [class.product-card__action&#45;&#45;loading]="myLists.inProgress"-->
+<!--                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"-->
+<!--                (click)="myLists.add('XXXXXXXXXX', product?._id, product.data?.variants[0]?.id)"-->
+<!--            >-->
+<!--                <app-icon icon="wishlist-16"></app-icon>-->
+<!--            </button>-->
+
+
+
+            <div appDropdown
+                 class=""
+                 [class.my-lists__menu--open]="myListsDropdown.isOpen"
+                 #myListsDropdown="appDropdown"
+                 *ngIf="isLoggedIn">
+
+                <button
+                    appAddToMyLists
                     type="button"
-                    class="product-card__action product-card__action&#45;&#45;wishlist"
-                    [class.product-card__action&#45;&#45;loading]="wishlist.inProgress"
-                    [attr.aria-label]="'BUTTON_ADD_TO_WISHLIST' | translate"
-                    (click)="wishlist.add(product, product.data?.variants[0])"
+                    class="product-card__action product-card__action--my-lists"
+                    [class.product__actions-item--loading]="addToMyLists.inProgress"
+                    [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"
+                    (click)="myListsDropdown.toggle()"
+                    #addToMyLists="addToMyLists"
                 >
                     <app-icon icon="wishlist-16"></app-icon>
-                </button>-->
-                <!--<button
-                    type="button"
-                    class="product-card__action product-card__action&#45;&#45;compare"
-                    [class.product-card__action&#45;&#45;loading]="compare.inProgress"
-                    [attr.aria-label]="'BUTTON_ADD_TO_COMPARE' | translate"
-                    (click)="compare.add(product, product.data?.variants[0])"
-                >
-                    <app-icon icon="compare-16"></app-icon>
-                </button>-->
-            </ng-container>
+                </button>
+
+                <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+                    <button
+                        *ngFor="let item of addToMyLists.myLists"
+                        class="my-lists__menu-item"
+                        type="button"
+                        (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
+                        {{ item.data?.name }}
+                    </button>
+                    <!--Empty state-->
+                    <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+                        {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                        <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+                        {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <!--<button
+                type="button"
+                class="product-card__action product-card__action&#45;&#45;compare"
+                [class.product-card__action&#45;&#45;loading]="compare.inProgress"
+                [attr.aria-label]="'BUTTON_ADD_TO_COMPARE' | translate"
+                (click)="compare.add(product, product.data?.variants[0])"
+            >
+                <app-icon icon="compare-16"></app-icon>
+            </button>-->
         </div>
 
         <div class="product-card__image">
@@ -131,12 +171,12 @@
                     </button>
                     <!--<button
                         type="button"
-                        class="product-card__wishlist"
-                        [class.product-card__wishlist&#45;&#45;loading]="wishlist.inProgress"
-                        (click)="wishlist.add(product, product.data?.variants[0])"
+                        class="product-card__my-lists"
+                        [class.product-card__my-lists--loading]="myLists.inProgress"
+                        (click)="myLists.add(product, product.data?.variants[0])"
                     >
                         <app-icon icon="wishlist-16"></app-icon>
-                        <span>{{ 'BUTTON_ADD_TO_WISHLIST' | translate }}</span>
+                        <span>{{ 'BUTTON_ADD_TO_MY_LISTS' | translate }}</span>
                     </button>-->
                     <!--<button
                         type="button"

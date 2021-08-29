@@ -10,7 +10,6 @@ import { NaoUserAccessService } from "@naologic/nao-user-access";
 export class ECommerceService<T = any> {
     private get apiRoot(): string { return this.naoUsersService.isLoggedIn() ? 'ecommerce-api' : 'ecommerce-api-public'; }
 
-    public readonly api = { path: 'ecommerce-api-public' };
     public readonly subs = new Subscription();
 
     constructor(

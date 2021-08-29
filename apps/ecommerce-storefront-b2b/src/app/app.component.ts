@@ -8,7 +8,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { LanguageService } from './shared/language/services/language.service';
 import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
-import { WishlistService } from './services/wishlist.service';
+import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private toastr: ToastrService,
         private cart: CartService,
         private compare: CompareService,
-        private wishlist: WishlistService,
+        private myLists: MyListsService,
         private translate: TranslateService,
         private appService: AppService
     ) {
@@ -86,16 +86,16 @@ export class AppComponent implements OnInit, OnDestroy {
             );
         });
 
-        // -->Show: toaster when a variant is added to wishlist
-        this.wishlist.onAdding$.subscribe(variant => {
+        // -->Show: toaster when a variant is added to myLists
+        this.myLists.onAdding$.subscribe(value => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_WISHLIST', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS', value)
             );
         });
-        // -->Show: toaster if a variant was already added to wishlist
-        this.wishlist.onAdded$.subscribe(variant => {
+        // -->Show: toaster if a variant was already added to myLists
+        this.myLists.onAdded$.subscribe(value => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_WISHLIST', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ALREADY_EXISTS')
             );
         });
     }

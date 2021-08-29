@@ -91,18 +91,44 @@
                                 {{ 'BUTTON_ADD_TO_CART' | translate }}
                             </button>
                         </div>
-                        <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;wishlist">
+
+                        <div appDropdown
+                             class="position-relative quickview__product-actions-item quickview__product-actions-item--my-list"
+                             [class.my-lists__menu--open]="myListsDropdown.isOpen"
+                             #myListsDropdown="appDropdown"
+                             *ngIf="isLoggedIn">
+
                             <button
-                                appAddToWishlist
+                                appAddToMyLists
                                 type="button"
                                 class="btn btn-muted btn-icon"
-                                [class.btn-loading]="addToWishlist.inProgress"
-                                (click)="addToWishlist.add(product, product.data?.variants[variantIndex])"
-                                #addToWishlist="addToWishlist"
+                                [class.product__actions-item--loading]="addToMyLists.inProgress"
+                                (click)="myListsDropdown.toggle()"
+                                #addToMyLists="addToMyLists"
                             >
                                 <app-icon icon="wishlist-16"></app-icon>
                             </button>
-                        </div>-->
+
+                            <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+                                <button
+                                    *ngFor="let item of addToMyLists.myLists"
+                                    class="my-lists__menu-item"
+                                    type="button"
+                                    (click)="addToMyLists.add(item._id, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
+                                    {{ item.data?.name }}
+                                </button>
+                                <!--Empty state-->
+                                <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+                                    {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                                    <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+                                    {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
                         <!--<div class="quickview__product-actions-item quickview__product-actions-item&#45;&#45;compare">
                             <button
                                 appAddToCompare

@@ -71,7 +71,7 @@
                 #{$padding-inline-end}: (52px + 12px + 16px);
             }
         }
-        .product__actions-item--wishlist,
+        .product__actions-item--my-lists,
         .product__actions-item--compare {
 
             position: absolute;
@@ -221,7 +221,7 @@
         .product__actions-divider {
             height: 10px;
         }
-        .product__actions-item--wishlist,
+        .product__actions-item--my-lists,
         .product__actions-item--compare {
             width: auto;
             margin-top: 2px;

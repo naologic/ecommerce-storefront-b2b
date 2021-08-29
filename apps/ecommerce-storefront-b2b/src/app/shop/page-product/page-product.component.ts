@@ -14,6 +14,7 @@ import { ECommerceService } from "../../e-commerce.service";
 import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
 import { Product, ProductAttribute, ProductAttributeGroup } from '../../interfaces/product';
 import { BreadcrumbItem } from '../_parts/breadcrumb/breadcrumb.component';
+import { JsonLdService } from "../../shared/seo-helper/json-ld.service";
 
 export type PageProductLayout = 'sidebar' | 'full';
 
@@ -60,6 +61,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
         private language: LanguageService,
         private cart: CartService,
         public url: UrlService,
+        private readonly jsonLdService: JsonLdService,
         private appService: AppService,
         private eCommerceService: ECommerceService,
         private naoUsersService: NaoUserAccessService,
@@ -151,6 +153,9 @@ export class PageProductComponent implements OnInit, OnDestroy {
                 // -->Redirect
                 this.router.navigateByUrl(this.url.allProducts()).then();
             } else {
+                // -->Set: meta
+                this.setMeta();
+
                 // -->Refresh: specifications
                 this.refreshSpecifications();
 
@@ -170,16 +175,49 @@ export class PageProductComponent implements OnInit, OnDestroy {
             }
 
         }, err => {
-            // todo: check error
+            // -->Show: toaster
+            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         })
     }
 
 
     /**
-     * Scroll: to tabs
+     * Set meta tags and description
      */
-    public scrollToTabs(): void {
-        this.tabsElement.scrollIntoView({ behavior: 'smooth' });
+    public setMeta(): void {
+        if (!this.product || !this.product.data) {
+            return;
+        }
+
+        // -->Set: metas
+        this.appService.setMetas({
+            title: `${this.product.data?.name} - ${this.product.data.shortDescription}`,
+            description: this.product.data?.description || this.product.data?.name,
+            twitterDescription: this.product.data?.description || this.product.data?.name,
+            ogDescription: this.product.data?.description || this.product.data?.name,
+            shareImg: this.product.data?.images[0]
+        });
+
+        // -->Set: raw json+ld data
+        this.jsonLdService.setRawData(
+            {
+                '@context': 'http://schema.org',
+                '@type': 'WebApplication',
+                operatingSystem: 'All',
+                applicationCategory: 'https://schema.org/BusinessApplication',
+                name: this.product.data?.name,
+                offers: {
+                    '@type': 'Offer',
+                    price: 0,
+                    priceCurrency: 'USD'
+                },
+                aggregateRating: {
+                    '@type': 'AggregateRating',
+                    ratingValue: '4.7',
+                    reviewCount: '19'
+                },
+            },
+        );
     }
 
 
@@ -276,6 +314,13 @@ export class PageProductComponent implements OnInit, OnDestroy {
                 }
             ]
         }
+    }
+
+    /**
+     * Scroll: to tabs
+     */
+    public scrollToTabs(): void {
+        this.tabsElement.scrollIntoView({ behavior: 'smooth' });
     }
 
 

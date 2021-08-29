@@ -128,21 +128,48 @@
                                         </div>
                                     </ng-container>
                                     <div class="product__actions-divider"></div>
-                                    <!--<button
-                                        appAddToWishlist
-                                        type="button"
-                                        class="product__actions-item product__actions-item&#45;&#45;wishlist"
-                                        [class.product__actions-item&#45;&#45;loading]="addToWishlist.inProgress"
-                                        (click)="addToWishlist.add(this.product, product.data?.variants[variantIndex])"
-                                        #addToWishlist="addToWishlist"
-                                    >
-                                        <app-icon icon="wishlist-16"></app-icon>
-                                        <span>{{ 'BUTTON_ADD_TO_WISHLIST' | translate }}</span>
-                                    </button>-->
+
+                                    <div appDropdown
+                                         class="position-relative w-50"
+                                         [class.my-lists__menu--open]="myListsDropdown.isOpen"
+                                         #myListsDropdown="appDropdown"
+                                         *ngIf='isLoggedIn'>
+                                        <button
+                                            appAddToMyLists
+                                            type="button"
+                                            class="product__actions-item product__actions-item--my-lists"
+                                            [class.product__actions-item--loading]="addToMyLists.inProgress"
+                                            (click)="myListsDropdown.toggle()"
+                                            #addToMyLists="addToMyLists"
+                                        >
+                                            <app-icon icon="wishlist-16"></app-icon>
+                                            <span>{{ 'BUTTON_ADD_TO_MY_LISTS' | translate }}</span>
+                                        </button>
+
+                                        <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+                                            <button
+                                                *ngFor="let item of addToMyLists.myLists"
+                                                class="my-lists__menu-item"
+                                                type="button"
+                                                (click)="addToMyLists.add(item._id, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
+                                                {{ item.data?.name }}
+                                            </button>
+                                            <!--Empty state-->
+                                            <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+                                                {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                                                <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+                                                {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+
                                     <!--<button
                                         appAddToCompare
                                         type="button"
-                                        class="product__actions-item product__actions-item&#45;&#45;compare"
+                                        class="product__actions-item product__actions-item&#45;&#45;compare w-50"
                                         [class.product__actions-item&#45;&#45;loading]="addToCompare.inProgress"
                                         (click)="addToCompare.add(this.product, product.data?.variants[variantIndex])"
                                         #addToCompare="addToCompare"
