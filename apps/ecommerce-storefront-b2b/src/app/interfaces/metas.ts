@@ -8,7 +8,7 @@ export namespace MetasInterface {
         shareImg?: string;
     }
     export const DefaultMetas = {
-        title: 'Automate sales, marketing, document management and e-learning workflows. ERP vs CRM',
-        description: 'Automate sales, marketing, document management and e-learning workflows through custom cloud apps. No programming skills required.'
+        title: 'Welcome to Naologic B2B ecommerce',
+        description: 'Unify all your data and operations into a single platform'
     };
 }

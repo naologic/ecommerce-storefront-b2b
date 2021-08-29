@@ -51,10 +51,9 @@ export class PageMyListsComponent implements OnInit {
             if (value === 'done'){
                 // -->Start: loading
                 this.refreshInProgress = true;
+                // -->Refresh
+                this.myListsService.refresh();
             }
-
-            // -->Refresh
-            this.myListsService.refresh();
         });
     }
 
@@ -76,18 +75,17 @@ export class PageMyListsComponent implements OnInit {
             if (value === 'done'){
                 // -->Start: loading
                 this.refreshInProgress = true;
+                // -->Refresh
+                this.myListsService.refresh();
             }
-
-            // -->Refresh
-            this.myListsService.refresh();
         });
     }
 
     /**
      * Delete: a my list
      */
-    public onDeleteMyList(docId: string): void {
-        if (!docId) {
+    public onDeleteMyList(docId: string, index: number): void {
+        if (!docId && index > -1) {
             return;
         }
         // -->Start: loading
@@ -95,6 +93,8 @@ export class PageMyListsComponent implements OnInit {
         // -->Execute:
         this.myListsService.delete(docId).subscribe(res => {
             if (res && res.ok) {
+                // -->Split: my lists
+                this.myLists.slice(index, 1);
                 // -->Refresh
                 this.myListsService.refresh();
             } else {

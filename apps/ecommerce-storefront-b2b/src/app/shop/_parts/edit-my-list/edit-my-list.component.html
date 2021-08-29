@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <h5>{{ (docId ? 'HEADER_EDIT_MY_LIST' : 'HEADER_NEW_LIST')|translate }}</h5>
+        <h5>{{ (docId ? 'HEADER_EDIT_MY_LIST' : 'HEADER_NEW_LIST') | translate:{ name: data?.name } }}</h5>
     </div>
     <div class="card-divider"></div>
     <div class="card-body card-body--padding--2">
@@ -13,7 +13,7 @@
                         type="text"
                         class="form-control"
                         formControlName="name"
-                        placeholder="My List"
+                        placeholder="My new list"
                     >
                 </div>
 
@@ -21,9 +21,9 @@
                     <button
                         class="btn btn-primary"
                         [class.btn-loading]="saveInProgress"
-                        [disabled]="saveInProgress || formGroup.invalid"
+                        [disabled]="saveInProgress || formGroup.invalid || formGroup.pristine"
                         (click)="save()"
-                    >{{ 'BUTTON_SAVE' | translate }}</button>
+                    >{{ (docId ? 'BUTTON_SAVE':  'BUTTON_CREATE') | translate }}</button>
                 </div>
             </div>
         </div>

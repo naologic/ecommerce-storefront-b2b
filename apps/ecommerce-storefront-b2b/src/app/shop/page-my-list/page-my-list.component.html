@@ -16,13 +16,13 @@
         <div class="block-empty">
             <div class="container">
                 <div class="block-empty__body">
-                    <h1 class="block-empty__title">{{ 'HEADER_MY_LISTS_EMPTY_TITLE' | translate }}</h1>
+                    <h1 class="block-empty__title">{{ 'HEADER_MY_LIST_EMPTY_TITLE' | translate: {name: data?.name} }}</h1>
                     <div
                         class="block-empty__message"
-                        [innerHTML]="'HEADER_MY_LISTS_EMPTY_SUBTITLE' | translate">
+                        [innerHTML]="'HEADER_MY_LIST_EMPTY_SUBTITLE' | translate">
                     </div>
                     <div class="block-empty__action">
-                        <a routerLink="/" class="btn btn-primary btn-sm">{{ 'BUTTON_GO_TO_HOMEPAGE' | translate }}</a>
+                        <a routerLink="/shop/category/products" class="btn btn-primary btn-sm">{{ 'BUTTON_GO_TO_PRODUCT_OVERVIEW' | translate }}</a>
                     </div>
                 </div>
             </div>

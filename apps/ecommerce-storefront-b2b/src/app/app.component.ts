@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
         // -->Show: toaster if a variant was already added to myLists
         this.myLists.onAdded$.subscribe(value => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_MY_LISTS', value)
+                this.translate.instant('TEXT_TOAST_PRODUCT_ALREADY_EXISTS')
             );
         });
     }

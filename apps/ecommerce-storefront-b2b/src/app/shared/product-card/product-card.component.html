@@ -62,7 +62,9 @@
                     </button>
                     <!--Empty state-->
                     <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
-                        {{ 'MY_LISTS_EMPTY_STATE' | translate }}
+                        {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                        <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+                        {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
                     </div>
                 </div>
 
