@@ -20,11 +20,11 @@ export const environment = {
             $id: 'server',
             protocol: 'https',
             port: 443,
-            url: "NAO_API_ROUTE",
+            url: 'api-v2-bee11.naologic.com',
             prefix: 'api/v2/',
             ssl: true
         },
-        naoToken: "process.env.NAO_TOKEN",
+        naoToken: 'naoprodvlhauavvm9kslfbynan6bu2a8',
         webSocket: {
             enabled: false
         },
