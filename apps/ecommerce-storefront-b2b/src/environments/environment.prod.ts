@@ -20,11 +20,11 @@ export const environment = {
             $id: 'server',
             protocol: 'https',
             port: 443,
-            url: '$NAO_API_ROUTE',
+            url: "$NAO_API_ROUTE",
             prefix: 'api/v2/',
             ssl: true
         },
-        naoToken: 'NAO_TOKEN',
+        naoToken: '{{ NAO_TOKEN }}',
         webSocket: {
             enabled: false
         },
