@@ -66,6 +66,8 @@ export class PageMyListComponent implements OnInit, OnDestroy {
             this.inProgress = false;
 
         }, err => {
+            // -->Done: loading
+            this.inProgress = false;
             // -->Show: toaster
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         });

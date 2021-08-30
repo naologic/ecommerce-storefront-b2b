@@ -34,6 +34,8 @@
     <!--Content state-->
     <div class="container" *ngIf="(myListsService.myLists|async)?.length">
 
+
+
         <div class="document__header d-flex align-items-center">
             <h1 class="document__title mr-4">{{ 'LIST_OVERVIEW' | translate }}</h1>
             <button class="btn btn-primary" (click)="onCreateMyList()">{{ 'BUTTON_CREATE_LIST' | translate }}</button>
