@@ -66,6 +66,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
     public gridLayout: PageShopGridLayout = 'grid-4-sidebar';
     public pageTitle$!: string;
     public breadcrumbs: BreadcrumbItem[];
+    public sidebarPosition: PageShopSidebarPosition = 'start';
 
     public get offCanvasSidebar(): PageShopOffCanvasSidebar {
         return ['grid-4-full', 'grid-5-full', 'grid-6-full'].includes(this.gridLayout) ? 'always' : 'mobile';
@@ -105,6 +106,13 @@ export class PageShopComponent implements OnInit, OnDestroy {
 
         // -->Set: page options from query params on landing
         this.setPageOptions();
+
+        // -->Subscribe: to page shop data updates
+        data$.subscribe((data: PageShopData) => {
+            this.layout = data.layout;
+            this.gridLayout = data.gridLayout;
+            this.sidebarPosition = data.sidebarPosition;
+        });
 
         // -->Refresh: page shop on options update
         this.page.optionsChange$.pipe(
