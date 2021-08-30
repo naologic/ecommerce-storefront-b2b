@@ -1,9 +1,4 @@
-<div class="product-card"
-     [class.product-card--layout--grid]="layout === 'grid'"
-     [class.product-card--layout--list]="layout === 'list'"
-     [class.product-card--layout--table]="layout === 'table'"
-     [class.product-card--layout--horizontal]="layout === 'horizontal'">
-    <ng-container
+<ng-container
         appAddToCart
         appAddToCompare
         #cart="addToCart"
@@ -191,4 +186,3 @@
             </ng-container>
         </div>
     </ng-container>
-</div>

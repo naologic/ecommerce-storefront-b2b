@@ -1,11 +1,11 @@
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
-    Component,
+    Component, HostBinding,
     Input, OnChanges,
     OnDestroy,
-    OnInit, SimpleChanges,
-} from '@angular/core';
+    OnInit, SimpleChanges
+} from "@angular/core";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NaoSettingsInterface } from "@naologic/nao-interfaces";
@@ -28,9 +28,33 @@ export type ProductCardLayout = 'grid' | 'list' | 'table' | 'horizontal';
 })
 export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
     // TODO: update Product interface to include minPrice and maxPrice
-    @Input() public product!: Product | any;
-    @Input() public layout?: ProductCardLayout;
-    @Input() public exclude: ProductCardElement[] = [];
+    // @Input() public product!: Product | any;
+    // @Input() public layout?: ProductCardLayout;
+    // @Input() public exclude: ProductCardElement[] = [];
+
+    @Input() product!: Product | any;
+
+    @Input() layout?: ProductCardLayout;
+
+    @Input() exclude: ProductCardElement[] = [];
+
+    @HostBinding('class.product-card') classProductCard = true;
+
+    @HostBinding('class.product-card--layout--grid') get classProductCardLayoutGrid(): boolean {
+        return this.layout === 'grid';
+    }
+
+    @HostBinding('class.product-card--layout--list') get classProductCardLayoutList(): boolean {
+        return this.layout === 'list';
+    }
+
+    @HostBinding('class.product-card--layout--table') get classProductCardLayoutTable(): boolean {
+        return this.layout === 'table';
+    }
+
+    @HostBinding('class.product-card--layout--horizontal') get classProductCardLayoutHorizontal(): boolean {
+        return this.layout === 'horizontal';
+    }
 
     private destroy$: Subject<void> = new Subject();
 
