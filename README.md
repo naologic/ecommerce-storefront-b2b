@@ -8,7 +8,7 @@
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
-    <li><a href="#about-the-project">About</a></li>
+    <li><a href="#install">Install</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#roadmap">SCSS files</a></li>
@@ -18,8 +18,18 @@
   </ol>
 </details>
 
-## About The Project
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
+## Install
+
+Install the npm dependencies. Sometimes you might need to pass `--legacy-peer-deps` flag
+```bash
+npm install
+```
+
+Serve the project locally to `localhost:4200`
+
+```bash
+nx serve
+```
 
 ## Routing schema
 `AppBrowserModule` module is the entry point of the application. It bootstraps the `AppComponent` component which will redirect us to the `RootComponent` component of the `LayoutModule` module after loading was completed with no errors.
