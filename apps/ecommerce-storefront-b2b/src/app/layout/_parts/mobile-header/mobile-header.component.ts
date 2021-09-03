@@ -59,18 +59,24 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER');
 
         // -->Subscribe: to user LoggedIn state changes
-        this.naoUsersService.isLoggedIn$.subscribe((value) => {
-            this.isLoggedIn = value;
-        });
+        this.subs.add(
+            this.naoUsersService.isLoggedIn$.subscribe((value) => {
+                this.isLoggedIn = value;
+            })
+        );
 
         // -->Subscribe: to searchTerm page option changes
-        this.page.optionsChange$.subscribe(() => {
-            // -->Check: searchTerm option
-            if (this.page.options.searchTerm) {
-                this.query$.next(this.page.options.searchTerm ?? '');
-                this.disableSearch$.next(true);
-            }
-        });
+        this.subs.add(
+            this.page.optionsChange$.subscribe((value) => {
+                // -->Check: searchTerm option
+                if (value?.searchTerm) {
+                    this.query$.next(value.searchTerm);
+                    this.disableSearch$.next(true);
+                } else {
+                    this.query$.next(null);
+                }
+            })
+        );
 
         // -->Subscribe: to appInfo changes
         this.subs.add(
@@ -127,8 +133,11 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
      * Search: term and redirect
      */
     public searchAndRedirect(): void {
-        // -->Redirect: to shop
-        this.router.navigateByUrl('/shop').then();
+        // -->Check: if the current route starts with shop
+        if(!this.router.url?.startsWith('/shop/category')) {
+            // -->Redirect: to shop
+            this.router.navigateByUrl('/shop', { state: { skipClearFilters: true } }).then();
+        }
         // -->Trigger: search
         this.page.setSearchTerm(this.query$.getValue());
         // -->Disable: search until query changes

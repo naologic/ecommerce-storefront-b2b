@@ -68,11 +68,14 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
             this.query$.next(this.page.options.searchTerm);
         }
 
-        // -->Subscribe: to query changes
-        this.query$.pipe(distinctUntilChanged(), debounceTime(600)).subscribe(searchTerm => {
-            // -->Trigger: search
-            //this.page.setSearchTerm(searchTerm);
-        });
+        // -->Subscribe: to search terrm change
+        this.page.optionsChange$.pipe(distinctUntilChanged(), debounceTime(200)).subscribe(value => {
+            if (value?.searchTerm) {
+                this.query$.next(value.searchTerm);
+            } else {
+                this.query$.next(null);
+            }
+        })
     }
 
 
@@ -122,8 +125,11 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
      * Search: term and redirect
      */
     public searchAndRedirect(): void {
-        // -->Redirect: to shop
-        this.router.navigateByUrl('/shop').then();
+        // -->Check: if the current route starts with shop
+        if(!this.router.url?.startsWith('/shop/category')) {
+            // -->Redirect: to shop
+            this.router.navigateByUrl('/shop', { state: { skipClearFilters: true } }).then();
+        }
         // -->Trigger: search
         this.page.setSearchTerm(this.query$.getValue());
         // -->Disable: search until query changes

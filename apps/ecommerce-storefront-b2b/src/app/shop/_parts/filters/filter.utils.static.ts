@@ -97,6 +97,14 @@ function buildManufacturerFilter(vendors: Vendor[], values: string[]): CheckFilt
  * Prepare: price filter
  */
 function buildPriceFilter(min: number, max: number, valueMin: number, valueMax: number, forceMinMax = false): RangeFilter {
+    if (typeof min !== 'number') {
+        min = 0;
+    }
+
+    if (typeof max !== 'number') {
+        max = 0;
+    }
+
     if (!valueMin || forceMinMax) {
         valueMin = min
     }

@@ -19,20 +19,11 @@ const routes: Routes = [
     {
         path: 'category/products',
         component: PageShopComponent,
-        data: {
-            layout: 'grid',
-            gridLayout: 'grid-4-sidebar',
-            sidebarPosition: 'start',
-        },
+
     },
     {
         path: 'category/:categorySlug/:categoryId/products',
         component: PageShopComponent,
-        data: {
-            layout: 'grid',
-            gridLayout: 'grid-4-sidebar',
-            sidebarPosition: 'start',
-        },
     },
     {
         path: 'products/:productSlug/:productId',

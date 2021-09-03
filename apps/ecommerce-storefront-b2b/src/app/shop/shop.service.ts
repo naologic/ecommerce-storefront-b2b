@@ -32,7 +32,8 @@ export class ShopService {
         limit: 16,
         sort: 'name_asc',
         filters: {},
-        searchTerm: null
+        searchTerm: null,
+        categoryId: null,
     };
 
     // getters for list
@@ -171,6 +172,7 @@ export class ShopService {
             ...this.optionsState,
             page: 1,
             filters: {},
+            searchTerm: null
         });
 
         // -->Remove: filter and notify updates on current filter

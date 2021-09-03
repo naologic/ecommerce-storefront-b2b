@@ -4,4 +4,5 @@ export interface GetProductsListOptions {
     sort?: string;
     filters?: { [slug: string]: string; };
     searchTerm?: string;
+    categoryId?: string;
 }
