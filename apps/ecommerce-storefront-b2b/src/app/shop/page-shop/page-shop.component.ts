@@ -104,8 +104,6 @@ export class PageShopComponent implements OnInit, OnDestroy {
 
         // -->Set: page options from query params on landing
         this.setPageOptions();
-        // -->Update: URL
-        this.updateUrl();
 
 
         // -->Subscribe: to option changes
@@ -143,12 +141,12 @@ export class PageShopComponent implements OnInit, OnDestroy {
             this.refreshSubs.unsubscribe();
             this.refreshSubs = null;
         }
-
         // -->Start: loading
         this.page.isLoading = true;
+
         // -->Get: category id
         const categoryId: number = this.route.snapshot.params.categoryId ? +this.route.snapshot.params.categoryId : undefined;
-
+        console.log("refresh filters >>>>", this.page.options.filters)
         // -->Create: filters options
         const options = {
             ...this.page.options,
@@ -160,7 +158,6 @@ export class PageShopComponent implements OnInit, OnDestroy {
 
         // -->Get: Selected manufacturers
         const selectedManufacturerIds = options?.filters?.manufacturer?.split(',')?.filter((f) => f) || [];
-
 
         // -->Create: query
         const query = {
@@ -203,7 +200,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
                 filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
                 // -->Check: if we show price filter
                 // todo: test with price too
-
+                console.log("filterInfo >>>", res.data?.filterInfo)
                 if (this.appSettings.showPriceFilter) {
                     // --->Push: price filter
                     filters.push(buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice));
@@ -228,8 +225,6 @@ export class PageShopComponent implements OnInit, OnDestroy {
                     to: (page * query.pageSize) < res.data?.count ? (page * query.pageSize) : res.data?.count,
                 };
 
-                // console.log("Final result >>>>", list)
-
                 // -->Get: breadcrumbs
                 const breadcrumbs = getBreadcrumbs(this.appService.appInfo?.getValue()?.categories?.items, categoryId);
                 // -->Update: breadcrumbs
@@ -247,6 +242,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
                         url: this.url.category(x)
                     })),
                 ];
+
                 if (breadcrumbs.length) {
                     this.pageTitle$ = breadcrumbs[breadcrumbs.length - 1].name;
                 } else {
@@ -266,8 +262,6 @@ export class PageShopComponent implements OnInit, OnDestroy {
 
                 // -->Show: errors
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-
-                // todo: refresh with default data
             }
         });
     }
@@ -286,6 +280,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
      * Get: query params from page options
      */
     private getQueryParams(): Params {
+        console.log("getQueryParams this.page.options >>>>", this.page.options)
         const params: Params = {};
         const options = this.page.options;
         const filterValues = options.filters || {};
@@ -308,6 +303,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
                 params.searchTerm = options.searchTerm;
             }
         }
+            console.error("mortii ei", options.hasOwnProperty('filters'), this.page.options.filters)
         // -->Check: filters
         if (options.hasOwnProperty('filters') && this.page.filters) {
             this.page.filters
@@ -323,7 +319,7 @@ export class PageShopComponent implements OnInit, OnDestroy {
                 )
                 .forEach(({ filter, handler }) => {
                     const value = handler.deserialize(filterValues[filter.slug]);
-
+                    console.log("filter for each >>>", filter, handler)
                     // -->Add: filter to params
                     if (!handler.isDefaultValue(filter, value)) {
                         params[`filter_${filter.slug}`] = handler.serialize(value);
@@ -378,6 +374,9 @@ export class PageShopComponent implements OnInit, OnDestroy {
             if (param.hasOwnProperty('filter_manufacturer') && param['filter_manufacturer']) {
                 this.page.options.filters['manufacturer'] = param['filter_manufacturer'];
             }
+
+            // -->Update: URL
+            this.updateUrl();
         });
     }
 
