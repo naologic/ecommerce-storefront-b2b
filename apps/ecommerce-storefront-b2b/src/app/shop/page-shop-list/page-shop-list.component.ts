@@ -133,15 +133,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Subscribe: to option changes
         this.subs.add(
-            this.shopService.optionsChange$.pipe(debounceTime(100))
-                .subscribe((value) => {
-                // -->Patch: filter
-                //     if (this.shopService.options) {
-                //         this.filterFormGroup.get('page').setValue(+this.shopService.options.page);
-                //         this.filterFormGroup.get('limit').setValue(+this.shopService.options.limit);
-                //         this.filterFormGroup.get('sort').setValue(this.shopService.options.sort);
-                //     }
-
+            this.shopService.optionsChange$.pipe(debounceTime(100)).subscribe((value) => {
                 // -->Update: URL
                 this.updateUrl();
             })
@@ -150,7 +142,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Subscribe: to params change and reset filters based on state flag
         this.subs.add(
             this.route.params.subscribe(v => {
-                // todo: check and delete resetFilters
                 if (history?.state?.resetFilters) {
                     console.warn("SA RESTEAZA FILTERELEEEEEEEEEEEEEEEEEEEE")
                     this.shopService.resetAllFilters();
@@ -160,14 +151,12 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
 
         // -->Subscribe: to params and query params
-        this.subs.add(
-            combineLatest([this.route.params, this.route.queryParams])
-                .subscribe(() => {
-                    console.error("PARAMS HAS CHANGED >>>> TRIGGERING REFRESH")
-                    this.refresh();
-                })
+        this.subs.add(combineLatest([this.route.params, this.route.queryParams])
+            .subscribe(() => {
+                console.error("PARAMS HAS CHANGED >>>> TRIGGERING REFRESH")
+                this.refresh();
+            })
         );
-
 
         // -->Subscribe: to pagination change
         this.filterFormGroup.valueChanges.pipe(distinctUntilChanged(), debounceTime(100)).subscribe(value => {
