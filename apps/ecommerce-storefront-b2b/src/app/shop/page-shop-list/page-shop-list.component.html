@@ -1,0 +1,181 @@
+<!--Page header + breadcrumbs-->
+<app-block-header
+    [pageTitle]="pageTitle$ || ''"
+    [breadcrumb]="breadcrumbs || []"
+></app-block-header>
+
+<!--Content-->
+<div class="block-split block-split--has-sidebar" *ngIf="data">
+    <div class="container">
+        <div class="block-split__row row no-gutters">
+            <!--Sidebar-->
+            <div class="block-split__item block-split__item-sidebar col-auto">
+                <app-shop-sidebar #sidebar></app-shop-sidebar>
+            </div>
+            <!--Products view-->
+            <div class="block-split__item block-split__item-content col-auto">
+                <div class="block">
+
+                    <div class="products-view" [class.products-view--loading]="status === 'loading'">
+                        <div class="products-view__body" [formGroup]="filterFormGroup">
+                            <div class="products-view__loader"></div>
+                            <div
+                                class="products-view__options view-options view-options--offcanvas--mobile">
+                                <div class="view-options__body">
+                                    <button type="button" class="view-options__filters-button filters-button" (click)="sidebar.open()">
+                                        <span class="filters-button__icon"><app-icon icon="filters-16"></app-icon></span>
+                                        <span class="filters-button__title">{{ 'BUTTON_FILTERS' | translate }}</span>
+                                        <span class="filters-button__counter">{{ activeFilters.length }}</span>
+                                    </button>
+
+                                    <div class="view-options__layout layout-switcher">
+                                        <div class="layout-switcher__list">
+                                            <button
+                                                *ngFor="let layoutButton of viewLayoutButtons"
+                                                type="button"
+                                                class="layout-switcher__button"
+                                                [class.layout-switcher__button--active]="layoutButton.layout === viewLayout"
+                                                (click)="setProductsLayout(layoutButton.layout)"
+                                            >
+                                                <app-icon [icon]="layoutButton.icon"></app-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="view-options__legend">
+                                        {{ 'TEXT_SHOWING_PRODUCTS' | translate:{
+                                        from: data.from || 0,
+                                        to: data.to || 0,
+                                        total: data.total || 0
+                                    } }}
+                                    </div>
+
+                                    <div class="view-options__spring"></div>
+
+                                    <div class="view-options__select">
+                                        <label for="view-option-sort">{{ 'INPUT_SORT_LABEL' | translate }}:</label>
+                                        <select id="view-option-sort" class="form-control form-control-sm" formControlName="sort">
+                                            <option value="name_asc">{{ 'INPUT_SORT_OPTION_NAME_ASC' | translate }}</option>
+                                            <option value="name_desc">{{ 'INPUT_SORT_OPTION_NAME_DESC' | translate }}</option>
+                                        </select>
+                                        todo: delete {{ filterFormGroup.get('sort').value }}
+
+                                    </div>
+                                    <div class="view-options__select">
+                                        <label for="view-option-limit">{{ 'INPUT_LIMIT_LABEL' | translate }}:</label>
+                                        <select id="view-option-limit" class="form-control form-control-sm" formControlName="limit">
+                                            <option value="8">8</option>
+                                            <option value="16">16</option>
+                                            <option value="24">24</option>
+                                            <option value="32">32</option>
+                                        </select>
+                                        todo: delete {{ filterFormGroup.get('limit').value }}
+
+                                    </div>
+                                </div>
+
+                                <div class="view-options__body view-options__body--filters" *ngIf="activeFilters?.length">
+                                    <div class="view-options__label">{{ 'TEXT_ACTIVE_FILTERS' | translate }}</div>
+                                    <div class="view-options__applied-filters applied-filters">
+                                        <ul class="applied-filters__list">
+                                            <li *ngFor="let filter of activeFilters; trackBy: trackById" class="applied-filters__item">
+                                                <button
+                                                    type="button"
+                                                    class="applied-filters__button applied-filters__button--filter"
+                                                    (click)="resetFilter(filter)">
+                                                    {{ filter | activeFilterLabel }}
+                                                    <app-icon icon="cross-9-light"></app-icon>
+                                                </button>
+                                            </li>
+                                            <li class="applied-filters__item">
+                                                <button
+                                                    type="button"
+                                                    class="applied-filters__button applied-filters__button--clear"
+                                                    (click)="resetAllFilters()">
+                                                    {{ 'BUTTON_CLEAR_ALL' | translate }}
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--Empty state-->
+                            <div *ngIf="!data.items.length && status === 'done'" class="products-view__empty">
+                                <ng-container *ngIf="activeFilters?.length">
+                                    <div class="products-view__empty-title">
+                                        {{ 'TEXT_NO_MATCHING_ITEMS_TITLE' | translate }}
+                                    </div>
+                                    <div class="products-view__empty-subtitle">
+                                        {{ 'TEXT_NO_MATCHING_ITEMS_SUBTITLE' | translate }}
+                                    </div>
+                                    <div class="products-view__empty-actions">
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="resetAllFilters()">
+                                            {{ 'BUTTON_RESET_FILTERS' | translate }}
+                                        </button>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!activeFilters?.length">
+                                    <div class="products-view__empty-title">
+                                        {{ 'TEXT_CATEGORY_IS_EMPTY_TITLE' | translate }}
+                                    </div>
+                                    <div class="products-view__empty-subtitle">
+                                        {{ 'TEXT_CATEGORY_IS_EMPTY_SUBTITLE' | translate }}
+                                    </div>
+                                </ng-container>
+                            </div>
+
+
+                            <!--View products-->
+                            <div class="products-view__list products-list products-list--grid--4"
+                                 *ngIf="data.items.length"
+                                 [attr.data-layout]="viewLayout === 'grid-with-features' ? 'grid' : viewLayout"
+                                 [attr.data-with-features]="viewLayout === 'grid-with-features' ? 'true' : 'false'">
+                                <!--Product list header-->
+                                <div class="products-list__head">
+                                    <div class="products-list__column products-list__column--image">{{ 'TABLE_IMAGE' | translate }}</div>
+                                    <div class="products-list__column products-list__column--meta">{{ 'TABLE_SKU' | translate }}</div>
+                                    <div class="products-list__column products-list__column--product">{{ 'TABLE_PRODUCT' | translate }}</div>
+
+                                    <!--Show rating only if it's allowed in settings-->
+                                    <div class="products-list__column products-list__column--rating" *ngIf="appSettings?.rating">{{ 'TABLE_RATING' | translate }}</div>
+
+                                    <div class="products-list__column products-list__column--price">{{ 'TABLE_PRICE' | translate }}</div>
+                                </div>
+
+
+                                <!--Iterate: over products-->
+                                <div class="products-list__content">
+                                    <div *ngFor="let product of data.items; trackBy: trackByProductId" class="products-list__item">
+                                        <app-product-card [product]="product"></app-product-card>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Pagination-->
+                            <div class="products-view__pagination" *ngIf="data.items.length">
+                                <nav aria-label="Page navigation example">
+                                    todo: delete {{ filterFormGroup.get('page').value }}
+                                    <app-pagination formControlName="page" [siblings]="2" [total]="data.pages"></app-pagination>
+                                </nav>
+                                <div class="products-view__pagination-legend">
+                                    {{ 'TEXT_SHOWING_PRODUCTS' | translate:{
+                                    from: data.from,
+                                    to: data.to,
+                                    total: data.total
+                                } }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Spacer-->
+<div class="nao-spacer-before-footer"></div>

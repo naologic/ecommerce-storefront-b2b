@@ -42,6 +42,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SanitizeHtmlPipe } from "./pipes/saniteze-html.pipe";
 import { BlockBrandsComponent } from "./block-brands/block-brands.component";
+import { NaoLoadingComponent } from "./nao-loading/nao-loading.component";
 
 @NgModule({
     imports: [
@@ -90,7 +91,8 @@ import { BlockBrandsComponent } from "./block-brands/block-brands.component";
         CheckboxComponent,
         RadioButtonComponent,
         SanitizeHtmlPipe,
-        BlockBrandsComponent
+        BlockBrandsComponent,
+        NaoLoadingComponent
     ],
     exports: [
         CommonModule,
@@ -135,7 +137,8 @@ import { BlockBrandsComponent } from "./block-brands/block-brands.component";
         CheckboxComponent,
         RadioButtonComponent,
         SanitizeHtmlPipe,
-        BlockBrandsComponent
+        BlockBrandsComponent,
+        NaoLoadingComponent
     ]
 })
 export class SharedModule { }

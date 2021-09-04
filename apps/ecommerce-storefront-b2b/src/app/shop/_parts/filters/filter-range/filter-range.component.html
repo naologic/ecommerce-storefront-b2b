@@ -2,6 +2,7 @@
     <ng-container *ngIf="isPlatformBrowser">
         <div class="filter-range__slider">
             <div class="ngx-slider-custom">
+
                 <ngx-slider
                     [formControl]="control"
                     [options]="{
@@ -22,5 +23,9 @@
                 <span class="filter-range__max-value">{{ slider.highValue | currencyFormat }}</span>
             </div>
         </div>
+        {{ control.value }}
+
+        {{ options | json }}
+
     </ng-container>
 </div>

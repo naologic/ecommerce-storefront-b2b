@@ -52,9 +52,9 @@ The main children routes registered (using lazy loading) are the following:
 
     .
     ├── 'shop/'
-        ├── ''                                              ->  PageShopComponent
-        ├── 'category/products'                             ->  PageShopComponent
-        ├── 'category/:categorySlug/:categoryId/products'   ->  PageShopComponent
+        ├── ''                                              ->  PageShopListComponent
+        ├── 'category/products'                             ->  PageShopListComponent
+        ├── 'category/:categorySlug/:categoryId/products'   ->  PageShopListComponent
         ├── 'products/:productSlug/:productId'              ->  PageProductComponent
         ├── 'cart'                                          ->  PageCartComponent
         ├── 'checkout'                                      ->  PageCheckoutComponent
@@ -181,7 +181,7 @@ This directory contains interfaces definitions being used across the entire appl
             ├── departments-link.ts    # Definition for DepartmentsLink interface used in DepartmentsComponent and HeaderComponent
             ├── filter.ts              # Definitions for filter interfaces used in multiple components within ShopModule
             ├── link.ts                # Definitions for link interfaces used in MenuComponent and HeaderComponent
-            ├── list.ts                # Definitions for list interfaces used in PageShopComponent and ShopService
+            ├── list.ts                # Definitions for list interfaces used in PageShopListComponent and ShopService
             ├── main-menu-link.ts      # Definition for MainMenuLink interface used in MainMenuComponent
             ├── menu.ts                # Definitions for menu interfaces used in DepartmentsLink and MegamenuComponent
             ├── mobile-menu-link.ts    # Definition for MobileMenuLink interface used in MobileMenuLinksComponent, MobileMenuSettingsComponent and MobileMenuComponent

@@ -4,8 +4,8 @@ import { ProductsList } from '../interfaces/list';
 import { Product } from '../interfaces/product';
 import { GetProductsListOptions } from '../interfaces/shop';
 import { ActiveFilter, Filter } from '../interfaces/filter';
-import { filterHandlers } from './_parts/filters/filter-handlers';
-import { FilterHandler } from './_parts/filters/filter.handler';
+// import { filterHandlers } from './_parts/filters/filter-handlers';
+// import { FilterHandler } from './_parts/filters/filter.handler';
 
 @Injectable()
 export class ShopService {
@@ -33,7 +33,7 @@ export class ShopService {
         sort: 'name_asc',
         filters: {},
         searchTerm: null,
-        categoryId: null,
+        customPrice: false
     };
 
     // getters for list
@@ -65,45 +65,45 @@ export class ShopService {
      * Update: list state, filters and options
      */
     public setList(list: ProductsList): void {
-        // -->Update: list state
-        this.listState = list;
-        // -->Emit: updated list
-        this.listSubject$.next(this.listState);
-
-        // -->Build: filters with handles
-        const filtersWithHandlers = this.listState.filters
-            .map(filter => ({ filter, handler: filterHandlers.find(x => x.type === filter.type) }))
-            .filter((x): x is {filter: Filter; handler: FilterHandler} => !!x.handler);
-
-        // -->Get: active filters
-        const activeFilters = filtersWithHandlers.reduce<ActiveFilter[]>((acc, { filter, handler }) => {
-            return [...acc, ...handler.activeFilters(filter)];
-        }, []);
-
-        // -->Clear: removed filter state and notify active filter updates
-        this.removedFiltersState = [];
-        this.activeFiltersSubject$.next(activeFilters);
-        this.currentFiltersSubject$.next(activeFilters);
-
-        const filters: GetProductsListOptions['filters'] = {};
-
-        // -->Update: filters values
-        filtersWithHandlers.forEach(({ filter, handler }) => {
-            const value = handler.serialize(filter.value);
-
-            if (value !== null) {
-                filters[filter.slug] = value;
-            }
-        });
-
-        // -->Set: options state
-        this.optionsState = {
-            ...this.optionsState,
-            page: list.page,
-            limit: list.limit,
-            sort: list.sort,
-            filters
-        };
+        // // -->Update: list state
+        // this.listState = list;
+        // // -->Emit: updated list
+        // this.listSubject$.next(this.listState);
+        //
+        // // -->Build: filters with handles
+        // const filtersWithHandlers = this.listState.filters
+        //     .map(filter => ({ filter, handler: filterHandlers.find(x => x.type === filter.type) }))
+        //     .filter((x): x is {filter: Filter; handler: FilterHandler} => !!x.handler);
+        //
+        // // -->Get: active filters
+        // const activeFilters = filtersWithHandlers.reduce<ActiveFilter[]>((acc, { filter, handler }) => {
+        //     return [...acc, ...handler.activeFilters(filter)];
+        // }, []);
+        //
+        // // -->Clear: removed filter state and notify active filter updates
+        // this.removedFiltersState = [];
+        // this.activeFiltersSubject$.next(activeFilters);
+        // this.currentFiltersSubject$.next(activeFilters);
+        //
+        // const filters: GetProductsListOptions['filters'] = {};
+        //
+        // // -->Update: filters values
+        // filtersWithHandlers.forEach(({ filter, handler }) => {
+        //     const value = handler.serialize(filter.value);
+        //
+        //     if (value !== null) {
+        //         filters[filter.slug] = value;
+        //     }
+        // });
+        //
+        // // -->Set: options state
+        // this.optionsState = {
+        //     ...this.optionsState,
+        //     page: list.page,
+        //     limit: list.limit,
+        //     sort: list.sort,
+        //     filters
+        // };
     }
 
     /**
@@ -146,22 +146,22 @@ export class ShopService {
      * Reset: filter
      */
     public resetFilter(activeFilter: ActiveFilter): void {
-        // -->Get: filter handler from type
-        const handler = filterHandlers.find(x => x.type === activeFilter.type);
-
-        // -->Check: handler
-        if (!handler) {
-            return;
-        }
-
-        // -->Remove: active filter
-        const removedFilters = [...this.removedFiltersState, activeFilter];
-        // -->Get: all removed filters with the same slug
-        const all = removedFilters.filter(x => x.original.slug === activeFilter.original.slug);
-
-        // -->Reset: values and remove filters
-        this.setFilterValue(activeFilter.original.slug, handler.getResetValue(all));
-        this.setRemovedFilters(removedFilters);
+        // // -->Get: filter handler from type
+        // const handler = filterHandlers.find(x => x.type === activeFilter.type);
+        //
+        // // -->Check: handler
+        // if (!handler) {
+        //     return;
+        // }
+        //
+        // // -->Remove: active filter
+        // const removedFilters = [...this.removedFiltersState, activeFilter];
+        // // -->Get: all removed filters with the same slug
+        // const all = removedFilters.filter(x => x.original.slug === activeFilter.original.slug);
+        //
+        // // -->Reset: values and remove filters
+        // this.setFilterValue(activeFilter.original.slug, handler.getResetValue(all));
+        // this.setRemovedFilters(removedFilters);
     }
 
     /**

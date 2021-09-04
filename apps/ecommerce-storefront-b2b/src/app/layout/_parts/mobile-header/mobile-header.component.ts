@@ -17,9 +17,9 @@ import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-cl
 import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
 import { CartService } from '../../../services/cart.service';
 import { MyListsService } from '../../../services/my-lists.service';
-import { ShopService } from '../../../shop/shop.service';
 import { NaoUserAccessService } from '@naologic/nao-user-access';
 import { AppService } from "../../../app.service";
+import { ShopProductService } from "../../../shop/shop-product.service";
 
 @Component({
     selector: 'app-mobile-header',
@@ -48,7 +48,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         public menu: LayoutMobileMenuService,
         public cart: CartService,
         public myLists: MyListsService,
-        private page: ShopService,
+        private shopProductService: ShopProductService,
         private router: Router,
         private naoUsersService: NaoUserAccessService,
         public appService: AppService,
@@ -67,7 +67,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // -->Subscribe: to searchTerm page option changes
         this.subs.add(
-            this.page.optionsChange$.subscribe((value) => {
+            this.shopProductService.optionsChange$.subscribe((value) => {
                 // -->Check: searchTerm option
                 if (value?.searchTerm) {
                     this.query$.next(value.searchTerm);
@@ -125,7 +125,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
      */
     public onSearchKeyUp(searchInputValue: string): void {
         this.query$.next(searchInputValue);
-        this.disableSearch$.next(searchInputValue === this.page.options.searchTerm);
+        this.disableSearch$.next(searchInputValue === this.shopProductService.options.searchTerm);
     }
 
 
@@ -136,10 +136,10 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         // -->Check: if the current route starts with shop
         if(!this.router.url?.startsWith('/shop/category')) {
             // -->Redirect: to shop
-            this.router.navigateByUrl('/shop', { state: { skipClearFilters: true } }).then();
+            this.router.navigateByUrl('/shop').then();
         }
         // -->Trigger: search
-        this.page.setSearchTerm(this.query$.getValue());
+        this.shopProductService.setSearchTerm(this.query$.getValue());
         // -->Disable: search until query changes
         this.disableSearch$.next(true);
     }

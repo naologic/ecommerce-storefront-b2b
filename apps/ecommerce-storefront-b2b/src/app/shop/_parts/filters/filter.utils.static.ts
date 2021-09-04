@@ -123,7 +123,45 @@ function buildPriceFilter(min: number, max: number, valueMin: number, valueMax: 
     }
 }
 
+/**
+ * Serialize: filter value
+ */
+function serializeFilterValue(filterType: string, value: string[] | [number, number]): string {
+    switch (filterType) {
+        case 'range':
+            return value.join('-');
+        case 'check':
+        case 'rating':
+            return value.join(',');
+        default:
+            return typeof value === 'string' ? value : null;
+    }
+
+}
+
+
+/**
+ * Deserialize: filter
+ */
+function deserializeFilterValue(filterType: string, value: any): any[] {
+    switch (filterType) {
+        case 'range':
+            // const [min, max] = value.split('-').map(parseFloat);
+            //
+            // return [min, max];
+        case 'check':
+        case 'rating':
+            // return value.join(',');
+            return value ? value.split(',') : [];
+        default:
+            return value;
+    }
+
+}
+
 export {
+    deserializeFilterValue,
+    serializeFilterValue,
     buildCategoriesFilter,
     buildManufacturerFilter,
     buildPriceFilter,

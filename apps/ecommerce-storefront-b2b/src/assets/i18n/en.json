@@ -286,5 +286,6 @@
   "PAGE_500_DESCRIPTION": "Please try again later.",
   "PAGE_ERROR": "Page Error",
   "GO_TO_HOME_PAGE": "Go To Home Page",
-  "TEXT_TOAST_PRODUCT_ALREADY_EXISTS": "Oops, that product already seems to be on your list."
+  "TEXT_TOAST_PRODUCT_ALREADY_EXISTS": "Oops, that product already seems to be on your list.",
+  "ACTIVE_FILTER_SEARCH_TERM": "Search: \"{value}\""
 }

@@ -93,17 +93,18 @@ function getBreadcrumbs(categories: any[], categoryId: number): any[] {
     if (isNaN(categoryId)) {
         return []
     }
+
     // -->Get: current category
     const currentCategory = categories.find(c => c.id === categoryId)
     if (currentCategory) {
         categories$.push(currentCategory)
     }
+
     // -->Get: parent category
     const parent = categories.find(c => c?.id === currentCategory?.parentId)
     if (parent) {
         categories$.push(...buildArrayOfSelectedCategories(categories, parent));
     }
-
 
     return categories$.sort((a, b) => a.level - b.level);
 }

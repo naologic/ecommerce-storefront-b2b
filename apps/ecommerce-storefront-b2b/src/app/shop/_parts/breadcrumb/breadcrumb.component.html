@@ -13,7 +13,7 @@
                 <span class="breadcrumb__item-link">{{ item.label }}</span>
             </ng-container>
             <ng-container *ngIf="!isLast">
-                <a [routerLink]="item.url" class="breadcrumb__item-link">{{ item.label }}</a>
+                <a href="javascript:void(0)" (click)="navigateAndAddState(item.url, item.state)" class="breadcrumb__item-link">{{ item.label }}</a>
             </ng-container>
         </li>
         <li *ngIf="withPageTitle" class="breadcrumb__title-safe-area" role="presentation"></li>

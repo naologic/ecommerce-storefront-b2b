@@ -1,9 +1,13 @@
-import { Component, Inject, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, PLATFORM_ID } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subscription } from "rxjs";
 import { fromMatchMedia } from '../../../shared/functions/rxjs/from-match-media';
-import { ShopSidebarService } from '../../shop-sidebar.service';
+import { Filter } from "../../../interfaces/filter";
+import { map } from "rxjs/operators";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { serializeFilterValue } from "../filters/filter.utils.static";
+import { ShopProductService } from "../../shop-product.service";
+
 
 @Component({
     selector: 'app-shop-sidebar',
@@ -11,48 +15,93 @@ import { ShopSidebarService } from '../../shop-sidebar.service';
     styleUrls: ['./shop-sidebar.component.scss'],
 })
 export class ShopSidebarComponent implements OnDestroy {
-    @Input() public offcanvas: 'always' | 'mobile' = 'always';
+    private subs = new Subscription();
+    public isOpen = false;
+    public filters: Filter[] = [];
+    public form!: FormGroup;
 
-    private destroy$: Subject<void> = new Subject<void>();
-
-    // public latestProducts$: Observable<Product[]> = of([]);
 
     constructor(
-        // private shop: ShopApi,
-        public sidebar: ShopSidebarService,
         @Inject(PLATFORM_ID) private platformId: any,
-        @Inject(DOCUMENT) private document: Document
+        @Inject(DOCUMENT) private document: Document,
+        private fb: FormBuilder,
+        private cd: ChangeDetectorRef,
+        public shopProductService: ShopProductService,
     ) {
-        // -->Toggle: sidebar according to isOpen value
-        this.sidebar.isOpen$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isOpen) => {
-                if (isOpen) {
-                    this.open();
-                } else {
-                    this.close();
-                }
-            });
+        // -->Set: filters:
+        this.setFilters();
 
+        // -->When you are on small devices, it should be close by default
         if (isPlatformBrowser(this.platformId)) {
             // -->Track: max-width changes
-            fromMatchMedia('(max-width: 991px)').pipe(takeUntil(this.destroy$)).subscribe(media => {
-                if (this.offcanvas === 'mobile' && this.sidebar.isOpen && !media.matches) {
-                    this.sidebar.close();
-                }
-            });
+            this.subs.add(
+                fromMatchMedia('(max-width: 991px)').subscribe(media => {
+                    if (this.isOpen && !media.matches) {
+                        this.close();
+                    }
+                })
+            );
         }
     }
 
-    // public ngOnInit(): void {
-    //     this.latestProducts$ = this.shop.getLatestProducts(5);
-    // }
+
+    /**
+     * Set: filters
+     */
+    public setFilters(): void {
+        // -->Subscribe: to page list changes
+        this.subs.add(
+            this.shopProductService.list$.pipe(map(x => x.filters)).subscribe(filters => {
+                // -->Init: fields
+                const fields: { [filterSlug: string]: FormControl } = {};
+                // -->Set: filters
+                this.filters = filters;
+
+                // -->Map: filters
+                filters.map((filter) => {
+                    // -->Set: Form control
+                    fields[filter.slug] = this.fb.control(filter.value);
+
+                    // -->Subscribe: to value changes and set filter
+                    fields[filter.slug].valueChanges.subscribe((value) => {
+
+                        // todo: delete this
+                        if (filter.slug === 'price') {
+                            console.error("prive filter update >>>", filter)
+                            console.log('filter.slug >>>>', filter.slug, value, this.shopProductService.options?.customPrice)
+                            this.shopProductService.setOptionValue('customPrice', true)
+                            // -->Set: filter value
+                            this.shopProductService.setFilterValue(
+                                filter.slug,
+                                serializeFilterValue(filter.type, value)
+                            );
+                        } else {
+                            // -->Set: filter value
+                            this.shopProductService.setFilterValue(
+                                filter.slug,
+                                serializeFilterValue(filter.type, value)
+                            );
+                        }
+
+                    });
+                })
+
+                // -->Set: form group
+                this.form = this.fb.group(fields);
+                // -->Trigger: change detection
+                // this.cd.detectChanges();
+            })
+        );
+    }
 
     /**
      * Open: sidebar
      */
-    private open(): void {
+    public open(): void {
         if (isPlatformBrowser(this.platformId)) {
+            // -->Set: state
+            this.isOpen = true;
+            // -->Get: body width
             const bodyWidth = this.document.body.offsetWidth;
 
             // -->Adjust: document styles to make space for the sidebar
@@ -64,16 +113,28 @@ export class ShopSidebarComponent implements OnDestroy {
     /**
      * Close: sidebar
      */
-    private close(): void {
+    public close(): void {
         if (isPlatformBrowser(this.platformId)) {
+            // -->Set: state
+            this.isOpen = false;
             // -->Reset: document styles
             this.document.body.style.overflow = '';
             this.document.body.style.paddingRight = '';
         }
     }
 
+    /**
+     * Track: filter by slug
+     */
+    public trackBySlug(index: number, filter: Filter): string {
+        return filter.slug;
+    }
+
+
+    /**
+     * Destroy
+     */
     public ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+        this.subs.unsubscribe();
     }
 }

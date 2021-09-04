@@ -1,26 +1,52 @@
-<div class="sidebar"
-     [class.sidebar--offcanvas--always]="offcanvas === 'always'"
-     [class.sidebar--offcanvas--mobile]="offcanvas === 'mobile'"
-     [class.sidebar--open]="sidebar.isOpen">
-    <div class="sidebar__backdrop" (click)="sidebar.close()"></div>
+<div class="sidebar sidebar--offcanvas--mobile" [class.sidebar--open]="isOpen">
+    <div class="sidebar__backdrop" (click)="close()"></div>
+
     <div class="sidebar__body">
         <div class="sidebar__header">
             <div class="sidebar__title">{{ 'HEADER_FILTERS' | translate }}</div>
-            <button class="sidebar__close" type="button" (click)="sidebar.close()">
+            <button class="sidebar__close" type="button" (click)="close()">
                 <app-icon icon="cross-12"></app-icon>
             </button>
         </div>
-        <div class="sidebar__content">
-            <app-widget-filters [offcanvasSidebar]="offcanvas"></app-widget-filters>
 
-    <!--        <app-widget-products-->
-    <!--            *ngIf="offcanvas !== 'always'"-->
-    <!--            [ngClass]="{-->
-    <!--                'd-none d-lg-block': offcanvas === 'mobile'-->
-    <!--            }"-->
-    <!--            [widgetTitle]="'HEADER_LATEST_PRODUCTS' | translate"-->
-    <!--            [products]="(latestProducts$|async) || []"-->
-    <!--        ></app-widget-products>-->
+        <div class="sidebar__content">
+            <div class="widget widget-filters widget-filters--offcanvas--mobile">
+
+                <div class="widget__header widget-filters__header">
+                    <h4>{{ 'HEADER_FILTERS' | translate }}</h4>
+                </div>
+
+                <div class="widget-filters__list" [formGroup]="form" *ngIf="form">
+                    <div *ngFor="let filter of filters; trackBy: trackBySlug" class="widget-filters__item">
+                        <div class="filter filter--opened" appCollapseItem="filter--opened" #collapseItem="appCollapseItem">
+                            <button type="button" class="filter__title" (click)="collapseItem.toggle()">
+                                {{ filter.name }}
+                                <span class="filter__arrow"><app-icon icon="arrow-rounded-down-12x7"></app-icon></span>
+                            </button>
+                            <div class="filter__body nao-fancy-scrollbar-sm" appCollapseContent>
+                                <div class="filter__container">
+                                    <app-filter-category *ngIf="filter.type === 'category'" [options]="filter"></app-filter-category>
+
+                                    <app-filter-range *ngIf="filter.type === 'range'" [options]="filter" [formControlName]="filter.slug"></app-filter-range>
+
+                                    <app-filter-check *ngIf="filter.type === 'check'" [options]="filter" [formControlName]="filter.slug"></app-filter-check>
+
+                                    <!--<app-filter-radio *ngIf="filter.type === 'radio'" [options]="filter" [formControlName]="filter.slug"></app-filter-radio>-->
+                                    <!--Show rating only if it's allowed in settings-->
+                                    <!--This will have to be connected to ecomm in the future-->
+                                    <!--                    <app-filter-rating *ngIf="filter.type === 'rating'" [options]="filter" [formControlName]="filter.slug"></app-filter-rating>-->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget-filters__actions d-flex">
+                    <button class="btn btn-secondary btn-sm" (click)="shopProductService.resetAllFilters()">{{ 'BUTTON_RESET' | translate }}</button>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

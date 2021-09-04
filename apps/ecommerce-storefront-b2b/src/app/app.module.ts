@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app.routing';
 import { SharedModule } from './shared/shared.module';
 import { ECommerceService } from "./e-commerce.service";
 import { AppService } from "./app.service";
-import { ShopService } from "./shop/shop.service";
 import { AccountAuthService } from "./account/account-auth.service";
 import { AccountProfileService } from "./account/account-profile.service";
 import { ActiveCountryList, ActiveCurrencyList, ActiveLanguageList } from "./app.locale";
@@ -27,6 +26,7 @@ import { RootComponent } from './layout/root/root.component';
 import { PageNotFoundComponent } from './default-pages/page-not-found/page-not-found.component';
 import { PageServerErrorComponent } from './default-pages/page-server-error/page-server-error.component';
 import { BrowserJsonLdModule } from "./shared/seo-helper/json-ld.module";
+import { ShopProductService } from "./shop/shop-product.service";
 
 
 @NgModule({
@@ -99,9 +99,9 @@ import { BrowserJsonLdModule } from "./shared/seo-helper/json-ld.module";
     providers: [
         ECommerceService,
         AppService,
-        ShopService,
         AccountAuthService,
-        AccountProfileService
+        AccountProfileService,
+        ShopProductService
     ]
 })
 export class AppModule {

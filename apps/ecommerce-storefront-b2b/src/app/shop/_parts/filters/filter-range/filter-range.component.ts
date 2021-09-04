@@ -1,4 +1,11 @@
-import { Component, forwardRef, Inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+    Component,
+    forwardRef,
+    Inject,
+    Input,
+    OnInit,
+    PLATFORM_ID
+} from "@angular/core";
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { debounceTime, filter, tap } from 'rxjs/operators';
@@ -19,9 +26,7 @@ import { RangeFilter } from '../../../../interfaces/filter';
 })
 export class FilterRangeComponent implements OnInit, ControlValueAccessor {
     @Input() public options!: RangeFilter;
-
     private value!: [number, number];
-    private debouncedValue: [number, number]|null = null;
     private changeFn: (_: [number, number]) => void = () => {};
     private touchedFn: () => void = () => {};
 
@@ -42,10 +47,10 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
         // -->Subscribe: to control value changes
         this.control.valueChanges.pipe(
             filter(value => value[0] !== this.value[0] || value[1] !== this.value[1]),
-            tap(value => this.debouncedValue = value),
-            debounceTime(350),
+            // tap(value => this.debouncedValue = value),
+            debounceTime(100),
         ).subscribe(value => {
-            this.debouncedValue = null;
+            // this.debouncedValue = null;
             // -->Handle: changes
             this.changeFn(value);
             this.touchedFn();
@@ -81,12 +86,9 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
      * Set: control value
      */
     public writeValue(value: any): void {
-        if (this.debouncedValue !== null) {
-            return;
-        }
-
         this.value = value;
-        this.control.setValue(this.value, { emitEvent: false });
+        this.control.patchValue(this.value, { emitEvent: false, onlySelf: true });
+        this.control.setValue(this.value, { emitEvent: false, onlySelf: true });
     }
 
     /**

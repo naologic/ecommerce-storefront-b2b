@@ -8,9 +8,9 @@ import { PageCartComponent } from './page-cart/page-cart.component';
 import { PageCheckoutComponent } from './page-checkout/page-checkout.component';
 import { PageCompareComponent } from './page-compare/page-compare.component';
 import { PageProductComponent } from './page-product/page-product.component';
-import { PageShopComponent } from './page-shop/page-shop.component';
 import { PageMyListComponent } from './page-my-list/page-my-list.component';
 import { PageMyListsComponent } from './page-my-lists/page-my-lists.component';
+import { PageShopListComponent } from "./page-shop-list/page-shop-list.component";
 
 @NgModule({
     declarations: [
@@ -18,9 +18,9 @@ import { PageMyListsComponent } from './page-my-lists/page-my-lists.component';
         PageCheckoutComponent,
         PageCompareComponent,
         PageProductComponent,
-        PageShopComponent,
         PageMyListComponent,
         PageMyListsComponent,
+        PageShopListComponent
     ],
     imports: [
         NgxPayPalModule,

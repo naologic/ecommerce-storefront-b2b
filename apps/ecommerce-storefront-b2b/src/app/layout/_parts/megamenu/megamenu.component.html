@@ -5,24 +5,13 @@
     <div class="row">
         <div *ngFor="let column of menu.columns" class="col-{{ column.size }}">
             <ul *ngIf="column.links?.length" class="megamenu__links megamenu-links megamenu-links--root">
-                <li
-                    *ngFor="let link of column.links"
-                    class="megamenu-links__item"
-                    [class.megamenu-links__item--has-submenu]="link.links"
-                >
-                    <a *ngIf="!link.external" [routerLink]="link.url" class="megamenu-links__item-link" (click)="itemClick.emit(link)">
+                <li *ngFor="let link of column.links" class="megamenu-links__item" [class.megamenu-links__item--has-submenu]="link.links">
+                    <a href="javascript:void(0)" class="megamenu-links__item-link" (click)="navigateAndResetFilters(link.url);itemClick.emit(link)">
                         {{ link.title }}
                     </a>
-                    <a *ngIf="link.external" class="megamenu-links__item-link" [href]="link.url" (click)="itemClick.emit(link)">
-                        {{ link.title }}
-                    </a>
-
                     <ul *ngIf="link.links?.length" class="megamenu-links">
                         <li *ngFor="let sublink of link.links" class="megamenu-links__item">
-                            <a *ngIf="!sublink.external" [routerLink]="sublink.url" class="megamenu-links__item-link" (click)="itemClick.emit(sublink)">
-                                {{ sublink.title }}
-                            </a>
-                            <a *ngIf="sublink.external" class="megamenu-links__item-link" [href]="sublink.url" (click)="itemClick.emit(sublink)">
+                            <a href="javascript:void(0)" class="megamenu-links__item-link" (click)="navigateAndResetFilters(sublink.url);itemClick.emit(sublink)">
                                 {{ sublink.title }}
                             </a>
                         </li>

@@ -11,7 +11,7 @@
             <ng-container *ngIf="item.url && (item.external || item?.submenu?.length)">
                 <a
                     [attr.target]="item.external ? '_blank' : undefined"
-                    [href]="item.url"
+                    href="javascript:void(0)"
                     [class.highlight]="item.customFields?.highlight"
                     (click)="onItemClick($event, item, panel)"
                 >
@@ -20,7 +20,7 @@
             </ng-container>
             <ng-container *ngIf="item.url && !(item.external || item?.submenu?.length)">
                 <a
-                    [routerLink]="item.url"
+                    href="javascript:void(0)"
                     [class.highlight]="item.customFields?.highlight"
                     (click)="onItemClick($event, item, panel)"
                 >

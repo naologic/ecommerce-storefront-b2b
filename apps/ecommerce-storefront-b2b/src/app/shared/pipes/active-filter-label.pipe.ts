@@ -18,22 +18,27 @@ export class ActiveFilterLabelPipe implements PipeTransform {
         private cdr: ChangeDetectorRef,
     ) {}
 
-    public transform(filter: ActiveFilter): string {
+    // todo: add typecast
+    public transform(filter: any): string {
         this.currencyFormatPipe.transform(0);
-
         switch (filter.type) {
+            case 'searchTerm':
+                return this.translatePipe.transform('ACTIVE_FILTER_SEARCH_TERM', { value: filter.value });
             case 'range':
                 const [min, max] = filter.original.value;
 
                 return `${this.currencyFormatPipe.transform(min)} - ${this.currencyFormatPipe.transform(max)}`;
             case 'check':
-                return filter.item.name;
+                switch (filter.slug) {
+                    case 'manufacturer':
+                        return 'Manufacturer';
+                    default:
+                        return filter.item.name;
+                }
             case 'radio':
                 return `${ filter.original.name }: ${ filter.item.name }`;
             case 'rating':
                 return this.translatePipe.transform('TEXT_STARS', { stars: filter.item.rating });
-            case 'color':
-                return filter.item.name;
         }
 
         return '';

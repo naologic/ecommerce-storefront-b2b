@@ -1,18 +1,10 @@
-import {
-    Component,
-    ElementRef,
-    Inject,
-    Input,
-    NgZone,
-    OnDestroy,
-    OnInit,
-    PLATFORM_ID,
-} from '@angular/core';
+import { Component, ElementRef, Inject, Input, NgZone, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
 import { DepartmentsLink } from '../../../interfaces/departments-link';
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-departments',
@@ -32,6 +24,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
         @Inject(PLATFORM_ID) private platformId: any,
         private elementRef: ElementRef<HTMLElement>,
         private zone: NgZone,
+        private router: Router
     ) { }
 
     public ngOnInit(): void {
@@ -77,6 +70,17 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     public onItemClick(): void {
         this.isOpen = false;
         this.currentItem = null;
+    }
+
+    /**
+     * Redirect: and add reset filter state
+     */
+    public navigateAndResetFilters(url: string): void {
+        if (!url) {
+            return;
+        }
+        // -->Redirect: to the selected category
+        this.router.navigateByUrl(url, { state: { resetFilters: true } }).then();
     }
 
     public ngOnDestroy(): void {
