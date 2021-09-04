@@ -92,6 +92,11 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
+        // -->If: the page has a categoryId, check that this is valid
+        if (this.route.snapshot.params.categoryId && !this.appService.checkCategoryId(this.route.snapshot.params.categoryId)) {
+            this.router.navigateByUrl('/404').then();
+            return;
+        }
         // -->Set: app settings
         this.appSettings = this.appService.settings.getValue();
         // -->Set: title
@@ -206,7 +211,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         let minPrice, maxPrice;
         // -->Check: if there is a price already set, if not wait for the response
         // todo: testy with show price too
-        // if (this.appSettings.showPriceFilter && this.page.options.customPrice && options.filters.price?.split('-')?.length) {
+        // if (this.appSettings.showPriceFilter && this.shopService.options.customPrice && options.filters.price?.split('-')?.length) {
         //     // -->Split: string to get min and max price
         //     [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
         //     // -->Set: only if both of them are numbers
@@ -230,7 +235,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 // -->Check: if we show price filter
                 // todo: test with price too
                 // if (this.appSettings.showPriceFilter) {
-                //     const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice, !this.page.options.customPrice);
+                //     const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice, !this.shopService.options.customPrice);
                 //     // --->Push: price filter
                 //     console.log("filter price >>>", filterPrice)
                 //     filters.push(filterPrice);
@@ -422,39 +427,50 @@ export class PageShopListComponent implements OnInit, OnDestroy {
      */
     private setPageOptions(): void {
         // -->Update page options from query params
-        this.route.queryParams.pipe(take(1)).subscribe((param) => {
+        this.route.queryParams.pipe(take(1)).subscribe((params) => {
             // --Check: param
-            if (!param) {
+            if (!params) {
                 return;
             }
 
+            console.log("params >>>>", params)
+
             // -->Check: page
-            if (param.hasOwnProperty('page') && param['page']) {
-                this.shopService.options.page = param['page'];
+            if (params.hasOwnProperty('page') && params['page']) {
+                // -->Validate: value
+                const value = this.shopService.validateFilterParams('page', +params['page'])
+                // -->Set
+                this.shopService.options.page = value;
                 // -->Patch: form control
-                this.filterFormGroup.get('page').setValue(+param['page']);
+                this.filterFormGroup.get('page').setValue(value);
                 this.filterFormGroup.get('page').updateValueAndValidity();
             }
 
             // -->Check: limit
-            if (param.hasOwnProperty('limit') && param['limit']) {
-                this.shopService.options.limit = param['limit'];
+            if (params.hasOwnProperty('limit') && params['limit']) {
+                // -->Validate: value
+                const value = this.shopService.validateFilterParams('limit', +params['limit'])
+                // -->Set:
+                this.shopService.options.limit = value;
                 // -->Patch: form control
-                this.filterFormGroup.get('limit').setValue(+param['limit']);
+                this.filterFormGroup.get('limit').setValue(value);
                 this.filterFormGroup.get('limit').updateValueAndValidity();
             }
 
             // -->Check: sort
-            if (param.hasOwnProperty('sort') && param['sort']) {
-                this.shopService.options.sort = param['sort'];
+            if (params.hasOwnProperty('sort') && params['sort']) {
+                // -->Validate: value
+                const value = this.shopService.validateFilterParams('sort', params['sort'])
+                // -->Set:
+                this.shopService.options.sort = value;
                 // -->Patch: form control
-                this.filterFormGroup.get('sort').setValue(param['sort']);
+                this.filterFormGroup.get('sort').setValue(value);
                 this.filterFormGroup.get('sort').updateValueAndValidity();
             }
 
             // -->Check: searchTerm
-            if (param.hasOwnProperty('searchTerm') &&  param['searchTerm']) {
-                this.shopService.options.searchTerm = param['searchTerm'];
+            if (params.hasOwnProperty('searchTerm') &&  params['searchTerm']) {
+                this.shopService.options.searchTerm = params['searchTerm'] || null;
             }
 
             if (!this.shopService.options.filters) {
@@ -462,13 +478,14 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             }
 
             // -->Check: price filter
-            if (this.shopService.options.customPrice && param.hasOwnProperty('filter_price') && param['filter_price']) {
-                this.shopService.options.filters['price'] = param['filter_price'];
+            if (this.shopService.options.customPrice && params.hasOwnProperty('filter_price') && params['filter_price']) {
+                this.shopService.options.filters['price'] = params['filter_price'];
             }
 
             // -->Check: manufacturer filter
-            if (param.hasOwnProperty('filter_manufacturer') && param['filter_manufacturer']) {
-                this.shopService.options.filters['manufacturer'] = param['filter_manufacturer'];
+            if (params.hasOwnProperty('filter_manufacturer') && params['filter_manufacturer'] &&
+                this.shopService.validateFilterParams('manufacturer', params['filter_manufacturer'])) {
+                this.shopService.options.filters['manufacturer'] = params['filter_manufacturer'];
             }
 
             console.log("setPageOptions before updateUrl >>>>", this.shopService.options);

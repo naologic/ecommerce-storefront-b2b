@@ -7,8 +7,8 @@
             <div class="document__header">
                 <h1 class="document__title">{{ 'TEXT_ABOUT_US_TITLE' | translate }}</h1>
             </div>
-            <div class="document__content card">
-                <div class="typography" *ngIf="generalSettings?.aboutUs">
+            <div class="document__content card" *ngIf="generalSettings?.aboutUs">
+                <div class="typography">
                     <p [innerHTML]="generalSettings?.aboutUs | sanitizeHtml"></p>
                 </div>
             </div>

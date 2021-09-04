@@ -25,7 +25,8 @@ export class ActiveFilterLabelPipe implements PipeTransform {
             case 'searchTerm':
                 return this.translatePipe.transform('ACTIVE_FILTER_SEARCH_TERM', { value: filter.value });
             case 'range':
-                const [min, max] = filter.original.value;
+                console.log("filter >>>", filter)
+                const [min, max] = filter.value?.split('-');
 
                 return `${this.currencyFormatPipe.transform(min)} - ${this.currencyFormatPipe.transform(max)}`;
             case 'check':

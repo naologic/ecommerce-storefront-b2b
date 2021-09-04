@@ -125,6 +125,31 @@ export class AppService implements OnDestroy {
         }
     }
 
+
+    /**
+     * Check: that the manufacturer exists
+     */
+    public checkManufacturerId(manufacturerId: string): boolean {
+        if (manufacturerId && Array.isArray(this.appInfo.getValue()?.vendors)) {
+            const manufacturer = this.appInfo.getValue().vendors.find(v => v._id === manufacturerId);
+            // -->Return:
+            return !!manufacturer;
+        }
+        return false;
+    }
+
+    /**
+     * Check: that category exists
+     */
+    public checkCategoryId(categoryId: string): boolean {
+        if (categoryId && Array.isArray(this.appInfo.getValue()?.categories?.items)) {
+            const category = this.appInfo.getValue().categories.items.find(v => v.id === +categoryId);
+            // -->Return:
+            return !!category;
+        }
+        return false;
+    }
+
     public ngOnDestroy(): void {
         this.subs.unsubscribe();
     }

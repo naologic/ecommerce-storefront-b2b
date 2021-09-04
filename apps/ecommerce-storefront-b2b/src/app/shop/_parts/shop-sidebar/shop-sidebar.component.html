@@ -17,29 +17,32 @@
                 </div>
 
                 <div class="widget-filters__list" [formGroup]="form" *ngIf="form">
-                    <div *ngFor="let filter of filters; trackBy: trackBySlug" class="widget-filters__item">
-                        <div class="filter filter--opened" appCollapseItem="filter--opened" #collapseItem="appCollapseItem">
-                            <button type="button" class="filter__title" (click)="collapseItem.toggle()">
-                                {{ filter.name }}
-                                <span class="filter__arrow"><app-icon icon="arrow-rounded-down-12x7"></app-icon></span>
-                            </button>
-                            <div class="filter__body nao-fancy-scrollbar-sm" appCollapseContent>
-                                <div class="filter__container">
-                                    <app-filter-category *ngIf="filter.type === 'category'" [options]="filter"></app-filter-category>
+                    <ng-container *ngFor="let filter of filters; trackBy: trackBySlug">
+                        <div  class="widget-filters__item" *ngIf="filter.type !== 'check' || filter.items?.length">
+                            <div class="filter filter--opened" appCollapseItem="filter--opened" #collapseItem="appCollapseItem">
+                                <button type="button" class="filter__title" (click)="collapseItem.toggle()">
+                                    {{ filter.name }}
+                                    <span class="filter__arrow"><app-icon icon="arrow-rounded-down-12x7"></app-icon></span>
+                                </button>
+                                <div class="filter__body nao-fancy-scrollbar-sm" appCollapseContent>
+                                    <div class="filter__container">
+                                        <app-filter-category *ngIf="filter.type === 'category'" [options]="filter"></app-filter-category>
 
-                                    <app-filter-range *ngIf="filter.type === 'range'" [options]="filter" [formControlName]="filter.slug"></app-filter-range>
+                                        <app-filter-range *ngIf="filter.type === 'range'" [options]="filter" [formControlName]="filter.slug"></app-filter-range>
 
-                                    <app-filter-check *ngIf="filter.type === 'check'" [options]="filter" [formControlName]="filter.slug"></app-filter-check>
+                                        <app-filter-check *ngIf="filter.type === 'check'" [options]="filter" [formControlName]="filter.slug"></app-filter-check>
 
-                                    <!--<app-filter-radio *ngIf="filter.type === 'radio'" [options]="filter" [formControlName]="filter.slug"></app-filter-radio>-->
-                                    <!--Show rating only if it's allowed in settings-->
-                                    <!--This will have to be connected to ecomm in the future-->
-                                    <!--                    <app-filter-rating *ngIf="filter.type === 'rating'" [options]="filter" [formControlName]="filter.slug"></app-filter-rating>-->
+                                        <!--<app-filter-radio *ngIf="filter.type === 'radio'" [options]="filter" [formControlName]="filter.slug"></app-filter-radio>-->
+                                        <!--Show rating only if it's allowed in settings-->
+                                        <!--This will have to be connected to ecomm in the future-->
+                                        <!--                    <app-filter-rating *ngIf="filter.type === 'rating'" [options]="filter" [formControlName]="filter.slug"></app-filter-rating>-->
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                    </ng-container>
                 </div>
 
                 <div class="widget-filters__actions d-flex">

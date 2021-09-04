@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { ProductsList } from '../interfaces/list';
 import { GetProductsListOptions } from '../interfaces/shop';
 import { serializeFilterValue } from "./_parts/filters/filter.utils.static";
+import { AppService } from "../app.service";
 
 
 export interface ActiveFilter2 {
@@ -36,6 +37,13 @@ export class ShopProductService {
         searchTerm: null,
         customPrice: false,
     };
+    /**
+     * Params options: for validation
+     */
+    public readonly paramsOptions = {
+        limits: [8, 16, 24, 32],
+        sorts: ['name_asc', 'name_desc']
+    }
     public filters = [];
 
     // todo: check this
@@ -43,7 +51,7 @@ export class ShopProductService {
         return this.optionsState;
     }
 
-    constructor() {
+    constructor(private appService: AppService) {
         // todo: check this
         // -->Init: options
         // this.setOptions(this.defaultOptions);
@@ -186,10 +194,6 @@ export class ShopProductService {
     public resetAllFilters(): void {
         this.setOptions({
             ...this.defaultOptions
-            // ...this.optionsState,
-            // page: 1,
-            // filters: {},
-            // searchTerm: null
         });
     }
 
@@ -199,6 +203,25 @@ export class ShopProductService {
     private setOptions(options: GetProductsListOptions): void {
         this.optionsState = options;
         this.optionsChange$.emit(options);
+    }
+
+
+    /**
+     * Validate: filter params
+     */
+    public validateFilterParams(type: 'limit' | 'page' | 'sort' | 'manufacturer', value): any {
+        switch (type) {
+            case "limit":
+                return this.paramsOptions.limits.includes(value) ? value : this.defaultOptions.limit;
+            case "page":
+                return !isNaN(value) && value > 0 ? value : this.defaultOptions.page;
+            case "sort":
+                return this.paramsOptions.sorts.includes(value) ? value : this.defaultOptions.sort;
+            case "manufacturer":
+                return this.appService.checkManufacturerId(value);
+            default:
+                return value;
+        }
     }
 
 }

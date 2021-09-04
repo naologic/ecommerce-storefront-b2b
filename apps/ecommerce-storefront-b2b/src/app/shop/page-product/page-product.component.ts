@@ -78,21 +78,6 @@ export class PageProductComponent implements OnInit, OnDestroy {
         // -->Check: if the user is logged in
         this.isLoggedIn = this.naoUsersService.isLoggedIn();
 
-        // data$.subscribe((data: PageProductData) => {
-        //     this.layout = data.layout;
-        //     this.sidebarPosition = data.sidebarPosition;
-        //     this.product = data.product;
-        //     this.featuredAttributes = this.product.attributes.filter(x => x.featured);
-        //
-        //     this.spec = this.product.type.attributeGroups.map(group => ({
-        //         ...group,
-        //         attributes: group.attributes.map(attribute => (
-        //             this.product.attributes.find(x => x.slug === attribute) || null
-        //         )).filter((x): x is ProductAttribute => x !== null),
-        //     })).filter(x => x.attributes.length > 0);
-        // });
-
-        // todo: add breadcrumb in refresh
         this.breadcrumb$ = this.language.current$.pipe(
             switchMap(() => product$.pipe(
                 map(product => {
@@ -108,17 +93,6 @@ export class PageProductComponent implements OnInit, OnDestroy {
             )),
         );
 
-        // data$.pipe(
-        //     map((data: PageProductData) => data.product),
-        //     switchMap(product => {
-        //         if (!product) {
-        //             return of([]);
-        //         }
-        //
-        //         return this.shop.getRelatedProducts(product._id, 8);
-        //     }),
-        //     takeUntil(this.destroy$),
-        // ).subscribe(x => this.relatedProducts = x);
 
         this.route.params.subscribe(params => {
             // -->Set: docId
@@ -151,7 +125,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
             // -->Check: product
             if (!this.product || !this.product.data) {
                 // -->Redirect
-                this.router.navigateByUrl(this.url.allProducts()).then();
+                this.router.navigateByUrl('/404').then();
             } else {
                 // -->Set: meta
                 this.setMeta();
