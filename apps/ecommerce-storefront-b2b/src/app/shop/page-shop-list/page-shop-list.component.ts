@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, combineLatest } from "rxjs";
-import { debounceTime, takeUntil, take, distinctUntilChanged } from "rxjs/operators";
+import { debounceTime, take, distinctUntilChanged } from "rxjs/operators";
 import { UrlService } from '../../services/url.service';
-import { LanguageService } from '../../shared/language/services/language.service';
 import { ECommerceService } from '../../e-commerce.service';
 import { AppService } from '../../app.service';
 import { buildCategoriesFilter, buildManufacturerFilter, buildPriceFilter, deserializeFilterValue } from "../_parts/filters/filter.utils.static";
@@ -15,20 +13,8 @@ import { getBreadcrumbs } from '../../shared/functions/utils';
 import { NaoSettingsInterface } from "../../../../../../libs/nao-interfaces/src";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ShopProductService } from "../shop-product.service";
-
-
-export type PageShopLayout =
-    'grid' |
-    'grid-with-features' |
-    'list' |
-    'table';
-
-export interface LayoutButton {
-    layout: PageShopLayout;
-    icon: string;
-}
-
-
+import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
+import { ActiveFilter, LayoutButton, PageShopLayout } from "../../interfaces/list";
 
 
 
@@ -44,11 +30,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     public appSettings: NaoSettingsInterface.Settings = null;
     public pageTitle$!: string;
     public breadcrumbs: BreadcrumbItem[];
-    public activeFilters = [];
-
-    /**
-     * Change: the view of the products from grid to table
-     */
+    public activeFilters: ActiveFilter[] = [];
     public viewLayoutButtons: LayoutButton[] = [
         { layout: 'grid', icon: 'layout-grid-16' },
         { layout: 'grid-with-features', icon: 'layout-grid-with-details-16' },
@@ -56,21 +38,17 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         { layout: 'table', icon: 'layout-table-16' },
     ];
     public viewLayout: PageShopLayout = 'grid';
-
-
-    // @WIP
-    // todo: check if data should stay here or in the service
     public data = {
         items: [],
+        filters: [],
+        page: 1,
         from: 1,
+        limit: 16,
+        sort: `name_asc`,
         to: 1,
         total: 0,
-        pages: 0,
-        currentFilters: []
+        pages: 0
     }
-
-
-
     // -->Filter: formGroup
     public filterFormGroup = new FormGroup({
         page: new FormControl(this.shopService.defaultOptions.page),
@@ -85,11 +63,13 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private shopService: ShopProductService,
         private url: UrlService,
+        private naoUsersService: NaoUserAccessService,
         private translate: TranslateService,
         private eCommerceService: ECommerceService,
         private appService: AppService,
         private toastr: ToastrService
     ) { }
+
 
     public ngOnInit(): void {
         // -->If: the page has a categoryId, check that this is valid
@@ -123,7 +103,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Init: filters - we need this so we can keep the pasted link with query params
         this.initFilters();
-
         // -->Set: page options from query params on landing
         this.setPageOptions();
 
@@ -193,6 +172,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Get: Selected manufacturers
         const selectedManufacturerIds = options.filters.manufacturer?.split(',')?.filter((f) => f) || [];
+
         // -->Create: query
         const query = {
             searchTerm: options.searchTerm,
@@ -207,10 +187,8 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Get: min and max price range
         let minPrice, maxPrice;
-        // -->Check: if there is a price already set, if not wait for the response
-        // todo: testy with show price too
-        // if (this.appSettings.showPriceFilter && this.shopService.options.customPrice && options.filters.price?.split('-')?.length) {
-        if (this.appSettings.showPriceFilter && options.filters.price?.split('-')?.length) {
+        // -->Check: if there is a price already set, you are logged in and that you have a price filter
+        if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue() && options.filters.price?.split('-')?.length) {
             // -->Split: string to get min and max price
             [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
             // -->Set: only if both of them are numbers
@@ -225,19 +203,19 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
             // -->Check: res
             if (res && res.ok && res.data) {
-
-
                 // -->Init: filters
                 const filters = [];
+
                 // -->Push: category filters
                 filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
-                // -->Check: if we show price filter
-                // todo: test with price too
-                if (this.appSettings.showPriceFilter) {
+
+                // -->Check: if we show the price filter
+                if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
                     const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
                     // --->Push: price filter
                     filters.push(filterPrice);
                 }
+
                 // -->Push: manufacturers filter
                 filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
 
@@ -248,25 +226,8 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 // -->Update: breadcrumbs
                 this.updateBreadcrumbs(categoryId);
 
-                // -->Set: List and calculate pages and everything
-
                 // -->Set: data
-                // todo: merge this
                 this.data = {
-                    items: res.data.items || [],
-                    // filters: filters,
-                    // page: page,
-                    // limit: query.pageSize,
-                    // sort: options.sort || this.page.defaultOptions.sort,
-                    total: res.data?.count || 0,
-                    pages: pages,
-                    from: (page - 1) * query.pageSize + 1 <= res.data?.count ? (page - 1) * query.pageSize + 1 : 0,
-                    to: (page * query.pageSize) < res.data?.count ? (page * query.pageSize) : res.data?.count,
-                    currentFilters: []
-                }
-
-                // @DEPRECTEAD
-                const list = {
                     items: res.data.items || [],
                     filters: filters,
                     page: page,
@@ -276,13 +237,11 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                     pages: pages,
                     from: (page - 1) * query.pageSize + 1 <= res.data?.count ? (page - 1) * query.pageSize + 1 : 0,
                     to: (page * query.pageSize) < res.data?.count ? (page * query.pageSize) : res.data?.count,
-                };
-
-
+                }
                 // -->Done: loading
                 this.status = 'done';
-                // -->Set: data
-                this.shopService.setList(list);
+                // -->Set: List and calculate pages and everything
+                this.shopService.setList(this.data);
 
             } else {
                 // -->Done: loading
@@ -301,8 +260,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
     /**
      * Init: filters:
-     *  @WIP: check if it's needed or we can do something else
-     *  todo: check if maybe we can merge the filters from refresh with this one
      */
     public initFilters(): void {
         // -->Init: filters
@@ -310,8 +267,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Push: category filters
         filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], null));
         // -->Check: if we show price filter
-        // todo: do the price filter
-        if (this.appSettings.showPriceFilter) {
+        if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
             const filterPrice = buildPriceFilter(0, 0, 0, 0, false);
             // --->Push: price filter
             filters.push(filterPrice);
@@ -322,6 +278,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Set: filters
         this.shopService.filters = filters;
     }
+
 
     /**
      * Update: breadcrumbs and ttile
@@ -355,6 +312,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         }
     }
 
+
     /**
      * Update: url
      */
@@ -364,6 +322,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             queryParams: this.getQueryParams()
         }).then();
     }
+
 
     /**
      * Get: query params from page options
@@ -403,11 +362,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Check: filters
         if (options.hasOwnProperty('filters') && this.shopService.filters) {
             this.shopService.filters.map(filter => {
-                // todo: maybe check that this is a default value?????
-                // if (filter.slug !== 'price') {
-                    params[`filter_${filter.slug}`] = deserializeFilterValue(filter.type, this.shopService.options.filters[filter.slug]);
-                // }
-
+                params[`filter_${filter.slug}`] = deserializeFilterValue(filter.type, this.shopService.options.filters[filter.slug]);
             })
         }
 
@@ -489,7 +444,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     }
 
 
-
     /**
      * Set: products layout
      */
@@ -497,12 +451,14 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.viewLayout = value;
     }
 
+
     /**
      * Reset: filter
      */
     public resetFilter(filter: any): void {
         this.shopService.resetFilter(filter);
     }
+
 
     /**
      * Reset All filters
@@ -519,11 +475,12 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         return product._id;
     }
 
+
     /**
-     * Track: entity by id
+     * Track: entity by slug
      */
-    public trackById(index: number, entity: { id?: string | number }): string | number {
-        return entity?.id;
+    public trackBySlug(index: number, entity: { slug?: string }): string | number {
+        return entity?.slug;
     }
 
 

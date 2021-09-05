@@ -1,33 +1,19 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { ProductsList } from '../interfaces/list';
+import { ActiveFilter, ProductsList } from "../interfaces/list";
 import { GetProductsListOptions } from '../interfaces/shop';
 import { serializeFilterValue } from "./_parts/filters/filter.utils.static";
 import { AppService } from "../app.service";
 
 
-export interface ActiveFilter {
-    slug: string;
-    type: string;
-    value: string;
-}
 
 @Injectable()
 export class ShopProductService {
-    // todo: check this
-
     private listSubject$: ReplaySubject<ProductsList> = new ReplaySubject<ProductsList>(1);
-
-    // todo: check this
     public listState!: ProductsList;
-    // todo: check this
-
     private optionsState: GetProductsListOptions = {};
-
     public activeFilters: BehaviorSubject<ActiveFilter[]> = new BehaviorSubject<ActiveFilter[]>([]);
     public filters = [];
-
-    // todo: check this
     public readonly optionsChange$: EventEmitter<GetProductsListOptions> = new EventEmitter<GetProductsListOptions>();
     public readonly list$: Observable<ProductsList> = this.listSubject$.asObservable();
     public readonly defaultOptions: Required<GetProductsListOptions> = {
@@ -46,7 +32,6 @@ export class ShopProductService {
         sorts: ['name_asc', 'name_desc']
     }
 
-    // todo: check this
     public get options(): GetProductsListOptions {
         return this.optionsState;
     }
@@ -61,8 +46,6 @@ export class ShopProductService {
         this.listState = list;
         // -->Emit: updated list
         this.listSubject$.next(this.listState);
-
-        // todo: set filters:
         // -->Set: filters
         this.filters = list.filters;
 

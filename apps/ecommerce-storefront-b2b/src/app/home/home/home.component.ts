@@ -60,32 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //     return carouselData;
     // }
 
-    // /**
-    //  * Refresh: featured products
-    //  * @WIP
-    //  * TODO: get featured products and let user pick up to 10 featured products
-    //  */
-    // public refreshFeaturedProducts(): void{
-    //     // // -->Prepare: query
-    //     // const query = this.search.searchQuery$.getValue();
-    //     // // -->Set: pagination options
-    //     // query.options = {
-    //     //     ...query.options,
-    //     //     ...this.search.pageQuery$.getValue().options,
-    //     //     sort: this.sort.sorts.getValue()
-    //     // };
-    //     // todo: add fetch
-    //     const query = new QuickMongoQuery()
-    //         .limit(10)
-    //         .returnDataModel({ _id: 1, data: 1 })
-    //         .done();
-    //     // -->Start: loading
-    //     this.featuredProducts.loading = true;
-    //     this.ecommerceService.productsList(query).subscribe(res => {
-    //         this.featuredProducts.products = res.data;
-    //         this.featuredProducts.loading = false;
-    //     }, err => err)
-    // }
+
 
     public ngOnDestroy(): void {
         this.subs.unsubscribe();

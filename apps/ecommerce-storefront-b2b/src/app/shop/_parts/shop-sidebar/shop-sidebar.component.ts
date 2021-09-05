@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnDestroy, PLATFORM_ID } from "@angular/core";
+import { Component, Inject, OnDestroy, PLATFORM_ID } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Subscription } from "rxjs";
 import { fromMatchMedia } from '../../../shared/functions/rxjs/from-match-media';
@@ -25,7 +25,6 @@ export class ShopSidebarComponent implements OnDestroy {
         @Inject(PLATFORM_ID) private platformId: any,
         @Inject(DOCUMENT) private document: Document,
         private fb: FormBuilder,
-        private cd: ChangeDetectorRef,
         public shopProductService: ShopProductService,
     ) {
         // -->Set: filters:
@@ -64,28 +63,13 @@ export class ShopSidebarComponent implements OnDestroy {
 
                     // -->Subscribe: to value changes and set filter
                     fields[filter.slug].valueChanges.subscribe((value) => {
-
-                        if (filter.slug === 'price') {
-                            // -->Set: filter value
-                            this.shopProductService.setFilterValue(
-                                filter.slug,
-                                serializeFilterValue(filter.type, value)
-                            );
-                        } else {
-                            // -->Set: filter value
-                            this.shopProductService.setFilterValue(
-                                filter.slug,
-                                serializeFilterValue(filter.type, value)
-                            );
-                        }
-
+                        // -->Set: filter value
+                        this.shopProductService.setFilterValue(filter.slug, serializeFilterValue(filter.type, value));
                     });
                 })
 
                 // -->Set: form group
                 this.form = this.fb.group(fields);
-                // -->Trigger: change detection
-                // this.cd.detectChanges();
             })
         );
     }

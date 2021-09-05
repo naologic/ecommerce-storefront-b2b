@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Inject, LOCALE_ID, Pipe, PipeTransform } from '@angu
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CurrencyService } from '../currency/services/currency.service';
 import { CurrencyFormatPipe } from '../currency/pipes/currency-format.pipe';
-import { ActiveFilter } from '../../interfaces/filter';
 
 @Pipe({
     name: 'activeFilterLabel',
@@ -18,7 +17,6 @@ export class ActiveFilterLabelPipe implements PipeTransform {
         private cdr: ChangeDetectorRef,
     ) {}
 
-    // todo: add typecast
     public transform(filter: any): string {
         this.currencyFormatPipe.transform(0);
         switch (filter.type) {

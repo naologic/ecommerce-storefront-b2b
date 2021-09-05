@@ -1,7 +1,5 @@
 import { Product } from './product';
 import { Filter } from './filter';
-import { Review } from './review';
-
 
 export interface List<T> {
     /** Array of list items. */
@@ -37,4 +35,19 @@ export interface FilterableList<T> extends List<T> {
 
 export type ProductsList = PaginatedList<Product> & FilterableList<Product>;
 
-export type ReviewsList = PaginatedList<Review>;
+export interface ActiveFilter {
+    slug: string;
+    type: string;
+    value: string;
+}
+
+export type PageShopLayout =
+    'grid' |
+    'grid-with-features' |
+    'list' |
+    'table';
+
+export interface LayoutButton {
+    layout: PageShopLayout;
+    icon: string;
+}

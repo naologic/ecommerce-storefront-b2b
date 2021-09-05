@@ -76,7 +76,7 @@
                                     <div class="view-options__label">{{ 'TEXT_ACTIVE_FILTERS' | translate }}</div>
                                     <div class="view-options__applied-filters applied-filters">
                                         <ul class="applied-filters__list">
-                                            <li *ngFor="let filter of activeFilters; trackBy: trackById" class="applied-filters__item">
+                                            <li *ngFor="let filter of activeFilters; trackBy: trackBySlug" class="applied-filters__item">
                                                 <button
                                                     type="button"
                                                     class="applied-filters__button applied-filters__button--filter"
