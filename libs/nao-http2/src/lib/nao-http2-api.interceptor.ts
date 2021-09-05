@@ -17,8 +17,6 @@ export class NaoHttp2ApiInterceptor implements HttpInterceptor {
     /**
      * Add Http Auth directly to any connection
      */
-    // console.warn(`params ?> `, request.method, request.params, request.params.toString(), ` >>>>>>>>> `,request.params.get('path'));
-    // // console.warn(`accessToken ?> `, this.naoHttp2ApiService.accessToken.token.getValue());
     // request = request.clone({
     //   setHeaders: {
     //     // 'Content-Type' : 'application/json; charset=utf-8',

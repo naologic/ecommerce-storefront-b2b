@@ -6,7 +6,7 @@ import { serializeFilterValue } from "./_parts/filters/filter.utils.static";
 import { AppService } from "../app.service";
 
 
-export interface ActiveFilter2 {
+export interface ActiveFilter {
     slug: string;
     type: string;
     value: string;
@@ -24,7 +24,8 @@ export class ShopProductService {
 
     private optionsState: GetProductsListOptions = {};
 
-    public activeFilters2: BehaviorSubject<ActiveFilter2[]> = new BehaviorSubject<ActiveFilter2[]>([]);
+    public activeFilters: BehaviorSubject<ActiveFilter[]> = new BehaviorSubject<ActiveFilter[]>([]);
+    public filters = [];
 
     // todo: check this
     public readonly optionsChange$: EventEmitter<GetProductsListOptions> = new EventEmitter<GetProductsListOptions>();
@@ -44,18 +45,13 @@ export class ShopProductService {
         limits: [8, 16, 24, 32],
         sorts: ['name_asc', 'name_desc']
     }
-    public filters = [];
 
     // todo: check this
     public get options(): GetProductsListOptions {
         return this.optionsState;
     }
 
-    constructor(private appService: AppService) {
-        // todo: check this
-        // -->Init: options
-        // this.setOptions(this.defaultOptions);
-    }
+    constructor(private appService: AppService) {}
 
     /**
      * Update: list state, filters and options
@@ -67,21 +63,30 @@ export class ShopProductService {
         this.listSubject$.next(this.listState);
 
         // todo: set filters:
+        // -->Set: filters
         this.filters = list.filters;
 
 
-        console.log("this.listState.filters >>>", this.listState.filters)
         // -->Init:
-        const activeFilters: ActiveFilter2[] = [];
+        const activeFilters: ActiveFilter[] = [];
         const filters: GetProductsListOptions['filters'] = {};
 
         // -->Iterate: over filters
-        this.listState.filters.map(filter => {
+        this.listState.filters.map((filter: any) => {
             const value = serializeFilterValue(filter.type, filter.value as any);
 
             if (value) {
-                filters[filter.slug] = value;
-                activeFilters.push({slug:filter.slug, value, type: filter.type})
+                if (filter.slug === 'price') {
+                    // -->Check: and make sure the price is different from min/max
+                    if (filter.value[0] !== filter.min || filter.value[1] !== filter.max) {
+                        filters[filter.slug] = value;
+                        activeFilters.push({slug:filter.slug, value, type: filter.type})
+                    }
+                } else {
+                    filters[filter.slug] = value;
+                    activeFilters.push({slug:filter.slug, value, type: filter.type})
+                }
+
             }
         })
 
@@ -91,7 +96,7 @@ export class ShopProductService {
         }
 
         // -->Push: active filters
-        this.activeFilters2.next(activeFilters);
+        this.activeFilters.next(activeFilters);
 
         // -->Set: options state
         this.optionsState = {
@@ -111,17 +116,6 @@ export class ShopProductService {
             ...this.optionsState,
             page: 1,
             searchTerm
-        });
-    }
-
-    /**
-     * Set: option value
-     */
-    public setOptionValue(optionSlug: string, optionValue: any): void {
-        this.setOptions({
-            ...this.optionsState,
-            page: 1,
-            [optionSlug]: optionValue,
         });
     }
 
@@ -149,43 +143,21 @@ export class ShopProductService {
                 [filterSlug]: filterValue || '',
             },
         });
-        // console.log("this.opstions setFilter >>>", this.optionsState)
     }
 
     /**
      * Reset: filter
-     * // todo: add typecast
      */
     public resetFilter(activeFilter: any): void {
         if (!activeFilter) {
             return;
         }
-
+        // --Check: if its a search term or not
         if (activeFilter.type === 'searchTerm') {
             this.setSearchTerm(null);
-
-        } else if (activeFilter.slug === 'price') {
-            // todo: set the default price range!!!!
-
-        } else if (activeFilter.slug === 'manufacturer') {
+        } else {
             this.setFilterValue(activeFilter.slug, null);
         }
-        // // -->Get: filter handler from type
-        // const handler = filterHandlers.find(x => x.type === activeFilter.type);
-        //
-        // // -->Check: handler
-        // if (!handler) {
-        //     return;
-        // }
-        //
-        // // -->Remove: active filter
-        // const removedFilters = [...this.removedFiltersState, activeFilter];
-        // // -->Get: all removed filters with the same slug
-        // const all = removedFilters.filter(x => x.original.slug === activeFilter.original.slug);
-        //
-        // // -->Reset: values and remove filters
-        // this.setFilterValue(activeFilter.original.slug, handler.getResetValue(all));
-        // this.setRemovedFilters(removedFilters);
     }
 
     /**
@@ -209,7 +181,10 @@ export class ShopProductService {
     /**
      * Validate: filter params
      */
-    public validateFilterParams(type: 'limit' | 'page' | 'sort' | 'manufacturer', value): any {
+    public validateFilterParams(type: "limit" | "page" | "sort" | "manufacturer" | "price", value): any {
+        if (!value) {
+            return ;
+        }
         switch (type) {
             case "limit":
                 return this.paramsOptions.limits.includes(value) ? value : this.defaultOptions.limit;
@@ -219,6 +194,13 @@ export class ShopProductService {
                 return this.paramsOptions.sorts.includes(value) ? value : this.defaultOptions.sort;
             case "manufacturer":
                 return this.appService.checkManufacturerId(value);
+            case "price":
+                if (value.includes('-')) {
+                    const [min, max] = value.split('-');
+                    // -->Return
+                    return !isNaN(+min) && !isNaN(+max) && min <= max;
+                }
+                return false;
             default:
                 return value;
         }

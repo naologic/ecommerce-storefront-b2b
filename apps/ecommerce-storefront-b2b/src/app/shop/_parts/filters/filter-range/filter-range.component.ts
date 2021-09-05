@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
-import { debounceTime, filter, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { LanguageService } from '../../../../shared/language/services/language.service';
 import { RangeFilter } from '../../../../interfaces/filter';
 
@@ -29,6 +29,7 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
     private value!: [number, number];
     private changeFn: (_: [number, number]) => void = () => {};
     private touchedFn: () => void = () => {};
+    public debounceFlag = false;
 
     public control!: FormControl;
     public isPlatformBrowser = isPlatformBrowser(this.platformId);
@@ -45,17 +46,19 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
         this.control = new FormControl(this.value);
 
         // -->Subscribe: to control value changes
-        this.control.valueChanges.pipe(
-            filter(value => value[0] !== this.value[0] || value[1] !== this.value[1]),
-            // tap(value => this.debouncedValue = value),
-            debounceTime(100),
-        ).subscribe(value => {
-            // this.debouncedValue = null;
-            // -->Handle: changes
-            this.changeFn(value);
-            this.touchedFn();
+        this.control.valueChanges.pipe(debounceTime(300),).subscribe(value => {
+            // -->Check: debounce flag
+            if (this.debounceFlag) {
+                this.debounceFlag = false;
+
+            } else {
+                // -->Handle: changes
+                this.changeFn(value);
+                this.touchedFn();
+            }
         });
     }
+
 
     /**
      * Register: callback function to handle value changes
@@ -86,6 +89,10 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
      * Set: control value
      */
     public writeValue(value: any): void {
+        if (value && this.options?.min <= value[0] && this.options?.max >= value[1]) {
+            this.debounceFlag = true;
+        }
+
         this.value = value;
         this.control.patchValue(this.value, { emitEvent: false, onlySelf: true });
         this.control.setValue(this.value, { emitEvent: false, onlySelf: true });

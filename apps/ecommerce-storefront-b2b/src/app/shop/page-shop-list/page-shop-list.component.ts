@@ -129,7 +129,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Subscribe: to active filters changing
         this.subs.add(
-            this.shopService.activeFilters2.subscribe(value => {
+            this.shopService.activeFilters.subscribe(value => {
                 // -->Set: active filters
                 this.activeFilters = Array.isArray(value) ? value : [];
             })
@@ -148,7 +148,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.subs.add(
             this.route.params.subscribe(v => {
                 if (history?.state?.resetFilters) {
-                    console.warn("SA RESTEAZA FILTERELEEEEEEEEEEEEEEEEEEEE")
                     this.shopService.resetAllFilters();
                 }
             })
@@ -158,7 +157,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Subscribe: to params and query params
         this.subs.add(combineLatest([this.route.params, this.route.queryParams])
             .subscribe(() => {
-                console.error("PARAMS HAS CHANGED >>>> TRIGGERING REFRESH")
                 this.refresh();
             })
         );
@@ -212,14 +210,15 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Check: if there is a price already set, if not wait for the response
         // todo: testy with show price too
         // if (this.appSettings.showPriceFilter && this.shopService.options.customPrice && options.filters.price?.split('-')?.length) {
-        //     // -->Split: string to get min and max price
-        //     [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
-        //     // -->Set: only if both of them are numbers
-        //     if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-        //         query.minPrice = minPrice;
-        //         query.maxPrice = maxPrice;
-        //     }
-        // }
+        if (this.appSettings.showPriceFilter && options.filters.price?.split('-')?.length) {
+            // -->Split: string to get min and max price
+            [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
+            // -->Set: only if both of them are numbers
+            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                query.minPrice = minPrice;
+                query.maxPrice = maxPrice;
+            }
+        }
 
 
         // -->Execute
@@ -234,12 +233,11 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
                 // -->Check: if we show price filter
                 // todo: test with price too
-                // if (this.appSettings.showPriceFilter) {
-                //     const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice, !this.shopService.options.customPrice);
-                //     // --->Push: price filter
-                //     console.log("filter price >>>", filterPrice)
-                //     filters.push(filterPrice);
-                // }
+                if (this.appSettings.showPriceFilter) {
+                    const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
+                    // --->Push: price filter
+                    filters.push(filterPrice);
+                }
                 // -->Push: manufacturers filter
                 filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
 
@@ -313,11 +311,11 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], null));
         // -->Check: if we show price filter
         // todo: do the price filter
-        // if (this.appSettings.showPriceFilter) {
-        //     const filterPrice = buildPriceFilter(0, 0, 0, 0, false);
-        //     // --->Push: price filter
-        //     filters.push(filterPrice);
-        // }
+        if (this.appSettings.showPriceFilter) {
+            const filterPrice = buildPriceFilter(0, 0, 0, 0, false);
+            // --->Push: price filter
+            filters.push(filterPrice);
+        }
         // -->Push: manufacturers filter
         filters.push(buildManufacturerFilter([], []));
 
@@ -402,9 +400,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             }
         }
 
-        console.error("PLM")
-        console.log("sa vedem ce filters sunt >>>", this.shopService.filters)
-
         // -->Check: filters
         if (options.hasOwnProperty('filters') && this.shopService.filters) {
             this.shopService.filters.map(filter => {
@@ -415,8 +410,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
             })
         }
-
-        console.log("params >>>>", params)
 
         return params;
     }
@@ -432,8 +425,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             if (!params) {
                 return;
             }
-
-            console.log("params >>>>", params)
 
             // -->Check: page
             if (params.hasOwnProperty('page') && params['page']) {
@@ -460,7 +451,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             // -->Check: sort
             if (params.hasOwnProperty('sort') && params['sort']) {
                 // -->Validate: value
-                const value = this.shopService.validateFilterParams('sort', params['sort'])
+                const value = this.shopService.validateFilterParams('sort', params['sort']);
                 // -->Set:
                 this.shopService.options.sort = value;
                 // -->Patch: form control
@@ -478,17 +469,19 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             }
 
             // -->Check: price filter
-            if (this.shopService.options.customPrice && params.hasOwnProperty('filter_price') && params['filter_price']) {
-                this.shopService.options.filters['price'] = params['filter_price'];
+            if (params.hasOwnProperty('filter_price') && params['filter_price']) {
+                if (this.shopService.validateFilterParams('price', params['filter_price'])) {
+                    this.shopService.options.filters['price'] = params['filter_price'];
+                }
             }
 
             // -->Check: manufacturer filter
-            if (params.hasOwnProperty('filter_manufacturer') && params['filter_manufacturer'] &&
-                this.shopService.validateFilterParams('manufacturer', params['filter_manufacturer'])) {
-                this.shopService.options.filters['manufacturer'] = params['filter_manufacturer'];
+            if (params.hasOwnProperty('filter_manufacturer') && params['filter_manufacturer']) {
+                if (this.shopService.validateFilterParams('manufacturer', params['filter_manufacturer'])) {
+                    this.shopService.options.filters['manufacturer'] = params['filter_manufacturer'];
+                }
             }
 
-            console.log("setPageOptions before updateUrl >>>>", this.shopService.options);
 
             // -->Update: URL
             this.updateUrl();

@@ -5,6 +5,8 @@
 
                 <ngx-slider
                     [formControl]="control"
+                    (userChangeStart)="debounceFlag = true"
+                    (userChangeEnd)="debounceFlag = false"
                     [options]="{
                     animate: false,
                     mouseEventsInterval: 10,
@@ -23,9 +25,5 @@
                 <span class="filter-range__max-value">{{ slider.highValue | currencyFormat }}</span>
             </div>
         </div>
-        {{ control.value }}
-
-        {{ options | json }}
-
     </ng-container>
 </div>

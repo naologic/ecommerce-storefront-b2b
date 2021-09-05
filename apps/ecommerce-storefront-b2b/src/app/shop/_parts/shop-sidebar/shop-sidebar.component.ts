@@ -65,11 +65,7 @@ export class ShopSidebarComponent implements OnDestroy {
                     // -->Subscribe: to value changes and set filter
                     fields[filter.slug].valueChanges.subscribe((value) => {
 
-                        // todo: delete this
                         if (filter.slug === 'price') {
-                            console.error("prive filter update >>>", filter)
-                            console.log('filter.slug >>>>', filter.slug, value, this.shopProductService.options?.customPrice)
-                            this.shopProductService.setOptionValue('customPrice', true)
                             // -->Set: filter value
                             this.shopProductService.setFilterValue(
                                 filter.slug,

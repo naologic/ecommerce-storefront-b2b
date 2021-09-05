@@ -58,7 +58,6 @@
                                             <option value="name_asc">{{ 'INPUT_SORT_OPTION_NAME_ASC' | translate }}</option>
                                             <option value="name_desc">{{ 'INPUT_SORT_OPTION_NAME_DESC' | translate }}</option>
                                         </select>
-                                        todo: delete {{ filterFormGroup.get('sort').value }}
 
                                     </div>
                                     <div class="view-options__select">
@@ -69,7 +68,6 @@
                                             <option value="24">24</option>
                                             <option value="32">32</option>
                                         </select>
-                                        todo: delete {{ filterFormGroup.get('limit').value }}
 
                                     </div>
                                 </div>
@@ -156,7 +154,6 @@
                             <!--Pagination-->
                             <div class="products-view__pagination" *ngIf="data.items.length">
                                 <nav aria-label="Page navigation example">
-                                    todo: delete {{ filterFormGroup.get('page').value }}
                                     <app-pagination formControlName="page" [siblings]="2" [total]="data.pages"></app-pagination>
                                 </nav>
                                 <div class="products-view__pagination-legend">
