@@ -89,9 +89,10 @@ export class FilterRangeComponent implements OnInit, ControlValueAccessor {
      * Set: control value
      */
     public writeValue(value: any): void {
-        if (value && this.options?.min <= value[0] && this.options?.max >= value[1]) {
+        // todo:
+        // if (value && this.options?.min <= value[0] && this.options?.max >= value[1]) {
             this.debounceFlag = true;
-        }
+        // }
 
         this.value = value;
         this.control.patchValue(this.value, { emitEvent: false, onlySelf: true });
