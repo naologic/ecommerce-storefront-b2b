@@ -10,6 +10,7 @@ import { PageEditAddressComponent } from './page-edit-address/page-edit-address.
 import { PagePasswordComponent } from './page-password/page-password.component';
 import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from "./page-register/page-register.component";
+import { AuthGuard } from "./auth-guard";
 
 const routes: Routes = [
     {
@@ -61,20 +62,12 @@ const routes: Routes = [
     {
         path: 'login',
         component: PageLoginComponent,
-        // todo: add authGuard with redirect to dashboard
-        // canActivate: [AuthGuard],
-        // data: {
-        //     authGuardMode: 'redirectToDashboard',
-        // },
+        canActivate: [AuthGuard],
     },
     {
         path: 'register',
         component: PageRegisterComponent,
-        // todo: add authGuard with redirect to dashboard
-        // canActivate: [AuthGuard],
-        // data: {
-        //     authGuardMode: 'redirectToDashboard',
-        // },
+        canActivate: [AuthGuard],
     },
     // todo: uncomment this when we have the API ready for forgot password
     // {

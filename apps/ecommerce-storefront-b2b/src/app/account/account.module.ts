@@ -12,6 +12,7 @@ import { PagePasswordComponent } from './page-password/page-password.component';
 import { PageProfileComponent } from './page-profile/page-profile.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageForgotPasswordComponent } from './page-forgot-password/page-forgot-password.component';
+import { AuthGuard } from "./auth-guard";
 
 @NgModule({
     declarations: [
@@ -30,6 +31,9 @@ import { PageForgotPasswordComponent } from './page-forgot-password/page-forgot-
         AccountRoutingModule,
         AccountPartsModule,
         SharedModule
+    ],
+    providers: [
+        AuthGuard
     ]
 })
 export class AccountModule { }
