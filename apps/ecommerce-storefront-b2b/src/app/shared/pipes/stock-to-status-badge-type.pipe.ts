@@ -5,7 +5,7 @@ import { StatusBadgeType } from '../status-badge/status-badge.component';
     name: 'stockToStatusBadgeType',
 })
 export class StockToStatusBadgeTypePipe implements PipeTransform {
-    public transform(value: string): StatusBadgeType {
+    public transform(value: string, available: boolean): StatusBadgeType {
         // -->Check: Availability
         if (value === 'available') {
             return 'success';
@@ -16,6 +16,9 @@ export class StockToStatusBadgeTypePipe implements PipeTransform {
         } else if (value === 'drop-ship-from-manufacturer') {
             return 'warning'
         } else if (value && value.endsWith('Days')) {
+            return 'success'
+        } else if (!value && available) {
+            // -->Check: available
             return 'success'
         } else {
             return 'failure';

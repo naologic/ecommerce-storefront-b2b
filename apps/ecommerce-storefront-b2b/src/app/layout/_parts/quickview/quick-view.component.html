@@ -64,8 +64,8 @@
                         </div>
                         <app-status-badge
                             class="quickview__product-stock"
-                            [type]="product?.data?.availability | stockToStatusBadgeType"
-                            [text]="product?.data?.availability | stockToStatusBadgeText | translate"
+                            [type]="product?.data?.availability | stockToStatusBadgeType:product?.data?.available"
+                            [text]="product?.data?.availability | stockToStatusBadgeText:product?.data?.available | translate"
                         ></app-status-badge>
                     </div>
 
