@@ -126,8 +126,8 @@
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
                                 <app-status-badge
                                     class="product__stock"
-                                    [type]="item.product?.data?.availability|stockToStatusBadgeType"
-                                    [text]="item.product?.data?.availability|stockToStatusBadgeText|translate"
+                                    [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"
+                                    [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
                                 ></app-status-badge>
                             </td>
                             <td class="compare-table__column compare-table__column--fake"></td>

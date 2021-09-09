@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'stockToStatusBadgeText',
 })
 export class StockToStatusBadgeTextPipe implements PipeTransform {
-    public transform(value: string): string {
+    public transform(value: string, available: boolean): string {
         // -->Check: Availability
         if (value === 'available') {
             return 'TEXT_STOCK_IN_STOCK';
@@ -16,6 +16,8 @@ export class StockToStatusBadgeTextPipe implements PipeTransform {
             return 'TEXT_STOCK_DROP_SHIP_MANUFACTURER'
         } else if (value && value.endsWith('Days')) {
             return value
+        } else if (!value && available) {
+            return 'TEXT_STOCK_IN_STOCK';
         } else {
             return 'TEXT_STOCK_OUT_OF_STOCK';
         }

@@ -84,8 +84,8 @@
                                 <td class='my-list__column my-list__column--body my-list__column--stock'>
                                     <app-status-badge
                                         class="product__stock"
-                                        [type]="item.product?.data?.availability|stockToStatusBadgeType"
-                                        [text]="item.product?.data?.availability|stockToStatusBadgeText|translate"
+                                        [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"
+                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
                                     ></app-status-badge>
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--price'>
