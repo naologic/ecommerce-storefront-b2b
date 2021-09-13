@@ -96,6 +96,19 @@ $local-transition-duration: .15s;
 }
 
 
+.block-brands--layout--columns-12-full {
+    @include media-breakpoint-up(xxl) {
+        @include local-layout(12);
+    }
+    @include media-breakpoint-only(xl) {
+        @include local-layout(10);
+    }
+    @include media-breakpoint-only(lg) {
+        @include local-layout(8);
+    }
+}
+
+
 .block-brands--layout--columns-8-full {
     @include media-breakpoint-up(xxl) {
         @include local-layout(8);

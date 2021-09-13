@@ -37,6 +37,12 @@
 
         <div class="block">
             <div class="container container--max--xl">
+                <div class="mb-3">
+                    <button type="button" class="btn btn-sm btn-primary" (click)="addListToCart()">
+                        {{ 'BUTTON_ADD_LIST_TO_CART' | translate }}
+                    </button>
+                </div>
+
                 <div class='my-list'>
                     <table class='my-list__table'>
                         <thead class='my-list__head'>
@@ -117,8 +123,10 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
+
     </ng-container>
 
     <!--Spacer-->

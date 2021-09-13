@@ -32,7 +32,8 @@ export class PageRegisterComponent implements OnInit, OnDestroy {
             password: [null, [Validators.required, Validators.minLength(8), checkPasswordStrength()]],
             firstName: [null, [Validators.required]],
             lastName: [null, [Validators.required]],
-            companyName: [null, [Validators.required]],
+            // companyName: [null, [Validators.required]],
+            phoneNo: [null, [Validators.required]],
             confirmPassword: [null, [Validators.required, Validators.minLength(8)]],
         }, { validators: [mustMatchValidator('password', 'confirmPassword')] });
     }

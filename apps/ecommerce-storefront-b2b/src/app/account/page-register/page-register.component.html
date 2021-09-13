@@ -28,7 +28,7 @@
                                 {{ formGroup.errors?.server|translate }}
                             </div>
                             <div class="form-group">
-                                <label for="signup-email">{{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}</label>
+                                <label for="signup-email">{{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}<sup>*</sup></label>
                                 <input
                                     id="signup-email"
                                     type="email"
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-firstName">{{ 'INPUT_FIRST_NAME_LABEL' | translate }}</label>
+                                <label for="signup-firstName">{{ 'INPUT_FIRST_NAME_LABEL' | translate }}<sup>*</sup></label>
                                 <input
                                     id="signup-firstName"
                                     type="text"
@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-lastName">{{ 'INPUT_LAST_NAME_LABEL' | translate }}</label>
+                                <label for="signup-lastName">{{ 'INPUT_LAST_NAME_LABEL' | translate }}<sup>*</sup></label>
                                 <input
                                     id="signup-lastName"
                                     type="text"
@@ -81,25 +81,42 @@
                                 </div>
                             </div>
 
+<!--                            <div class="form-group">-->
+<!--                                <label for="signup-companyName">{{ 'INPUT_COMPANY_LABEL' | translate }}<sup>*</sup></label>-->
+<!--                                <input-->
+<!--                                    id="signup-companyName"-->
+<!--                                    type="text"-->
+<!--                                    class="form-control"-->
+<!--                                    [class.is-invalid]="formGroup.controls.companyName|isInvalid"-->
+<!--                                    placeholder="SpaceX"-->
+<!--                                    formControlName="companyName"-->
+<!--                                >-->
+<!--                                <div class="invalid-feedback">-->
+<!--                                    <div *ngIf="formGroup.controls.companyName|hasError:'required'">-->
+<!--                                        {{ 'ERROR_FORM_REQUIRED' | translate }}-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
                             <div class="form-group">
-                                <label for="signup-companyName">{{ 'INPUT_COMPANY_LABEL' | translate }}</label>
+                                <label for="signup-phoneNo">{{ 'INPUT_PHONE_LABEL' | translate }}<sup>*</sup></label>
                                 <input
-                                    id="signup-companyName"
+                                    id="signup-phoneNo"
                                     type="text"
                                     class="form-control"
-                                    [class.is-invalid]="formGroup.controls.companyName|isInvalid"
-                                    placeholder="SpaceX"
-                                    formControlName="companyName"
+                                    [class.is-invalid]="formGroup.controls.phoneNo|isInvalid"
+                                    placeholder="+1 (628) 219 2009"
+                                    formControlName="phoneNo"
                                 >
                                 <div class="invalid-feedback">
-                                    <div *ngIf="formGroup.controls.companyName|hasError:'required'">
+                                    <div *ngIf="formGroup.controls.phoneNo|hasError:'required'">
                                         {{ 'ERROR_FORM_REQUIRED' | translate }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-password">{{ 'INPUT_PASSWORD_LABEL' | translate }}</label>
+                                <label for="signup-password">{{ 'INPUT_PASSWORD_LABEL' | translate }}<sup>*</sup></label>
                                 <input
                                     id="signup-password"
                                     type="password"
@@ -119,7 +136,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="signup-confirm">{{ 'INPUT_PASSWORD_REPEAT_LABEL' | translate }}</label>
+                                <label for="signup-confirm">{{ 'INPUT_PASSWORD_REPEAT_LABEL' | translate }}<sup>*</sup></label>
                                 <input
                                     id="signup-confirm"
                                     type="password"
