@@ -135,3 +135,54 @@
 @import 'shop/reviews-view';
 @import 'shop/spec';
 @import 'shop/my-list';
+
+// *****************************************************
+// Scrollbars
+.nao-fancy-scrollbar-sm {
+    &::-webkit-scrollbar {
+        height: 8px;
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track-piece {
+        background: rgba(9, 30, 66, .08);
+        border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(9, 30, 66, .2);
+        border-radius: 4px;
+    }
+}
+
+
+.create-an-account-link {
+    margin-left: 32px;
+    color: #6c757d;
+    transition: color 0.1s;
+
+    &:hover {
+        color: inherit;
+    }
+
+    @include media-breakpoint-down(xs) {
+        margin-left: 24px;
+    }
+}
+
+.font-size-13 {
+    font-size: 13px;
+}
+
+// disable buttons
+button.disabled, button:disabled {
+    opacity: 0.65;
+}
+
+// message text
+.message-text-not-logged {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6c7177;
+    margin-top: 10px;
+}
