@@ -1,4 +1,5 @@
 <div class="block block-brands"
+     [class.block-brands--layout--columns-12-full]="layout === 'columns-12-full'"
      [class.block-brands--layout--columns-8-full]="layout === 'columns-8-full'"
      [class.block-brands--layout--columns-7-sidebar]="layout === 'columns-7-sidebar'">
     <div class="container">
@@ -7,7 +8,6 @@
                 <li class="block-brands__item">
                     <a href="javascript:void(0)" class="block-brands__item-link">
                         <img [src]="brand" alt="Partner">
-<!--                        <span class="block-brands__item-name">{{ brand.name }}</span>-->
                     </a>
                 </li>
                 <li class="block-brands__divider" role="presentation"></li>
