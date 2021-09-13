@@ -2,6 +2,7 @@
   "BUTTON_ADD_ADDRESS": "Add Address",
   "BUTTON_ADD_NEW": "Add New",
   "BUTTON_ADD_TO_CART": "Add to cart",
+  "BUTTON_ADD_LIST_TO_CART": "Add all list items to cart",
   "BUTTON_ADD_TO_COMPARE": "Add to compare",
   "BUTTON_ADD_TO_MY_LISTS": "Add to my lists",
   "BUTTON_APPLY_COUPON": "Apply Coupon",
@@ -84,6 +85,7 @@
   "HEADER_YOUR_ORDER": "Your Order",
 
   "INPUT_COMPANY_LABEL": "Company Name",
+  "INPUT_PHONE_LABEL": "Phone",
   "INPUT_COMPANY_PLACEHOLDER": "Naologic",
   "INPUT_COUPON_CODE_LABEL": "Coupon Code",
   "INPUT_COUPON_CODE_PLACEHOLDER": "Coupon Code",

@@ -7,6 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
+import { takeUntil } from "rxjs/operators";
+import { CartService } from "../../services/cart.service";
+import { checkIfProductIsAvailable } from "../../shared/utils";
 
 @Component({
     selector: 'app-page-my-list',
@@ -27,6 +30,7 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private toastr: ToastrService,
         private translate: TranslateService,
+        private cart: CartService,
     ) { }
 
     public ngOnInit(): void {
@@ -34,11 +38,11 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         this.appSettings = this.appService.settings.getValue();
         // -->subscribe: to params change
         this.route.params.subscribe(params => {
-                // -->Set: my list id
-                this.docId = params.id;
-                // -->Get: and refresh items
-                this.refresh();
-            }
+            // -->Set: my list id
+            this.docId = params.id;
+            // -->Get: and refresh items
+            this.refresh();
+        }
         );
     }
 
@@ -113,6 +117,24 @@ export class PageMyListComponent implements OnInit, OnDestroy {
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
             })
         }
+    }
+
+    /**
+     * Add: list to cart
+     */
+    public addListToCart(): void {
+        if (!this.data?.products?.length){
+            return
+        }
+
+        // -->Iterate: over products:
+        this.data?.products.map(item => {
+            // -->Check: that this is available
+            // if (checkIfProductIsAvailable(item?.product?.data?.availability, item.product?.data?.available)) {
+                // -->Add: to cart
+                this.cart.add(item.product, item.variant, 1).subscribe();
+            // }
+        })
     }
 
     /**
