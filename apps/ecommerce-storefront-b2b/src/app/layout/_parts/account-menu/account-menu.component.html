@@ -52,7 +52,7 @@
                 >{{ 'BUTTON_LOGIN' | translate }}</button>
             </div>
             <div class="font-size-13 text-danger mt-3 mb-2" [hidden]="!loginForm.submitted || !formGroup.get('password').pristine || loginInProgress">
-                {{ errorMessage | translate }}
+                {{ errorMessage | translate:errorMessageExtraData }}
             </div>
             <div class="account-menu__form-link">
                 <a routerLink="/account/register" (click)="closeMenu.emit()">{{ 'LINK_CREATE_ACCOUNT' | translate }}</a>

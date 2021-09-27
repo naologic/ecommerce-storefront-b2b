@@ -18,6 +18,7 @@ export class PageRegisterComponent implements OnInit, OnDestroy {
     public formGroup!: FormGroup;
     public registerInProgress = false;
     public registerDone = false;
+    public errorMessage = null;
 
     constructor(
         private fb: FormBuilder,
@@ -63,9 +64,18 @@ export class PageRegisterComponent implements OnInit, OnDestroy {
                 this.registerDone = true;
             },
             (err) => {
+                // -->Set: error message
+                switch (err?.error?.index) {
+                    case 'duplicate_user':
+                        this.errorMessage = 'DUPLICATED_ACCOUNT';
+                        break;
+                    default:
+                        this.errorMessage = 'ERROR_API_REQUEST';
+                }
                 // -->Done: loading
                 this.registerInProgress = false;
-                this.formGroup.enable();
+                // -->Mark: as pristine
+                this.formGroup.markAsPristine();
             }
         );
     }

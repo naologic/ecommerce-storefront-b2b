@@ -260,6 +260,8 @@
   "THANKS_FOR_SIGNING_UP": "Thanks for signing up.",
   "MESSAGE_FOR_SIGNING_UP": "We’ve sent an approval notification to the shop administrator - as soon as they approve your guest account, we’ll send you an email to let you know that your profile is active and ready for you to sign in.",
   "PENDING_ACCOUNT": "Your account is still pending approval from an admin. Please check back again in a bit or reach out directly to an administrator.",
+  "DUPLICATED_ACCOUNT": "This email already seems to have a registered user. Please log in with that email or continue creating a new account using a different email.",
+  "TOO_MANY_TRIES": "You've entered your login credentials incorrectly too many times and we've therefore temporarily locked your account for {number} minutes. Please try to log in again then.",
 
   "SPECIFICATION_DIMENSIONS": "Dimensions",
   "VARIANT_SPECIFICATION_HEIGHT": "Height",

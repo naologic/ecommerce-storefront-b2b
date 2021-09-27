@@ -121,6 +121,7 @@ export interface Product {
         sku: string;
         quantity: number;
         status: string;
+        selectedVariant?: Variant;
         variants: Variant[];
         rating?: any; // todo: this would be for future use
         vendorId;

@@ -15,6 +15,7 @@ export class PageLoginComponent implements OnInit, OnDestroy {
     public formGroup!: FormGroup;
     public loginInProgress = false;
     public errorMessage = 'INVALID_LOGIN';
+    public errorMessageExtraData = {};
 
     constructor(
         private fb: FormBuilder,
@@ -59,6 +60,10 @@ export class PageLoginComponent implements OnInit, OnDestroy {
             .catch((err) => {
                 // -->Set: error message
                 switch (err?.error?.index) {
+                    case 'user_too_many_login_attempts':
+                        this.errorMessage = 'TOO_MANY_TRIES';
+                        this.errorMessageExtraData = { number: err?.error?.minutes || 30};
+                        break;
                     case 'user_activation_required':
                         this.errorMessage = 'PENDING_ACCOUNT';
                         break;

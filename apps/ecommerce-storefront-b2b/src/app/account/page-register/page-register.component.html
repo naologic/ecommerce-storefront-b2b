@@ -165,6 +165,9 @@
                                     {{ 'BUTTON_REGISTER' | translate }}
                                 </button>
                             </div>
+                            <div class="font-size-13 text-danger mt-3" [hidden]="!(formGroup.pristine && formGroup.valid) || registerInProgress">
+                                {{ errorMessage | translate }}
+                            </div>
                         </form>
                     </div>
                 </div>
