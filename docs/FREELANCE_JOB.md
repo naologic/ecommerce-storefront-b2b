@@ -10,9 +10,9 @@ I'm looking for a freelancer experience with Angular, HTML and SCSS to make chan
 
 Link to website: (!!add your link here!!)
 
-Link to [open source ecommerce store-front](https://github.com/naologic/ecommerce-storefront-b2b)
+Check out the code on our [open source ecommerce store-front](https://github.com/naologic/ecommerce-storefront-b2b)
 
-Link to ecommerce [API](https://naologic.com/use-case/wholesale-vendor)
+Link to ecommerce ERP [API](https://naologic.com/use-case/wholesale-vendor)
 
 **Skills required**
 - 2+ years Angular experience
