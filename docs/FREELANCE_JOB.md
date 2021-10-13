@@ -4,6 +4,7 @@ _If you want to book a freelancer to customize this theme for your own use, here
 Make sure to add your website link, if any, and add the `goals` you are trying to reach
 
 
+### Job posting
 
 I'm looking for a freelancer experience with Angular, HTML and SCSS to make changes to an open source ecommerce website.
 
