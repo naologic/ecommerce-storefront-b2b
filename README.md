@@ -1,4 +1,8 @@
 ![](https://naologic.com/assets/images/nav/logo.svg)
+
+
+![Ecommerce preview](./docs/shop.gif)
+
 # Naologic - Ecommerce
 
 
