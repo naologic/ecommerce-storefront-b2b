@@ -9,7 +9,9 @@ Make sure to add your website link, if any, and add the `goals` you are trying t
 I'm looking for a freelancer experience with Angular, HTML and SCSS to make changes to an open source ecommerce website.
 
 Link to website: (!!add your link here!!)
+
 Link to [open source ecommerce store-front](https://github.com/naologic/ecommerce-storefront-b2b)
+
 Link to ecommerce [API](https://naologic.com/use-case/wholesale-vendor)
 
 Skills required
