@@ -14,13 +14,14 @@ Link to [open source ecommerce store-front](https://github.com/naologic/ecommerc
 
 Link to ecommerce [API](https://naologic.com/use-case/wholesale-vendor)
 
-Skills required
+**Skills required**
 - 2+ years Angular experience
 - 2+ years HTML/CSS/SCSS experience 
 - experience working on ecommerce websites
 - ability to create requirements based on customer conversations
 
-Goals:
+**Goals**
 - increase header size
 - add 4 images to the footer
+- ...
 
