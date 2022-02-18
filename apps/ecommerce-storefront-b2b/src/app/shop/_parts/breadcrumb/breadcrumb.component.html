@@ -1,4 +1,4 @@
-<div class="breadcrumb" aria-label='breadcrumb'>
+<!-- <div class="breadcrumb" aria-label='breadcrumb'>
     <ol class="breadcrumb__list">
         <li *ngIf="afterHeader" class="breadcrumb__classic-safe-area" role="presentation"></li>
         <li *ngFor="let item of items; first as isFirst; last as isLast"
@@ -18,4 +18,32 @@
         </li>
         <li *ngIf="withPageTitle" class="breadcrumb__title-safe-area" role="presentation"></li>
     </ol>
+</div> -->
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="bc-list">
+            <ol class="breadcrumb breadcrumb-right-arrow">
+                <li *ngIf="afterHeader" class="breadcrumb__classic-safe-area" role="presentation"></li>
+                <li *ngFor="let item of items; first as isFirst; last as isLast"
+                class="breadcrumb-item"
+                [class.breadcrumb__item--first]="isFirst"
+                [class.breadcrumb__item--last]="isLast"
+                [class.breadcrumb__item--parent]="!isLast"
+                [class.breadcrumb__item--current]="isLast"
+                [attr.aria-current]="isLast ? 'page' : undefined"
+            >
+                <ng-container *ngIf="isLast">
+                    <span class="breadcrumb-item active" >{{ item.label }}</span>
+                </ng-container>
+                <ng-container *ngIf="!isLast">
+                    <a href="javascript:void(0)" (click)="navigateAndAddState(item.url, item.state)" class="">{{ item.label }}</a>
+                </ng-container>
+            </li>
+                <!-- <li *ngIf="withPageTitle" class="breadcrumb__title-safe-area" role="presentation"></li> -->
+            </ol>
+
+        </div>
+    </div>
 </div>

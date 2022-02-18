@@ -57,7 +57,7 @@ const routes: Routes = [
                 component: PagePasswordComponent,
             },
         ],
-        canActivate: [NaoUserPermissionsGuard]
+        // canActivate: [NaoUserPermissionsGuard]
     },
     {
         path: 'login',

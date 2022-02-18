@@ -1,0 +1,107 @@
+/*** Product Detail Section ***/
+
+.pro-det-section {
+    padding: 12px 0px;
+  }
+  
+  .pdm-pro-det {
+    margin: 25px 0px;
+  }
+  
+  .pro-det-tab {
+    margin: 40px 0px;
+  }
+  
+  .pro-det-tab .nav-tabs .nav-item.show .nav-link,
+  .pro-det-tab .nav-tabs .nav-link.active {
+    color: #fd7e14;
+    background-color: #fff;
+    border-color: transparent;
+    font-weight: 700;
+    border-bottom: 2px solid #fd7e14;
+  }
+  
+  .pro-det-tab .tab-content>.active {
+    display: block;
+  }
+  
+  .pro-det-tab .tab-content>.active p {
+    padding: 25px;
+  }
+  
+  .pro-det-tab .nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    color: #000000;
+    font-weight: 700;
+  }
+
+  /*** Product Detail Section End***/
+
+
+
+  
+/*** Modal Details ***/
+
+.pdm-hd h3 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  
+  .pdm-sk {
+    width: 100%;
+  }
+  
+  .pdm-sk h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 0px;
+    color: #bdbdbd;
+  }
+  
+  .pdm-sk p {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 0px;
+  }
+  
+  .pdm-sk1 {
+    padding-top: 7px;
+    border-top: 1px solid #f3f3f3;
+  }
+  
+  .pdm-sk2 {
+    float: left;
+    margin-right: 25px;
+    margin-top: 10px;
+    padding-top: 7px;
+    padding-right: 25px;
+    border-right: 1px solid #f3f3f3;
+  }
+  
+  .pdm-sk3 {
+      border-top: 1px solid #f3f3f3;
+      margin-top: 10px;
+      padding-top: 7px;
+  }
+  .pdm-sk4{
+    border-top: 1px solid #f3f3f3;
+    margin-top: 10px;
+    padding-top: 7px;
+}
+  
+  .xzoom-gallery {
+    margin-top: 10px
+  }
+  
+  .xzoom {
+    margin-top: 0;
+  }
+  
+  .right-bdr {
+    border-right:1px solid #f3f3f3;
+  }
+
+  /*** Modal Details END***/

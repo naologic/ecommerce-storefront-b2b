@@ -1,0 +1,109 @@
+.bc-list {
+    text-align: center;
+  }
+  .bc-list .breadcrumb {
+    background-color: transparent;
+    text-align: center;
+    margin: 0 auto;
+    display: inline-flex;
+  }
+  
+  .breadcrumb-right-arrow .breadcrumb-item+.breadcrumb-item::before {
+    content: "›";
+    vertical-align: top;
+    font-size: 40px;
+    line-height: 15px;
+  }
+  .breadcrumb-item+.breadcrumb-item::before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    color: #ffffff;
+    content: "/";
+  }
+  
+  .breadcrumb-right-arrow .breadcrumb-item a {
+    color: #f0f0f0 !important;
+    text-decoration: none;
+  }
+  
+  .breadcrumb-right-arrow .breadcrumb-item a:hover {
+    color: #fd7e14 !important;
+    text-decoration: none;
+  }
+  
+  .breadcrumb-item.active {
+    color: #fd7e14;
+    font-weight: 500;
+  }
+  
+  .breadcrumb-right-tag {
+    padding: 0;
+    background: none;
+  }
+  
+  .breadcrumb-right-tag .breadcrumb-item {
+    background: rgba(2, 117, 216, 0.8);
+    padding: .5em 1em;
+  }
+  
+  .breadcrumb-right-tag .breadcrumb-item a,
+  .breadcrumb-right-tag .breadcrumb-item {
+    color: #fff;
+  }
+  
+  .breadcrumb-right-tag .breadcrumb-item:nth-child(2) {
+    background: rgba(2, 117, 216, 0.6);
+  }
+  
+  .breadcrumb-right-tag .breadcrumb-item:nth-child(3) {
+    background: rgba(2, 117, 216, 0.5);
+  }
+  
+  .breadcrumb-right-tag .breadcrumb-item+.breadcrumb-item::before {
+    content: "";
+    padding: 0;
+  }
+  .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .breadcrumb {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item {
+    padding-left: 0.5rem;
+    color: #fd7e14;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    color: #f0f0f0;
+    //color: #6c757d;
+    content: "/";
+  }
+  
+  .breadcrumb-item + .breadcrumb-item:hover::before {
+    text-decoration: underline;
+  }
+  
+  .breadcrumb-item + .breadcrumb-item:hover::before {
+    text-decoration: none;
+  }
+  
+  .breadcrumb-item.active {
+    color: #fd7e14;
+  }

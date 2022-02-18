@@ -1,0 +1,83 @@
+
+
+/*** Checkout Page ***/
+
+.checkout-section {
+    background: #ffffff;
+    //padding: 75px 0px;
+  }
+  
+  .checkout-section .card-body {
+    padding: 8px;
+    text-align: left;
+  }
+  .checkout-section .card {
+    border: 0px solid #ededed; 
+    box-shadow: none;
+  }
+  
+  .checkout-section .custom-select {
+    border-radius: 50px;
+  }
+  
+  .checkout-section .form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 50px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  /*** Checkout Page END ***/
+
+  .cart-button-2 {
+    background-color: #fd7e14;
+    color: #ffffff;
+    padding-block: 12px;
+    line-height: 14px;
+    height: 40px;
+    padding-inline: 15px;
+    border-radius: 25px;
+    font-family: var(--font-family);
+    text-decoration: none;
+    border: 1px solid #fd7e14;
+    transition: all .3s ease-in-out;
+    text-align: center;
+  }
+  
+  .cart-button-2:hover {
+    background-color: transparent;
+    color: #ffffff;
+    text-decoration: none;
+    border: 1px solid #000000;
+    background-color: #000000;
+  }
+  .checkout-section label{
+    color: #aaa;
+  }
+  .checkout-section sup{
+    color: red;
+  }
+  .wrapper {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+  .product-image {
+    float: left;
+    width: 20%;
+  }
+  .image__tag {
+    display: block;
+    width: 80px;
+    height: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    padding-right: 10px;
+}

@@ -32,7 +32,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         // -->Get: userData
-        this.userData = this.naoUsersService.userData.getValue();
+        this.userData = JSON.parse(localStorage.getItem('user')); // this.naoUsersService.userData.getValue();
         this.linkedDoc = this.naoUsersService.linkedDoc.getValue()?.data;
 
         // -->Check: and redirect
@@ -42,12 +42,12 @@ export class PageProfileComponent implements OnInit, OnDestroy {
         }
 
         // -->Subscribe: to userData
-        this.subs.add(
-            this.naoUsersService.userData.subscribe(userData => {
-                // -->Set: user data
-                this.userData = userData;
-            })
-        );
+        // this.subs.add(
+        //     this.naoUsersService.userData.subscribe(userData => {
+        //         // -->Set: user data
+        //         this.userData = userData;
+        //     })
+        // );
 
         // -->Subscribe: to linkedDoc
         this.subs.add(

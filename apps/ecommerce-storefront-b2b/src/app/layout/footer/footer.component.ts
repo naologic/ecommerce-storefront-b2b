@@ -13,13 +13,14 @@ export class FooterComponent implements OnInit, OnDestroy {
     public infoSupport = null;
 
     // Newsletter social links
-    // public socialLinks = [
-    //     // { type: 'facebook',  url: theme.author.profile_url, icon: 'fab fa-facebook-f' },
-    //     // { type: 'twitter',   url: theme.author.profile_url, icon: 'fab fa-twitter' },
-    //     // { type: 'youtube',   url: theme.author.profile_url, icon: 'fab fa-youtube' },
-    //     // { type: 'instagram', url: theme.author.profile_url, icon: 'fab fa-instagram' },
-    //     // { type: 'rss',       url: theme.author.profile_url, icon: 'fas fa-rss' },
-    // ];
+    public socialLinks = [
+        
+        { type: 'instagram', url: 'https://www.linkedin.com/company/1031475/admin/', icon: 'fab fa-linkedin' },
+        { type: 'instagram', url: '', icon: 'fab fa-instagram' },
+        { type: 'facebook',  url: '', icon: 'fab fa-facebook-f' }
+        // { type: 'twitter',   url: '', icon: 'fab fa-twitter' },
+        // { type: 'youtube',   url: '', icon: 'fab fa-youtube' },
+    ];
 
     constructor(public appService: AppService) { }
 

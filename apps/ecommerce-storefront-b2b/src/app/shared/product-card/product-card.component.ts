@@ -106,6 +106,7 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
      * Show: product quickview
      */
     public showQuickView(): void {
+
         // -->Check: if quickview is being shown already
         if (this.showingQuickview) {
             return;

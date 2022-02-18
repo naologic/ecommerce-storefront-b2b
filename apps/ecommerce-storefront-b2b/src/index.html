@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="utf-8">
     <title>Welcome to Naologic B2B ecommerce</title>
@@ -7,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <meta name="description" content="Unify all your data and operations into a single platform"/>
+    <meta name="description" content="Unify all your data and operations into a single platform" />
 
     <meta property="og:title" content="Welcome to Naologic B2B ecommerce">
     <meta property="og:description" content="Unify all your data and operations into a single platform">
@@ -18,7 +19,7 @@
 
     <!--CSP-->
     <meta http-equiv="Content-Security-Policy"
-          content="default-src * 'self' https://www.smartdatacollective.com https://mmk-web-lacreme.s3.eu-west-1.amazonaws.com https://naologic.com data:;
+        content="default-src * 'self' https://www.smartdatacollective.com https://mmk-web-lacreme.s3.eu-west-1.amazonaws.com https://naologic.com data:;
             font-src 'self' https://fonts.googleapis.com https://naologic.github.io https://fonts.gstatic.com data:;
             object-src 'self' blob:;
             frame-src 'self' https://js.stripe.com/ https://cdn.plaid.com/ https://naologic.chargebee.com https://naologic-test.chargebee.com https://js.chargebee.com data:;
@@ -37,8 +38,82 @@
             from {
                 transform: rotateZ(0deg);
             }
+
             to {
                 transform: rotateZ(360deg);
+            }
+        }
+
+        @-webkit-keyframes object {
+            0% {
+                left: 100px;
+                top: 0
+            }
+
+            80% {
+                left: 0;
+                top: 0;
+            }
+
+            85% {
+                left: 0;
+                top: -20px;
+                width: 20px;
+                height: 20px;
+            }
+
+            90% {
+                width: 40px;
+                height: 15px;
+            }
+
+            95% {
+                left: 100px;
+                top: -20px;
+                width: 20px;
+                height: 20px;
+            }
+
+            100% {
+                left: 100px;
+                top: 0;
+            }
+
+        }
+
+        @keyframes object {
+            0% {
+                left: 100px;
+                top: 0
+            }
+
+            80% {
+                left: 0;
+                top: 0;
+            }
+
+            85% {
+                left: 0;
+                top: -20px;
+                width: 20px;
+                height: 20px;
+            }
+
+            90% {
+                width: 40px;
+                height: 15px;
+            }
+
+            95% {
+                left: 100px;
+                top: -20px;
+                width: 20px;
+                height: 20px;
+            }
+
+            100% {
+                left: 100px;
+                top: 0;
             }
         }
 
@@ -46,6 +121,7 @@
             overflow: hidden !important;
             overflow-y: scroll !important;
             height: 100% !important;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
 
         .site-preloader {
@@ -58,6 +134,7 @@
             z-index: 99999;
             opacity: 1;
         }
+
         .site-preloader::before {
             box-sizing: border-box;
             content: '';
@@ -76,15 +153,95 @@
             animation-timing-function: linear;
             animation-iteration-count: infinite;
         }
+
         .site-preloader__fade {
             transition: opacity .3s;
             opacity: 0;
         }
+
+        #loading {
+            background-color: #fff;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            z-index: 999999999999999999;
+            margin-top: 0px;
+            top: 0px;
+        }
+
+        #loading-center {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        #loading-center-absolute {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 20px;
+            width: 100px;
+            margin-top: -10px;
+            margin-left: -50px;
+
+        }
+
+        .object {
+            width: 20px;
+            height: 20px;
+            background-color: #5f3afc;
+            -moz-border-radius: 50% 50% 50% 50%;
+            -webkit-border-radius: 50% 50% 50% 50%;
+            border-radius: 50% 50% 50% 50%;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            position: absolute;
+        }
+
+
+        #object_one {
+            -webkit-animation: object 2s linear infinite;
+            animation: object 2s linear infinite;
+        }
+
+        #object_two {
+            -webkit-animation: object 2s linear infinite -.4s;
+            animation: object 2s linear infinite -.4s;
+        }
+
+        #object_three {
+            -webkit-animation: object 2s linear infinite -.8s;
+            animation: object 2s linear infinite -.8s;
+        }
+
+        #object_four {
+            -webkit-animation: object 2s linear infinite -1.2s;
+            animation: object 2s linear infinite -1.2s;
+        }
+
+        #object_five {
+            -webkit-animation: object 2s linear infinite -1.6s;
+            animation: object 2s linear infinite -1.6s;
+        }
     </style>
 </head>
+
 <body>
-    <div class="site-preloader"></div>
+    <div class="site-preloader">
+        <div id="loading">
+            <div id="loading-center">
+                <div id="loading-center-absolute">
+                    <div class="object" id="object_one"></div>
+                    <div class="object" id="object_two" style="left:20px;"></div>
+                    <div class="object" id="object_three" style="left:40px;"></div>
+                    <div class="object" id="object_four" style="left:60px;"></div>
+                    <div class="object" id="object_five" style="left:80px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <app-root></app-root>
 </body>
+
 </html>

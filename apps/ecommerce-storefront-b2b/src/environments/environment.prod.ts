@@ -20,7 +20,7 @@ export const environment = {
             $id: 'server',
             protocol: 'https',
             port: 443,
-            url: 'api-v2-dms.naologic.com',
+            url: 'api-v2-dms.naologic.com', 
             prefix: 'api/v2/',
             ssl: true
         },

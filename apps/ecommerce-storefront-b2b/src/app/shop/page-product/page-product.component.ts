@@ -5,7 +5,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
-import { NaoSettingsInterface } from "@naologic/nao-interfaces";
 import { UrlService } from '../../services/url.service';
 import { CartService } from '../../services/cart.service';
 import { LanguageService } from '../../shared/language/services/language.service';
@@ -15,6 +14,7 @@ import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src
 import { Product, ProductAttribute, ProductAttributeGroup } from '../../interfaces/product';
 import { BreadcrumbItem } from '../_parts/breadcrumb/breadcrumb.component';
 import { JsonLdService } from "../../shared/seo-helper/json-ld.service";
+import { NaoSettingsInterface } from '../../../../../../libs/nao-interfaces/src';
 
 export type PageProductLayout = 'sidebar' | 'full';
 

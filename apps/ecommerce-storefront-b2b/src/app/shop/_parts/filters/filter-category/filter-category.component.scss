@@ -1,0 +1,77 @@
+.cat-box {
+    margin: 3.2rem auto;
+    width: 56rem;
+    height: 300px !important;
+    background: #fff;
+    border: 0px !important;
+    padding: 0px !important;
+    background: transparent !important;
+  }
+  .cat-box ul {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .cat-box ul li {
+    line-height: 36px;
+  }
+  
+  .cat-box ul li a {
+    text-decoration: none;
+    color: #000000;
+    width: auto;
+  }
+  
+  .cat-box ul li a:hover {
+    text-decoration: none;
+    color: #fd7e14;
+  }
+
+  .slimScrollDiv {
+    height: auto !important;
+    margin-bottom: 37px;
+    width: 250px !important
+  }
+    
+  .scrollable {
+    width: 250px !important;
+    background: #eee;
+    margin: 0 auto;
+    padding: 2.4rem;
+    border: 1px solid #ccc;
+    overflow: hidden;
+  }
+  .scrollable:hover {
+    overflow-y: scroll;
+  }
+
+  .sb-link a {
+    color: #fd7e14;
+    text-decoration: none;
+  }
+  
+  .sb-link a:hover {
+    color: #000000;
+    text-decoration: none;
+  }
+  #orange,
+select,
+.btn {
+  color: #fd7e14;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+.ml-3,
+.mx-3 {
+  margin-left: 1rem !important;
+}
+.pb-2,
+.py-2 {
+  padding-bottom: 0.5rem !important;
+}
+.pt-2,
+.py-2 {
+  padding-top: 0.5rem !important;
+}

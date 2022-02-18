@@ -1,21 +1,123 @@
-<div class="container">
-    <div class="section-header__body">
-        <h2 *ngIf="blockTitle" class="section-header__title">{{ blockTitle }}</h2>
-        <div class="section-header__divider"></div>
-    </div>
+<div class="container-fluid experts-section px-0">
+    <div class="container">
+        <!-- <div >
+        <h1 *ngIf="blockTitle" class="section-header__title">{{ blockTitle }}</h1>
+        <a href="#" class="effect box-fill-center">View All Products</a>
 
-    <div class="position-relative products-view__list products-list products-list--grid--5"
-         [class.block-products-carousel__carousel--loading]="loading">
+    </div> -->
+
+        <div class="row">
+            <div class="w-100">
+                <div class="d-flex align-items-end justify-content-between" style="margin-bottom: 25px;">
+                    <h1 *ngIf="blockTitle" class="wow animate__animated  animate__fadeInDown animate__delay-1.8s">{{
+                        blockTitle }}</h1>
+                    <div class="nao-site-preloader"></div>
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 400 300">
+                        <path d="
+                             M0,151h34.1c0.2,0,0.4-0.1,0.5-0.3l1.8-5.3c0.2-0.5,0.9-0.4,1,0.1l1.1,5.9c0.1,0.5,0.9,0.5,1,0l6.4-37
+                        c0.1-0.6,0.9-0.5,1,0l6.7,55c0.1,0.6,0.9,0.6,1,0l3.9-20c0.1-0.5,0.9-0.5,1,0l0.5,2.3c0.1,0.5,0.9,0.5,1,0l2.5-12.7
+                        c0.1-0.5,0.9-0.5,1,0l1.9,9.3c0,0.2,0.1,0.2,0.1,0l0.3-1.4c0-0.1,0.1-0.1,0.2,0l1.3,3.9c0.1,0.2,0.3,0.3,0.5,0.3H600
+                             "></path>
+                        <path
+                            d="
+                             M0,150h35.1c0.2,0,0.4-0.1,0.5-0.3l1.8-5.3c0.2-0.5,0.9-0.4,1,0.1l1.1,5.9c0.1,0.5,0.9,0.5,1,0l6.4-37
+                        c0.1-0.6,0.9-0.5,1,0l6.7,55c0.1,0.6,0.9,0.6,1,0l3.9-20c0.1-0.5,0.9-0.5,1,0l0.5,2.3c0.1,0.5,0.9,0.5,1,0l2.5-12.7
+                        c0.1-0.5,0.9-0.5,1,0l1.9,9.3c0,0.2,0.1,0.2,0.1,0l0.3-1.4c0-0.1,0.1-0.1,0.2,0l1.3,3.9c0.1,0.2,0.3,0.3,0.5,0.3H600">
+                        </path>
+
+                    </svg>
+                    <!-- <div class="section-header__divider"></div> -->
+                    <a href="javascript:void(0)" (click)="redirectToAllProducts()" class="effect box-fill-center">View
+                        All Products</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="position-relative products-view__list products-list products-list--grid--5"
+            [class.block-products-carousel__carousel--loading]="loading" style="clear: both;"> -->
         <!--Loader-->
         <div class="block-products__loader"></div>
-        <!--Products-->
-        <div class="products-list__content">
-            <app-product-card
+        <!--Products class="products-list__content" -->
+        <div style="padding-top: 40px;">
+
+            <div class="row">
+                <div class="col-3" *ngFor="let product of products | slice:0:8; let i=index">
+
+                    <div class="slider-card" style="margin-bottom: 25px;">
+                        <div class="fp-img-bg" style="position: relative;">
+                            <div class="team-image-hover">
+                                <div class="team-img-hover-icons">
+                                    <div class="team-image-hover-icon">
+                                        <a [class.product-card__action--loading]="showingQuickview"
+                                            [attr.aria-label]="'BUTTON_QUICKVIEW' | translate" (click)="showQuickView(product)"
+                                             data-toggle="modal"
+                                            data-target="#largeModal"> <i class="fa fa-search" aria-hidden="true"></i>
+                                        </a>
+                                        <!-- <i [routerLink]="url.product(product)" class="fa fa-search"
+                                            aria-hidden="true"></i> -->
+                                    </div>
+                                    <div class="team-image-hover-icon2">
+                                        <div appDropdown class="" [class.my-lists__menu--open]="myListsDropdown.isOpen"
+                                            #myListsDropdown="appDropdown">
+
+                                            <i appAddToMyLists type="button" class="fas fa-heart" aria-hidden="true"
+                                                [class.product__actions-item--loading]="addToMyLists.inProgress"
+                                                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"
+                                                (click)="myListsDropdown.toggle()" #addToMyLists="addToMyLists">
+                                            </i>
+
+                                            <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+                                                <button *ngFor="let item of addToMyLists.myLists"
+                                                    class="my-lists__menu-item" type="button"
+                                                    (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
+                                                    {{ item.data?.name }}
+                                                </button>
+                                                <!--Empty state-->
+                                                <div class="p-3 text-center"
+                                                    *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+                                                    {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                                                    <a style="background: white;" href="javascript:void(0)"
+                                                        routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' |
+                                                        translate
+                                                        }}</a>
+                                                    {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <img class="img-fluid" src="../../../assets/images/p-01.png" alt=""> -->
+
+                            <img style="display: block;width: 100%;height: 250px; max-height: 250px;object-fit: cover;"
+                                class="image__tag"
+                                [src]="product?.data?.images[0] | checkImageFallback: product?.data?.selectedVariant"
+                                alt="">
+                        </div>
+                        <div class="py-3">
+                            <h6>{{ product?.data?.name }}</h6>
+                            <p>{{ 'TEXT_SKU' | translate }}: {{ product?.data?.sku ||
+                                product?.data?.variants[0]?.sku }}</p>
+                        </div>
+                        <div class="d-flex">
+                            <a href="#" [routerLink]="url.product(product)" class="cart-button-1" tabindex="0">{{
+                                'BUTTON_ADD_TO_CART' | translate }}</a>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <!-- <app-product-card
                 *ngFor="let product of products"
                 layout="grid"
                 class="products-list__item"
                 [product]="product"
-            ></app-product-card>
+            ></app-product-card> -->
         </div>
+        <!-- </div> -->
     </div>
 </div>

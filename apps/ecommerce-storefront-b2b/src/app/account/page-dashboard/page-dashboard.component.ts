@@ -22,13 +22,16 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         // -->Subscribe: to userData
+        this.userData = JSON.parse(localStorage.getItem('user'))
         this.subs.add(
-            this.naoUsersService.userData.subscribe(userData => {
-                // -->Set: user data
-                this.userData = userData;
-            })
+            // this.naoUsersService.userData.subscribe(userData => {
+            //     // -->Set: user data
+            //     // this.userData = userData;
+            //     this.userData = localStorage.getItem('user');
+            //     // localStorage.setItem('user', JSON.stringify(this.userData));
+            // })
+
         );
-        // -->Subscribe: to linkedDoc
         this.subs.add(
             this.naoUsersService.linkedDoc.subscribe(linkedDoc => {
                 // -->Check: if there is an address

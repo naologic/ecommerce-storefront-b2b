@@ -1,9 +1,12 @@
 <!--Loading-->
 <nao-loading *ngIf="refreshInProgress"></nao-loading>
+<!--Spacer-->
+<div class="nao-spacer-before-block-header"></div>
 
 <!--Content-->
 <div class="page-my-lists-content-wrapper" *ngIf="!refreshInProgress">
     <app-block-header
+    [pageTitle]="'HEADER_SHOPPING_CART' | translate"
         [breadcrumb]="[
                 {label: 'LINK_HOME' | translate, url: '/'},
                 {label: 'LINK_MY_LISTS' | translate, url: ''}

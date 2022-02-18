@@ -69,7 +69,8 @@ export class AppComponent implements OnInit, OnDestroy {
         // -->Show: toaster when a variant is added to the cart
         this.cart.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.variantName })
+                //this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: 'Successfully' })
             );
         });
 

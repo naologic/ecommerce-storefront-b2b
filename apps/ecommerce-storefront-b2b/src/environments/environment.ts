@@ -16,13 +16,13 @@ export const environment = {
     API: {
         server: {
             $id: 'server',
-            protocol: 'http',
-            port: 3010,
-            url: 'localhost',
+            protocol: 'https',
+            port: 443,
+            url: 'api-v2-dms.naologic.com',
             prefix: 'api/v2/',
             ssl: false
         },
-        naoToken: 'naoprodvlhauavvm9kslfbynan6bu2a8',
+        naoToken: 'naoprodgziyklakdl0nifckl69bw3lvg',
         webSocket: {
             enabled: false,
         },

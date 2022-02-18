@@ -65,6 +65,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        console.log(this.formGroup.get('agree').value,'agree checkbox')
         this.successOrder = false;
         // -->Get: linked doc
         const linkedDoc = this.naoUsersService.linkedDoc.getValue();
@@ -209,7 +210,11 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
      * Create: order
      */
     public createOrder(): void {
+        console.log('check');
+        
         if (!this.checkData()) {
+            console.log('notcheck');
+
             return;
         }
 
@@ -283,6 +288,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
      */
     private checkData(): boolean {
         this.markAllAsTouched();
+console.log(this.formGroup.invalid,'IsInValid');
 
         if (this.formGroup.invalid) {
             alert(this.translate.instant('ERROR_CHECKOUT'));

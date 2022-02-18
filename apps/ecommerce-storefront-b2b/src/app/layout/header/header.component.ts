@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NaoUserAccessService } from "@naologic/nao-user-access";
 import { MyListsService } from '../../services/my-lists.service';
 import { CartService } from '../../services/cart.service';
 import { UrlService } from '../../services/url.service';
@@ -9,6 +8,9 @@ import { DepartmentsLink } from "../../interfaces/departments-link";
 import { MegamenuColumn } from "../../interfaces/menu";
 import { NestedLink } from "../../interfaces/link";
 import { nameToSlug } from '../../shared/functions/utils';
+import { Router } from '@angular/router';
+import { Product } from '../../interfaces/product';
+import { NaoUserAccessService } from '../../../../../../libs/nao-user-access/src';
 
 @Component({
     selector: 'app-header',
@@ -22,16 +24,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public categories: DepartmentsLink[] = [];
     public infoSupport = null;
     public userData = null;
+    loggedInUser: string;
+    public variantIndex = 0;
+    public product!: Product;
+    public isLoggedIn = false;
 
     constructor(
         public myLists: MyListsService,
         public cart: CartService,
         public url: UrlService,
         public appService: AppService,
-        private naoUsersService: NaoUserAccessService
+        private naoUsersService: NaoUserAccessService,
+        private router: Router,
     ) { }
 
     public ngOnInit(): void {
+        this.isLoggedIn = this.naoUsersService.isLoggedIn();
+
         // -->Subscribe: to appInfo changes
         this.subs.add(
             this.appService.appInfo.subscribe(value => {
@@ -46,9 +55,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // -->Subscribe: to user data
         this.naoUsersService.userData.subscribe(userData => {
             // -->Set: user data
-            this.userData = userData;
+            // this.userData = userData;
         })
-
+        this.userData = JSON.parse(localStorage.getItem('user'))
     }
 
     /**
@@ -123,7 +132,35 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         return items;
     }
+      /**
+     * Log: user LoggedIn
+     */
+    loggedIn() {
+        this.loggedInUser = localStorage.getItem('user')
+        return this.loggedInUser;
+    }
+     /**
+     * Log: user out and redirect
+     */
+   public logout(): void {
+    // -->Logout: user
+    this.naoUsersService.logout().then(() => {
+        // -->Redirect
+        this.router.navigateByUrl('/account/login').then();
+    });
+}
 
+public ngOnChanges(changes: SimpleChanges): void {
+    // -->Subscribe: to userData
+    this.subs.add(
+        this.naoUsersService.userData.subscribe(userData => {
+            // -->Set: user data
+            this.userData = userData;
+            console.log(this.userData,'userData');
+            
+        })
+    );
+}
     public ngOnDestroy(): void {
         this.subs.unsubscribe();
     }

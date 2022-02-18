@@ -1,14 +1,27 @@
-<div class="site-footer">
-    <app-decor type="bottom"></app-decor>
+
+    <div class="footer-img">
+        <img src="../../../assets/images/btm-bdr.svg" style="width: 100%;">
+    </div>
+<div class="site-footer ">
+    
     <div class="site-footer__widgets">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-xl-4 footer-contacts">
-                    <h5 class="footer-contacts__title">{{ 'HEADER_CONTACT_US' | translate }}</h5>
+                    <img src="../../../assets/images/logo-ftr.png" style="width: 200px;"/>
+                    <p style="margin-top: 17px;color: white;margin-bottom: 2px;font-size: 14px;">Direct Med Supplies is a privately owned company based on Long Island, New York that provides comprehensive medical supply and equipment as well as consultation services to hospital systems, ambulatory care, laboratories and veterinarians.
+                    </p>
+                    <h4 style="color: white;font-size: 24px;margin-top: 20px;">Follow Us:</h4>
+                    <div class="d-flex mt-4 ftrsm">
+                        <img style="width: 45px;height: 45px;margin-right: 10px;" src="../../../assets/images/fb.png">
+                        <img style="width: 45px;height: 45px;margin-right: 10px;" src="../../../assets/images/tw.png">
+                        <img style="width: 45px;height: 45px;margin-right: 10px;" src="../../../assets/images/ins.png">
+                    </div>
+                    <!-- <h5 class="footer-contacts__title">{{ 'HEADER_CONTACT_US' | translate }}</h5> -->
 
-                    <div class="footer-contacts__text">{{ 'TEXT_CONTACT_US_MESSAGE' | translate }}</div>
+                    <!-- <div class="footer-contacts__text">{{ 'TEXT_CONTACT_US_MESSAGE' | translate }}</div> -->
 
-                    <address class="footer-contacts__contacts">
+                    <!-- <address class="footer-contacts__contacts">
                         <dl>
                             <dt>{{ 'TEXT_PHONE_NUMBER' | translate }}</dt>
                             <dd>{{ infoSupport?.supportPhoneNumber }}</dd>
@@ -28,11 +41,52 @@
                             <dt>{{ 'TEXT_WORKING_HOURS' | translate }}</dt>
                             <dd >{{ infoSupport?.workingHours }}</dd>
                         </dl>
-                    </address>
+                    </address> -->
                 </div>
                 <!-- Links section -->
-                <div class="col-6 col-md-3 col-xl-2 footer-links">
-                    <div class="site-footer__widget">
+                <div class="col-6 col-md-4 col-xl-8 footer-links">
+                    <div class="row">
+                        <hr style="position: absolute;top: 53px;left: 100px;right: 0px;height: 1px;background-color: #666666;">
+                        <div  class="col-12 col-xl-6 " style="align-items: flex-end !important;flex-direction: column;display: flex;padding-left: 3.5rem !important;padding-right: 3rem!important;padding-top: 1.5rem!important;">
+                            <h4 style="color: white;font-size: 24px;margin-right: 30px;">Useful Links</h4>
+                            <ul class="footer-links__list" style="margin-top: 1.5rem!important;">
+                                <li style="color: white;" class="footer-links__item" *ngFor="let link of [
+                                    {title: 'LINK_ABOUT_US' | translate, url: '/site/about-us'},
+                                    {title: 'LINK_FAQ' | translate, url: '/site/faq'},
+                                    {title: 'LINK_TERMS_AND_CONDITIONS' | translate, url: '/site/terms'},
+                                    {title: 'LINK_SITE_MAP' | translate}
+                                ]">
+                                    <a [routerLink]="link.url" class="footer-links__link">{{ link.title }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div  class="col-12 col-xl-6 "  style="padding-left: 1.5rem !important; padding-top: 1.5rem!important;">
+                            <h4 style="color: white;font-size: 24px;">Get In Touch</h4>
+                            <ul class="footer-links__list"  style="margin-top: 1.5rem!important;">
+                                <li style="color: white;padding: 12px 0;clear: both;">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true" style="float: left;margin-top: 10px;"></i><p style="float: left;
+                                    margin-left: 15px;margin-bottom: 2px;font-size: 14px;color:white;">PO BOX 1129 Westhampton Beach,<br>
+                                        MY 11798</p>
+                                </li>
+                                <li style="color: white;padding: 12px 0;clear: both;">
+                                <i class="fa fa-phone" aria-hidden="true" style="float: left;"></i><p style="float: left;
+                                margin-left: 15px;margin-bottom: 2px;font-size: 14px;color:white;">800-251-1061</p>
+                                </li>
+                            <li style="color: white;padding: 12px 0;clear: both;">
+                            <i class="fa fa-envelope" aria-hidden="true" style="float: left;"></i><p style="float: left;
+                            margin-left: 15px;margin-bottom: 2px;font-size: 14px;color:white;">info@DirectmedSupplies.com</p>
+                                 </li>
+                        <li style="color: white;padding: 12px 0;clear: both;">
+                        <i class="fa fa-clock" aria-hidden="true" style="float: left;"></i><p style="float: left;
+                        margin-left: 15px;margin-bottom: 2px;font-size: 14px;color:white;">9am - 5pm Mon-Fri</p>
+                    </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    
+                    <!-- <div class="site-footer__widget">
                         <h5 class="footer-links__title">{{ 'HEADER_INFORMATION' | translate }}</h5>
                         <ul class="footer-links__list">
                             <li class="footer-links__item" *ngFor="let link of [
@@ -44,13 +98,29 @@
                                 <a [routerLink]="link.url" class="footer-links__link">{{ link.title }}</a>
                             </li>
                         </ul>
+                        
+                    </div> -->
+                    <!-- <div class="footer-newsletter__text footer-newsletter__text--social" *ngIf="socialLinks?.length">
+                        {{ 'TEXT_SOCIAL_LINKS_MESSAGE' | translate }}
                     </div>
-                </div>
-                <!-- Newsletter section -->
-                <!-- <div class="col-12 col-md-6 col-xl-4 footer-newsletter">
-                    <h5 class="footer-newsletter__title">{{ 'HEADER_NEWSLETTER' | translate }}</h5>
-                    <div class="footer-newsletter__text">{{ 'TEXT_NEWSLETTER_MESSAGE' | translate }}</div>
 
+                    <div class="footer-newsletter__social-links social-links">
+                        <ul class="social-links__list">
+                            <li *ngFor="let link of socialLinks" class="social-links__item social-links__item--{{ link.type }}">
+                                <a href="{{ link.url }}" target="_blank"><i [ngClass]="link.icon"></i></a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+                <!-- Newsletter section
+               <div class="col-12 col-md-6 col-xl-4 footer-news8letter">
+                     <h5 class="footer-newsletter__title">My Account</h5>
+                     <ul class="footer-links__list">
+                        <li class="footer-links__item">
+                            <a href="/account/login" class="footer-links__link">Login</a>
+                        </li>
+                    </ul>
+                
                     <form class="footer-newsletter__form" (submit)="$event.preventDefault()">
                         <label class="sr-only" for="footer-newsletter-address">
                             {{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}
@@ -64,28 +134,22 @@
                         <button type="submit" class="footer-newsletter__form-button">{{ 'BUTTON_SUBSCRIBE' | translate }}</button>
                     </form>
 
-                    <div class="footer-newsletter__text footer-newsletter__text--social" *ngIf="socialLinks?.length">
-                        {{ 'TEXT_SOCIAL_LINKS_MESSAGE' | translate }}
-                    </div>
-
-                    <div class="footer-newsletter__social-links social-links">
-                        <ul class="social-links__list">
-                            <li *ngFor="let link of socialLinks" class="social-links__item social-links__item--{{ link.type }}">
-                                <a href="{{ link.url }}" target="_blank"><i [ngClass]="link.icon"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
+                    
+                </div>  -->
             </div>
         </div>
     </div>
     <div class="site-footer__bottom">
-        <div class="container">
+        <div class="container" style="border-top: 1px solid black;">
             <div class="site-footer__bottom-row">
                 <div class="site-footer__copyright">
                     <!-- copyright -->
-                    Powered by <a href="https://naologic.com/" target="_blank">Naologic</a>
+                    <!-- Powered by <a href="https://naologic.com/" target="_blank">Naologic</a> -->
+                    <!-- <p>©2021 Direct Med Supplies, All rights reserved. The supplies you need the service you trust! is a trademark and DirectMed Supplies is a registered trademark of Direct Med Supplies. All trademarks, regardless of whether they appear with a trademark symbol, are the property of their respective owners unless otherwise noted. Trademark designations refer to the United States only.</p> -->
                     <!-- copyright / end -->
+
+                    <p>©2022 Direct Med Supplies, All rights reserved. The supplies you need the service you trust! is a trademark and DirectMed Supplies is a registered trademark of Direct Med Supplies. All trademarks, regardless of whether they appear with a trademark symbol, are the property of their respective owners unless otherwise noted. Trademark designations refer to the United States only.<br>
+                        Powered by Naologic</p>
                 </div>
 <!--                <div class="site-footer__payments">-->
 <!--                    <img src="assets/images/payments.png" alt="">-->

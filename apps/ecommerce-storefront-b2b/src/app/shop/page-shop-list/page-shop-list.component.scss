@@ -1,0 +1,55 @@
+#sidebar {
+    width: auto;
+    float: left
+  }
+  #products {
+    width: 75%;
+    padding: 10px;
+    margin: 0;
+    float: right;
+  }
+  .container {
+    max-width: 1400px;
+  }
+  .pro-filters {
+    padding-top: 25px;
+    border-bottom: 0px solid #e4e4e4;
+    padding-bottom: 10px;
+    display: flow-root;
+  }
+  #sorting span,
+  #res {
+    font-size: 14px
+  }
+  #sorting,
+  #res {
+    font-size: 12px;
+    margin-top: 2%
+  }
+  
+.show-resu {
+  padding-top: 2px;
+  float: left;
+}
+  .filter-01 {
+    float: right;
+  }
+  .filter-02 {
+    float: right;
+  }
+  .text-muted {
+    color: #6c757d !important;
+  }
+  #sort {
+    outline: none;
+    border: none
+  }
+  #orange,
+select,
+.btn {
+  color: #fd7e14;
+}
+
+.padding{
+  margin-top: 120px;
+}

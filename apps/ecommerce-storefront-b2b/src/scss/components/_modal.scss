@@ -7,6 +7,7 @@
     -webkit-overflow-scrolling: touch;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    z-index: 10050;
 }
 .modal-backdrop {
     background: $modal-backdrop;
@@ -16,6 +17,11 @@
 }
 .modal-content {
     border: none;
-    border-radius: 2px;
+    border-radius: 8px;
     box-shadow: $modal-shadow;
+    padding-top: 0px;
+    height: 580px;
+    margin-top: 160px;
+    overflow-y: scroll;
+    // padding-top: 100px;
 }

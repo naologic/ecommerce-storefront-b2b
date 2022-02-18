@@ -1,16 +1,36 @@
-<div class="block-header" [class.block-header--has-title]="!!pageTitle"
-     [class.block-header--has-breadcrumb]="breadcrumb.length > 0">
+<!-- <div class="block-header" [class.block-header--has-title]="!!pageTitle"
+    [class.block-header--has-breadcrumb]="breadcrumb.length > 0">
     <div class="container">
         <div class="block-header__body">
-            <app-breadcrumb
-                *ngIf="breadcrumb.length"
-                class="block-header__breadcrumb"
-                [items]="breadcrumb"
-                [withPageTitle]="!!pageTitle"
-                [afterHeader]="afterHeader"
-            >
+            <app-breadcrumb *ngIf="breadcrumb.length" class="block-header__breadcrumb" [items]="breadcrumb"
+                [withPageTitle]="!!pageTitle" [afterHeader]="afterHeader">
             </app-breadcrumb>
             <h1 *ngIf="pageTitle" class="block-header__title" #titleElement>{{ pageTitle }}</h1>
         </div>
     </div>
+</div> -->
+
+
+<div class="container-fluid inner-heading" [class.block-header--has-title]="!!pageTitle"
+    [class.block-header--has-breadcrumb]="breadcrumb.length > 0">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 *ngIf="pageTitle" #titleElement>{{ pageTitle }}</h3>
+        </div>
+    </div>
+    <hr class="new1">
+    <app-breadcrumb *ngIf="breadcrumb.length" class="" [items]="breadcrumb"
+        [withPageTitle]="!!pageTitle" [afterHeader]="afterHeader">
+    </app-breadcrumb>
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <div class="bc-list">
+                <ol class="breadcrumb breadcrumb-right-arrow">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Library</a></li>
+                    <li class="breadcrumb-item active">Data</li>
+                </ol>
+            </div>
+        </div>
+    </div> -->
 </div>

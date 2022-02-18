@@ -1,29 +1,69 @@
-<div class="header">
+<div class="container-fluid navbar-sticky p-0" style="z-index: 99;">
+
     <div class="header__megamenu-area megamenu-area"></div>
-    <!--<div class="header__topbar-bg"></div>
-    <div class="header__topbar">
-        <app-topbar></app-topbar>
-    </div>-->
-    <div class="header__navbar">
-        <div class="header__navbar-departments">
-            <app-departments [items]="categories" [label]="'BUTTON_DEPARTMENTS_LONG' | translate"></app-departments>
+    <div class="header__topbar-bg"></div>
+
+    <div class="header__topbar ">
+        <!-- <app-topbar></app-topbar> -->
+        <div class="container super-top-nav">
+            <div class="row align-items-center justify-content-between" >
+             
+                    <p>Stay Home, and save up to 20%, or call us for more info<i class="fa fa-phone"
+                            aria-hidden="true"></i><span>+821 2235 555</span></p>
+                
+                <div class="supet-top-nav-button">
+                    <nav  class="mainnav">
+                        <ul>
+                            <li *ngIf="loggedIn()" class="hasDD"><a><i class="fa fa-user-circle" aria-hidden="true"></i> Hello,
+                                <span *ngIf="userData"> {{ userData.firstName }} </span>  </a>
+                                <ul>
+                                    <li><a href=""  routerLink="/account/dashboard">{{ 'LINK_ACCOUNT_DASHBOARD' | translate }}</a></li>
+                                    <li><a href="" routerLink="/account/profile">{{ 'LINK_ACCOUNT_PROFILE' | translate }}</a></li>
+                                    <li><a href=""  routerLink="/account/invoices">{{ 'LINK_ACCOUNT_INVOICE' | translate }}</a></li>
+                                    <li><a href=""  routerLink="/account/addresses">{{ 'LINK_ACCOUNT_ADDRESSES' | translate }}</a></li>
+                                    <li class="dd-lc"><a (click)="logout()">{{ 'LINK_ACCOUNT_LOGOUT' | translate }}</a></li>
+                                </ul>
+                            </li>
+                            <li> <a style="padding: 0;" *ngIf="!loggedIn()" routerLink="/account/login"><i class="fa fa-lock" aria-hidden="true"></i>Sign In</a></li>
+                            <li> <a style="padding: 0;" *ngIf="!loggedIn()" routerLink="/account/register"><i class="fa fa-user-circle" aria-hidden="true"></i>Sign Up</a></li>
+                            <li class="close__"><a style="padding: 0;" routerLink="/shop/my-lists"><i class="fa fa-heart" aria-hidden="true"></i>My List</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-        <div class="header__navbar-menu">
+    </div>
+
+<div id="header">
+    <div class="header" style="width: 100%;background: white;z-index: 10000;">
+
+        <div class="header__navbar">
+            <div class="header__navbar-departments">
+                <app-departments [items]="categories" [label]="'BUTTON_DEPARTMENTS_LONG' | translate"></app-departments>
+            </div>
+            <!-- <div class="header__navbar-menu">
             <app-main-menu></app-main-menu>
-        </div>
-        <div class="header__navbar-phone phone">
+        </div> -->
+            <!-- <div class="header__navbar-phone phone">
             <div class="phone__body">
                 <div class="phone__title">{{ 'TEXT_CALL_US' | translate }}</div>
                 <div class="phone__number">{{ infoSupport?.supportPhoneNumber }}</div>
             </div>
+        </div> -->
         </div>
-    </div>
-    <app-logo class="header__logo"></app-logo>
-    <div class="header__search">
-        <app-search></app-search>
-    </div>
-    <div class="header__indicators">
-        <app-indicator
+        <app-logo class="header__logo"></app-logo>
+        <div> </div>
+        <div class="header__search marginRemove" style="width: 105%;">
+            <app-search></app-search>
+            <!-- <div class="header-email">
+                <input type="email" placeholder="Search Here..">
+                <a class="dropdown-toggle drop-button-header" href="#" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">By Category</a>
+            </div> -->
+
+        </div>
+        <div class="header__indicators marginRemove">
+            <!-- <app-indicator
             *ngIf='userData'
             link="/shop/my-lists"
             icon="heart-32"
@@ -38,17 +78,30 @@
             #accountIndicator="indicator"
         >
             <app-account-menu (closeMenu)="accountIndicator.close()"></app-account-menu>
-        </app-indicator>
-        <app-indicator
-            link="/shop/cart"
-            icon="cart-32"
-            [label]="'TEXT_INDICATOR_CART_LABEL' | translate"
-            [value]="(((cart.subtotal$|async) || 0) | currencyFormat) || ''"
-            [counter]="(cart.quantity$|async) || 0"
-            trigger="click"
-            #cartIndicator="indicator"
-        >
-            <app-dropcart (closeMenu)="cartIndicator.close()"></app-dropcart>
-        </app-indicator>
+        </app-indicator> -->
+            <div class="row navbar" style="
+        margin-right: 0px;
+        margin-top: 6px;
+    ">
+                <div class="col-12 col-xl-3">
+                    <a style="font-size: 16px;font-weight: 400;" class="nav-link anchor-right-nav" id="orange" [href]="'site/about-us'">About <span
+                            class="sr-only">(current)</span></a>
+                </div>
+                <div class="col-12 col-xl-3">
+                    <a style="font-size: 16px;font-weight: 400" class="nav-link anchor-right-nav" id="orange" [href]="'site/faq'">FAQs <span
+                            class="sr-only">(current)</span></a>
+                </div>
+                <div class="col-12 col-xl-5">
+                    <app-indicator link="/shop/cart" icon="cart-32" [label]="'TEXT_INDICATOR_CART_LABEL' | translate"
+                        [value]="(((cart.subtotal$|async) || 0) | currencyFormat) || ''" [counter]="(cart.quantity$|async) || 0"
+                        trigger="click" #cartIndicator="indicator">
+                        <app-dropcart (closeMenu)="cartIndicator.close()"></app-dropcart>
+                    </app-indicator>
+
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
 </div>
