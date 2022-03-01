@@ -15,15 +15,17 @@ import { Product, ProductAttribute, ProductAttributeGroup } from '../../interfac
 import { BreadcrumbItem } from '../_parts/breadcrumb/breadcrumb.component';
 import { JsonLdService } from "../../shared/seo-helper/json-ld.service";
 import { NaoSettingsInterface } from '../../../../../../libs/nao-interfaces/src';
+import { getBreadcrumbs } from '../../shared/functions/utils';
+
 
 export type PageProductLayout = 'sidebar' | 'full';
 
 export type PageProductSidebarPosition = 'start' | 'end';
 
 export interface PageProductData {
+    product: Product;
     layout: PageProductLayout;
     sidebarPosition: PageProductSidebarPosition;
-    product: Product;
 }
 
 @Component({
@@ -40,7 +42,8 @@ export class PageProductComponent implements OnInit, OnDestroy {
     // -->Based on this index we show specifications and price
     public variantIndex = 0;
     public appSettings: NaoSettingsInterface.Settings;
-    public breadcrumb$!: Observable<BreadcrumbItem[]>;
+    // public breadcrumb$!: Observable<BreadcrumbItem[]>;
+    public breadcrumbs: BreadcrumbItem[];
     public product!: Product;
     public featuredAttributes: ProductAttribute[] = [];
     public spec: ProductAttributeGroup[] = [];
@@ -68,32 +71,45 @@ export class PageProductComponent implements OnInit, OnDestroy {
         private toastr: ToastrService
     ) { }
 
-
     public ngOnInit(): void {
         // -->Set: app settings
         this.appSettings = this.appService.settings.getValue();
-
+       
         const data$ = this.route.data as Observable<PageProductData>;
         const product$ = data$.pipe(map((data: PageProductData) => data.product));
         // -->Check: if the user is logged in
         this.isLoggedIn = this.naoUsersService.isLoggedIn();
+        
+        // this.breadcrumb$ = this.language.current$.pipe(
+        //     switchMap(() => product$.pipe(
+        //         map(product => {
 
-        this.breadcrumb$ = this.language.current$.pipe(
-            switchMap(() => product$.pipe(
-                map(product => {
-                    // const categoryPath = product.categories ? getCategoryPath(product.categories[0]) : [];
+        //             // const categoryPath = product.categories ? getCategoryPath(product.categories[0]) : [];
 
-                    return [
-                        { label: this.translate.instant('LINK_HOME'), url: '/' },
-                        { label: this.translate.instant('LINK_SHOP'), url: this.url.shop() },
-                        // ...categoryPath.map(x => ({ label: x.name, url: this.url.category(x) })),
-                        // { label: product.name, url: '/' },
-                    ];
-                }),
-            )),
-        );
-
-
+        //             return [
+        //                 // { label: this.translate.instant('LINK_HOME'), url: '/' },
+        //                 // { label: this.translate.instant('LINK_SHOP'), url: this.url.shop() },
+        //                 // ...categoryPath.map(x => ({ label: x.name, url: this.url.category(x) })),
+        //                 // { label: product.name, url: '/' },
+        //                 {
+        //                     label: this.translate.instant('LINK_HOME'),
+        //                     url: this.url.home(),
+        //                 },
+        //                 {
+        //                     label: this.translate.instant('LINK_SHOP'),
+        //                     url: this.url.shop(),
+        //                     state: { resetFilters: true }
+        //                 },
+        //                 {
+        //                     label: this.translate.instant(this.route.snapshot.params.productSlug),
+        //                     url: this.route.snapshot.params.productSlug,
+        //                     state: { resetFilters: true }
+        //                 },
+        //             ];
+        //         }),
+        //     )),
+        // );
+       
         this.route.params.subscribe(params => {
             // -->Set: docId
             this.docId = params.productId;
@@ -163,7 +179,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
             return;
         }
 
-        // -->Set: metas
+        // -->Set: metas    
         this.appService.setMetas({
             title: `${this.product.data?.name} - ${this.product.data.shortDescription}`,
             description: this.product.data?.description || this.product.data?.name,
@@ -171,7 +187,6 @@ export class PageProductComponent implements OnInit, OnDestroy {
             ogDescription: this.product.data?.description || this.product.data?.name,
             shareImg: this.product.data?.images[0]
         });
-
         // -->Set: raw json+ld data
         this.jsonLdService.setRawData(
             {
@@ -192,6 +207,9 @@ export class PageProductComponent implements OnInit, OnDestroy {
                 },
             },
         );
+        // -->Update: breadcrumbs
+        this.updateBreadcrumbs(this.product.data);
+        // console.log('this.product.data?.categories', this.product.data)
     }
 
 
@@ -296,7 +314,34 @@ export class PageProductComponent implements OnInit, OnDestroy {
     public scrollToTabs(): void {
         this.tabsElement.scrollIntoView({ behavior: 'smooth' });
     }
-
+    /**
+     * Update: breadcrumbs and ttile
+     */
+    public updateBreadcrumbs(product): void {
+        // -->Get: breadcrumbs
+        this.breadcrumbs = [
+           
+            {
+                label: this.translate.instant('LINK_HOME'),
+                url: this.url.home(),
+            },
+            {
+                label: this.translate.instant('LINK_SHOP'),
+                url: this.url.shop(),
+                state: { resetFilters: true }
+            },
+            ...product.categories.map((x) => ({
+                label: x.name,
+                url: this.url.category(x),
+                state: { resetFilters: true }
+            })),
+            {
+                label: this.translate.instant(product.name),
+                url: '',
+                state: { resetFilters: true }
+            },
+        ];
+      }
 
     public ngOnDestroy() {
         this.subs.unsubscribe();

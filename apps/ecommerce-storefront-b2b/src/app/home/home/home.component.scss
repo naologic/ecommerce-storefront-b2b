@@ -212,8 +212,11 @@
 }
 
 .quote-wrapper {
-    height: 70%;
+    height: 58% !important;
     border-bottom: 1px solid #fd7e14;
+    margin-bottom: 37px;
+    // height: 70%;
+    // border-bottom: 1px solid #fd7e14;
 }
 .quote-wrapper h1 {
     box-sizing: border-box;

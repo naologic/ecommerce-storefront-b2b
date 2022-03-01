@@ -1,7 +1,8 @@
 <!--Spacer-->
 <div class="nao-spacer-before-block-header"></div>
 
-<app-block-header [pageTitle]="product?.data?.name || ''" [breadcrumb]="(breadcrumb$|async) || []"></app-block-header>
+<!-- <app-block-header [pageTitle]="product?.data?.name || ''" [breadcrumb]="(breadcrumb$|async) || []"></app-block-header> -->
+<app-block-header [pageTitle]="product?.data?.name || ''" [breadcrumb]="breadcrumbs || []"></app-block-header>
 <div class="nao-spacer-nl"></div>
 <!--Loader-->
 <!--TODO: check a loading -->
