@@ -40,7 +40,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.isLoggedIn = this.naoUsersService.isLoggedIn();
-
+        this.userData = localStorage.getItem("user");
+        if(this.userData == null)
+        {
+            this.isLoggedIn = false;
+        }
         // -->Subscribe: to appInfo changes
         this.subs.add(
             this.appService.appInfo.subscribe(value => {
@@ -55,7 +59,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // -->Subscribe: to user data
         this.naoUsersService.userData.subscribe(userData => {
             // -->Set: user data
-            // this.userData = userData;
+            this.userData = userData;
         })
         this.userData = JSON.parse(localStorage.getItem('user'))
     }
@@ -145,9 +149,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
    public logout(): void {
     // -->Logout: user
     this.naoUsersService.logout().then(() => {
+        localStorage.clear();
         // -->Redirect
         this.router.navigateByUrl('/account/login').then();
     });
+    
 }
 
 public ngOnChanges(changes: SimpleChanges): void {

@@ -17,7 +17,8 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
     private refreshSubs = new Subscription();
 
     public currentPage: FormControl = new FormControl(1);
-    public list: { items: any[], pages: number } = { items: [], pages: 0};
+    // public list: { items: any[], pages: number } = { items: [], pages: 0};
+    public list= null;
     public perPage = 20;
 
     constructor(
@@ -62,6 +63,7 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
                     items: res.data || [],
                     pages: Math.ceil(res.meta.totalHits / this.perPage)
                 }
+                
             } else {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
