@@ -91,11 +91,12 @@
                                         <app-input-number formControlName="quantity" size="lg" [min]="1">
                                         </app-input-number>
                                     </div>
+                                    <!-- [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)" -->
                                     <div class="product__actions-item product__actions-item--addtocart">
                                         <div class="row" style="padding-left: 10px;">
                                             <button class="col-6 btn btn-primary btn-lg" style="width: 200px;"
                                                 [class.btn-loading]="addToCartInProgress"
-                                                [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)"
+                                                [disabled]="!isLoggedIn"
                                                 (click)="addToCart()">
                                                 {{ 'BUTTON_ADD_TO_CART' | translate }}
                                             </button>

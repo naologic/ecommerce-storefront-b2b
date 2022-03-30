@@ -50,6 +50,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
     public form!: FormGroup;
     public addToCartInProgress = false;
     public isLoggedIn = false;
+    public userData = null;
     public docId;
 
     private get tabsElement(): HTMLElement {
@@ -78,8 +79,12 @@ export class PageProductComponent implements OnInit, OnDestroy {
         const data$ = this.route.data as Observable<PageProductData>;
         const product$ = data$.pipe(map((data: PageProductData) => data.product));
         // -->Check: if the user is logged in
-        this.isLoggedIn = this.naoUsersService.isLoggedIn();
-        
+        // this.isLoggedIn = this.naoUsersService.isLoggedIn();
+        this.userData = localStorage.getItem("user");
+        if(this.userData != null)
+        {
+            this.isLoggedIn = true;
+        }
         // this.breadcrumb$ = this.language.current$.pipe(
         //     switchMap(() => product$.pipe(
         //         map(product => {

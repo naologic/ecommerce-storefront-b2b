@@ -11,8 +11,9 @@ import { UrlService } from "../../services/url.service";
 export class PageDashboardComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
     private subs = new Subscription();
-    public address!: NaoUsersInterface.Address;
+    // public address!: NaoUsersInterface.Address;
     public userData = null;
+    public address = null;
 
     constructor(
         private naoUsersService: NaoUserAccessService,
@@ -22,9 +23,9 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         // -->Subscribe: to userData
-        this.userData = JSON.parse(localStorage.getItem('user'))
+        this.userData = JSON.parse(localStorage.getItem('user'));
         this.subs.add(
-            // this.naoUsersService.userData.subscribe(userData => {
+            // this.naoUsersService.userData.subscribe( userData => {
             //     // -->Set: user data
             //     // this.userData = userData;
             //     this.userData = localStorage.getItem('user');
@@ -36,11 +37,14 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
             this.naoUsersService.linkedDoc.subscribe(linkedDoc => {
                 // -->Check: if there is an address
                 if (Array.isArray(linkedDoc?.data?.addresses) && linkedDoc.data.addresses.length) {
-                    // -->Set: first address as default for now
-                    this.address = linkedDoc.data.addresses[0];
+                    // -->Set: first address as default for nows
+                    this.address = localStorage.setItem("address", JSON.stringify(linkedDoc.data.addresses[0]))
+                    
                 }
             })
+            
         )
+        this.address = JSON.parse(localStorage.getItem('address')) // 
     }
 
 

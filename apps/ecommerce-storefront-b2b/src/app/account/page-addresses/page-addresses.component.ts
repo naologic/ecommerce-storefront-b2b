@@ -13,7 +13,8 @@ import { AccountProfileService } from "../account-profile.service";
 })
 export class PageAddressesComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
-    public addresses: NaoUsersInterface.Address[] = [];
+    // public addresses: NaoUsersInterface.Address[] = [];
+    public addresses= null;
     public removeInProgress: string[] = [];
     public subs = new Subscription();
 
@@ -35,9 +36,11 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
                 if (Array.isArray(linkedDoc?.data?.addresses) && linkedDoc.data.addresses.length) {
                     // -->Set: first address as default for now
                     this.addresses = linkedDoc.data.addresses;
+                    this.addresses = localStorage.setItem("addresses", JSON.stringify(linkedDoc.data.addresses))
                 }
             })
         )
+        this.addresses = JSON.parse(localStorage.getItem('addresses')) // 
     }
 
 
