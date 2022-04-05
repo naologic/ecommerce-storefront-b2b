@@ -8,7 +8,7 @@ import { NaoUserAccessService } from "@naologic/nao-user-access";
     providedIn: 'root'
 })
 export class ECommerceService<T = any> {
-    private get apiRoot(): string { return this.naoUsersService.isLoggedIn() ? 'ecommerce-api' : 'ecommerce-api-public'; }
+    private get apiRoot(): string { return localStorage.getItem('user') ? 'ecommerce-api' : 'ecommerce-api-public'; }
 
     public readonly subs = new Subscription();
 

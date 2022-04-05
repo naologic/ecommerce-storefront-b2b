@@ -86,7 +86,8 @@ function hasDDFunction(){
 
 // This handler will be executed only once when the cursor
 // moves over the unordered list
-$(document).on('mouseenter', '.xzoom-container', function () { mouseOverFunction() });
+// $(document).on('mouseenter', '.xzoom-container', function () { mouseOverFunction() });
+$(document).on('mouseover', '.xzoom-container', function () { mouseOverFunction() });
 
 // $(".xzoom-container").onmouseover = function () { mouseOverFunction() };
 function mouseOverFunction() {

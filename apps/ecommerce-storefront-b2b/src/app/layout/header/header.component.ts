@@ -150,6 +150,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // -->Logout: user
     this.naoUsersService.logout().then(() => {
         localStorage.clear();
+        this.cart.clearCart();
         // -->Redirect
         this.router.navigateByUrl('/account/login').then();
     });
