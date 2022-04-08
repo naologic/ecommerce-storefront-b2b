@@ -78,7 +78,9 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
         this.appSettings = this.appService.settings.getValue();
 
         // -->Check: if the user is logged in
-        this.isLoggedIn = this.naoUsersService.isLoggedIn();
+        // this.isLoggedIn = this.naoUsersService.isLoggedIn();
+        if (localStorage.getItem('user') != null)
+        this.isLoggedIn = true;
 
         // -->Subscribe: to currency changes
         this.currency.changes$.pipe(takeUntil(this.destroy$)).subscribe(() => {

@@ -187,3 +187,7 @@ button.disabled, button:disabled {
     margin-top: 10px;
     text-decoration: underline;
 }
+.xzoom-preview,
+.xzoom-source {
+    z-index: 99999 !important;
+} 

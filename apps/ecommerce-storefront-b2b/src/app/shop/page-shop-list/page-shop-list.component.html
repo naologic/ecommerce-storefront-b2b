@@ -3,7 +3,7 @@
 <div class="nao-spacer-before-block-header"></div>
 <!--Spacer-->
 <app-block-header [pageTitle]="pageTitle$ || ''" [breadcrumb]="breadcrumbs || []"></app-block-header>
-
+<nao-loading *ngIf="!data.items.length"></nao-loading>
 <!--Content-->
 <div class="container listing-sections" *ngIf="data">
     <div class="row">
