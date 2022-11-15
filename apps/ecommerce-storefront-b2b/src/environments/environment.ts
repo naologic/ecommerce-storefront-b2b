@@ -22,7 +22,7 @@ export const environment = {
             prefix: 'api/v2/',
             ssl: false
         },
-        naoToken: 'naoprodvlhauavvm9kslfbynan6bu2a8',
+        naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
         webSocket: {
             enabled: false,
         },
