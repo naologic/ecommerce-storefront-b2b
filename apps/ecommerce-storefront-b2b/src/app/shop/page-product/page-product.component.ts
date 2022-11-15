@@ -120,6 +120,9 @@ export class PageProductComponent implements OnInit, OnDestroy {
         }
         // -->Execute:
         this.eCommerceService.productsGet(this.docId).subscribe(res =>{
+
+            console.warn(`productsGet > `, res)
+
             // -->Set: data
             this.product = res?.data[0] || null;
             // -->Check: product
@@ -169,7 +172,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
             description: this.product.data?.description || this.product.data?.name,
             twitterDescription: this.product.data?.description || this.product.data?.name,
             ogDescription: this.product.data?.description || this.product.data?.name,
-            shareImg: this.product.data?.images[0]
+            shareImg: this.product.data?.images && this.product.data?.images[0]
         });
 
         // -->Set: raw json+ld data

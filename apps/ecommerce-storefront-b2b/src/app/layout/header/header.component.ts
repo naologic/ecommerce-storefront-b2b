@@ -9,6 +9,7 @@ import { DepartmentsLink } from "../../interfaces/departments-link";
 import { MegamenuColumn } from "../../interfaces/menu";
 import { NestedLink } from "../../interfaces/link";
 import { nameToSlug } from '../../shared/functions/utils';
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-header',
@@ -19,7 +20,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
 
     // public email$: Observable<string | null> = this.account.user$.pipe(map(x => x ? x.email : null));
+    /**
+     * @deprecated > use new categories and delete this one
+     */
     public categories: DepartmentsLink[] = [];
+    public categories2: any[] = [];
     public infoSupport = null;
     public userData = null;
 
@@ -34,12 +39,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: info
-                this.infoSupport = value?.support?.supportInfo;
+                // this.infoSupport = value?.support?.supportInfo;
+                // -->Set: info
+                this.infoSupport = {
+                    supportPhoneNumber: value?.shopInfo?.support?.data?.supportPhoneNumber || '',
+                    supportEmailAddress: value?.shopInfo?.support?.data?.supportEmailAddress || '',
+                }
                 // -->Set: categories
-                this.categories = this.mapCategories(value?.categories?.items)
+                // this.categories = this.mapCategories(value?.categories?.items)
+                this.categories2 = value?.categories;
 
+                console.warn(`header > >> >>> >> > > this.categories2 `, this.categories2)
             })
         );
 
@@ -53,6 +65,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     /**
      * Map: categories for header
+     *
+     * @deprecated > use new structure with children[] from the backend
      */
     public mapCategories(categories: any[]): DepartmentsLink[] {
         // -->Check: categories

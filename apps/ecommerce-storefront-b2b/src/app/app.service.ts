@@ -6,6 +6,7 @@ import {NaoUserAccessService} from "@naologic/nao-user-access";
 import {ECommerceService} from "./e-commerce.service";
 import {MetasInterface} from "./interfaces/metas";
 import {Meta, Title} from "@angular/platform-browser";
+import {appInfo$} from "../app.static";
 
 @Injectable({
     providedIn: 'root',
@@ -13,7 +14,7 @@ import {Meta, Title} from "@angular/platform-browser";
 export class AppService implements OnDestroy {
     public readonly subs = new Subscription();
     /**
-     * Global settings for ecommerce
+     *  Global settings for ecommerce
      */
     public readonly settings = new BehaviorSubject<NaoSettingsInterface.Settings>({
         rating: false,
@@ -23,6 +24,8 @@ export class AppService implements OnDestroy {
     });
     /**
      * All the info you need
+     *
+     * @deprecated > use a static appInfo$ with interface
      */
     public readonly appInfo = new BehaviorSubject<any>(null);
 
@@ -61,6 +64,8 @@ export class AppService implements OnDestroy {
             if (info$) {
                 // -->Set: app info
                 this.appInfo.next(info$);
+                // -->Set: app info
+                appInfo$.next(info$)
                 // --.Set: settings
                 this.setSettings(info$)
             }
@@ -72,6 +77,8 @@ export class AppService implements OnDestroy {
                 if (info$ && info$.ok) {
                     // -->Set: app info
                     this.appInfo.next(info$.data);
+                    // -->Set: app info
+                    appInfo$.next(info$.data)
                     // --.Set: settings
                     this.setSettings(info$.data)
                     // -->Set: Metas
@@ -82,10 +89,14 @@ export class AppService implements OnDestroy {
                 } else {
                     // -->Emit: error
                     this.appInfo.error("The request didn't resolve correctly");
+                    // -->Set: app info
+                    appInfo$.error(info$)
                 }
             }, error => {
                 // -->Emit: error
                 this.appInfo.error(error);
+                // -->Set: app info
+                appInfo$.error(info$)
             });
         });
     }
@@ -143,6 +154,8 @@ export class AppService implements OnDestroy {
 
     /**
      * Check: that the manufacturer exists
+     *
+     * todo: switch to new format using appInfo$
      */
     public checkManufacturerId(manufacturerId: string): boolean {
         if (manufacturerId && Array.isArray(this.appInfo.getValue()?.vendors)) {
@@ -155,6 +168,8 @@ export class AppService implements OnDestroy {
 
     /**
      * Check: that category exists
+     *
+     * todo: switch to new format using appInfo$
      */
     public checkCategoryId(categoryId: string): boolean {
         if (categoryId && Array.isArray(this.appInfo.getValue()?.categories?.items)) {
