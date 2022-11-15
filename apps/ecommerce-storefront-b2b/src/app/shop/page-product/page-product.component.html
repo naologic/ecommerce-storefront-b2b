@@ -151,7 +151,7 @@
                                                 *ngFor="let item of addToMyLists.myLists"
                                                 class="my-lists__menu-item"
                                                 type="button"
-                                                (click)="addToMyLists.add(item._id, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
+                                                (click)="addToMyLists.add(item.docId, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
                                                 {{ item.data?.name }}
                                             </button>
                                             <!--Empty state-->
@@ -253,10 +253,10 @@
                             </app-product-tab>
                             <!--Show this when we enable reviews-->
 <!--                            <app-product-tab id="product-tab-reviews" [label]="'TEXT_TAB_REVIEWS' | translate" [counter]="product.data?.reviews || 0" [showCounter]="(product.data?.reviews || 0) > 0">-->
-<!--                                <app-reviews-view [productPageLayout]="'full'" [productId]="product._id"></app-reviews-view>-->
+<!--                                <app-reviews-view [productPageLayout]="'full'" [productId]="product.docId"></app-reviews-view>-->
 <!--                            </app-product-tab>-->
 <!--                            <app-product-tab id="product-tab-analogs" [label]="'TEXT_TAB_ANALOGS' | translate">-->
-<!--                                <app-analogs-table [productId]="product._id"></app-analogs-table>-->
+<!--                                <app-analogs-table [productId]="product.docId"></app-analogs-table>-->
 <!--                            </app-product-tab>-->
                         </app-product-tabs>
                     </div>

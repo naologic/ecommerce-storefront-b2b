@@ -38,7 +38,7 @@ export class CompareService implements OnDestroy {
 
         // -->Find: index
         const index = this.dataItems.findIndex(
-            item => item.product._id === product._id && item.variant.id === variant.id
+            item => item.product.docId === product.docId && item.variant.id === variant.id
         );
 
         // -->Check: if product variant was already pushed
@@ -70,7 +70,7 @@ export class CompareService implements OnDestroy {
 
         // -->Check: if this specific variant of the product is registered
         const index = this.dataItems.findIndex(
-            item => item.product._id === compareItem.product._id && item.variant.id === compareItem.variant.id
+            item => item.product.docId === compareItem.product.docId && item.variant.id === compareItem.variant.id
         );
 
         // -->Remove: compare item

@@ -61,13 +61,13 @@ export class PageMyListsComponent implements OnInit {
      * Edit: a my list
      */
     public onEditMyList(list: any): void {
-        if (!list._id || !list.data) {
+        if (!list.docId || !list.data) {
             return
         }
         // -->Open: modal
         const modalRef = this.modalService.show(EditMyListComponent, { class: "modal-md modal-dialog-centered", })
         // -->Set: content
-        modalRef.content.docId = list._id;
+        modalRef.content.docId = list.docId;
         modalRef.content.data = list.data || {};
         // -->Subscribe: to onHide
         modalRef.onHide.subscribe((value) => {

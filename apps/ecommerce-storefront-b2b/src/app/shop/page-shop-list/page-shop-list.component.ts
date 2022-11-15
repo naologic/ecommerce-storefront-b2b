@@ -201,6 +201,8 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Execute
         this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
+
+            console.log(`products filter > `, res)
             // -->Check: res
             if (res && res.ok && res.data) {
                 // -->Init: filters
@@ -471,8 +473,8 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     /**
      * Track: product id
      */
-    public trackByProductId(index: number, product: {_id?: string}): string {
-        return product._id;
+    public trackByProductId(index: number, product: {docId?: string}): string {
+        return product.docId;
     }
 
 

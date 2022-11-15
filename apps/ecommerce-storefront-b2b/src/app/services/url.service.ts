@@ -58,14 +58,14 @@ export class UrlService {
      */
     public product(product: Product): string {
         // -->Check: product name and id
-        if (!product.data?.name || !product._id) {
+        if (!product.data?.name || !product.docId) {
             return '';
         }
 
         // -->Slugify: the product name
         const productSlug = nameToSlug(product.data.name);
         // -->Return: product url
-        return `/shop/products/${productSlug}/${product._id}`;
+        return `/shop/products/${productSlug}/${product.docId}`;
     }
 
     /**

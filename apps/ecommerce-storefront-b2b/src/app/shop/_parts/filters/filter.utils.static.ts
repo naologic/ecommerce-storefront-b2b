@@ -77,7 +77,7 @@ function buildManufacturerFilter(vendors: Vendor[], values: string[]): CheckFilt
     vendors.map(vendor => {
         if (vendor) {
             items.push({
-                _id: vendor._id,
+                docId: vendor.docId,
                 slug: nameToSlug(vendor.data?.name),
                 name: vendor.data?.name
             })

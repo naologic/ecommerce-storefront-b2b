@@ -1,5 +1,5 @@
 export interface Vendor {
-    _id: string;
+    docId: string;
     data: {
         manufacturerId: string;
         name: string;

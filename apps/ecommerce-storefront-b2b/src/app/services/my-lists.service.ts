@@ -82,7 +82,7 @@ export class MyListsService implements OnDestroy {
         }
 
         // -->Find: list
-        const list = this.myLists.getValue().find(f => f._id === listId);
+        const list = this.myLists.getValue().find(f => f.docId === listId);
 
         if (list.data && Array.isArray(list.data.products)) {
             // -->Create: toaster message
@@ -93,13 +93,13 @@ export class MyListsService implements OnDestroy {
             }
 
             // -->Check: if this product + this variant already exists
-            const index = list.data.products.findIndex(item => item.productId === product._id && item.variantId === variant.id)
+            const index = list.data.products.findIndex(item => item.productId === product.docId && item.variantId === variant.id)
 
             if (index < 0) {
                 // -->Emit: variant is being added
                 this.onAddingSubject$.next(toasterMessage);
                 // -->Push: new product
-                list.data.products.push({ productId: product._id, variantId: variant.id })
+                list.data.products.push({ productId: product.docId, variantId: variant.id })
                 // -->Save:
                 this.update(listId, list.data).subscribe(res => {
                     if (res && res.ok) {

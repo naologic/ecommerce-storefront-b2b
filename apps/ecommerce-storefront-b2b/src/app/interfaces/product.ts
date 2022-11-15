@@ -103,7 +103,7 @@ export interface Variant {
 }
 
 export interface Product {
-    _id: string;
+    docId: string;
     data?: {
         availability: string;
         available: true;

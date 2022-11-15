@@ -11,7 +11,7 @@
         <label
             *ngFor="let item of options.items; trackBy: trackBy"
             class="filter-list__item">
-            <app-checkbox [value]="item._id" class="filter-list__input"></app-checkbox>
+            <app-checkbox [value]="item.docId" class="filter-list__input"></app-checkbox>
 
             <span class="filter-list__title">{{ item.name }}</span>
             <span *ngIf="item.count" class="filter-list__counter">{{ item.count }}</span>

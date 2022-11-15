@@ -22,7 +22,7 @@
 <!--                class="product-card__action product-card__action--my-lists"-->
 <!--                [class.product-card__action&#45;&#45;loading]="myLists.inProgress"-->
 <!--                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"-->
-<!--                (click)="myLists.add('XXXXXXXXXX', product?._id, product.data?.variants[0]?.id)"-->
+<!--                (click)="myLists.add('XXXXXXXXXX', product?.docId, product.data?.variants[0]?.id)"-->
 <!--            >-->
 <!--                <app-icon icon="wishlist-16"></app-icon>-->
 <!--            </button>-->
@@ -52,7 +52,7 @@
                         *ngFor="let item of addToMyLists.myLists"
                         class="my-lists__menu-item"
                         type="button"
-                        (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
+                        (click)="addToMyLists.add(item.docId, product, product.data?.variants[0]); myListsDropdown.close()">
                         {{ item.data?.name }}
                     </button>
                     <!--Empty state-->

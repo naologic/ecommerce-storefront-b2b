@@ -87,7 +87,7 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         }
 
         // -->Get: list
-        const list = this.myListsService.myLists?.getValue().find(f => f._id === this.docId);
+        const list = this.myListsService.myLists?.getValue().find(f => f.docId === this.docId);
         if (!list) {
             return;
         }

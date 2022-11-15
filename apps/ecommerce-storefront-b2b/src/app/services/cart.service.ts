@@ -73,7 +73,7 @@ export class CartService {
 
         // -->Find: cart item
         let item = this.items.find((eachItem) => {
-            if (eachItem.product._id === product._id && eachItem.variant.id === variant.id) {
+            if (eachItem.product.docId === product.docId && eachItem.variant.id === variant.id) {
                 return true;
             }
 

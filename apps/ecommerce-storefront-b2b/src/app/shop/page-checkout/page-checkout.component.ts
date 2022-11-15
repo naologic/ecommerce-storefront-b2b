@@ -168,7 +168,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
         // -->Set: orderLines
         const orderLines = this.cart.items.map(item => {
             return {
-                productId: item.product._id,
+                productId: item.product.docId,
                 variantId: item.variant.id,
                 quantity: item.quantity
             }
@@ -230,7 +230,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
         // -->Set: orderLines
         const orderLines = this.cart.items.map(item => {
             return {
-                productId: item.product._id,
+                productId: item.product.docId,
                 variantId: item.variant.id,
                 quantity: item.quantity
             }
