@@ -79,10 +79,9 @@
                                 <select
                                     class="form-control"
                                     formControlName="shippingMethod"
-                                    [class.is-invalid]="formGroup?.controls?.shippingMethod|isInvalid"
-                                >
-                                    <option *ngFor="let item of shippingMethods" [value]="item.id">
-                                        {{ item.name }}
+                                    [class.is-invalid]="formGroup?.controls?.shippingMethod|isInvalid">
+                                    <option *ngFor="let item of shippingMethods" [value]="item.docId">
+                                        {{ item?.data?.name }}
                                     </option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -132,17 +131,17 @@
                                 </tr>
                                 <tr>
                                     <th>{{ 'TABLE_TOTAL_SHIPPING' | translate }}</th>
-                                    <td>{{ ((summary.shipping) || 0) | currencyFormat }}</td>
+                                    <td>{{ ((summary?.shippingCost) || 0) | currencyFormat }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ 'TABLE_TOTAL_TAX' | translate }}</th>
-                                    <td>{{ ((summary.taxes) || 0) | currencyFormat }}</td>
+                                    <td>{{ ((summary?.totalTaxes) || 0) | currencyFormat }}</td>
                                 </tr>
                                 </tbody>
                                 <tfoot class="checkout__totals-footer">
                                 <tr>
                                     <th>{{ 'TABLE_TOTAL' | translate }}</th>
-                                    <td>{{ ((summary.total) || 0) | currencyFormat }}</td>
+                                    <td>{{ ((summary?.totalWithTax) || 0) | currencyFormat }}</td>
                                 </tr>
                                 </tfoot>
                             </table>

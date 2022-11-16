@@ -128,6 +128,8 @@ export class NaoUserAccessService {
         const sessionData = await this.naoHttp2ApiService.postJson<any>(`universal/users/auth/auth-refresh`, {
             data: { data: {}, naoQueryOptions },
         }).toPromise();
+
+        console.warn(`sessionData > `, sessionData)
         // -->Return
         if (checkSessionData(sessionData)) {
             // -->Set: session data
@@ -137,19 +139,19 @@ export class NaoUserAccessService {
             // -->Set: locale
             NaoUserAccessData.locale.next({lang: 'en', currencyCode: 'USD', countryCode: 'USA'});
             // -->Set: user data
-            NaoUserAccessData.companyData.next(sessionData.companyData);
+            NaoUserAccessData.companyData.next(sessionData?.data?.companyData);
             // -->Set: user data
-            NaoUserAccessData.companyId.next(sessionData.companyData?._id);
+            NaoUserAccessData.companyId.next(sessionData?.data?.companyData?.docId);
             // -->Set: user data
-            NaoUserAccessData.userData.next(sessionData.userData?.data);
+            NaoUserAccessData.userData.next(sessionData?.data?.userData?.data);
             // -->Set: user data
-            NaoUserAccessData.userId.next(sessionData.userData?._id);
+            NaoUserAccessData.userId.next(sessionData?.data?.userData?.docId);
             // -->Set: role data
-            NaoUserAccessData.roleData.next(sessionData.roleData?.data);
+            NaoUserAccessData.roleData.next(sessionData?.data?.roleData?.data);
             // -->Set: ads data
-            NaoUserAccessData.ads.next(sessionData.ads);
+            NaoUserAccessData.ads.next(sessionData?.data?.ads);
             // -->Set: Linkedin account
-            NaoUserAccessData.linkedDoc.next(sessionData.linkedDoc);
+            NaoUserAccessData.linkedDoc.next(sessionData?.data?.linkedDoc);
             // -->Apply: locale
             await this.applyLocale();
             // -->Return
@@ -379,8 +381,7 @@ export class NaoUserAccessService {
         }
         // -->Logout
         return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`universal/users/auth/auth-logout`, {
-            data: {},
-            naoQueryOptions
+            data: { data: {}, naoQueryOptions },
         })
             .toPromise()
             .then(() => {

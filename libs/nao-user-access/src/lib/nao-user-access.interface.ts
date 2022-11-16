@@ -20,7 +20,7 @@ export namespace NaoCompanyInterface {
     createdAt: string;
     data: any;
     deploymentId: string;
-    _id: string;
+    docId: string;
     licenseId: string;
     updatedAt: string;
   }

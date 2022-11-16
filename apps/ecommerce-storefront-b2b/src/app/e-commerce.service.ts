@@ -40,7 +40,33 @@ export class ECommerceService<T = any> {
         return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/get-public-product-information`, { data: { data: { docId }, naoQueryOptions } });
     }
 
+    /**
+     * Get: invoices with pagination
+     */
+    public listInvoices(data?: any, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/list-account-invoices`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
 
+    /**
+     *  Get the checkout info
+     */
+    public getCheckoutInformation(data: T, naoQueryOptions  = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/get-checkout-information`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
+
+    /**
+     *  Verify: if a checkout can be made with the current cart items
+     */
+    public verifyCheckout(data: T, naoQueryOptions  = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/verify-checkout`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
+
+    /**
+     *  Execute: a checkout
+     */
+    public completeCheckout(data: T, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/complete-checkout`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
 
 
 
@@ -65,24 +91,4 @@ export class ECommerceService<T = any> {
         return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/products/list/${naoQueryOptions.docName}/filter`, { data, naoQueryOptions });
     }
 
-    /**
-     * Get: invoices with pagination
-     */
-    public listInvoices(data?, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault()): Observable<T> {
-        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/invoices/list/${naoQueryOptions.docName}/filter`, { data, naoQueryOptions });
-    }
-
-    /**
-     *  Verify: if a checkout can be made with the current cart items
-     */
-    public verifyCheckout(data: T, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ userMode: 'guest-external' })): Observable<T> {
-        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/checkout/verify/${naoQueryOptions.docName}/order`, { data: { data }, naoQueryOptions });
-    }
-
-    /**
-     *  Execute: a checkout
-     */
-    public completeCheckout(data: T, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ userMode: 'guest-external' })): Observable<T> {
-        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/checkout/checkout/${naoQueryOptions.docName}/order`, { data: { data }, naoQueryOptions });
-    }
 }

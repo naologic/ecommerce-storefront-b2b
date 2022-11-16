@@ -19,17 +19,22 @@ export class AccountProfileService<T = any> {
     }
 
     /**
+     * Update: user profile
+     */
+    public updateUserProfile(data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
+        // -->Request: user data
+        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-my-profile`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
+
+    /**
      * Update: user data
      * @example
      * this.update('data', { addresses: [] })
      */
-    public update(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
-        { docName: 'guest-external-ecommerce', userMode: 'guest-external' })
-    ): Observable<T> {
+    public update(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
         // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`${this.api.root}/guest/update/${naoQueryOptions.docName}/data`, {
-            data: { data, mode, naoQueryOptions: this.userAccessOptions.naoQueryOptions, cfpPath: this.userAccessOptions.cfpPath },
-            naoQueryOptions
+        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-my-profile`, {
+            data: { data, naoQueryOptions }
         });
     }
 

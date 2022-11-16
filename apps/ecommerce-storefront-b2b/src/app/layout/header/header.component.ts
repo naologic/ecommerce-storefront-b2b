@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         // -->Subscribe: to user data
         this.naoUsersService.userData.subscribe(userData => {
+            console.warn(`userData > `, userData)
             // -->Set: user data
             this.userData = userData;
         })
