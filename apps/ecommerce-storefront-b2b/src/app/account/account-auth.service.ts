@@ -8,7 +8,7 @@ import { NaoUserAccessService } from "@naologic/nao-user-access";
     providedIn: 'root'
 })
 export class AccountAuthService<T = any> {
-    public readonly api = { root: 'users' };
+    private get apiRoot(): string { return this.naoUsersService.isLoggedIn() ? 'universal' : 'universal-public'; }
     public readonly userAccessOptions;
 
     constructor(
@@ -20,27 +20,19 @@ export class AccountAuthService<T = any> {
 
     /**
      * Create: new user
+     * todo: wip
      */
-    public createUser(data, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
-        { docName: 'guest-external-ecommerce', userMode: 'guest-external' })
-    ): Observable<T> {
-        // -->Send: request to create new user
-        return this.naoHttp2ApiService.postJson<T>(`${this.api.root}-public/guest/create/${naoQueryOptions.docName}/new`, {
-            data: { data, naoQueryOptions: this.userAccessOptions.naoQueryOptions, cfpPath: this.userAccessOptions.cfpPath },
-            naoQueryOptions
-        });
+    public createUser(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'shop', cfpPath: 'ecommerce/ecommerce', userMode: 'guest-external' })): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`universal-public/ecommerce/data/register-ecommerce-user`, { data: { data, naoQueryOptions } });
     }
 
     /**
      * Send: email for password reset
+     * todo: wip
      */
-    public sendResetPasswordEmail(email: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
-        { docName: 'guest-external-ecommerce' })
-    ): Observable<T> {
-        // -->Send: forgot password request
-        return this.naoHttp2ApiService.postJson<T>(`${this.api.root}/password/${this.userAccessOptions.naoQueryOptions.docName}/forgot`, {
-            data: { email },
-            naoQueryOptions: this.userAccessOptions.naoQueryOptions
-        });
+    public sendResetPasswordEmail(email: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'doc', cfpPath: 'users/users', userMode: 'guest-external' })) {
+
+        alert(`not done yet`)
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/get-public-store-information`, { data: { data: { email }, naoQueryOptions } });
     }
 }

@@ -202,7 +202,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Execute
         this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
 
-            console.log(`products filter > `, res)
+            console.warn(`res > `, res)
             // -->Check: res
             if (res && res.ok && res.data) {
                 // -->Init: filters
@@ -222,7 +222,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
 
                 // -->Compute: total pages and current page based on response data count and page size
-                const pages = Math.ceil(res.data?.count / query.pageSize);
+                const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
                 const page = options.page > pages ? 1 : options.page;
 
                 // -->Update: breadcrumbs
@@ -235,10 +235,10 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                     page: page,
                     limit: query.pageSize,
                     sort: options.sort || this.shopService.defaultOptions.sort,
-                    total: res.data?.count || 0,
+                    total: res.data?.filterInfo?.count || 0,
                     pages: pages,
-                    from: (page - 1) * query.pageSize + 1 <= res.data?.count ? (page - 1) * query.pageSize + 1 : 0,
-                    to: (page * query.pageSize) < res.data?.count ? (page * query.pageSize) : res.data?.count,
+                    from: (page - 1) * query.pageSize + 1 <= res.data?.filterInfo?.count ? (page - 1) * query.pageSize + 1 : 0,
+                    to: (page * query.pageSize) < res.data?.filterInfo?.count ? (page * query.pageSize) : res.data?.filterInfo?.count,
                 }
                 // -->Done: loading
                 this.status = 'done';
