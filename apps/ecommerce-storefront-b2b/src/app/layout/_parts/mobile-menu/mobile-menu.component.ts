@@ -22,6 +22,7 @@ import { AppService } from "../../../app.service";
 import { MobileMenuPanelComponent } from '../mobile-menu-panel/mobile-menu-panel.component';
 import { nameToSlug } from "../../../shared/functions/utils";
 import { MobileMenuLink } from '../../../interfaces/mobile-menu-link';
+import {appInfo$} from "../../../../app.static";
 
 interface StackItem {
     content: TemplateRef<any>;
@@ -59,11 +60,14 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     public ngOnInit(): void {
         // -->Subscribe: to info changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe((value) => {
                 // -->Set: info
-                this.infoSupport = value?.support?.supportInfo;
-                // -->Set: categories
-                const categories = this.mapCategories(value?.categories?.items)
+                this.infoSupport = {
+                    supportPhoneNumber: value?.shopInfo?.support?.data?.supportPhoneNumber || '',
+                    supportEmailAddress: value?.shopInfo?.support?.data?.supportEmailAddress || '',
+                }
+                // -->Set: categories todo: replace categories
+                const categories = []; // this.mapCategories(value?.categories?.items)
 
                 // -->Set: mobile links
                 this.links = [
