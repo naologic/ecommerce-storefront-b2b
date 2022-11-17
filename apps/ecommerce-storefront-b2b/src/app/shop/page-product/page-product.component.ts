@@ -120,9 +120,6 @@ export class PageProductComponent implements OnInit, OnDestroy {
         }
         // -->Execute:
         this.eCommerceService.productsGet(this.docId).subscribe(res =>{
-
-            console.warn(`productsGet > `, res)
-
             // -->Set: data
             this.product = res?.data[0] || null;
             // -->Check: product

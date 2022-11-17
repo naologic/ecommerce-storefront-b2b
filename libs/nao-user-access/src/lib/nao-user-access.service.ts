@@ -129,7 +129,6 @@ export class NaoUserAccessService {
             data: { data: {}, naoQueryOptions },
         }).toPromise();
 
-        console.warn(`sessionData > `, sessionData)
         // -->Return
         if (checkSessionData(sessionData)) {
             // -->Set: session data
@@ -307,8 +306,6 @@ export class NaoUserAccessService {
             `universal-public/users/auth/auth-login`, {data: {data: {email, password}, naoQueryOptions}})
             .toPromise<any>()
             .then(loginData => {
-
-                console.warn(`loginData > `, loginData)
                 // -->Return
                 return this.updateAccessTokenData(loginData.data, rememberMe);
             })
@@ -350,7 +347,6 @@ export class NaoUserAccessService {
         rememberMe = false
     ): Promise<{ ok: boolean }> {
         if (loginData && typeof loginData.accessToken === 'string' && typeof loginData.resetToken === 'string') {
-            console.warn(`updateAccessTokenData `)
             // -->Set: rememberMe flag
             loginData.rememberMe = rememberMe;
             // -->Set: tokens

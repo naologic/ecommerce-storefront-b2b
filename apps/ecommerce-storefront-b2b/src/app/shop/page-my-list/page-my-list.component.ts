@@ -60,8 +60,6 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         // -->Execute
         this.myListsService.get(this.docId).subscribe((res) => {
             if (res && res.data) {
-
-                console.warn(`res.data > `, res.data)
                 // -->Set: data
                 this.data = res.data?.data;
             } else {

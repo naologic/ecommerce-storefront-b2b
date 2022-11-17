@@ -48,6 +48,13 @@ export class ECommerceService<T = any> {
     }
 
     /**
+     * Get: invoices with pagination
+     */
+    public listOrders(data?: any, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/search-account-orders`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
+
+    /**
      *  Get the checkout info
      */
     public getCheckoutInformation(data: T, naoQueryOptions  = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {

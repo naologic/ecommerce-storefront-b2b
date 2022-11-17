@@ -207,7 +207,6 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
         // -->Start: verify the order
         this.checkOrderSubs = this.eCommerceService.verifyCheckout(data$).subscribe(
             (res) => {
-                console.warn(`checkOrder > `, res)
                 // -->Enable
                 if (res?.ok) {
                     // -->Set: summary

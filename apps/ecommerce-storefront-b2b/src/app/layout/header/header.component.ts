@@ -50,14 +50,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 // -->Set: categories
                 // this.categories = this.mapCategories(value?.categories?.items)
                 this.categories2 = value?.categories;
-
-                console.warn(`header > >> >>> >> > > this.categories2 `, this.categories2)
             })
         );
 
         // -->Subscribe: to user data
         this.naoUsersService.userData.subscribe(userData => {
-            console.warn(`userData > `, userData)
             // -->Set: user data
             this.userData = userData;
         })

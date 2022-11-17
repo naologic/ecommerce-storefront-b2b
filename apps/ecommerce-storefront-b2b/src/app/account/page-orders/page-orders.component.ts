@@ -55,7 +55,7 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
             .done();
 
         // -->Execute: query to get invoice list
-        this.refreshSubs = this.eCommerceService.listInvoices(query).subscribe(res => {
+        this.refreshSubs = this.eCommerceService.listOrders(query).subscribe(res => {
             if (res && Array.isArray(res.data)) {
                 // -->Set: orders
                 this.list = {

@@ -202,8 +202,6 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Execute
         this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
-
-            console.warn(`res > `, res)
             // -->Check: res
             if (res && res.ok && res.data) {
                 // -->Init: filters

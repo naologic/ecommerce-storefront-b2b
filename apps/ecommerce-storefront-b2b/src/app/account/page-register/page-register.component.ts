@@ -56,8 +56,6 @@ export class PageRegisterComponent implements OnInit, OnDestroy {
         // -->Start: loading
         this.registerInProgress = true;
 
-        console.warn(`data > `, data)
-
         // -->Create: new user
         this.naoUsersAuthService.createUser(data).subscribe(
             (ok) => {
