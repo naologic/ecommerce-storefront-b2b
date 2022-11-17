@@ -30,8 +30,6 @@ export class PageFaqComponent implements OnInit, OnDestroy {
                 this.supportEmailAddress = value?.shopInfo?.support?.data?.supportEmailAddress || '';
             })
         );
-
-        console.log(`appInfo$.getValue() > `, appInfo$.getValue())
     }
 
     public ngOnDestroy(): void {

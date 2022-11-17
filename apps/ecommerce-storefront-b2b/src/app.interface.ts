@@ -1,6 +1,7 @@
 export namespace AppInterface {
     export interface AppInfo {
         categories: Category[];
+        vendors: Vendor[];
         shopInfo: {
             general: any;
             support: Support;
@@ -19,10 +20,21 @@ export namespace AppInterface {
 
     export interface Category {
         docId: string;
-        children?: Category[];
         data: {
             name: string;
             parentId: string;
+        }
+        /**
+         * This: is optional and set from FE for filtering and other stuff we need
+         */
+        parent?: this;
+        children?: this[];
+    }
+
+    export interface Vendor {
+        docId: string;
+        data: {
+            name: string;
         }
     }
 

@@ -15,7 +15,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ShopProductService } from "../shop-product.service";
 import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
 import { ActiveFilter, LayoutButton, PageShopLayout } from "../../interfaces/list";
-import {appInfo$} from "../../../app.static";
+import { appInfo$ } from "../../../app.static";
 
 
 
@@ -160,7 +160,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.status = 'loading';
 
         // -->Get: category id
-        const categoryId: number = this.route.snapshot.params.categoryId ? +this.route.snapshot.params.categoryId : undefined;
+        const categoryId: string = this.route.snapshot.params.categoryId;
 
         // -->Create: filters options
         const options = {
@@ -202,8 +202,9 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Execute
         this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
-            // -->Check: res
-            if (res && res.ok && res.data) {
+
+            // -->Check: response
+            if (res?.ok && res?.data) {
                 // -->Init: filters
                 const filters = [];
 
@@ -218,7 +219,13 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 }
 
                 // -->Push: manufacturers filter
-                filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
+                // todo: here we would need to put the vendors from response
+                // todo: here we would need to put the vendors from response
+                // todo: here we would need to put the vendors from response
+                // todo: here we would need to put the vendors from response
+                // todo: here we would need to put the vendors from response
+                // filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
+                filters.push(buildManufacturerFilter(appInfo$?.getValue()?.vendors || [], selectedManufacturerIds));
 
                 // -->Compute: total pages and current page based on response data count and page size
                 const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
@@ -274,7 +281,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             filters.push(filterPrice);
         }
         // -->Push: manufacturers filter
-        filters.push(buildManufacturerFilter([], []));
+        filters.push(buildManufacturerFilter(appInfo$?.getValue()?.vendors, []));
 
         // -->Set: filters
         this.shopService.filters = filters;
@@ -284,7 +291,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     /**
      * Update: breadcrumbs and ttile
      */
-    public updateBreadcrumbs(categoryId: number): void {
+    public updateBreadcrumbs(categoryId: string): void {
         // -->Get: breadcrumbs
         const breadcrumbs = getBreadcrumbs(appInfo$?.getValue()?.categories, categoryId);
         // -->Update: breadcrumbs
@@ -299,7 +306,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 state: { resetFilters: true }
             },
             ...breadcrumbs.map((x) => ({
-                label: x.name,
+                label: x?.data?.name,
                 url: this.url.category(x),
                 state: { resetFilters: true }
             })),

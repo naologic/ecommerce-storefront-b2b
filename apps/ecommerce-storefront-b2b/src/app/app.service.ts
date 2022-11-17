@@ -143,29 +143,33 @@ export class AppService implements OnDestroy {
 
     /**
      * Check: that the manufacturer exists
-     *
-     * todo: switch to new format using appInfo$
      */
     public checkManufacturerId(manufacturerId: string): boolean {
-        // if (manufacturerId && Array.isArray(appInfo$.getValue()?.vendors)) {
-        //     const manufacturer = appInfo$.getValue().vendors.find(v => v.docId === manufacturerId);
-        //     // -->Return:
-        //     return !!manufacturer;
-        // }
+        // -->Get: vendors
+        const vendors = appInfo$.getValue()?.vendors || [];
+
+        // -->Check: if this vendor id exists in the list of vendors
+        if (manufacturerId && Array.isArray(vendors) && vendors.length) {
+            const category = vendors.find(v => v.docId === manufacturerId);
+            // -->Return:
+            return !!category;
+        }
         return false;
     }
 
     /**
      * Check: that category exists
-     *
-     * todo: switch to new format using appInfo$
      */
     public checkCategoryId(categoryId: string): boolean {
-        // if (categoryId && Array.isArray(appInfo$.getValue()?.categories?.items)) {
-        //     const category = appInfo$.getValue().categories.items.find(v => v.id === +categoryId);
-        //     // -->Return:
-        //     return !!category;
-        // }
+        // -->Get: categories
+        const categories = appInfo$.getValue()?.categories || [];
+
+        // -->Check: if this category id exists in the list of categories
+        if (categoryId && Array.isArray(categories) && categories.length) {
+            const category = categories.find(v => v.docId === categoryId);
+            // -->Return:
+            return !!category;
+        }
         return false;
     }
 
