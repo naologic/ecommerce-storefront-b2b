@@ -130,6 +130,7 @@
   "LINK_ACCOUNT_DASHBOARD": "Dashboard",
   "LINK_ACCOUNT_LOGOUT": "Logout",
   "LINK_ACCOUNT_INVOICE": "Invoice History",
+  "LINK_ACCOUNT_ORDERS": "Order History",
   "LINK_ACCOUNT_PASSWORD": "Password",
   "LINK_ACCOUNT_PROFILE": "Edit Profile",
   "LINK_ALL_PRODUCTS": "All Products",

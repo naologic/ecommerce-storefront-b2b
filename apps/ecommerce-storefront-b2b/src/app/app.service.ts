@@ -38,10 +38,9 @@ export class AppService implements OnDestroy {
     ) {
         this.subs.add(
             // @ts-ignore
-            this.appInfo.subscribe((info$: any) => {
+            appInfo$.subscribe((info$: any) => {
                 if (info$) {
-                    return this.storageMap.set('uygsdf67ts76fguysdfsdf', info$).subscribe(() => {
-                    });
+                    return this.storageMap.set('uygsdf67ts76fguysdfsdf', info$).subscribe(() => {});
                 }
             })
         );
@@ -63,8 +62,6 @@ export class AppService implements OnDestroy {
         this.storageMap.get('uygsdf67ts76fguysdfsdf').subscribe((info$: any) => {
             if (info$) {
                 // -->Set: app info
-                this.appInfo.next(info$);
-                // -->Set: app info
                 appInfo$.next(info$)
                 // --.Set: settings
                 this.setSettings(info$)
@@ -72,11 +69,7 @@ export class AppService implements OnDestroy {
 
             // -->Fresh: the data
             this.eCommerceService.getInfo().subscribe(info$ => {
-
-                console.warn(`info$ > `, info$)
                 if (info$ && info$.ok) {
-                    // -->Set: app info
-                    this.appInfo.next(info$.data);
                     // -->Set: app info
                     appInfo$.next(info$.data)
                     // --.Set: settings
@@ -87,14 +80,10 @@ export class AppService implements OnDestroy {
                         description: info$.data?.generalSettings?.metaDescription
                     })
                 } else {
-                    // -->Emit: error
-                    this.appInfo.error("The request didn't resolve correctly");
                     // -->Set: app info
-                    appInfo$.error(info$)
+                    appInfo$.error("The request didn't resolve correctly")
                 }
             }, error => {
-                // -->Emit: error
-                this.appInfo.error(error);
                 // -->Set: app info
                 appInfo$.error(info$)
             });
@@ -158,11 +147,11 @@ export class AppService implements OnDestroy {
      * todo: switch to new format using appInfo$
      */
     public checkManufacturerId(manufacturerId: string): boolean {
-        if (manufacturerId && Array.isArray(this.appInfo.getValue()?.vendors)) {
-            const manufacturer = this.appInfo.getValue().vendors.find(v => v.docId === manufacturerId);
-            // -->Return:
-            return !!manufacturer;
-        }
+        // if (manufacturerId && Array.isArray(appInfo$.getValue()?.vendors)) {
+        //     const manufacturer = appInfo$.getValue().vendors.find(v => v.docId === manufacturerId);
+        //     // -->Return:
+        //     return !!manufacturer;
+        // }
         return false;
     }
 
@@ -172,11 +161,11 @@ export class AppService implements OnDestroy {
      * todo: switch to new format using appInfo$
      */
     public checkCategoryId(categoryId: string): boolean {
-        if (categoryId && Array.isArray(this.appInfo.getValue()?.categories?.items)) {
-            const category = this.appInfo.getValue().categories.items.find(v => v.id === +categoryId);
-            // -->Return:
-            return !!category;
-        }
+        // if (categoryId && Array.isArray(appInfo$.getValue()?.categories?.items)) {
+        //     const category = appInfo$.getValue().categories.items.find(v => v.id === +categoryId);
+        //     // -->Return:
+        //     return !!category;
+        // }
         return false;
     }
 

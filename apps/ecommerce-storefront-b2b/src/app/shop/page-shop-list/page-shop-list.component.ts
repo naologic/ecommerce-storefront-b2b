@@ -15,6 +15,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ShopProductService } from "../shop-product.service";
 import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
 import { ActiveFilter, LayoutButton, PageShopLayout } from "../../interfaces/list";
+import {appInfo$} from "../../../app.static";
 
 
 
@@ -209,7 +210,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 const filters = [];
 
                 // -->Push: category filters
-                filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
+                filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], categoryId));
 
                 // -->Check: if we show the price filter
                 if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
@@ -267,7 +268,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Init: filters
         const filters = [];
         // -->Push: category filters
-        filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], null));
+        filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], null));
         // -->Check: if we show price filter
         if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
             const filterPrice = buildPriceFilter(0, 0, 0, 0, false);
@@ -287,7 +288,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
      */
     public updateBreadcrumbs(categoryId: number): void {
         // -->Get: breadcrumbs
-        const breadcrumbs = getBreadcrumbs(this.appService.appInfo?.getValue()?.categories?.items, categoryId);
+        const breadcrumbs = getBreadcrumbs(appInfo$?.getValue()?.categories, categoryId);
         // -->Update: breadcrumbs
         this.breadcrumbs = [
             {

@@ -10,6 +10,7 @@ import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
 import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
+import {appInfo$} from "../app.static";
 
 @Component({
     selector: 'app-root',
@@ -49,8 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (isPlatformBrowser(this.platformId)) {
 
             this.zone.runOutsideAngular(() => {
-                this.appService.appInfo.pipe(filter(info => info))
-                    .subscribe((info) => {
+                appInfo$.pipe(filter<any>(info => info)).subscribe((info) => {
                     // -->Done: loading
                     this.doneLoading();
 

@@ -123,46 +123,39 @@ export class MyListsService implements OnDestroy {
         return EMPTY;
     }
 
-
-
-
-
-
-
-
     /**
      * List: all my lists
      */
-    public list(data?, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
-        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/list/${naoQueryOptions.docName}/filter`, { data, naoQueryOptions });
+    public list(data?, naoQueryOptions = { docName: 'productList', cfpPath: 'ecommerce/ecommerce' }): Observable<any> {
+        return this.naoHttp2ApiService.postJson(`universal/ecommerce/data/search-product-lists`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
     }
 
     /**
      * Get: a single list
      */
-    public get(docId: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
-        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/get/${naoQueryOptions.docName}/data`, { data: { docId }, naoQueryOptions });
+    public get(docId: string, naoQueryOptions = { docName: 'productList', cfpPath: 'ecommerce/ecommerce' }): Observable<any> {
+        return this.naoHttp2ApiService.postJson(`universal/ecommerce/data/get-product-list`, { data: { data: { docId }, naoQueryOptions } });
     }
 
     /**
      * Update a list
      */
-    public update(docId: string, data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
-        return this.naoHttp2ApiService.putJson<any>(`${this.apiRoot}/data/update/${naoQueryOptions.docName}/id`, { data: { docId, data }, naoQueryOptions });
+    public update(docId: string, data: any, naoQueryOptions= { docName: 'productList', cfpPath: 'ecommerce/ecommerce' }): Observable<any> {
+        return this.naoHttp2ApiService.postJson(`universal/ecommerce/data/update-product-list`, { data: { data: { docId, data }, naoQueryOptions } });
     }
 
     /**
      * Create a list
      */
-    public create(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
-        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/create/${naoQueryOptions.docName}/new`, { data: { data }, naoQueryOptions });
+    public create(data: any, naoQueryOptions = { docName: 'productList', cfpPath: 'ecommerce/ecommerce' }): Observable<any> {
+        return this.naoHttp2ApiService.postJson(`universal/ecommerce/data/create-product-list`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
     }
 
     /**
      * Delete a list
      */
-    public delete(docId: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'myList' })): Observable<any> {
-        return this.naoHttp2ApiService.postJson<any>(`${this.apiRoot}/data/delete/${naoQueryOptions.docName}/id`, { data: { docId }, naoQueryOptions });
+    public delete(docId: string, naoQueryOptions = { docName: 'productList', cfpPath: 'ecommerce/ecommerce' }): Observable<any> {
+        return this.naoHttp2ApiService.postJson(`universal/ecommerce/data/delete-product-list`, { data: { data: { docId }, naoQueryOptions } });
     }
 
 

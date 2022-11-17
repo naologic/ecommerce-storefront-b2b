@@ -62,7 +62,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
         this.formGroup = new FormGroup({
             billingAddressId: new FormControl(null, {validators: [Validators.required]}),
             shippingAddressId: new FormControl(null, {validators: [Validators.required]}),
-            shippingMethod: new FormControl(null, {validators: [Validators.required]}),
+            shippingMethodId: new FormControl(null, {validators: [Validators.required]}),
             paymentMethod: new FormControl(null),
             customerPurchaseOrder: new FormControl(null),
             agree: new FormControl(false, {validators: [Validators.requiredTrue]}),
@@ -81,7 +81,7 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
             merge(
                 this.formGroup.get('billingAddressId').valueChanges,
                 this.formGroup.get('shippingAddressId').valueChanges,
-                this.formGroup.get('shippingMethod').valueChanges
+                this.formGroup.get('shippingMethodId').valueChanges
             ).pipe(
                 debounceTime(100),
                 distinctUntilChanged())
@@ -125,8 +125,8 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
             this.formGroup.get('billingAddressId').patchValue(this.addresses.length ? this.addresses[0].id : null);
             // -->Set: billingAddressId default
             this.formGroup.get('shippingAddressId').patchValue(this.addresses.length ? this.addresses[0].id : null);
-            // -->Set: shippingMethod default
-            this.formGroup.get('shippingMethod').patchValue(this.shippingMethods.length ? this.shippingMethods[0].id : null);
+            // -->Set: shippingMethodId default
+            this.formGroup.get('shippingMethodId').patchValue(this.shippingMethods.length ? this.shippingMethods[0].id : null);
 
             const allowedPaymentMethods = [];
 
@@ -271,14 +271,14 @@ export class PageCheckoutComponent implements OnInit, OnDestroy {
         // -->Complete: checkout order
         this.eCommerceService.completeCheckout(data$).toPromise()
             .then((res) => {
-                if (res && res.ok && res.data?.invoiceId) {
-                    setTimeout(() => {
-                        // -->Check: if the payment method needs redirect
-                        if (this.allowedPaymentMethodsForRedirect.includes(paymentMethod)) {
-                            // -->Redirect: to the invoice link with target blank
-                            this.document.location.href = res.data.invoiceLink
-                        }
-                    }, 1500);
+                if (res && res.ok) {
+                    // setTimeout(() => {
+                    //     // -->Check: if the payment method needs redirect
+                    //     if (this.allowedPaymentMethodsForRedirect.includes(paymentMethod)) {
+                    //         // -->Redirect: to the invoice link with target blank
+                    //         this.document.location.href = res.data.invoiceLink
+                    //     }
+                    // }, 1500);
                     // -->Show: success order
                     this.successOrder = true;
                     // -->Clear: cart

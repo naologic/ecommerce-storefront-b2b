@@ -78,14 +78,14 @@
                                 <label>Shipping Method<sup>*</sup></label>
                                 <select
                                     class="form-control"
-                                    formControlName="shippingMethod"
-                                    [class.is-invalid]="formGroup?.controls?.shippingMethod|isInvalid">
+                                    formControlName="shippingMethodId"
+                                    [class.is-invalid]="formGroup?.controls?.shippingMethodId|isInvalid">
                                     <option *ngFor="let item of shippingMethods" [value]="item.docId">
                                         {{ item?.data?.name }}
                                     </option>
                                 </select>
                                 <div class="invalid-feedback">
-                                    <div *ngIf="formGroup?.controls?.shippingMethod|hasError:'required'">
+                                    <div *ngIf="formGroup?.controls?.shippingMethodId|hasError:'required'">
                                         {{ 'ERROR_FORM_REQUIRED' | translate }}
                                     </div>
                                 </div>
