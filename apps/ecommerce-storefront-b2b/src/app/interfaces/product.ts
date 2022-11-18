@@ -102,7 +102,12 @@ export interface Variant {
     images: Image[];
     sku?: string
     /** @default */
-    active?: boolean
+    active?: boolean;
+
+    /**
+     * This is used only for FE, to set the paths based on all the options
+     */
+    optionsMapped?: {[key: string]: string | null}
 }
 
 export interface Product {

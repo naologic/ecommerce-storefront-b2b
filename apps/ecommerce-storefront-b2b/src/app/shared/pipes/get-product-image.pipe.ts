@@ -6,8 +6,6 @@ import { Product, Variant } from '../../interfaces/product';
 })
 export class GetProductImagePipe implements PipeTransform {
     public transform(product: Product, variant: Variant): string {
-        console.log("product >>>", product)
-        console.log("variant >>>", variant)
         // -->Fallback: image
         const fallback = 'assets/images/image-not-available.png';
         // -->Check: If the variant has any images
