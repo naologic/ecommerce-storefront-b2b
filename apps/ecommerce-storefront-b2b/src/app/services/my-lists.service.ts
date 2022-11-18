@@ -87,7 +87,7 @@ export class MyListsService implements OnDestroy {
         if (list.data && Array.isArray(list.data.products)) {
             // -->Create: toaster message
             const toasterMessage: MyListToaster = {
-                variantName: variant.variantName,
+                variantName: variant.optionName,
                 productName: product?.data?.name,
                 listName: list.data.name
             }

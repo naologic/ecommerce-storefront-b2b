@@ -69,20 +69,20 @@ export class AppComponent implements OnInit, OnDestroy {
         // -->Show: toaster when a variant is added to the cart
         this.cart.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.optionName })
             );
         });
 
         // -->Show: toaster when a variant is added to compare
         this.compare.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE', { productName: variant?.optionName })
             );
         });
         // -->Show: toaster if a variant was already added to compare
         this.compare.onAdded$.subscribe(variant => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE', { productName: variant?.optionName })
             );
         });
 

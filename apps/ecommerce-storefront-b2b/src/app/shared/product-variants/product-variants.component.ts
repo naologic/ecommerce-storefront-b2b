@@ -113,6 +113,7 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      * Remap: the options because one variant has changed
      */
     public remapOptionsOnVariantClick(): void {
+        console.warn("remapOptionsOnVariantClick >>>>>>>")
         // -->Clone: options
         const options = cloneDeep(this.options);
 
@@ -154,27 +155,28 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      * Set: variant id for the current options
      */
     public setVariantId(): void {
+
+        // todo:
+        // todo:
+        // todo:
+        // todo:
+
+        // -->Create: options path based on level
+        let optionPath = '';
+        const optionLevel = this.optionsMapped.length;
+
+        // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
+        range(optionLevel + 1).map((level: number, index: number) => {
+            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+        })
+
         // -->Init
-        let variantId = null;
-        // todo:
-        // todo:
-        // todo:
-        // todo:
-        // -->Search: for variantId based on the number of options
-        // if (this.optionsMapped.length === 1) {
-        //     variantId = this.variants.find(variant => variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value)?.id;
-        // } else if (this.optionsMapped.length === 2) {
-        //     variantId = this.variants.find(variant =>
-        //         variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-        //         variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value
-        //     )?.id;
-        // } else if (this.optionsMapped.length === 3) {
-        //     variantId = this.variants.find(variant =>
-        //         variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-        //         variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value &&
-        //         variant?.optionId3 === this.form.get(this.optionsMapped[2]?.id).value
-        //     )?.id;
-        // }
+        let variantId = this.variants.find(variant => variant.optionsPath === optionPath);
+
+
+        console.error("setVariantId >>>", { optionLevel,
+            optionPath,
+            variantId})
 
         // -->Set: variantId value
         this.form.get('variantId').setValue(variantId);
@@ -185,8 +187,21 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      */
     public checkIfValueExists(optionLevel: number, valueId: string): boolean {
 
+        // -->Create: options path based on level
+        let optionPath = '';
+        // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
+        range(optionLevel + 1).map((level: number, index: number) => {
+            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+        })
 
-        return false;
+        if (optionPath) {
+            optionPath += `.${valueId}`
+        } else {
+            optionPath = valueId;
+        }
+
+        console.error("optionPath to test>>>", optionPath)
+        return this.variants.some((variant) => variant.optionsPath?.startsWith(optionPath));
         // todo:
         // todo:
         // todo:
@@ -219,7 +234,8 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
             optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
         })
 
-        return this.variants.some((variant) => variant.optionsPath === optionPath);
+        console.error("optionPath to test>>>", optionPath)
+        return this.variants.some((variant) => variant.optionsPath?.startsWith(optionPath));
 
         // return this.variants.some(variant => {
             // // -->Check: the option level
