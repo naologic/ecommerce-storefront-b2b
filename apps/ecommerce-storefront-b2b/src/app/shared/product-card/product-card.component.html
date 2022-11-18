@@ -82,7 +82,7 @@
         <div class="product-card__image">
             <div class="image image--type--product">
                 <a [routerLink]="url.product(product)" class="image__body">
-                    <img class="image__tag" [src]="product?.data?.images && product?.data?.images[0] | checkImageFallback: product?.data?.selectedVariant" alt="">
+                    <img class="image__tag" [src]="product?.data?.images?.length && product?.data?.images[0].cdnLink | checkImageFallback: product?.data?.selectedVariant" alt="">
                 </a>
             </div>
         </div>

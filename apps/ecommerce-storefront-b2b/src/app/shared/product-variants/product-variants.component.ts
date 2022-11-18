@@ -18,8 +18,8 @@ import { AbstractControl,
     ValidatorFn,
     Validators
 } from '@angular/forms';
-import { cloneDeep } from 'lodash';
-import {Subscription} from "rxjs";
+import { range, cloneDeep } from 'lodash';
+import { Subscription } from "rxjs";
 import {ProductOption, Variant} from '../../interfaces/product';
 
 @Component({
@@ -62,6 +62,8 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
         if (changes.options) {
             // -->Get: first variant
             const firstVariant = this.variants[0];
+            console.error("this.variants >>", this.variants)
+            console.error("firstVariant >>", firstVariant)
             // -->Controls
             const controls: {[key: string]: [null, ValidatorFn[]]} = {
                 variantId: [null, [Validators.required]]
@@ -74,6 +76,7 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
                 variantId: firstVariant.id
             }
 
+            console.log("this.options >>>", this.options)
             // -->Iterate: over options and set controls
             this.options.forEach((option, i) => {
                 controls[option.id] = [
@@ -96,6 +99,8 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
 
             // -->Remap: options
             this.remapOptionsOnVariantClick();
+
+            console.warn("this.form >>>", this.form)
 
             setTimeout(() => {
                 this.writeValue(firstValue);
@@ -151,22 +156,25 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
     public setVariantId(): void {
         // -->Init
         let variantId = null;
-
+        // todo:
+        // todo:
+        // todo:
+        // todo:
         // -->Search: for variantId based on the number of options
-        if (this.optionsMapped.length === 1) {
-            variantId = this.variants.find(variant => variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value)?.id;
-        } else if (this.optionsMapped.length === 2) {
-            variantId = this.variants.find(variant =>
-                variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-                variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value
-            )?.id;
-        } else if (this.optionsMapped.length === 3) {
-            variantId = this.variants.find(variant =>
-                variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-                variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value &&
-                variant?.optionId3 === this.form.get(this.optionsMapped[2]?.id).value
-            )?.id;
-        }
+        // if (this.optionsMapped.length === 1) {
+        //     variantId = this.variants.find(variant => variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value)?.id;
+        // } else if (this.optionsMapped.length === 2) {
+        //     variantId = this.variants.find(variant =>
+        //         variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+        //         variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value
+        //     )?.id;
+        // } else if (this.optionsMapped.length === 3) {
+        //     variantId = this.variants.find(variant =>
+        //         variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+        //         variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id).value &&
+        //         variant?.optionId3 === this.form.get(this.optionsMapped[2]?.id).value
+        //     )?.id;
+        // }
 
         // -->Set: variantId value
         this.form.get('variantId').setValue(variantId);
@@ -176,41 +184,57 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      * Check: if a value from an option exists in the variants array
      */
     public checkIfValueExists(optionLevel: number, valueId: string): boolean {
-        return this.variants.some(variant => {
-            // -->Check: the option level
-            if (optionLevel === 1) {
-                return variant?.optionId2 === valueId &&
-                    variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value
 
-            } else if (optionLevel === 2) {
-                return variant?.optionId3 === valueId &&
-                    variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
-                    variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
 
-            } else {
-                return variant?.optionId1 === valueId
-            }
-        });
+        return false;
+        // todo:
+        // todo:
+        // todo:
+        // todo:
+        // return this.variants.some(variant => {
+        //     // -->Check: the option level
+        //     if (optionLevel === 1) {
+        //         return variant?.optionId2 === valueId &&
+        //             variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value
+        //
+        //     } else if (optionLevel === 2) {
+        //         return variant?.optionId3 === valueId &&
+        //             variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
+        //             variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+        //
+        //     } else {
+        //         return variant?.optionId1 === valueId
+        //     }
+        // });
     }
 
     /**
      * Check: if current formGroup is a valid variant
      */
     public checkIfCurrentVariantIsValid(optionLevel: number): boolean {
-        return this.variants.some(variant => {
-            // -->Check: the option level
-            if (optionLevel === 1) {
-                return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-                       variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+        // -->Create: options path based on level
+        let optionPath = '';
+        // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
+        range(optionLevel + 1).map((level: number, index: number) => {
+            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+        })
 
-            } else if (optionLevel === 2) {
-                return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-                       variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value &&
-                       variant?.optionId3 === this.form.get(this.optionsMapped[2]?.id)?.value
-            } else {
-                return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value
-            }
-        });
+        return this.variants.some((variant) => variant.optionsPath === optionPath);
+
+        // return this.variants.some(variant => {
+            // // -->Check: the option level
+            // if (optionLevel === 1) {
+            //     return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+            //            variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+            //
+            // } else if (optionLevel === 2) {
+            //     return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+            //            variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value &&
+            //            variant?.optionId3 === this.form.get(this.optionsMapped[2]?.id)?.value
+            // } else {
+            //     return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value
+            // }
+        // });
     }
 
     /**
@@ -218,23 +242,23 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      *     > we check everything until the level picked, and then pick a variant for the next level
      */
     public setFirstValidVariant(optionLevel: 1 | 2): void {
-        // -->If: option level is one, get the optionId1 from formGroup and set optionId2
-        if (optionLevel === 1) {
-            const firstVariantFound = this.variants.find(variant => variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value);
-            // -->Set: variant
-            this.form.get(this.optionsMapped[1]?.id)?.setValue(firstVariantFound?.optionId2);
-        }
-
-        // -->If: option level is one, get the optionId1 and optionId2 from formGroup and set optionId3
-        if (optionLevel === 2) {
-            const firstVariantFound = this.variants.find(variant => {
-                return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
-                    variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
-            });
-
-            // -->Set: variant
-            this.form.get(this.optionsMapped[2]?.id)?.setValue(firstVariantFound?.optionId3);
-        }
+        // // -->If: option level is one, get the optionId1 from formGroup and set optionId2
+        // if (optionLevel === 1) {
+        //     const firstVariantFound = this.variants.find(variant => variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value);
+        //     // -->Set: variant
+        //     this.form.get(this.optionsMapped[1]?.id)?.setValue(firstVariantFound?.optionId2);
+        // }
+        //
+        // // -->If: option level is one, get the optionId1 and optionId2 from formGroup and set optionId3
+        // if (optionLevel === 2) {
+        //     const firstVariantFound = this.variants.find(variant => {
+        //         return variant?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
+        //             variant?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+        //     });
+        //
+        //     // -->Set: variant
+        //     this.form.get(this.optionsMapped[2]?.id)?.setValue(firstVariantFound?.optionId3);
+        // }
     }
 
     /**

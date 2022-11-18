@@ -169,7 +169,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
             description: this.product.data?.description || this.product.data?.name,
             twitterDescription: this.product.data?.description || this.product.data?.name,
             ogDescription: this.product.data?.description || this.product.data?.name,
-            shareImg: this.product.data?.images && this.product.data?.images[0]
+            shareImg: (this.product.data?.images && this.product.data?.images[0].cdnLink) || 'assets/images/image-not-available.png'
         });
 
         // -->Set: raw json+ld data
