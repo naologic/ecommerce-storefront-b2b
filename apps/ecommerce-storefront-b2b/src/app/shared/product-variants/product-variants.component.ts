@@ -167,7 +167,7 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
 
         // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
         range(optionLevel + 1).map((level: number, index: number) => {
-            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+            optionPath += this.form.get(this.optionsMapped[level]?.id)?.value + (index === optionLevel ? '.' : '');
         })
 
         // -->Init
@@ -188,20 +188,27 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
     public checkIfValueExists(optionLevel: number, valueId: string): boolean {
 
         // -->Create: options path based on level
-        let optionPath = '';
+        let optionItemsPath = '';
+
+        console.log("this.optionsMapped >>>", this.optionsMapped)
+        console.log("this.form.value >>>", this.form.value)
+
         // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
         range(optionLevel + 1).map((level: number, index: number) => {
-            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+            console.warn("level >>>", level)
+            console.warn("this.form.get(this.optionsMapped[level]?.id).value >>>", this.form.get(this.optionsMapped[level]?.id).value)
+
+            optionItemsPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
         })
 
-        if (optionPath) {
-            optionPath += `.${valueId}`
+        if (optionItemsPath) {
+            optionItemsPath += `.${valueId}`
         } else {
-            optionPath = valueId;
+            optionItemsPath = valueId;
         }
 
-        console.error("optionPath to test>>>", optionPath)
-        return this.variants.some((variant) => variant.optionsPath?.startsWith(optionPath));
+        console.error("optionPath to test>>>", optionItemsPath)
+        return this.variants.some((variant) => variant.optionItemsPath?.startsWith(optionItemsPath));
         // todo:
         // todo:
         // todo:
@@ -228,14 +235,15 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
      */
     public checkIfCurrentVariantIsValid(optionLevel: number): boolean {
         // -->Create: options path based on level
-        let optionPath = '';
+        let optionItemsPath = '';
+        console.warn("this.optionsMapped >>>", this.optionsMapped)
         // -->Iterate: over all options mapped base don level and create the options path similar to the one in variants
         range(optionLevel + 1).map((level: number, index: number) => {
-            optionPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
+            optionItemsPath += this.form.get(this.optionsMapped[level]?.id).value + (index === optionLevel ? '.' : '');
         })
 
-        console.error("optionPath to test>>>", optionPath)
-        return this.variants.some((variant) => variant.optionsPath?.startsWith(optionPath));
+        console.error("optionPath to test checkIfCurrentVariantIsValid>>>", optionItemsPath)
+        return this.variants.some((variant) => variant.optionItemsPath?.startsWith(optionItemsPath));
 
         // return this.variants.some(variant => {
             // // -->Check: the option level

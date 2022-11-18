@@ -119,7 +119,7 @@
                                 </thead>
                                 <tbody class="checkout__totals-products">
                                 <tr *ngFor="let item of cart.items$|async">
-                                    <td>{{ item.product.data?.name }} {{ item.variant?.variantName }}
+                                    <td>{{ item.product.data?.name }} {{ item.variant?.optionName }}
                                         × {{ item.quantity }}</td>
                                     <td>{{ item.variant.price * item.quantity | currencyFormat }}</td>
                                 </tr>
