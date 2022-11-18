@@ -219,13 +219,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 }
 
                 // -->Push: manufacturers filter
-                // todo: here we would need to put the vendors from response
-                // todo: here we would need to put the vendors from response
-                // todo: here we would need to put the vendors from response
-                // todo: here we would need to put the vendors from response
-                // todo: here we would need to put the vendors from response
-                // filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
-                filters.push(buildManufacturerFilter(appInfo$?.getValue()?.vendors || [], selectedManufacturerIds));
+                filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
 
                 // -->Compute: total pages and current page based on response data count and page size
                 const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
