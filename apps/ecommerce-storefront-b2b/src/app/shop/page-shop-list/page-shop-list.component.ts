@@ -111,7 +111,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.subs.add(
             this.shopService.activeFilters.subscribe(value => {
                 // -->Set: active filters
-                this.activeFilters = Array.isArray(value) ? value : [];
+                this.activeFilters = Array.isArray(value) ? value.filter(f => f.type !== 'category') : [];
             })
         );
 
