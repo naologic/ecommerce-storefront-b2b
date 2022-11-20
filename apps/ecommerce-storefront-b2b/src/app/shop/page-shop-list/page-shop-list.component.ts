@@ -16,6 +16,7 @@ import { ShopProductService } from "../shop-product.service";
 import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
 import { ActiveFilter, LayoutButton, PageShopLayout } from "../../interfaces/list";
 import { appInfo$ } from "../../../app.static";
+import { naoFetchInit } from "../../../../../../libs/nao-utils/src/lib/nao-fetch.init";
 
 
 
@@ -56,6 +57,10 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         limit: new FormControl(this.shopService.defaultOptions.limit),
         sort: new FormControl(this.shopService.defaultOptions.sort),
     });
+    /**
+     * Fetch
+     */
+    private fetch = naoFetchInit();
 
 
 
@@ -125,18 +130,21 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         )
 
         // -->Subscribe: to params change and reset filters based on state flag
-        this.subs.add(
-            this.route.params.subscribe(v => {
-                if (history?.state?.resetFilters) {
-                    this.shopService.resetAllFilters();
-                }
-            })
-        );
+        // this.subs.add(
+        //     this.route.params.subscribe(v => {
+        //         if (history?.state?.resetFilters) {
+        //             this.shopService.resetAllFilters();
+        //         }
+        //     })
+        // );
 
 
         // -->Subscribe: to params and query params
         this.subs.add(combineLatest([this.route.params, this.route.queryParams])
-            .subscribe(() => {
+            .subscribe((params$) => {
+                if (history?.state?.resetFilters) {
+                    this.shopService.resetAllFilters();
+                }
                 this.refresh();
             })
         );
@@ -156,107 +164,118 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             this.refreshSubs.unsubscribe();
             this.refreshSubs = null;
         }
+        // -->Set: fetchId
+        const fetchId = `list-products`;
         // -->Start: loading
         this.status = 'loading';
 
-        // -->Get: category id
-        const categoryId: string = this.route.snapshot.params.categoryId;
+        // -->Cancel: debouncer (if any)
+        this.fetch.f(fetchId).cancelDebounce();
 
-        // -->Create: filters options
-        const options = {
-            ...this.shopService.options,
-            filters: {
-                ...this.shopService.options.filters,
-                category: categoryId,
-            },
-        } as any;
+        // -->Set: debouncer
+        this.fetch.f(fetchId).setDebounce(() => {
+            // -->Get: category id
+            const categoryId: string = this.route.snapshot.params.categoryId;
 
-        // -->Get: Selected manufacturers
-        const selectedManufacturerIds = options.filters.manufacturer?.split(',')?.filter((f) => f) || [];
+            // -->Create: filters options
+            const options = {
+                ...this.shopService.options,
+                filters: {
+                    ...this.shopService.options.filters,
+                    category: categoryId,
+                },
+            } as any;
 
-        // -->Create: query
-        const query = {
-            searchTerm: options.searchTerm,
-            categoryId: options.filters.category,
-            manufacturerIds: selectedManufacturerIds,
-            sortBy: 'name',
-            sortOrder: options.sort === 'name_asc' ? 1 : -1, // 1 = asc/ -1 = desc
-            pageSize: options.limit || this.shopService.defaultOptions.limit,
-            pageNo: options.page || this.shopService.defaultOptions.page,
-            calculateFilters: true
-        } as any;
+            // -->Get: Selected manufacturers
+            const selectedManufacturerIds = options.filters.manufacturer?.split(',')?.filter((f) => f) || [];
 
-        // -->Get: min and max price range
-        let minPrice, maxPrice;
-        // -->Check: if there is a price already set, you are logged in and that you have a price filter
-        if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue() && options.filters.price?.split('-')?.length) {
-            // -->Split: string to get min and max price
-            [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
-            // -->Set: only if both of them are numbers
-            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-                query.minPrice = minPrice;
-                query.maxPrice = maxPrice;
+            // -->Create: query
+            const query = {
+                searchTerm: options.searchTerm,
+                categoryId: options.filters.category,
+                manufacturerIds: selectedManufacturerIds,
+                sortBy: 'name',
+                sortOrder: options.sort === 'name_asc' ? 1 : -1, // 1 = asc/ -1 = desc
+                pageSize: options.limit || this.shopService.defaultOptions.limit,
+                pageNo: options.page || this.shopService.defaultOptions.page,
+                calculateFilters: true
+            } as any;
+
+            // -->Get: min and max price range
+            let minPrice, maxPrice;
+            // -->Check: if there is a price already set, you are logged in and that you have a price filter
+            if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue() && options.filters.price?.split('-')?.length) {
+                // -->Split: string to get min and max price
+                [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
+                // -->Set: only if both of them are numbers
+                if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                    query.minPrice = minPrice;
+                    query.maxPrice = maxPrice;
+                }
             }
-        }
 
 
-        // -->Execute
-        this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
+            // -->Execute
+            this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
 
-            // -->Check: response
-            if (res?.ok && res?.data) {
-                // -->Init: filters
-                const filters = [];
+                // -->Check: response
+                if (res?.ok && res?.data) {
+                    // -->Init: filters
+                    const filters = [];
 
-                // -->Push: category filters
-                filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], categoryId));
+                    // -->Push: category filters
+                    filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], categoryId));
 
-                // -->Check: if we show the price filter
-                if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
-                    const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
-                    // --->Push: price filter
-                    filters.push(filterPrice);
+                    // -->Check: if we show the price filter
+                    if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
+                        const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
+                        // --->Push: price filter
+                        filters.push(filterPrice);
+                    }
+
+                    // -->Push: manufacturers filter
+                    filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
+
+                    // -->Compute: total pages and current page based on response data count and page size
+                    const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
+                    const page = options.page > pages ? 1 : options.page;
+
+                    // -->Update: breadcrumbs
+                    this.updateBreadcrumbs(categoryId);
+
+                    // -->Set: data
+                    this.data = {
+                        items: res.data.items || [],
+                        filters: filters,
+                        page: page,
+                        limit: query.pageSize,
+                        sort: options.sort || this.shopService.defaultOptions.sort,
+                        total: res.data?.filterInfo?.count || 0,
+                        pages: pages,
+                        from: (page - 1) * query.pageSize + 1 <= res.data?.filterInfo?.count ? (page - 1) * query.pageSize + 1 : 0,
+                        to: (page * query.pageSize) < res.data?.filterInfo?.count ? (page * query.pageSize) : res.data?.filterInfo?.count,
+                    }
+                    // -->Done: loading
+                    this.status = 'done';
+                    // -->Set: List and calculate pages and everything
+                    this.shopService.setList(this.data);
+
+                } else {
+                    // -->Done: loading
+                    this.status = 'done';
+                    // -->Show: errors
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
                 }
-
-                // -->Push: manufacturers filter
-                filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
-
-                // -->Compute: total pages and current page based on response data count and page size
-                const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
-                const page = options.page > pages ? 1 : options.page;
-
-                // -->Update: breadcrumbs
-                this.updateBreadcrumbs(categoryId);
-
-                // -->Set: data
-                this.data = {
-                    items: res.data.items || [],
-                    filters: filters,
-                    page: page,
-                    limit: query.pageSize,
-                    sort: options.sort || this.shopService.defaultOptions.sort,
-                    total: res.data?.filterInfo?.count || 0,
-                    pages: pages,
-                    from: (page - 1) * query.pageSize + 1 <= res.data?.filterInfo?.count ? (page - 1) * query.pageSize + 1 : 0,
-                    to: (page * query.pageSize) < res.data?.filterInfo?.count ? (page * query.pageSize) : res.data?.filterInfo?.count,
-                }
-                // -->Done: loading
-                this.status = 'done';
-                // -->Set: List and calculate pages and everything
-                this.shopService.setList(this.data);
-
-            } else {
+            }, err => {
                 // -->Done: loading
                 this.status = 'done';
                 // -->Show: errors
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-            }
-        }, err => {
-            // -->Done: loading
-            this.status = 'done';
-            // -->Show: errors
-            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        });
+            });
+        }, 100);
+        // -->Start: debouncer
+        this.fetch.f(fetchId).execDebounce();
+
     }
 
 
