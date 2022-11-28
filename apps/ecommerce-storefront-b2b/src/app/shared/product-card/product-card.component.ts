@@ -89,7 +89,9 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
 
 
     public ngOnChanges(changes: SimpleChanges): void {
-        if (changes.product) {
+        if (changes.product?.currentValue) {
+
+            this.product = changes.product?.currentValue;
             // this.featuredAttributes = this.product.attributes.filter(x => x.featured);
 
             // -->Calculate: min and max price for this product

@@ -58,7 +58,7 @@ export class UrlService {
      */
     public product(product: Product): string {
         // -->Check: product name and id
-        if (!product.data?.name || !product.docId) {
+        if (!product?.data?.name || !product?.docId) {
             return '';
         }
 
