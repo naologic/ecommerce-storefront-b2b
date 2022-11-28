@@ -20,7 +20,7 @@ export const environment = {
             $id: 'server',
             protocol: 'https',
             port: 443,
-            url: 'api-v2-bee11.naologic.com',
+            url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
             prefix: 'api/v2/',
             ssl: true
         },
