@@ -23,7 +23,10 @@
 
         <div class="col-lg">
             <div class="d-flex">
-                <img class="ml-lg-auto featured-product-image" [src]="primaryFeaturedProduct?.data?.selectedVariant?.images[0] || primaryFeaturedProduct?.data?.images[0]" [alt]="primaryFeaturedProduct?.data?.name" *ngIf="primaryFeaturedProduct?.data?.images?.length || primaryFeaturedProduct?.data?.selectedVariant?.images?.length">
+                <img class="ml-lg-auto featured-product-image"
+                     [src]="(primaryFeaturedProduct?.data?.selectedVariant?.images?.length && primaryFeaturedProduct?.data?.selectedVariant?.images[0].cdnLink) || (primaryFeaturedProduct?.data?.images?.length && primaryFeaturedProduct?.data?.images[0].cdnLink)"
+                     [alt]="primaryFeaturedProduct?.data?.name"
+                     *ngIf="primaryFeaturedProduct?.data?.images?.length || primaryFeaturedProduct?.data?.selectedVariant?.images?.length">
             </div>
         </div>
 
