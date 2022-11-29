@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription } from 'rxjs';
 import { NaoUserAccessService } from "@naologic/nao-user-access";
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
 
 @Component({
     selector: 'app-page-profile',
@@ -84,7 +85,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
         const data = this.formGroup.getRawValue();
 
         // -->Update: user profile
-        this.userProfileService.updateUserProfile(data).subscribe(res => {
+        this.userProfileService.updateUserProfile({ data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
                 // -->Refresh: session data
                 this.naoUsersService.refreshSessionData().then(res => {

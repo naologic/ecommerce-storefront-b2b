@@ -5,6 +5,7 @@ import { Subject, Subscription } from 'rxjs';
 import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-access";
 import { UrlService } from '../../services/url.service';
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
 
 @Component({
     selector: 'app-page-addresses',
@@ -59,35 +60,38 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
         }
 
         // -->Update
-        this.userProfileService.update('addresses', data).subscribe(res => {
-            if (res && res.ok) {
-                // -->Refresh: session data
-                this.naoUsersService.refreshSessionData().then(res => {
-                    // -->Done: loading
-                    const index = this.removeInProgress.indexOf(address.id);
-                    // -->Filter: addresses
-                    this.addresses = this.addresses.filter(item => item.id !== address.id);
+        this.userProfileService.update("addresses", { data, docId: NaoUserAccessData.userId.getValue()  }).subscribe(
+            (res) => {
+                if (res && res.ok) {
+                    // -->Refresh: session data
+                    this.naoUsersService
+                        .refreshSessionData()
+                        .then((res) => {
+                            // -->Done: loading
+                            const index = this.removeInProgress.indexOf(address.id);
+                            // -->Filter: addresses
+                            this.addresses = this.addresses.filter((item) => item.id !== address.id);
 
-                    if (index !== -1) {
-                        this.removeInProgress.splice(index, 1);
-                    }
+                            if (index !== -1) {
+                                this.removeInProgress.splice(index, 1);
+                            }
+                            // -->Show: toaster
+                            this.toastr.success(this.translate.instant("TOASTER_ADDRESS_DELETED"));
+                        })
+                        .catch((err) => {
+                            // -->Show: toaster
+                            this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+                        });
+                } else {
                     // -->Show: toaster
-                    this.toastr.success(
-                        this.translate.instant('TOASTER_ADDRESS_DELETED'),
-                    );
-
-                }).catch(err => {
-                    // -->Show: toaster
-                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-                })
-            } else {
+                    this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+                }
+            },
+            (error) => {
                 // -->Show: toaster
-                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-            }
-        }, error => {
-            // -->Show: toaster
-            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        })
+                this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+            },
+        );
     }
 
 

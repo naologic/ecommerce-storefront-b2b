@@ -8,6 +8,7 @@ import { generateRandomString } from "@naologic/nao-utils";
 import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-access";
 import { ActiveCountryList } from "../../app.locale";
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
 
 @Component({
     selector: 'app-page-edit-address',
@@ -110,7 +111,7 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
         }
 
         // -->Update
-        this.userProfileService.update('addresses', data).subscribe(res => {
+        this.userProfileService.update('addresses', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
                 // -->Refresh: session data
                 this.naoUsersService.refreshSessionData().then(res => {
