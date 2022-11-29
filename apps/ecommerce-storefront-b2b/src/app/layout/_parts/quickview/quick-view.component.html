@@ -56,7 +56,7 @@
                         {{ product.data?.shortDescription || product.data?.description }}
                     </div>
 
-                    <div class="quickview__product-prices-stock">
+                    <div class="quickview__product-prices-stock" *showIfLoggedIn>
                         <div class="quickview__product-prices">
                             <div class="quickview__product-price quickview__product-price--current">
                                 {{ product?.data?.variants[variantIndex]?.price | currencyFormat }}
@@ -83,6 +83,7 @@
                         </div>
                         <div class="quickview__product-actions-item quickview__product-actions-item--addtocart">
                             <button
+                                disableIfNotLoggedIn
                                 class="btn btn-primary btn-block"
                                 [class.btn-loading]="addToCartInProgress"
                                 [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)"

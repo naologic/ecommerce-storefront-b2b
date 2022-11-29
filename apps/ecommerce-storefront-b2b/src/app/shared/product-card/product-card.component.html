@@ -146,6 +146,7 @@
             <ng-container *ngIf="!exclude.includes('buttons')">
                 <button
                     type="button"
+                    disableIfNotLoggedIn
                     class="product-card__addtocart-icon"
                     [class.product-card__addtocart-icon--loading]="cart.inProgress"
                     [attr.aria-label]="'BUTTON_ADD_TO_CART' | translate"
@@ -157,6 +158,7 @@
                 <ng-container *ngIf="!exclude.includes('list-buttons')">
                     <button
                         type="button"
+                        disableIfNotLoggedIn
                         class="product-card__addtocart-full"
                         [class.product-card__addtocart-full--loading]="cart.inProgress"
                         [disabled]="!(product?.data?.variants[0]?.price >= 0)"

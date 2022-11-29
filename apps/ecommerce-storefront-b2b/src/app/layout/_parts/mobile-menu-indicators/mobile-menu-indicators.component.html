@@ -12,7 +12,7 @@
         </span>
         <span class="mobile-menu__indicator-title">{{ 'TEXT_MOBILE_INDICATOR_ACCOUNT' | translate }}</span>
     </a>
-    <a class="mobile-menu__indicator" routerLink="/shop/cart" (click)="menu.close()">
+    <a class="mobile-menu__indicator" routerLink="/shop/cart" (click)="menu.close()" *showIfLoggedIn>
         <span class="mobile-menu__indicator-icon">
             <app-icon icon="cart-20"></app-icon>
             <span class="mobile-menu__indicator-counter" *ngIf="cart.quantity$|async">{{ cart.quantity$|async }}</span>

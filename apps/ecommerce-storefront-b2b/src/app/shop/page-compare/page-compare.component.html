@@ -133,7 +133,7 @@
                             <td class="compare-table__column compare-table__column--fake"></td>
                         </tr>
                         <!-- Variant Price -->
-                        <tr class="compare-table__row">
+                        <tr class="compare-table__row" *showIfLoggedIn>
                             <th class="compare-table__column compare-table__column--header">{{ 'TABLE_PRICE' | translate }}</th>
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
                                 {{ item.variant?.price | currencyFormat }}
@@ -190,6 +190,7 @@
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
                                 <button appAddToCart type="button" class="btn btn-sm btn-primary" [class.btn-loading]="addToCart.inProgress"
                                     (click)="addToCart.add(item.product, item.variant)" #addToCart="addToCart"
+                                    disableIfNotLoggedIn
                                     [disabled]="!(item.variant?.price >= 0)">
                                     {{ 'BUTTON_ADD_TO_CART' | translate }}
                                 </button>

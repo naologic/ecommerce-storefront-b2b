@@ -76,15 +76,6 @@ export class CartService {
             if (eachItem.product.docId === product.docId && eachItem.variant.id === variant.id) {
                 return true;
             }
-
-            // if (eachItem.options.length) {
-            //     for (const option of options) {
-            //         if (!eachItem.options.find(itemOption => itemOption.name === option.name && itemOption.value === option.value)) {
-            //             return false;
-            //         }
-            //     }
-            // }
-
             return false;
         });
 
