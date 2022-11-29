@@ -1,36 +1,34 @@
 export const environment = {
-    production: true,
+    production: false,
     localDatabase: {
         company: {
             dbName: 'company',
-            collections: [
-                { name: 'cache', schema: 'any' }
-            ]
+            collections: [{ name: 'cache', schema: 'any' }],
         },
         nao: {
             dbName: 'nao',
             collections: [
                 { name: 'sessions', schema: 'any' },
                 { name: 'companycache', schema: 'any' },
-            ]
-        }
+            ],
+        },
     },
     API: {
         server: {
             $id: 'server',
-            protocol: 'https',
-            port: 443,
-            url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
+            protocol: 'http',
+            port: 3010,
+            url: 'localhost',
             prefix: 'api/v2/',
-            ssl: true
+            ssl: false
         },
         naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
         webSocket: {
-            enabled: false
+            enabled: false,
         },
         basicAuth: {
             user: 'gabriel',
-            password: 'gabriel'
+            password: 'gabriel',
         }
     },
     naoUsers: {
@@ -53,7 +51,6 @@ export const environment = {
         },
     },
 };
-
 
 /*
  * For easier debugging in development mode, you can import the following file
