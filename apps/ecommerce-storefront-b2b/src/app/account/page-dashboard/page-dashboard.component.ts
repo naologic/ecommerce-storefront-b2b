@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-access";
 import { UrlService } from "../../services/url.service";
+import { AccountAuthService } from "../account-auth.service";
 
 @Component({
     selector: 'app-page-dashboard',
@@ -15,8 +16,9 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
     public userData = null;
 
     constructor(
-        private naoUsersService: NaoUserAccessService,
-        public url: UrlService,
+        private readonly accountAuthService: AccountAuthService,
+        private readonly naoUsersService: NaoUserAccessService,
+        public readonly url: UrlService,
     ) { }
 
 
@@ -38,6 +40,15 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
                 }
             })
         )
+
+        this.accountAuthService.ensureUserData({})
+            .subscribe(ok => {
+
+            })
+    }
+
+    public ensureUserData() {
+
     }
 
 

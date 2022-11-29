@@ -111,7 +111,7 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
         }
 
         // -->Update
-        this.userProfileService.update('addresses', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
+        this.userProfileService.updateAccountData('addresses', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
                 // -->Refresh: session data
                 this.naoUsersService.refreshSessionData().then(res => {

@@ -19,7 +19,31 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * Update: user profile
+     * todo Get account information
+     * @example
+     */
+    public getAccountData(naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
+        // -->Request: user data
+        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/get-account-information`, {
+            data: { data: {}, naoQueryOptions }
+        });
+    }
+
+    /**
+     * todo Update: user data
+     * @example
+     * this.update('data', { addresses: [] })
+     */
+    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
+        // -->Request: user data
+        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-account-information`, {
+            data: { data, naoQueryOptions }
+        });
+    }
+
+    /**
+     * todo Update: user profile
+     * @deprecated
      */
     public updateUserProfile(data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
         // -->Request: user data
@@ -27,19 +51,7 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * Update: user data
-     * @example
-     * this.update('data', { addresses: [] })
-     */
-    public update(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
-        // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-my-profile`, {
-            data: { data, naoQueryOptions }
-        });
-    }
-
-    /**
-     * Update: user password
+     * todo Update: user password
      */
     public updatePassword(data: {currentPassword: string, password: string, confirmPassword: string}, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
         { docName: 'guest-external-ecommerce', userMode: 'guest-external' })
@@ -49,7 +61,7 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * Delete: user account
+     * todo Delete: user account
      */
     public deleteAccount(password: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
         { docName: 'guest-external-ecommerce', userMode: 'guest-external' })
@@ -59,7 +71,8 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * Send: email for password reset
+     * todo Send: email for password reset
+     * @deprecated
      */
     public sendResetPasswordEmail(email: string): Observable<T> {
         // -->Send: forgot password request

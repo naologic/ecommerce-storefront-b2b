@@ -60,7 +60,7 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
         }
 
         // -->Update
-        this.userProfileService.update("addresses", { data, docId: NaoUserAccessData.userId.getValue()  }).subscribe(
+        this.userProfileService.updateAccountData("addresses", { data, docId: NaoUserAccessData.userId.getValue()  }).subscribe(
             (res) => {
                 if (res && res.ok) {
                     // -->Refresh: session data

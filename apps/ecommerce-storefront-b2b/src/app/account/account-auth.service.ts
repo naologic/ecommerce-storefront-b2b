@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { NaoHttp2ApiService } from "@naologic/nao-http2";
 import { NaoDocumentInterface } from "@naologic/nao-interfaces";
 import { NaoUserAccessService } from "@naologic/nao-user-access";
+import {first} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
@@ -34,5 +35,13 @@ export class AccountAuthService<T = any> {
 
         alert(`not done yet`)
         return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/get-public-store-information`, { data: { data: { email }, naoQueryOptions } });
+    }
+
+    /**
+     * Ensure user data
+     * todo: wip
+     */
+    public ensureUserData(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'shop', cfpPath: 'ecommerce/ecommerce', userMode: 'guest-external' })): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`universal-public/ecommerce/data/ensure-ecommerce-user`, { data: { data, naoQueryOptions } }).pipe(first());
     }
 }
