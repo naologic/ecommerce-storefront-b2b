@@ -1,9 +1,16 @@
-import {BehaviorSubject} from "rxjs";
-import {AppInterface} from "./app.interface";
+import { BehaviorSubject } from "rxjs";
+import {  AppInterface } from "./app.interface";
 
+/**
+ * App: information
+ */
 export const appInfo$ = new BehaviorSubject<AppInterface.AppInfo>(null);
 
-
+/**
+ * Account data is the document attached to this user where we have extra information
+ *  - Used to show the profile data and addresses
+ */
+export const accountData$ = new BehaviorSubject<AppInterface.AccountData>(null);
 
 
 /*

@@ -19,35 +19,28 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * todo Get account information
-     * @example
-     */
-    public getAccountData(naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
-        // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/get-account-information`, {
-            data: { data: {}, naoQueryOptions }
-        });
-    }
-
-    /**
      * todo Update: user data
      * @example
      * this.update('data', { addresses: [] })
      */
-    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
+    // public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
+    //     // -->Request: user data
+    //     return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-account-information`, {
+    //         data: { data, naoQueryOptions }
+    //     });
+    // }
+    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
         // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-account-information`, {
+        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/update-account-information`, {
             data: { data, naoQueryOptions }
         });
     }
 
     /**
-     * todo Update: user profile
-     * @deprecated
+     * Get: account data information
      */
-    public updateUserProfile(data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
-        // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-my-profile`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    public getAccountData(data?: any, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/get-account-information`, { data: { data, naoQueryOptions } });
     }
 
     /**

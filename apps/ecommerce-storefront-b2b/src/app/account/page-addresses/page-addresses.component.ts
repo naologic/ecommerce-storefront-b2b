@@ -6,6 +6,8 @@ import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-acce
 import { UrlService } from '../../services/url.service';
 import { AccountProfileService } from "../account-profile.service";
 import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
+import { accountData$ } from "../../../app.static";
+import { AppService } from "../../app.service";
 
 @Component({
     selector: 'app-page-addresses',
@@ -20,6 +22,7 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
 
 
     constructor(
+        private appService: AppService,
         private naoUsersService: NaoUserAccessService,
         public url: UrlService,
         private toastr: ToastrService,
@@ -29,15 +32,14 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
 
 
     public ngOnInit(): void {
-        // -->Subscribe: to linkedDoc
+        // -->Set: addresses
+        this.addresses = accountData$.getValue()?.addresses || [];
+        // -->Subscribe: to account data
         this.subs.add(
-            this.naoUsersService.linkedDoc.subscribe(linkedDoc => {
-                // -->Check: if there is an address
-                if (Array.isArray(linkedDoc?.data?.addresses) && linkedDoc.data.addresses.length) {
-                    // -->Set: first address as default for now
-                    this.addresses = linkedDoc.data.addresses;
-                }
-            })
+            accountData$.subscribe((accountData) => {
+                // -->Set: account information
+                this.addresses = Array.isArray(accountData?.addresses) ? accountData.addresses : [];
+            }),
         )
     }
 
@@ -63,25 +65,22 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
         this.userProfileService.updateAccountData("addresses", { data, docId: NaoUserAccessData.userId.getValue()  }).subscribe(
             (res) => {
                 if (res && res.ok) {
-                    // -->Refresh: session data
-                    this.naoUsersService
-                        .refreshSessionData()
-                        .then((res) => {
-                            // -->Done: loading
-                            const index = this.removeInProgress.indexOf(address.id);
-                            // -->Filter: addresses
-                            this.addresses = this.addresses.filter((item) => item.id !== address.id);
+                    // -->Refresh: account data information
+                    this.appService.getAccountDataInformation().then(res => {
+                        // -->Done: loading
+                        const index = this.removeInProgress.indexOf(address.id);
+                        // -->Filter: addresses
+                        this.addresses = this.addresses.filter((item) => item.id !== address.id);
 
-                            if (index !== -1) {
-                                this.removeInProgress.splice(index, 1);
-                            }
-                            // -->Show: toaster
-                            this.toastr.success(this.translate.instant("TOASTER_ADDRESS_DELETED"));
-                        })
-                        .catch((err) => {
-                            // -->Show: toaster
-                            this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
-                        });
+                        if (index !== -1) {
+                            this.removeInProgress.splice(index, 1);
+                        }
+                        // -->Show: toaster
+                        this.toastr.success(this.translate.instant("TOASTER_ADDRESS_DELETED"));
+                    }).catch(err => {
+                        // -->Show: toaster
+                        this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                    })
                 } else {
                     // -->Show: toaster
                     this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));

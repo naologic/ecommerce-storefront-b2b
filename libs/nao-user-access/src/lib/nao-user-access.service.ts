@@ -30,9 +30,6 @@ export class NaoUserAccessService {
         return NaoUserAccessData.userData;
     }
 
-    get linkedDoc(): BehaviorSubject<NaoUsersInterface.LinkedDoc> {
-        return NaoUserAccessData.linkedDoc;
-    }
 
     get roleData(): BehaviorSubject<NaoUsersInterface.Role> {
         return NaoUserAccessData.roleData;
@@ -149,8 +146,6 @@ export class NaoUserAccessService {
             NaoUserAccessData.roleData.next(sessionData?.data?.roleData?.data);
             // -->Set: ads data
             NaoUserAccessData.ads.next(sessionData?.data?.ads);
-            // -->Set: Linkedin account
-            NaoUserAccessData.linkedDoc.next(sessionData?.data?.linkedDoc);
             // -->Apply: locale
             await this.applyLocale();
             // -->Return

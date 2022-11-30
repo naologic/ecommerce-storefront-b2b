@@ -62,6 +62,9 @@ export class PageMyListComponent implements OnInit, OnDestroy {
             if (res && res.data) {
                 // -->Set: data
                 this.data = res.data?.data;
+
+                console.log("this.data >>>", this.data)
+
             } else {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));

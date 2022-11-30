@@ -26,6 +26,7 @@ export class ECommerceService<T = any> {
         return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/get-public-store-information`, { data: { data: { m: 12 }, naoQueryOptions } });
     }
 
+
     /**
      * Get: products filter data
      */

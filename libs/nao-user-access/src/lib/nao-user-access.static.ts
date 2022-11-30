@@ -23,7 +23,6 @@ export const NaoUserAccessData = {
   locale: new BehaviorSubject<NaoUserAccessInterface.Locale>({ lang: 'en', currencyCode: 'USD', countryCode: 'USA' }),
   userId: new BehaviorSubject<string>(null),
   userData: new BehaviorSubject<NaoUsersInterface.UserData>(null),
-  linkedDoc: new BehaviorSubject<NaoUsersInterface.LinkedDoc>(null),
   companyId: new BehaviorSubject<string>(null),
   companyData: new BehaviorSubject<NaoCompanyInterface.Company>(null),
   rolePermissions$: new BehaviorSubject<string[]>([]),
