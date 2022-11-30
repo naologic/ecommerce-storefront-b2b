@@ -8,6 +8,7 @@ import { MetasInterface } from "./interfaces/metas";
 import { Meta, Title } from "@angular/platform-browser";
 import { accountData$, appInfo$ } from "../app.static";
 import { AccountProfileService } from "./account/account-profile.service";
+import { AccountAuthService } from "./account/account-auth.service";
 
 @Injectable({
     providedIn: "root",
@@ -24,7 +25,7 @@ export class AppService implements OnDestroy {
     });
     private readonly subs = new Subscription();
 
-    constructor(private userProfileService: AccountProfileService, private eCommerceService: ECommerceService, private readonly storageMap: StorageMap, private naoUsersService: NaoUserAccessService, public readonly titleService: Title, public readonly metaService: Meta) {
+    constructor(private readonly accountAuthService: AccountAuthService, private userProfileService: AccountProfileService, private eCommerceService: ECommerceService, private readonly storageMap: StorageMap, private naoUsersService: NaoUserAccessService, public readonly titleService: Title, public readonly metaService: Meta) {
         this.subs.add(
             // @ts-ignore
             appInfo$.subscribe((info$: any) => {
@@ -39,8 +40,12 @@ export class AppService implements OnDestroy {
                 if (isLoggedIn) {
                     // -->Refresh: info
                     this.refreshInfo();
-                    // -->Set: account information
-                    this.getAccountDataInformation().then();
+                    // -->Ensure: user data
+                    this.accountAuthService.ensureUserData({}).subscribe((ok) => {
+                        // -->Set: account information
+                        this.getAccountDataInformation().then();
+                    });
+                    // -->Ensure: user data
                 } else {
                     // -->Clear: account information
                     accountData$.next(null);

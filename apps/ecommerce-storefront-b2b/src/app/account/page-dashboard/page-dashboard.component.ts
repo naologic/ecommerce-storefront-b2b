@@ -34,7 +34,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
             }),
         );
 
-        this.accountAuthService.ensureUserData({}).subscribe((ok) => {});
+
     }
 
     public ngOnDestroy(): void {
