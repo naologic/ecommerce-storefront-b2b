@@ -172,6 +172,9 @@
   "TABLE_TOTAL": "Total",
   "TABLE_TOTAL_SHIPPING": "Shipping",
   "TABLE_TOTAL_TAX": "Tax",
+  "TABLE_SHIPPING_STATUS":  "Shipping Status",
+  "TABLE_TOTAL_WITHOUT_TAX": "Total without Tax",
+  "TABLE_TOTAL_WITH_TAX":  "Total with Tax",
 
   "ADDRESS_CARD_COUNTRY_TITLE": "Country",
   "ADDRESS_CARD_LINE_1_TITLE": "Address line 1",

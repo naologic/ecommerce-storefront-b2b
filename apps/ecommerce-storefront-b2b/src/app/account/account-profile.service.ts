@@ -19,24 +19,6 @@ export class AccountProfileService<T = any> {
     }
 
     /**
-     * todo Update: user data
-     * @example
-     * this.update('data', { addresses: [] })
-     */
-    // public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'doc', userMode: 'guest-external', cfpPath: 'users/users' }): Observable<T> {
-    //     // -->Request: user data
-    //     return this.naoHttp2ApiService.postJson<T>(`universal/users/user/update-account-information`, {
-    //         data: { data, naoQueryOptions }
-    //     });
-    // }
-    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
-        // -->Request: user data
-        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/update-account-information`, {
-            data: { data, naoQueryOptions }
-        });
-    }
-
-    /**
      * Get: account data information
      */
     public getAccountData(data?: any, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
@@ -46,15 +28,31 @@ export class AccountProfileService<T = any> {
     /**
      * todo Update: user password
      */
-    public updatePassword(data: {currentPassword: string, password: string, confirmPassword: string}, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
-        { docName: 'guest-external-ecommerce', userMode: 'guest-external' })
-    ): Observable<T> {
+    public updatePassword(data: {oldPassword: string, password: string, confirmPassword: string}, naoQueryOptions = { docName: 'doc', cfpPath: 'users/users', userMode: 'guest-external' }): Observable<T> {
         // -->Request: data browse
-        return this.naoHttp2ApiService.patchJson<T>(`${this.api.root}/guest/password/${naoQueryOptions.docName}/update`, { data: {data}, naoQueryOptions });
+        return this.naoHttp2ApiService.postJson<T>(`universal/users/user/change-my-password`, { data: { data, naoQueryOptions } });
     }
 
     /**
+     * todo Update: user data
+     * @example
+     * this.update('data', { addresses: [] })
+     *
+     * addresses works
+     */
+    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+        // -->Request: user data
+        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/update-account-information`, {
+            data: { data: { mode, ...data }, naoQueryOptions }
+        });
+    }
+
+
+
+    /**
      * todo Delete: user account
+     *
+     * todo: WIP
      */
     public deleteAccount(password: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault(
         { docName: 'guest-external-ecommerce', userMode: 'guest-external' })

@@ -152,7 +152,7 @@ export class NaoUserAccessService {
             return {ok: true};
         } else {
             //  -->Logout
-            return this.logout(naoQueryOptions);
+            return this.logout();
         }
     }
 
@@ -309,7 +309,7 @@ export class NaoUserAccessService {
                     // -->Return
                     return this.refreshSessionData(naoQueryOptions);
                 } else {
-                    return this.logout(naoQueryOptions);
+                    return this.logout();
                 }
             });
     }
@@ -361,18 +361,17 @@ export class NaoUserAccessService {
     /**
      * Logout
      */
-    public async logout(
-        naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
-    ): Promise<{ ok: boolean }> {
+    public async logout(): Promise<{ ok: boolean }> {
         if (!NaoUserAccessData.isLoggedIn$.getValue()) {
             // -->Clear; the data
             this.clearLoginData();
             // -->Ok
             return {ok: true};
         }
+        const naoQueryOptions = { docName: 'doc', cfpPath: 'users/users', userMode: 'guest-external' };
         // -->Logout
         return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`universal/users/auth/auth-logout`, {
-            data: { data: {}, naoQueryOptions },
+            data: { data: {  }, naoQueryOptions },
         })
             .toPromise()
             .then(() => {
