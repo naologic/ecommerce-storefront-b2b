@@ -17,7 +17,8 @@ import { AppInterface } from "../../../app.interface";
     styleUrls: ['./page-profile.component.scss'],
 })
 export class PageProfileComponent implements OnInit, OnDestroy {
-    public formGroup!: FormGroup;
+    public formGroupUserAccount!: FormGroup;
+    public formGroupCompanyAccount!: FormGroup;
     public saveInProgress = false;
     /**
      * User: data
@@ -81,35 +82,53 @@ export class PageProfileComponent implements OnInit, OnDestroy {
      * Set: form
      */
     public setForm(): void {
-        // -->Set: form values
-        this.formGroup = this.fb.group({
+        // -->Set: form group user account
+        this.formGroupUserAccount = this.fb.group({
             firstName: [this.userData.firstName, [Validators.required]],
             lastName: [this.userData.lastName, [Validators.required]],
-            // -->TODO: @Gabriel set the phoneNo from user but patch in in both contact and user
             phoneNo: [this.userData.phoneNo],
-            // -->TODO: @Gabriel set companyName and companyTaxId
-            companyName: [this.accountData?.companyName],
-            companyTaxId: [this.accountData?.companyTaxId],
+        });
+        // -->Set: form group company account
+        this.formGroupCompanyAccount = this.fb.group({
+            name: [this.accountData?.name],
+            contactName: [this.accountData?.contactName],
+            phoneNumber: [this.accountData?.phoneNumber],
+            email: [this.accountData?.email],
+            website: [this.accountData?.website],
         });
     }
 
     /**
      * Update: user profile data
      */
-    public save(): void {
+    public save(type: 'userAccount' | 'companyAccount'): void {
         // -->Check: save action state and form
-        if (this.saveInProgress || this.formGroup.invalid){
+        if (this.saveInProgress){
             return;
         }
 
-        // -->Mark: all controls
-        this.formGroup.markAllAsTouched();
+        let data
+        if (type === 'userAccount') {
+            if (this.formGroupUserAccount.invalid) {
+                return;
+            }
+            // -->Mark: all controls
+            this.formGroupUserAccount.markAllAsTouched();
+            // -->Set: data
+            data = this.formGroupUserAccount.getRawValue();
+        } else {
+            if (this.formGroupCompanyAccount.invalid) {
+                return;
+            }
+            // -->Mark: all controls
+            this.formGroupCompanyAccount.markAllAsTouched();
+            // -->Set: data
+            data = this.formGroupCompanyAccount.getRawValue();
+        }
 
         // -->Start: loading
         this.saveInProgress = true;
 
-        // -->Get: value
-        const data = this.formGroup.getRawValue();
 
         // -->Update: user profile
         this.userProfileService.updateAccountData('profile', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {

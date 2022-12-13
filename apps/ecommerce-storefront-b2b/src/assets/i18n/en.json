@@ -83,7 +83,13 @@
   "HEADER_MY_LISTS_EMPTY_TITLE": "You don't have any lists",
   "HEADER_WRITE_REVIEW": "Write A Review",
   "HEADER_YOUR_ORDER": "Your Order",
+  "HEADER_EDIT_USER_ACCOUNT": "Edit user account",
+  "HEADER_EDIT_COMPANY_ACCOUNT": "Edit user company",
 
+  "INPUT_NAME_LABEL": "Name",
+  "INPUT_CONTACT_NAME_LABEL": "Contact Name",
+  "INPUT_EMAIL_LABEL": "Email",
+  "INPUT_WEBSITE_LABEL": "Website",
   "INPUT_COMPANY_LABEL": "Company Name",
   "INPUT_PHONE_LABEL": "Phone",
   "INPUT_COMPANY_PLACEHOLDER": "Naologic",

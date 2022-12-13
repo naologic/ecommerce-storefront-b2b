@@ -65,13 +65,9 @@ export namespace AppInterface {
         website: string;
         addresses: NaoUsersInterface.Address[];
         net: string;
-        // todo: @Gabriel check what do we do with this
-        // todo: @Gabriel check what do we do with this
-        // todo: @Gabriel check what do we do with this
-        // todo: @Gabriel check what do we do with this
-        // todo: @Gabriel check what do we do with this
-        // todo: @Gabriel check what do we do with this
-        companyName?: string;
+        name?: string;
+        contactName?: string;
+        email?: string;
         companyTaxId?: string;
         allowedPaymentMethods: string[];
     }
