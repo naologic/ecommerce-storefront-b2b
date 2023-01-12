@@ -54,7 +54,7 @@
     "crypto-js": "^4.0.0",
     "eslint": "7.29.0",
     "eslint-config-prettier": "8.1.0",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "messageformat": "^2.3.0",
     "ngx-owl-carousel-o": "^5.0.0",
     "ngx-paypal": "^7.0.0",
