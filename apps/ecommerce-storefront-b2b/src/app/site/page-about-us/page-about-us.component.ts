@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AppService } from "../../app.service";
 import { Subscription } from "rxjs";
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-page-about-us',
@@ -9,7 +10,7 @@ import { Subscription } from "rxjs";
 })
 export class PageAboutUsComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
-    public generalSettings;
+    public aboutUs: string;
 
     constructor(
         public appService: AppService,
@@ -18,9 +19,9 @@ export class PageAboutUsComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: generalSettings info
-                this.generalSettings = value?.generalSettings;
+                this.aboutUs = value?.shopInfo?.about?.data?.text;
             })
         );
     }

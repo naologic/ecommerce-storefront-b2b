@@ -11,6 +11,7 @@ import { PagePasswordComponent } from './page-password/page-password.component';
 import { PageLoginComponent } from './page-login/page-login.component';
 import { PageRegisterComponent } from "./page-register/page-register.component";
 import { AuthGuard } from "./auth-guard";
+import { PageOrdersComponent } from "./page-orders/page-orders.component";
 
 const routes: Routes = [
     {
@@ -39,6 +40,10 @@ const routes: Routes = [
             {
                 path: 'invoices',
                 component: PageInvoicesComponent,
+            },
+            {
+                path: 'orders',
+                component: PageOrdersComponent,
             },
             {
                 path: 'addresses',

@@ -43,6 +43,7 @@ import { RadioButtonComponent } from './radio-button/radio-button.component';
 import { SanitizeHtmlPipe } from "./pipes/saniteze-html.pipe";
 import { BlockBrandsComponent } from "./block-brands/block-brands.component";
 import { NaoLoadingComponent } from "./nao-loading/nao-loading.component";
+import { LoadingButtonDirective } from "./directives/disable-if-not-logged-in.directive";
 
 @NgModule({
     imports: [
@@ -92,7 +93,8 @@ import { NaoLoadingComponent } from "./nao-loading/nao-loading.component";
         RadioButtonComponent,
         SanitizeHtmlPipe,
         BlockBrandsComponent,
-        NaoLoadingComponent
+        NaoLoadingComponent,
+        LoadingButtonDirective
     ],
     exports: [
         CommonModule,
@@ -138,7 +140,8 @@ import { NaoLoadingComponent } from "./nao-loading/nao-loading.component";
         RadioButtonComponent,
         SanitizeHtmlPipe,
         BlockBrandsComponent,
-        NaoLoadingComponent
+        NaoLoadingComponent,
+        LoadingButtonDirective
     ]
 })
 export class SharedModule { }

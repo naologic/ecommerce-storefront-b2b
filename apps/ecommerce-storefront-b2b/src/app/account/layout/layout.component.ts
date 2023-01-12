@@ -45,6 +45,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
             { label: this.translate.instant('LINK_ACCOUNT_DASHBOARD'), url: '/account/dashboard' },
             { label: this.translate.instant('LINK_ACCOUNT_PROFILE'), url: '/account/profile' },
             { label: this.translate.instant('LINK_ACCOUNT_INVOICE'), url: '/account/invoices' },
+            { label: this.translate.instant('LINK_ACCOUNT_ORDERS'), url: '/account/orders' },
             { label: this.translate.instant('LINK_ACCOUNT_ADDRESSES'), url: '/account/addresses' },
             { label: this.translate.instant('LINK_ACCOUNT_PASSWORD'), url: '/account/password' },
         ];

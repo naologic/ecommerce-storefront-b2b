@@ -7,7 +7,7 @@
             <span class="filter-category__arrow">
                 <app-icon icon="arrow-rounded-left-6x9"></app-icon>
             </span>
-            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.name }}</a>
+            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.data?.name }}</a>
         </li>
     </ng-template>
     <ul class="filter-category__list">
@@ -26,13 +26,13 @@
         </ng-container>
         <li
             class="filter-category__item"
-            [class.filter-category__item--current]="+options.value === item.id"
+            [class.filter-category__item--current]="options.value === item.docId"
         >
-            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.name }}</a>
+            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.data.name }}</a>
         </li>
         <ng-container *ngFor="let child of item.children">
             <li class="filter-category__item filter-category__item--child">
-                <a href="javascript:void(0)" (click)="redirectCategory(child)">{{ child.name }}</a>
+                <a href="javascript:void(0)" (click)="redirectCategory(child)">{{ child.data.name }}</a>
             </li>
         </ng-container>
     </ng-container>

@@ -1,33 +1,67 @@
-import { Inject, Injectable } from '@angular/core';
-import { NaoHttp2ApiService } from '@naologic/nao-http2';
-import { TranslateService } from '@ngx-translate/core';
-// import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { checkSessionData, NaoUserAccessData } from './nao-user-access.static';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, share } from 'rxjs/operators';
-import { NaoUserAccessInterface, NaoUsersInterface} from './nao-user-access.interface';
-import { CurrencyData, naoAccessToken$ } from '@naologic/nao-utils';
+import {Inject, Injectable} from '@angular/core';
+import {NaoHttp2ApiService} from '@naologic/nao-http2';
+import {TranslateService} from '@ngx-translate/core';
+import {checkSessionData, NaoUserAccessData} from './nao-user-access.static';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {distinctUntilChanged, share} from 'rxjs/operators';
+import {NaoUserAccessInterface, NaoUsersInterface} from './nao-user-access.interface';
+import {CurrencyData, naoAccessToken$} from '@naologic/nao-utils';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NaoUserAccessService {
-    public readonly api = { root: 'users-auth' };
+    public readonly api = {root: 'users-auth'};
     private subs = new Subscription();
-    get locale(): Observable<NaoUserAccessInterface.Locale> { return NaoUserAccessData.locale.pipe(distinctUntilChanged(), share()); }
-    get accessToken(): BehaviorSubject<string> { return naoAccessToken$; }
-    get userId(): BehaviorSubject<string> { return NaoUserAccessData.userId; }
-    get userData(): BehaviorSubject<NaoUsersInterface.UserData> { return NaoUserAccessData.userData; }
-    get linkedDoc(): BehaviorSubject<NaoUsersInterface.LinkedDoc> { return NaoUserAccessData.linkedDoc; }
-    get roleData(): BehaviorSubject<NaoUsersInterface.Role> { return NaoUserAccessData.roleData; }
-    get ads(): BehaviorSubject<any> { return NaoUserAccessData.ads; }
-    get oldRoleData(): BehaviorSubject<NaoUsersInterface.Role> { return NaoUserAccessData.oldRoleData; }
-    get isLoggedIn$(): BehaviorSubject<boolean> { return NaoUserAccessData.isLoggedIn$; }
 
-    get status(): string { return this.userData.getValue() ? this.userData.getValue().status : null; }
-    get state(): string { return this.userData.getValue() ? this.userData.getValue().state : null; }
-    get isSuspended(): boolean { return typeof this.state === 'string' ? this.state.startsWith('suspended') : false; }
-    get isUserLocked(): boolean { return this.state === 'locked'; }
+    get locale(): Observable<NaoUserAccessInterface.Locale> {
+        return NaoUserAccessData.locale.pipe(distinctUntilChanged(), share());
+    }
+
+    get accessToken(): BehaviorSubject<string> {
+        return naoAccessToken$;
+    }
+
+    get userId(): BehaviorSubject<string> {
+        return NaoUserAccessData.userId;
+    }
+
+    get userData(): BehaviorSubject<NaoUsersInterface.UserData> {
+        return NaoUserAccessData.userData;
+    }
+
+
+    get roleData(): BehaviorSubject<NaoUsersInterface.Role> {
+        return NaoUserAccessData.roleData;
+    }
+
+    get ads(): BehaviorSubject<any> {
+        return NaoUserAccessData.ads;
+    }
+
+    get oldRoleData(): BehaviorSubject<NaoUsersInterface.Role> {
+        return NaoUserAccessData.oldRoleData;
+    }
+
+    get isLoggedIn$(): BehaviorSubject<boolean> {
+        return NaoUserAccessData.isLoggedIn$;
+    }
+
+    get status(): string {
+        return this.userData.getValue() ? this.userData.getValue().status : null;
+    }
+
+    get state(): string {
+        return this.userData.getValue() ? this.userData.getValue().state : null;
+    }
+
+    get isSuspended(): boolean {
+        return typeof this.state === 'string' ? this.state.startsWith('suspended') : false;
+    }
+
+    get isUserLocked(): boolean {
+        return this.state === 'locked';
+    }
 
 
     constructor(
@@ -47,7 +81,7 @@ export class NaoUserAccessService {
      * Redirect user according to the flags
      */
     public checkUserAndRedirect(): { ok: boolean, redirectTo: string, canLoad: boolean } {
-        const res = { redirectTo: '/account/login', ok: true, canLoad: true };
+        const res = {redirectTo: '/account/login', ok: true, canLoad: true};
         // -->Check: if user is logged in
         if (!this.isLoggedIn()) {
             res.redirectTo = '/account/login';
@@ -57,7 +91,9 @@ export class NaoUserAccessService {
             const state = this.userData?.getValue()?.state;
             switch (state) {
                 case 'active':
-                    res.redirectTo = null; res.ok = true; res.canLoad = true;
+                    res.redirectTo = null;
+                    res.ok = true;
+                    res.canLoad = true;
                     break;
             }
         }
@@ -67,7 +103,7 @@ export class NaoUserAccessService {
     /**
      * Init the access levels
      */
-    public async init(): Promise<{ ok: boolean}> {
+    public async init(): Promise<{ ok: boolean }> {
         // -->Apply: default locale
         return this.applyLocale();
     }
@@ -86,7 +122,10 @@ export class NaoUserAccessService {
         naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
     ): Promise<{ ok: boolean }> {
         // -->Request: user login
-        const sessionData = await this.naoHttp2ApiService.postJson<any>(`${this.api.root}/auth/refresh/${naoQueryOptions.docName}/data`, { data: {}, naoQueryOptions }).toPromise();
+        const sessionData = await this.naoHttp2ApiService.postJson<any>(`universal/users/auth/auth-refresh`, {
+            data: { data: {}, naoQueryOptions },
+        }).toPromise();
+
         // -->Return
         if (checkSessionData(sessionData)) {
             // -->Set: session data
@@ -94,28 +133,26 @@ export class NaoUserAccessService {
             // -->Set: locale @NOTE: commented this until we add the locale settings as they match the ones below!
             // NaoUserAccessData.locale.next(sessionData.userData?.data?.locale);
             // -->Set: locale
-            NaoUserAccessData.locale.next({ lang: 'en', currencyCode: 'USD', countryCode: 'USA' });
+            NaoUserAccessData.locale.next({lang: 'en', currencyCode: 'USD', countryCode: 'USA'});
             // -->Set: user data
-            NaoUserAccessData.companyData.next(sessionData.companyData);
+            NaoUserAccessData.companyData.next(sessionData?.data?.companyData);
             // -->Set: user data
-            NaoUserAccessData.companyId.next(sessionData.companyData?._id);
+            NaoUserAccessData.companyId.next(sessionData?.data?.companyData?.docId);
             // -->Set: user data
-            NaoUserAccessData.userData.next(sessionData.userData?.data);
+            NaoUserAccessData.userData.next(sessionData?.data?.userData?.data);
             // -->Set: user data
-            NaoUserAccessData.userId.next(sessionData.userData?._id);
+            NaoUserAccessData.userId.next(sessionData?.data?.userData?.docId);
             // -->Set: role data
-            NaoUserAccessData.roleData.next(sessionData.roleData?.data);
+            NaoUserAccessData.roleData.next(sessionData?.data?.roleData?.data);
             // -->Set: ads data
-            NaoUserAccessData.ads.next(sessionData.ads);
-            // -->Set: Linkedin account
-            NaoUserAccessData.linkedDoc.next(sessionData.linkedDoc);
+            NaoUserAccessData.ads.next(sessionData?.data?.ads);
             // -->Apply: locale
             await this.applyLocale();
             // -->Return
-            return { ok: true };
+            return {ok: true};
         } else {
             //  -->Logout
-            return this.logout(naoQueryOptions);
+            return this.logout();
         }
     }
 
@@ -138,7 +175,7 @@ export class NaoUserAccessService {
             this.translateService.use(language.lang);
         }
         // -->Return
-        return { ok: true };
+        return {ok: true};
     }
 
     /**
@@ -173,7 +210,7 @@ export class NaoUserAccessService {
      * Set a locale setting
      */
     public async setLocale(
-        type: 'country'|'currency'|'language',
+        type: 'country' | 'currency' | 'language',
         data: { code: string }
     ): Promise<{ ok: boolean }> {
         let data$: any = {};
@@ -195,18 +232,18 @@ export class NaoUserAccessService {
             if (!country) {
                 throw new Error(`Invalid country code sent! Check activeCountryList[] and try again`);
             }
-            data$ = { countryCode: data.code };
+            data$ = {countryCode: data.code};
             // -->Update: locale
-            NaoUserAccessData.locale.next({ ...NaoUserAccessData.locale.getValue(), ...data$ });
+            NaoUserAccessData.locale.next({...NaoUserAccessData.locale.getValue(), ...data$});
         } else if (type === 'currency') {
             // -->Get: the country info by code
             const currency = this.localeData.activeCurrencyList.find(c => c.currencyCode === data.code);
             if (!currency) {
                 throw new Error(`Invalid country code sent! Check activeCountryList[] and try again`);
             }
-            data$ = { currencyCode: data.code };
+            data$ = {currencyCode: data.code};
             // -->Update: locale
-            NaoUserAccessData.locale.next({ ...NaoUserAccessData.locale.getValue(), ...data$ });
+            NaoUserAccessData.locale.next({...NaoUserAccessData.locale.getValue(), ...data$});
         } else if (type === 'language') {
             // -->Get: the country info by code
             const language = this.localeData.activeLanguageList.find(c => c.lang === data.code);
@@ -214,12 +251,41 @@ export class NaoUserAccessService {
                 throw new Error(`Invalid country code sent! Check activeCountryList[] and try again`);
             }
             // -->Set: data
-            data$ = { lang: data.code };
+            data$ = {lang: data.code};
             // -->Update: locale
-            NaoUserAccessData.locale.next({ ...NaoUserAccessData.locale.getValue(), ...data$ });
+            NaoUserAccessData.locale.next({...NaoUserAccessData.locale.getValue(), ...data$});
         }
-        return { ok: true };
+        return {ok: true};
     }
+
+    /**
+     * Login with email/pass
+     */
+    // public loginWithEmail(
+    //     email: string,
+    //     password: string,
+    //     rememberMe: boolean,
+    //     naoQueryOptions = {docName: 'doc', cfpPath: 'users/users'}
+    // ): Promise<{ ok: boolean }> {
+    //     // -->Request: user login
+    //     return this.naoHttp2ApiService.postJson<NaoUserAccessInterface.LoginResponse>(
+    //         `universal-public/users/auth/auth-login`, {data: {data: {email, password}, naoQueryOptions}})
+    //         .toPromise<NaoUserAccessInterface.LoginResponse>()
+    //         .then(loginData => {
+    //
+    //             console.warn(`loginData > `, loginData)
+    //             // -->Return
+    //             return this.updateAccessTokenData(loginData, rememberMe);
+    //         })
+    //         .then((res) => {
+    //             if (res.ok) {
+    //                 // -->Return
+    //                 return this.refreshSessionData(naoQueryOptions);
+    //             } else {
+    //                 return this.logout(naoQueryOptions);
+    //             }
+    //         });
+    // }
 
     /**
      * Login with email/pass
@@ -228,22 +294,22 @@ export class NaoUserAccessService {
         email: string,
         password: string,
         rememberMe: boolean,
-        naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
+        naoQueryOptions = {docName: 'doc', cfpPath: 'users/users'}
     ): Promise<{ ok: boolean }> {
         // -->Request: user login
-        return this.naoHttp2ApiService.postJson<NaoUserAccessInterface.LoginResponse>(
-            `${this.api.root}-public/public/login/${naoQueryOptions.docName}/email`, { data: { email, password }, naoQueryOptions })
-            .toPromise<NaoUserAccessInterface.LoginResponse>()
+        return this.naoHttp2ApiService.postJson(
+            `universal-public/users/auth/auth-login`, {data: {data: {email, password}, naoQueryOptions}})
+            .toPromise<any>()
             .then(loginData => {
                 // -->Return
-                return this.updateAccessTokenData(loginData, rememberMe);
+                return this.updateAccessTokenData(loginData.data, rememberMe);
             })
             .then((res) => {
                 if (res.ok) {
                     // -->Return
                     return this.refreshSessionData(naoQueryOptions);
                 } else {
-                    return this.logout(naoQueryOptions);
+                    return this.logout();
                 }
             });
     }
@@ -258,31 +324,14 @@ export class NaoUserAccessService {
         const loginData = NaoUserAccessData.userStorage.getObject(NaoUserAccessData.accessTokens);
         // -->Check: tokens
         if (!loginData) {
-            return { ok: false };
+            return {ok: false};
         }
         // -->Check: login token
         if (typeof loginData.accessToken !== 'string' || typeof loginData.resetToken !== 'string') {
-            return { ok: false };
+            return {ok: false};
         }
-        // -->Reset: the session
-        return this.naoHttp2ApiService.postJson(`${this.api.root}/auth/reset/${naoQueryOptions.docName}/session`, { data: { resetToken: loginData.resetToken }, naoQueryOptions })
-            .toPromise()
-            .then(loginData$ => {
-                if (loginData$) {
-                    // -->Return
-                    return this.updateAccessTokenData(loginData$, !!loginData.rememberMe);
-                } else {
-                    return { ok: false };
-                }
-            })
-            .then((res) => {
-                if (res.ok) {
-                    // -->Return
-                    return this.refreshSessionData(naoQueryOptions);
-                } else {
-                    return this.logout(naoQueryOptions);
-                }
-            });
+        // -->Return
+        return this.refreshSessionData(naoQueryOptions);
     }
 
     /**
@@ -302,64 +351,41 @@ export class NaoUserAccessService {
             // -->Set: logged in
             NaoUserAccessData.isLoggedIn$.next(true);
             // -->Return
-            return { ok: true };
+            return {ok: true};
         } else {
             // -->Get: Token
-            return { ok: false };
+            return {ok: false};
         }
     }
 
     /**
      * Logout
      */
-    public async logout(
-        naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
-    ): Promise<{ ok: boolean }> {
+    public async logout(): Promise<{ ok: boolean }> {
         if (!NaoUserAccessData.isLoggedIn$.getValue()) {
             // -->Clear; the data
             this.clearLoginData();
             // -->Ok
-            return { ok: true };
+            return {ok: true};
         }
+        const naoQueryOptions = { docName: 'doc', cfpPath: 'users/users', userMode: 'guest-external' };
         // -->Logout
-        return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`${this.api.root}/auth/logout/${naoQueryOptions.docName}/email`, {})
+        return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`universal/users/auth/auth-logout`, {
+            data: { data: {  }, naoQueryOptions },
+        })
             .toPromise()
             .then(() => {
                 // -->Clear: the store
                 this.clearLoginData();
                 // -->Clear: the store
-                return { ok: true };
+                return {ok: true};
             })
             .catch(err => {
                 // -->Clear: the store
                 this.clearLoginData();
                 // -->ReturnL false
-                return { ok: false };
+                return {ok: false};
             });
-    }
-
-    /**
-     * Lock user access with password
-     */
-    public lockWithPassword(
-        naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
-    ): Promise<{ ok: boolean }> {
-        // -->Request: lock
-        return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`${this.api.root}/auth/session/${naoQueryOptions.docName}/lock`, { data: {}, naoQueryOptions }).toPromise().then(res => {
-            // -->Refresh: session data
-            return this.refreshSessionData();
-        });
-    }
-
-    /**
-     * Unlock user access with password
-     */
-    public unlockWithPassword(
-        password: string,
-        naoQueryOptions = NaoUserAccessData.defaultNaoQueryOptions
-    ): Promise<any> {
-        // -->Request: lock
-        return this.naoHttp2ApiService.postJson<{ ok: boolean }>(`${this.api.root}/auth/session/${naoQueryOptions.docName}/unlock`, { data: { password }, naoQueryOptions }).toPromise();
     }
 
     /**

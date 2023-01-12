@@ -22,7 +22,7 @@
 <!--                class="product-card__action product-card__action--my-lists"-->
 <!--                [class.product-card__action&#45;&#45;loading]="myLists.inProgress"-->
 <!--                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"-->
-<!--                (click)="myLists.add('XXXXXXXXXX', product?._id, product.data?.variants[0]?.id)"-->
+<!--                (click)="myLists.add('XXXXXXXXXX', product?.docId, product.data?.variants[0]?.id)"-->
 <!--            >-->
 <!--                <app-icon icon="wishlist-16"></app-icon>-->
 <!--            </button>-->
@@ -52,7 +52,7 @@
                         *ngFor="let item of addToMyLists.myLists"
                         class="my-lists__menu-item"
                         type="button"
-                        (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
+                        (click)="addToMyLists.add(item.docId, product, product.data?.variants[0]); myListsDropdown.close()">
                         {{ item.data?.name }}
                     </button>
                     <!--Empty state-->
@@ -82,7 +82,7 @@
         <div class="product-card__image">
             <div class="image image--type--product">
                 <a [routerLink]="url.product(product)" class="image__body">
-                    <img class="image__tag" [src]="product?.data?.images[0] | checkImageFallback: product?.data?.selectedVariant" alt="">
+                    <img class="image__tag" [src]="product?.data?.images?.length && product?.data?.images[0].cdnLink | checkImageFallback: product?.data?.selectedVariant" alt="">
                 </a>
             </div>
         </div>
@@ -112,7 +112,7 @@
 
             <div *ngIf="!exclude.includes('features')" class="product-card__features">
                 <!--Show product description for now-->
-                {{ product.data?.description }}
+                {{ product?.data?.description }}
     <!--            <ul>-->
     <!--                <li *ngFor="let attribute of featuredAttributes">-->
     <!--                    {{ attribute.name }}:-->
@@ -146,10 +146,11 @@
             <ng-container *ngIf="!exclude.includes('buttons')">
                 <button
                     type="button"
+                    disableIfNotLoggedIn
                     class="product-card__addtocart-icon"
                     [class.product-card__addtocart-icon--loading]="cart.inProgress"
                     [attr.aria-label]="'BUTTON_ADD_TO_CART' | translate"
-                    [disabled]="!(product.data?.variants[0]?.price >= 0)"
+                    [disabled]="!(product?.data?.variants[0]?.price >= 0)"
                     (click)="cart.add(product, product.data?.variants[0])"
                 >
                     <app-icon icon="cart-20"></app-icon>
@@ -157,9 +158,10 @@
                 <ng-container *ngIf="!exclude.includes('list-buttons')">
                     <button
                         type="button"
+                        disableIfNotLoggedIn
                         class="product-card__addtocart-full"
                         [class.product-card__addtocart-full--loading]="cart.inProgress"
-                        [disabled]="!(product.data?.variants[0]?.price >= 0)"
+                        [disabled]="!(product?.data?.variants[0]?.price >= 0)"
                         (click)="cart.add(product, product.data?.variants[0])"
                     >
                         {{ 'BUTTON_ADD_TO_CART' | translate }}

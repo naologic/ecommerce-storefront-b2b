@@ -60,7 +60,7 @@ export class FilterCheckComponent implements OnInit, OnDestroy, ControlValueAcce
      * Track: item by _id
      */
     public trackBy(index: number, item: BaseFilterItem): string {
-        return item._id;
+        return item.docId;
     }
 
     public ngOnDestroy(): void {

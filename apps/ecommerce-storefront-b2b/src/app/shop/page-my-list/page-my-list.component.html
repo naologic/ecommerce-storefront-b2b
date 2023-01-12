@@ -82,7 +82,7 @@
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--product'>
                                     <div class='my-list__product-name'>
-                                        {{ item.variant?.variantName }}
+                                        {{ item.variant?.optionName }}
                                     </div>
                                 </td>
 
@@ -94,7 +94,7 @@
                                         [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
                                     ></app-status-badge>
                                 </td>
-                                <td class='my-list__column my-list__column--body my-list__column--price'>
+                                <td class='my-list__column my-list__column--body my-list__column--price' *showIfLoggedIn>
                                     {{ item.variant?.price | currencyFormat }}
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--button'>

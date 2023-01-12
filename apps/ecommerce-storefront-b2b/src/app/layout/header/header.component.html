@@ -40,6 +40,7 @@
             <app-account-menu (closeMenu)="accountIndicator.close()"></app-account-menu>
         </app-indicator>
         <app-indicator
+            *showIfLoggedIn
             link="/shop/cart"
             icon="cart-32"
             [label]="'TEXT_INDICATOR_CART_LABEL' | translate"

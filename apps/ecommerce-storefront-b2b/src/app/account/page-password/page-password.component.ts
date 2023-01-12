@@ -28,7 +28,7 @@ export class PagePasswordComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.form = this.fb.group({
-            currentPassword: ['', [Validators.required, Validators.minLength(8)]],
+            oldPassword: ['', [Validators.required, Validators.minLength(8)]],
             password: ['', [Validators.required, Validators.minLength(8)]],
             confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
         }, { validators: [mustMatchValidator('password', 'confirmPassword')] });

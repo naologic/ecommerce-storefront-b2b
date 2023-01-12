@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from "rxjs";
 import { AppService } from "../../app.service";
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-footer',
@@ -25,9 +26,17 @@ export class FooterComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: info
-                this.infoSupport = value?.support?.supportInfo;
+                this.infoSupport = {
+                    supportPhoneNumber: value?.shopInfo?.support?.data?.supportPhoneNumber || '',
+                    supportEmailAddress: value?.shopInfo?.support?.data?.supportEmailAddress || '',
+                }
+
+
+
+                // this.supportEmailAddress = value?.shopInfo?.support?.data?.supportEmailAddress || '';
+
             })
         )
     }

@@ -5,7 +5,7 @@
     <div class="card-divider"></div>
     <div class="card-body card-body--padding--2">
         <div class="row no-gutters">
-            <div class="col-12 col-lg-7 col-xl-6" [formGroup]="formGroup">
+            <div class="col-12 col-lg-7 col-xl-6" [formGroup]="formGroupUserAccount">
 
                 <div class="form-group">
                     <label for="profile-first-name">{{ 'INPUT_FIRST_NAME_LABEL' | translate }}</label>
@@ -14,11 +14,11 @@
                         id="profile-first-name"
                         formControlName="firstName"
                         class="form-control"
-                        [class.is-invalid]="formGroup.controls.firstName|isInvalid"
+                        [class.is-invalid]="formGroupUserAccount.controls.firstName|isInvalid"
                         [placeholder]="'INPUT_FIRST_NAME_PLACEHOLDER' | translate"
                     >
                     <div class="invalid-feedback">
-                        <div *ngIf="formGroup.controls.firstName|hasError:'required'">
+                        <div *ngIf="formGroupUserAccount.controls.firstName|hasError:'required'">
                             {{ 'ERROR_FORM_REQUIRED' | translate }}
                         </div>
                     </div>
@@ -31,11 +31,11 @@
                         id="profile-last-name"
                         formControlName="lastName"
                         class="form-control"
-                        [class.is-invalid]="formGroup.controls.lastName|isInvalid"
+                        [class.is-invalid]="formGroupUserAccount.controls.lastName|isInvalid"
                         [placeholder]="'INPUT_LAST_NAME_PLACEHOLDER' | translate"
                     >
                     <div class="invalid-feedback">
-                        <div *ngIf="formGroup.controls.lastName|hasError:'required'">
+                        <div *ngIf="formGroupUserAccount.controls.lastName|hasError:'required'">
                             {{ 'ERROR_FORM_REQUIRED' | translate }}
                         </div>
                     </div>
@@ -48,56 +48,133 @@
                         id="profile-phone"
                         formControlName="phoneNo"
                         class="form-control"
-                        [class.is-invalid]="formGroup.controls.phoneNo|isInvalid"
+                        [class.is-invalid]="formGroupUserAccount.controls.phoneNo|isInvalid"
                         [placeholder]="'INPUT_PHONE_NUMBER_PLACEHOLDER' | translate"
                     >
                     <div class="invalid-feedback">
-                        <div *ngIf="formGroup.controls.phoneNo|hasError:'required'">
+                        <div *ngIf="formGroupUserAccount.controls.phoneNo|hasError:'required'">
                             {{ 'ERROR_FORM_REQUIRED' | translate }}
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="profile-companyName">{{ 'INPUT_COMPANY_NAME_LABEL' | translate }}</label>
-                    <input
-                        type="text"
-                        id="profile-companyName"
-                        formControlName="companyName"
-                        class="form-control"
-                        [class.is-invalid]="formGroup.controls.companyName|isInvalid"
-                        placeholder="SpaceX"
-                    >
-                    <div class="invalid-feedback">
-                        <div *ngIf="formGroup.controls.companyName|hasError:'required'">
-                            {{ 'ERROR_FORM_REQUIRED' | translate }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="profile-companyTaxId">{{ 'INPUT_COMPANY_TAX_ID_LABEL' | translate }}</label>
-                    <input
-                        type="text"
-                        id="profile-companyTaxId"
-                        formControlName="companyTaxId"
-                        class="form-control"
-                        [class.is-invalid]="formGroup.controls.companyTaxId|isInvalid"
-                        placeholder="12-3456789"
-                    >
-                    <div class="invalid-feedback">
-                        <div *ngIf="formGroup.controls.companyTaxId|hasError:'required'">
-                            {{ 'ERROR_FORM_REQUIRED' | translate }}
-                        </div>
-                    </div>
-                </div>
 
                 <div class="form-group mb-0">
                     <button
                         class="btn btn-primary mt-3"
                         [class.btn-loading]="saveInProgress"
                         [disabled]="saveInProgress"
-                        (click)="save()"
+                        (click)="save('userAccount')"
+                    >
+                        {{ 'BUTTON_SAVE' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>{{ 'HEADER_EDIT_COMPANY_ACCOUNT' | translate }}</h5>
+    </div>
+    <div class="card-divider"></div>
+    <div class="card-body card-body--padding--2">
+        <div class="row no-gutters">
+            <div class="col-12 col-lg-7 col-xl-6" [formGroup]="formGroupCompanyAccount">
+
+                <div class="form-group">
+                    <label for="company-name">{{ 'INPUT_NAME_LABEL' | translate }}</label>
+                    <input
+                        type="text"
+                        id="company-name"
+                        formControlName="name"
+                        class="form-control"
+                        [class.is-invalid]="formGroupCompanyAccount.controls.name|isInvalid"
+                        [placeholder]="'Elon Musk'"
+                    >
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroupCompanyAccount.controls.name|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-contact-name">{{ 'INPUT_CONTACT_NAME_LABEL' | translate }}</label>
+                    <input
+                        type="text"
+                        id="company-contact-name"
+                        formControlName="contactName"
+                        class="form-control"
+                        [class.is-invalid]="formGroupCompanyAccount.controls.contactName|isInvalid"
+                        [placeholder]="'Contact Name'"
+                    >
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroupCompanyAccount.controls.contactName|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-phone">{{ 'INPUT_PHONE_NUMBER_LABEL' | translate }}</label>
+                    <input
+                        type="text"
+                        id="company-phone"
+                        formControlName="phoneNumber"
+                        class="form-control"
+                        [class.is-invalid]="formGroupCompanyAccount.controls.phoneNumber|isInvalid"
+                        [placeholder]="'INPUT_PHONE_NUMBER_PLACEHOLDER' | translate"
+                    >
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroupCompanyAccount.controls.phoneNumber|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-email">{{ 'INPUT_EMAIL_LABEL' | translate }}</label>
+                    <input
+                        type="text"
+                        id="company-email"
+                        formControlName="email"
+                        class="form-control"
+                        [class.is-invalid]="formGroupCompanyAccount.controls.email|isInvalid"
+                        placeholder="office@spacex.com"
+                    >
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroupCompanyAccount.controls.email|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-email">{{ 'INPUT_WEBSITE_LABEL' | translate }}</label>
+                    <input
+                        type="text"
+                        id="company-website"
+                        formControlName="website"
+                        class="form-control"
+                        [class.is-invalid]="formGroupCompanyAccount.controls.website|isInvalid"
+                        placeholder="http://www.spacex.com/"
+                    >
+                    <div class="invalid-feedback">
+                        <div *ngIf="formGroupCompanyAccount.controls.website|hasError:'required'">
+                            {{ 'ERROR_FORM_REQUIRED' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group mb-0">
+                    <button
+                        class="btn btn-primary mt-3"
+                        [class.btn-loading]="saveInProgress"
+                        [disabled]="saveInProgress"
+                        (click)="save('userAccount')"
                     >
                         {{ 'BUTTON_SAVE' | translate }}
                     </button>

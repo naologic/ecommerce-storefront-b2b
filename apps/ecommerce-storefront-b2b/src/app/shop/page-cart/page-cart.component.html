@@ -57,7 +57,7 @@
                             </td>
                             <td class="cart-table__column cart-table__column--product">
                                 <a [routerLink]="url.product(item.product)" class="cart-table__product-name">{{ item.product.data?.name }}</a>
-                                <div class="cart-table__options">Variant: {{ item.variant.variantName }}</div>
+                                <div class="cart-table__options">Variant: {{ item.variant.optionName }}</div>
                             </td>
                             <td class="cart-table__column cart-table__column--price" [attr.data-title]="'TABLE_PRICE' | translate">
                                 {{ item.variant.price | currencyFormat }}

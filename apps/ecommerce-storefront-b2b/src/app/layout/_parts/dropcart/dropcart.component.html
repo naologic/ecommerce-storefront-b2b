@@ -15,7 +15,7 @@
                         <div class="dropcart__item-name">
                             <a [routerLink]="url.product(item.product)" (click)="closeMenu.emit()">{{ item.product?.data?.name }}</a>
                         </div>
-                        <div class="dropcart__item-features">Variant: {{ item.variant.variantName }}</div>
+                        <div class="dropcart__item-features">Variant: {{ item.variant.optionName }}</div>
                         <div class="dropcart__item-meta">
                             <div class="dropcart__item-quantity">{{ item.quantity }}</div>
                             <div class="dropcart__item-price">{{ item.variant?.price | currencyFormat }}</div>

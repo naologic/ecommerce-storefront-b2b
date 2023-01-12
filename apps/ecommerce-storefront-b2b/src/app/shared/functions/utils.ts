@@ -1,15 +1,9 @@
 import { Params } from '@angular/router';
 import { Observable, timer } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { BaseCategory } from '../../interfaces/category';
 import { GetProductsListOptions } from '../../interfaces/shop';
+import { AppInterface } from "../../../app.interface";
 
-/**
- * Get: category path
- */
-export function getCategoryPath<T extends BaseCategory>(category: T): T[] {
-    return category ? [...getCategoryPath(category.parent as T), category] : [];
-}
 
 /**
  * Parse: products params
@@ -87,38 +81,37 @@ function nameToSlug(name: string): string {
 /**
  * Get: breadcrumbs for a category
  */
-function getBreadcrumbs(categories: any[], categoryId: number): any[] {
+function getBreadcrumbs(categories: AppInterface.Category[], categoryId: string): any[] {
     const categories$ = [];
 
-    if (isNaN(categoryId)) {
+    if (!categoryId) {
         return []
     }
 
     // -->Get: current category
-    const currentCategory = categories.find(c => c.id === categoryId)
-    if (currentCategory) {
-        categories$.push(currentCategory)
-    }
+    const currentCategory = categories.find(c => c.docId === categoryId)
 
     // -->Get: parent category
-    const parent = categories.find(c => c?.id === currentCategory?.parentId)
+    const parent = categories.find(c => c?.docId === currentCategory?.data?.parentId)
     if (parent) {
         categories$.push(...buildArrayOfSelectedCategories(categories, parent));
     }
-
-    return categories$.sort((a, b) => a.level - b.level);
+    // -->Push: current category
+    if (currentCategory) {
+        categories$.push(currentCategory)
+    }
+    return categories$;
 }
 
 /**
  * Create: array with all the parents of a category
  */
-function buildArrayOfSelectedCategories(items: any[], parentCategory: any): any[] {
+function buildArrayOfSelectedCategories(items: AppInterface.Category[], parentCategory: AppInterface.Category): any[] {
     // -->Check: if the parent is root or not
-    if (parentCategory.level > 0) {
-        const parent = items.find(c => c?.id === parentCategory?.parentId)
+    if (parentCategory?.data?.parentId) {
+        const parent = items.find(c => c?.docId === parentCategory?.data?.parentId)
         // -->Return: and start the search again
         return [...buildArrayOfSelectedCategories(items, parent), parentCategory]
-
     }
     return [parentCategory];
 }

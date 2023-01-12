@@ -10,6 +10,7 @@ import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
 import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
+import {appInfo$} from "../app.static";
 
 @Component({
     selector: 'app-root',
@@ -49,8 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (isPlatformBrowser(this.platformId)) {
 
             this.zone.runOutsideAngular(() => {
-                this.appService.appInfo.pipe(filter(info => info))
-                    .subscribe((info) => {
+                appInfo$.pipe(filter<any>(info => info)).subscribe((info) => {
                     // -->Done: loading
                     this.doneLoading();
 
@@ -69,20 +69,20 @@ export class AppComponent implements OnInit, OnDestroy {
         // -->Show: toaster when a variant is added to the cart
         this.cart.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_CART', { productName: variant?.optionName })
             );
         });
 
         // -->Show: toaster when a variant is added to compare
         this.compare.onAdding$.subscribe(variant => {
             this.toastr.success(
-                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE', { productName: variant?.optionName })
             );
         });
         // -->Show: toaster if a variant was already added to compare
         this.compare.onAdded$.subscribe(variant => {
             this.toastr.info(
-                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE', { productName: variant?.variantName })
+                this.translate.instant('TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE', { productName: variant?.optionName })
             );
         });
 

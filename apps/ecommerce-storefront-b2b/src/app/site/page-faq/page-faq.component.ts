@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from "rxjs";
 import { UrlService } from '../../services/url.service';
 import { AppService } from "../../app.service";
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-page-faq',
@@ -12,7 +13,8 @@ export class PageFaqComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
 
     public faq = [];
-    public infoSupport
+    public supportEmailAddress: string;
+    public supportPhoneNumber: string;
 
     constructor(
         public url: UrlService,
@@ -22,11 +24,10 @@ export class PageFaqComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: faq items
-                this.faq = value?.support?.faqContent?.faqItems || [];
-                // -->Set: support info
-                this.infoSupport = value?.support?.supportInfo;
+                this.faq = value?.shopInfo?.support?.data?.faqItems || [];
+                this.supportEmailAddress = value?.shopInfo?.support?.data?.supportEmailAddress || '';
             })
         );
     }

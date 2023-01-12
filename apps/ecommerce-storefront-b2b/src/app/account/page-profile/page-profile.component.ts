@@ -6,6 +6,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription } from 'rxjs';
 import { NaoUserAccessService } from "@naologic/nao-user-access";
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
+import { AppService } from "../../app.service";
+import { accountData$ } from "../../../app.static";
+import { AppInterface } from "../../../app.interface";
 
 @Component({
     selector: 'app-page-profile',
@@ -13,15 +17,25 @@ import { AccountProfileService } from "../account-profile.service";
     styleUrls: ['./page-profile.component.scss'],
 })
 export class PageProfileComponent implements OnInit, OnDestroy {
+    public formGroupUserAccount!: FormGroup;
+    public formGroupCompanyAccount!: FormGroup;
+    public saveInProgress = false;
+    /**
+     * User: data
+     */
+    public userData;
+    /**
+     * Account data information
+     */
+    public accountData!: AppInterface.AccountData;
+    /**
+     * Subscriptions
+     */
     private destroy$: Subject<void> = new Subject<void>();
     private subs = new Subscription();
 
-    public formGroup!: FormGroup;
-    public saveInProgress = false;
-    public userData;
-    public linkedDoc;
-
     constructor(
+        private appService: AppService,
         private fb: FormBuilder,
         private toastr: ToastrService,
         private router: Router,
@@ -33,7 +47,8 @@ export class PageProfileComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Get: userData
         this.userData = this.naoUsersService.userData.getValue();
-        this.linkedDoc = this.naoUsersService.linkedDoc.getValue()?.data;
+        // -->Set: account information
+        this.accountData = accountData$.getValue();
 
         // -->Check: and redirect
         if (!this.userData || !this.userData) {
@@ -49,45 +64,77 @@ export class PageProfileComponent implements OnInit, OnDestroy {
             })
         );
 
-        // -->Subscribe: to linkedDoc
+        // -->Subscribe: to account data
         this.subs.add(
-            this.naoUsersService.linkedDoc.subscribe(linkedDoc => {
-                // -->Set: linkedDoc
-                this.linkedDoc = linkedDoc?.data;
+            accountData$.subscribe(accountData => {
+                // -->Set: account information
+                this.accountData = accountData;
+                // -->Set: form
+                this.setForm()
             })
         );
+        // -->Set: form
+        this.setForm()
+    }
 
-        // -->Set: form values
-        this.formGroup = this.fb.group({
+
+    /**
+     * Set: form
+     */
+    public setForm(): void {
+        // -->Set: form group user account
+        this.formGroupUserAccount = this.fb.group({
             firstName: [this.userData.firstName, [Validators.required]],
             lastName: [this.userData.lastName, [Validators.required]],
             phoneNo: [this.userData.phoneNo],
-            companyName: [this.linkedDoc?.companyName],
-            companyTaxId: [this.linkedDoc?.companyTaxId],
+        });
+        // -->Set: form group company account
+        this.formGroupCompanyAccount = this.fb.group({
+            name: [this.accountData?.name],
+            contactName: [this.accountData?.contactName],
+            phoneNumber: [this.accountData?.phoneNumber],
+            email: [this.accountData?.email],
+            website: [this.accountData?.website],
         });
     }
 
     /**
      * Update: user profile data
      */
-    public save(): void {
+    public save(type: 'userAccount' | 'companyAccount'): void {
         // -->Check: save action state and form
-        if (this.saveInProgress || this.formGroup.invalid){
+        if (this.saveInProgress){
             return;
         }
-        // -->Mark: all controls
-        this.formGroup.markAllAsTouched();
+
+        let data
+        if (type === 'userAccount') {
+            if (this.formGroupUserAccount.invalid) {
+                return;
+            }
+            // -->Mark: all controls
+            this.formGroupUserAccount.markAllAsTouched();
+            // -->Set: data
+            data = this.formGroupUserAccount.getRawValue();
+        } else {
+            if (this.formGroupCompanyAccount.invalid) {
+                return;
+            }
+            // -->Mark: all controls
+            this.formGroupCompanyAccount.markAllAsTouched();
+            // -->Set: data
+            data = this.formGroupCompanyAccount.getRawValue();
+        }
 
         // -->Start: loading
         this.saveInProgress = true;
-        // -->Get: value
-        const data = this.formGroup.getRawValue();
+
 
         // -->Update: user profile
-        this.userProfileService.update('profile', data).subscribe(res => {
+        this.userProfileService.updateAccountData('profile', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
                 // -->Refresh: session data
-                this.naoUsersService.refreshSessionData().then(res => {
+                this.appService.getAccountDataInformation().then(res => {
                     // -->Done: loading
                     this.saveInProgress = false;
                     // -->Show: toaster
@@ -111,6 +158,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         })
     }
+
 
     public ngOnDestroy(): void {
         this.subs.unsubscribe();

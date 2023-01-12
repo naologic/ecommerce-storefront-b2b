@@ -10,6 +10,8 @@
  *       {name: 'Yuan', currencyCode: 'CNY', digitsInfo: '2.1-2', display: 'symbol'}
  *     ];
  */
+import { Subscription } from "rxjs";
+
 interface CurrencyData {
     code: string;
     name: string;
@@ -50,3 +52,30 @@ export {
     LanguageData
 };
 
+export namespace NaoDataInterface {
+    export interface SelectFetchers {
+        [index: string]: NaoDataInterface.SelectFetcher;
+    }
+    export interface SelectFetcher {
+        sub$: Subscription;
+        loading: boolean;
+        deb: any;
+        data: { [key: string]: any[] };
+        value: any;
+        /**
+         * Create a select from the current data to reuse
+         *    @example
+         *        product --> variants
+         */
+        subSelectData?: any[];
+        data$?: any;
+    }
+
+    export interface SubfieldImport {
+        indexGroup: number;
+        name: string;
+        selectedAs: string;
+        isArray: boolean;
+        checkboxes: [];
+    }
+}

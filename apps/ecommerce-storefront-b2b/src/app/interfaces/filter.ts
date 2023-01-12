@@ -1,4 +1,4 @@
-import { ShopCategory } from './category';
+import { AppInterface } from "../../app.interface";
 
 
 export interface BaseFilter<T extends string, V> {
@@ -8,7 +8,7 @@ export interface BaseFilter<T extends string, V> {
     value: V;
 }
 export interface BaseFilterItem {
-    _id?: string;
+    docId?: string;
     // todo: remove slug????
     slug: string;
     name: string;
@@ -35,7 +35,7 @@ export type RatingFilterValue = number[];
 export type ColorFilterValue = string[];
 
 
-export type CategoryFilter = BaseFilter<'category', CategoryFilterValue> & {items: ShopCategory[]};
+export type CategoryFilter = BaseFilter<'category', CategoryFilterValue> & {items: AppInterface.Category[]};
 export type RangeFilter = BaseFilter<'range', RangeFilterValue> & {min: number; max: number};
 export type CheckFilter = BaseFilter<'check', CheckFilterValue> & {items: BaseFilterItem[]};
 export type RadioFilter = BaseFilter<'radio', RadioFilterValue> & {items: BaseFilterItem[]};

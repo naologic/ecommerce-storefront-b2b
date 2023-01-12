@@ -99,7 +99,7 @@
                         <tr class="compare-table__row">
                             <th class="compare-table__column compare-table__column--header">{{ 'TABLE_VARIANT' | translate }}</th>
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
-                                {{ item.variant?.variantName }}
+                                {{ item.variant?.optionName }}
                             </td>
                             <td class="compare-table__column compare-table__column--fake"></td>
                         </tr>
@@ -133,7 +133,7 @@
                             <td class="compare-table__column compare-table__column--fake"></td>
                         </tr>
                         <!-- Variant Price -->
-                        <tr class="compare-table__row">
+                        <tr class="compare-table__row" *showIfLoggedIn>
                             <th class="compare-table__column compare-table__column--header">{{ 'TABLE_PRICE' | translate }}</th>
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
                                 {{ item.variant?.price | currencyFormat }}
@@ -156,14 +156,14 @@
                             </td>
                             <td class="compare-table__column compare-table__column--fake"></td>
                         </tr>
-                        <!-- Variant Country -->
-                        <tr class="compare-table__row">
-                            <th class="compare-table__column compare-table__column--header">{{ 'TABLE_COUNTRY' | translate }}</th>
-                            <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
-                                {{ item.variant?.countryOfOrigin }}
-                            </td>
-                            <td class="compare-table__column compare-table__column--fake"></td>
-                        </tr>
+<!--                        &lt;!&ndash; Variant Country &ndash;&gt;-->
+<!--                        <tr class="compare-table__row">-->
+<!--                            <th class="compare-table__column compare-table__column&#45;&#45;header">{{ 'TABLE_COUNTRY' | translate }}</th>-->
+<!--                            <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column&#45;&#45;product">-->
+<!--                                {{ item.variant?.countryOfOrigin }}-->
+<!--                            </td>-->
+<!--                            <td class="compare-table__column compare-table__column&#45;&#45;fake"></td>-->
+<!--                        </tr>-->
                         <!-- Variant SKU -->
                         <tr class="compare-table__row">
                             <th class="compare-table__column compare-table__column--header">{{ 'TABLE_SKU' | translate }}</th>
@@ -190,6 +190,7 @@
                             <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
                                 <button appAddToCart type="button" class="btn btn-sm btn-primary" [class.btn-loading]="addToCart.inProgress"
                                     (click)="addToCart.add(item.product, item.variant)" #addToCart="addToCart"
+                                    disableIfNotLoggedIn
                                     [disabled]="!(item.variant?.price >= 0)">
                                     {{ 'BUTTON_ADD_TO_CART' | translate }}
                                 </button>
