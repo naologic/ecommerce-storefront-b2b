@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { NaoUserAccessService } from "@naologic/nao-user-access";
 import { NaoHttp2ApiService } from "@naologic/nao-http2";
 import { NaoDocumentInterface } from "@naologic/nao-interfaces";
+import {first} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'

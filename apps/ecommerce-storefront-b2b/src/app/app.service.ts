@@ -40,11 +40,12 @@ export class AppService implements OnDestroy {
                 if (isLoggedIn) {
                     // -->Refresh: info
                     this.refreshInfo();
+                    // moved to dashboard
                     // -->Ensure: user data
-                    this.accountAuthService.ensureUserData({}).subscribe((ok) => {
-                        // -->Set: account information
-                        this.getAccountDataInformation().then();
-                    });
+                    // this.accountAuthService.ensureUserData({}).subscribe((ok) => {
+                    //     // -->Set: account information
+                    //     this.getAccountDataInformation().then();
+                    // });
                     // -->Ensure: user data
                 } else {
                     // -->Clear: account information

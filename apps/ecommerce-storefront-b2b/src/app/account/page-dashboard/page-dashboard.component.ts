@@ -4,6 +4,7 @@ import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-acce
 import { UrlService } from "../../services/url.service";
 import { AccountAuthService } from "../account-auth.service";
 import { accountData$ } from "../../../app.static";
+import {AppService} from "../../app.service";
 
 @Component({
     selector: "app-page-dashboard",
@@ -16,9 +17,20 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
     public address!: NaoUsersInterface.Address;
     public userData = null;
 
-    constructor(private readonly accountAuthService: AccountAuthService, private readonly naoUsersService: NaoUserAccessService, public readonly url: UrlService) {}
+    constructor(
+        private readonly accountAuthService: AccountAuthService,
+        private readonly appService: AppService,
+        private readonly naoUsersService: NaoUserAccessService,
+        public readonly url: UrlService
+    ) {}
 
     public ngOnInit(): void {
+        // -->Ensure: user data
+        this.accountAuthService.ensureUserData({})
+            .then((ok) => {
+                // -->Set: account information
+                return this.appService.getAccountDataInformation();
+            });
         // -->Subscribe: to userData
         this.subs.add(
             this.naoUsersService.userData.subscribe((userData) => {

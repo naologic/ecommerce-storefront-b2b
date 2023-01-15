@@ -40,8 +40,9 @@ export class AccountAuthService<T = any> {
     /**
      * Ensure user data
      * todo: wip
+     *
      */
-    public ensureUserData(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'shop', cfpPath: 'ecommerce/ecommerce', userMode: 'guest-external' })): Observable<T> {
-        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/ensure-ecommerce-user`, { data: { data, naoQueryOptions } }).pipe(first());
+    public ensureUserData(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({ docName: 'shop', cfpPath: 'ecommerce/ecommerce', userMode: 'guest-external' })) {
+        return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/ensure-ecommerce-user`, { data: { data, naoQueryOptions } }).pipe(first()).toPromise()
     }
 }
