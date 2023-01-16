@@ -46,7 +46,7 @@
                                     [class.is-invalid]="formGroup?.controls?.shippingAddressId|isInvalid"
                                 >
                                     <option *ngFor="let item of addresses" [value]="item.id">
-                                        {{ item.line_1 }} {{ item.line_2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
+                                        {{ item.line1 }} {{ item.line2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
                                     </option>
                                 </select>
                                 <div class="invalid-feedback">
@@ -64,7 +64,7 @@
                                     [class.is-invalid]="formGroup?.controls?.billingAddressId|isInvalid"
                                 >
                                     <option *ngFor="let item of addresses" [value]="item.id">
-                                        {{ item.line_1 }} {{ item.line_2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
+                                        {{ item.line1 }} {{ item.line2 }} {{ item.city }} {{ item.zip }} {{ item.type | titlecase }}
                                     </option>
                                 </select>
                                 <div class="invalid-feedback">

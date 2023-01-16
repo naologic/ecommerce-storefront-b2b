@@ -35,13 +35,13 @@ export class PageProfileComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
 
     constructor(
-        private appService: AppService,
-        private fb: FormBuilder,
-        private toastr: ToastrService,
-        private router: Router,
-        private translate: TranslateService,
-        private userProfileService: AccountProfileService,
-        private naoUsersService: NaoUserAccessService,
+        private readonly appService: AppService,
+        private readonly fb: FormBuilder,
+        private readonly toastr: ToastrService,
+        private readonly router: Router,
+        private readonly translate: TranslateService,
+        private readonly userProfileService: AccountProfileService,
+        private readonly naoUsersService: NaoUserAccessService,
     ) { }
 
     public ngOnInit(): void {
@@ -131,7 +131,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
 
 
         // -->Update: user profile
-        this.userProfileService.updateAccountData('profile', { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
+        this.userProfileService.updateAccountData(type, { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
                 // -->Refresh: session data
                 this.appService.getAccountDataInformation().then(res => {

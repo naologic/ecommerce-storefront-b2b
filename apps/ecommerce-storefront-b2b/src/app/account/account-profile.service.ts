@@ -41,7 +41,7 @@ export class AccountProfileService<T = any> {
      *
      * addresses works
      */
-    public updateAccountData(mode: 'profile'|'addresses'|'order', data: Partial<T>, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+    public updateAccountData(mode: 'userAccount' | 'companyAccount'|'addresses', data: Partial<T>, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
         // -->Request: user data
         return this.naoHttp2ApiService.postJson<T>(`universal/ecommerce/data/update-account-information`, {
             data: { data: { mode, ...data }, naoQueryOptions }

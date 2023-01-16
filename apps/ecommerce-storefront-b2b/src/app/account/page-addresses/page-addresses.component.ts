@@ -22,12 +22,12 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
 
 
     constructor(
-        private appService: AppService,
-        private naoUsersService: NaoUserAccessService,
-        public url: UrlService,
-        private toastr: ToastrService,
-        private translate: TranslateService,
-        private userProfileService: AccountProfileService,
+        private readonly appService: AppService,
+        private readonly naoUsersService: NaoUserAccessService,
+        public readonly url: UrlService,
+        private readonly toastr: ToastrService,
+        private readonly translate: TranslateService,
+        private readonly userProfileService: AccountProfileService,
     ) { }
 
 

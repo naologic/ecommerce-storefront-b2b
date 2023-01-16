@@ -76,8 +76,8 @@ export namespace NaoUsersInterface {
         city: string;
         country: string;
         id: string;
-        line_1: string;
-        line_2?: string;
+        line1: string;
+        line2?: string;
         state: string;
         type?: string;
         zip: string | number;
