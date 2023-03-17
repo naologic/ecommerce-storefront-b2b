@@ -19,7 +19,7 @@ import { AppInterface } from "../../../app.interface";
 export class PageProfileComponent implements OnInit, OnDestroy {
     public formGroupUserAccount!: FormGroup;
     public formGroupCompanyAccount!: FormGroup;
-    public saveInProgress = false;
+    public saveInProgress: { userAccount: boolean, companyAccount: boolean } = {  userAccount: false, companyAccount: false };
     /**
      * User: data
      */
@@ -61,6 +61,8 @@ export class PageProfileComponent implements OnInit, OnDestroy {
             this.naoUsersService.userData.subscribe(userData => {
                 // -->Set: user data
                 this.userData = userData;
+                // -->Set: form
+                this.setForm()
             })
         );
 
@@ -103,7 +105,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
      */
     public save(type: 'userAccount' | 'companyAccount'): void {
         // -->Check: save action state and form
-        if (this.saveInProgress){
+        if (this.saveInProgress.userAccount || this.saveInProgress.companyAccount){
             return;
         }
 
@@ -127,33 +129,37 @@ export class PageProfileComponent implements OnInit, OnDestroy {
         }
 
         // -->Start: loading
-        this.saveInProgress = true;
+        this.saveInProgress[type] = true;
 
 
         // -->Update: user profile
         this.userProfileService.updateAccountData(type, { data, docId: NaoUserAccessData.userId.getValue() }).subscribe(res => {
             if (res && res.ok) {
-                // -->Refresh: session data
-                this.appService.getAccountDataInformation().then(res => {
+                // -->Get: promise based on type
+                const pro$ = type === 'userAccount' ? this.naoUsersService.refreshSessionData({docName: 'doc', cfpPath: 'users/users'}) : this.appService.getAccountDataInformation() ;
+
+                // -->Refresh: data updated
+                pro$.then(res => {
                     // -->Done: loading
-                    this.saveInProgress = false;
+                    this.saveInProgress[type] = false;
                     // -->Show: toaster
                     this.toastr.success(this.translate.instant('TEXT_TOAST_PROFILE_SAVED'));
                 }).catch(err => {
                     // -->Done: loading
-                    this.saveInProgress = false;
+                    this.saveInProgress[type] = false;
                     // -->Show: toaster
                     this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
                 })
+
             } else {
                 // -->Done: loading
-                this.saveInProgress = false;
+                this.saveInProgress[type] = false;
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
             }
         }, error => {
             // -->Done: loading
-            this.saveInProgress = false;
+            this.saveInProgress[type] = false;
             // -->Show: toaster
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
         })

@@ -113,8 +113,11 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
                         this.appService.getAccountDataInformation().then(res => {
                             // -->Done: loading
                             this.saveInProgress = false;
-                            // -->Show: toaster
-                            this.toastr.success(this.translate.instant(this.addressId ? 'TOASTER_ADDRESS_UPDATED' : 'TOASTER_ADDRESS_CREATED'));
+                            // -->Redirect:
+                            this.router.navigateByUrl('/account/addresses').then((res => {
+                                // -->Show: toaster
+                                this.toastr.success(this.translate.instant(this.addressId ? 'TOASTER_ADDRESS_UPDATED' : 'TOASTER_ADDRESS_CREATED'));
+                            }));
                         }).catch(err => {
                             // -->Done: loading
                             this.saveInProgress = false;

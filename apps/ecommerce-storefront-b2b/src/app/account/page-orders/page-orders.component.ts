@@ -18,7 +18,9 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
 
     public currentPage: FormControl = new FormControl(1);
     public list: { items: any[], pages: number } = { items: [], pages: 0};
-    public perPage = 20;
+    public perPage = 100;
+
+    public isLoading = false;
 
     constructor(
         public url: UrlService,
@@ -47,11 +49,14 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
             this.refreshSubs = null;
         }
 
+        // -->Set: is loading
+        this.isLoading = true;
+
         // -->Create: query
         const query = new QuickMongoQuery()
             .limit(this.perPage)
             .skip((this.currentPage.value - 1) * this.perPage)
-            .returnDataModel({_id: 1, data: 1, info: 1, fullData: 1})
+            .returnDataModel({docId: 1, data: 1, info: 1, fullData: 1})
             .done();
 
         // -->Execute: query to get invoice list
@@ -60,15 +65,20 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
                 // -->Set: orders
                 this.list = {
                     items: res.data || [],
-                    pages: Math.ceil(res.meta.totalHits / this.perPage)
+                    pages: Math.ceil((res.meta.totalDocuments || 0) / this.perPage)
                 }
+
             } else {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
             }
+            // -->Set: is loading
+            this.isLoading = false;
         }, err => {
             // -->Show: toaster
             this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+            // -->Set: is loading
+            this.isLoading = false;
         })
     }
 
