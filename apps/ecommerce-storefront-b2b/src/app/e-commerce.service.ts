@@ -42,10 +42,24 @@ export class ECommerceService<T = any> {
     }
 
     /**
+     * Get: invoice by id
+     */
+    public getInvoiceInformation(docId?: string, naoQueryOptions = { docName: 'invoice', cfpPath: 'sales/sales' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/sales/data/get-invoice-information`, { data: { data: { docId }, naoQueryOptions } });
+    }
+
+    /**
      * Get: invoices with pagination
      */
     public listInvoices(data?: any, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
         return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/list-account-invoices`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+    }
+
+    /**
+     * Get: order by id
+     */
+    public getOrderInformation(docId?: string, naoQueryOptions = { docName: 'order', cfpPath: 'sales/sales' }): Observable<T> {
+        return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/sales/data/get-sales-order-information`, { data: { data: { docId }, naoQueryOptions } });
     }
 
     /**

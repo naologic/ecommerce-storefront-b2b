@@ -1,11 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { TranslateService } from "@ngx-translate/core";
-import { ToastrService } from "ngx-toastr";
-import { Subject, Subscription } from 'rxjs';
-import { QuickMongoQuery } from "@naologic/nao-utils";
-import { UrlService } from '../../services/url.service';
-import { ECommerceService } from "../../e-commerce.service";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {TranslateService} from "@ngx-translate/core";
+import {ToastrService} from "ngx-toastr";
+import {Subject, Subscription} from 'rxjs';
+import {QuickMongoQuery} from "@naologic/nao-utils";
+import {UrlService} from '../../services/url.service';
+import {ECommerceService} from "../../e-commerce.service";
+import {first} from "rxjs/operators";
 
 @Component({
     selector: 'app-page-orders',
@@ -17,7 +18,7 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
     private refreshSubs = new Subscription();
 
     public currentPage: FormControl = new FormControl(1);
-    public list: { items: any[], pages: number } = { items: [], pages: 0};
+    public list: { items: any[], pages: number } = {items: [], pages: 0};
     public perPage = 100;
     public isLoading = false;
 
@@ -78,6 +79,37 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
             // -->Set: is loading
             this.isLoading = false;
         })
+    }
+
+
+    /**
+     * Refresh: invoice list
+     */
+    public getPublicLink(docId: string): void {
+        // -->Check: refresh subscriptions
+        // if (this.refreshSubs) {
+        //     this.refreshSubs.unsubscribe();
+        //     this.refreshSubs = null;
+        // }
+        //
+        // // -->Set: is loading
+        // this.isLoading = true;
+
+        // -->Execute: query to get invoice list
+        this.eCommerceService.getInvoiceInformation(docId)
+            .pipe(first())
+            .subscribe(res => {
+                console.warn(`getInvoiceInformation > `, res)
+
+                // todo: @FLORIN: add error state and open link from request, check doc id
+                // -->Set: is loading
+                this.isLoading = false;
+            }, err => {
+                // -->Show: toaster
+                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                // -->Set: is loading
+                this.isLoading = false;
+            })
     }
 
     public ngOnDestroy(): void {
