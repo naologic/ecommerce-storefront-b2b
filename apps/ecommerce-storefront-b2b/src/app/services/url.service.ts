@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from "@angular/core";
 import { NaoUsersInterface } from "@naologic/nao-user-access";
 import { Product } from '../interfaces/product';
 import { nameToSlug } from "../shared/functions/utils";
 import { AppInterface } from "../../app.interface";
+import { DOCUMENT } from "@angular/common";
 
 @Injectable({
     providedIn: 'root',
 })
 export class UrlService {
-    constructor() { }
+    constructor(@Inject(DOCUMENT) private document: Document) { }
 
     /**
      * Get: home url
@@ -117,5 +118,21 @@ export class UrlService {
         }
 
         return `/shop/my-list/${id}`;
+    }
+
+
+    /**
+     * Open: a link in a new tab
+     */
+    public openLinkInNewTab(url: string): void {
+        if (!url) {
+            return;
+        }
+        const link = this.document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        this.document.body.appendChild(link);
+        link.click();
+        link.remove();
     }
 }

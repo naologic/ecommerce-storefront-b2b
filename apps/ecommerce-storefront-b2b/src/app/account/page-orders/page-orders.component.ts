@@ -22,6 +22,7 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
     public perPage = 100;
 
     public isLoading = false;
+    public linkIsLoading = false;
 
     constructor(
         public url: UrlService,
@@ -88,29 +89,37 @@ export class PageOrdersComponent implements OnInit, OnDestroy {
      * Refresh: invoice list
      */
     public getPublicLink(docId: string): void {
-        // -->Check: refresh subscriptions
-        // if (this.refreshSubs) {
-        //     this.refreshSubs.unsubscribe();
-        //     this.refreshSubs = null;
-        // }
-        //
-        // // -->Set: is loading
-        // this.isLoading = true;
+        if (this.linkIsLoading) {
+            return;
+        }
+        if (!docId) {
+            // -->Show: toaster
+            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+            return;
+        }
+
+        // -->Start: loading for links
+        this.linkIsLoading = true;
 
         // -->Execute: query to get invoice list
-        this.eCommerceService.getOrderInformation(docId)
+        this.refreshSubs = this.eCommerceService.getOrderInformation(docId)
             .pipe(first())
             .subscribe(res => {
-                console.warn(`getInvoiceInformation > `, res)
-
-                // todo: @FLORIN: add error state and open link from request, check doc id
+                if (typeof res?.data?.link === 'string' && res?.data?.link) {
+                    // -->Open: link
+                    this.url.openLinkInNewTab(res.data.link);
+                } else {
+                    // -->Show: toaster
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                }
                 // -->Set: is loading
-                this.isLoading = false;
+                this.linkIsLoading = false;
+
             }, err => {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
                 // -->Set: is loading
-                this.isLoading = false;
+                this.linkIsLoading = false;
             })
     }
 

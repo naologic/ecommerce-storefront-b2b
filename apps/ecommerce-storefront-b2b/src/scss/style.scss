@@ -277,3 +277,10 @@ button.disabled, button:disabled {
         opacity: 0;
     }
 }
+
+
+a {
+    &.disabled {
+        opacity: 0.6;
+    }
+}

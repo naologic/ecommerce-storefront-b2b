@@ -21,6 +21,7 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
     public list: { items: any[], pages: number } = {items: [], pages: 0};
     public perPage = 100;
     public isLoading = false;
+    public linkIsLoading = false;
 
     constructor(
         public url: UrlService,
@@ -86,29 +87,36 @@ export class PageInvoicesComponent implements OnInit, OnDestroy {
      * Refresh: invoice list
      */
     public getPublicLink(docId: string): void {
-        // -->Check: refresh subscriptions
-        // if (this.refreshSubs) {
-        //     this.refreshSubs.unsubscribe();
-        //     this.refreshSubs = null;
-        // }
-        //
-        // // -->Set: is loading
-        // this.isLoading = true;
+        if (this.linkIsLoading) {
+            return;
+        }
+        if (!docId) {
+            // -->Show: toaster
+            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+            return;
+        }
+        // -->Start: loading for links
+        this.linkIsLoading = true;
 
         // -->Execute: query to get invoice list
-        this.eCommerceService.getInvoiceInformation(docId)
+        this.refreshSubs = this.eCommerceService.getInvoiceInformation(docId)
             .pipe(first())
             .subscribe(res => {
-                console.warn(`getInvoiceInformation > `, res)
-
-                // todo: @FLORIN: add error state and open link from request, check doc id
+                if (typeof res?.data?.link === 'string' && res?.data?.link) {
+                    // -->Open: link
+                    this.url.openLinkInNewTab(res.data.link);
+                } else {
+                    // -->Show: toaster
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                }
                 // -->Set: is loading
-                this.isLoading = false;
+                this.linkIsLoading = false;
+
             }, err => {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
                 // -->Set: is loading
-                this.isLoading = false;
+                this.linkIsLoading = false;
             })
     }
 
