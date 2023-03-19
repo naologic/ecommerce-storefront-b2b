@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 // -->Set: Primary featured product
                 this.primaryFeaturedProduct = value?.shopInfo?.featuredItems?.primaryFeaturedProduct || {};
                 // -->Set: featured products
-                this.featuredProducts.products = value?.shopInfo?.featuredItems?.featuredProducts || [];
+                this.featuredProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
                 // -->Set: generalSettings info
                 this.generalSettings = value?.shopInfo?.general;
             })
