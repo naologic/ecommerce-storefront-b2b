@@ -47,7 +47,7 @@
                                 <th class='my-list__column my-list__column--head my-list__column--image'>{{ 'TABLE_IMAGE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_PRODUCT' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_VARIANT' | translate }}</th>
-                                <th class='my-list__column my-list__column--head my-list__column--stock'>{{ 'TABLE_STOCK_STATUS' | translate }}</th>
+<!--                                <th class='my-list__column my-list__column&#45;&#45;head my-list__column&#45;&#45;stock'>{{ 'TABLE_STOCK_STATUS' | translate }}</th>-->
                                 <th class='my-list__column my-list__column--head my-list__column--price'>{{ 'TABLE_PRICE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--button'></th>
                                 <th class='my-list__column my-list__column--head my-list__column--remove'></th>
@@ -84,13 +84,13 @@
                                 </td>
 
 
-                                <td class='my-list__column my-list__column--body my-list__column--stock'>
-                                    <app-status-badge
-                                        class="product__stock"
-                                        [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"
-                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
-                                    ></app-status-badge>
-                                </td>
+<!--                                <td class='my-list__column my-list__column&#45;&#45;body my-list__column&#45;&#45;stock'>-->
+<!--                                    <app-status-badge-->
+<!--                                        class="product__stock"-->
+<!--                                        [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"-->
+<!--                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"-->
+<!--                                    ></app-status-badge>-->
+<!--                                </td>-->
                                 <td class='my-list__column my-list__column--body my-list__column--price' *showIfLoggedIn>
                                     {{ item.variant?.price | currencyFormat }}
                                 </td>

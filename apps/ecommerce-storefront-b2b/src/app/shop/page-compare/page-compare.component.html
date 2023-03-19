@@ -121,17 +121,17 @@
                             <td class="compare-table__column compare-table__column--fake"></td>
                         </tr> -->
                         <!-- Product Stock -->
-                        <tr class="compare-table__row">
-                            <th class="compare-table__column compare-table__column--header">{{ 'TABLE_STOCK_STATUS' | translate }}</th>
-                            <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column--product">
-                                <app-status-badge
-                                    class="product__stock"
-                                    [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"
-                                    [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
-                                ></app-status-badge>
-                            </td>
-                            <td class="compare-table__column compare-table__column--fake"></td>
-                        </tr>
+<!--                        <tr class="compare-table__row">-->
+<!--                            <th class="compare-table__column compare-table__column&#45;&#45;header">{{ 'TABLE_STOCK_STATUS' | translate }}</th>-->
+<!--                            <td *ngFor="let item of compareItems$|async" class="compare-table__column compare-table__column&#45;&#45;product">-->
+<!--                                <app-status-badge-->
+<!--                                    class="product__stock"-->
+<!--                                    [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"-->
+<!--                                    [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"-->
+<!--                                ></app-status-badge>-->
+<!--                            </td>-->
+<!--                            <td class="compare-table__column compare-table__column&#45;&#45;fake"></td>-->
+<!--                        </tr>-->
                         <!-- Variant Price -->
                         <tr class="compare-table__row" *showIfLoggedIn>
                             <th class="compare-table__column compare-table__column--header">{{ 'TABLE_PRICE' | translate }}</th>
