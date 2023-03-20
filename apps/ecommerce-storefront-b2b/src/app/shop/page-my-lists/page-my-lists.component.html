@@ -13,6 +13,9 @@
 
     <!--Empty state-->
     <ng-container *ngIf="!(myListsService.myLists|async)?.length">
+        <!--Spacer-->
+        <div class="nao-spacer-after-header"></div>
+
         <div class="block-empty">
             <div class="container">
                 <div class="block-empty__body">
