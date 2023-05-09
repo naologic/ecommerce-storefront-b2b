@@ -41,10 +41,10 @@
     }
 }
 .spec__disclaimer {
-    margin-top: 20px;
+    margin-top: 40px;
     font-size: 13px;
     line-height: 20px;
-    //color: map_get($card-scheme, opposite-alt);
+    color: map_get($card-scheme, opposite-alt);
 }
 
 @include media-breakpoint-only(sm) {

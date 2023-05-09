@@ -7,9 +7,9 @@
 @import '../mixins/status-badge';
 
 
-// .product-card {
-//     @include product-card-base;
-// }
+.product-card {
+    @include product-card-base;
+}
 .product-card--layout--grid {
     @include product-card-grid-base;
 }

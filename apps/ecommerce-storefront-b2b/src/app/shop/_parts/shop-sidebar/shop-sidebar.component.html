@@ -1,4 +1,4 @@
-<!-- <div class="sidebar sidebar--offcanvas--mobile" [class.sidebar--open]="isOpen">
+<div class="sidebar sidebar--offcanvas--mobile" [class.sidebar--open]="isOpen">
     <div class="sidebar__backdrop" (click)="close()"></div>
 
     <div class="sidebar__body">
@@ -32,7 +32,11 @@
 
                                         <app-filter-check *ngIf="filter.type === 'check'" [options]="filter" [formControlName]="filter.slug"></app-filter-check>
 
-                                     
+                                        <!--<app-filter-radio *ngIf="filter.type === 'radio'" [options]="filter" [formControlName]="filter.slug"></app-filter-radio>-->
+                                        <!--Show rating only if it's allowed in settings-->
+                                        <!--This will have to be connected to ecomm in the future-->
+                                        <!--                    <app-filter-rating *ngIf="filter.type === 'rating'" [options]="filter" [formControlName]="filter.slug"></app-filter-rating>-->
+
                                     </div>
                                 </div>
                             </div>
@@ -41,46 +45,11 @@
                     </ng-container>
                 </div>
 
-                <div class="py-2 ml-3 rst-btn">
-                    <div class="d-flex text-center">
-                        <button class="cart-button-1" (click)="shopProductService.resetAllFilters()">{{ 'BUTTON_RESET' | translate }}</button>
-                    </div>
+                <div class="widget-filters__actions d-flex">
+                    <button class="btn btn-secondary btn-sm" (click)="shopProductService.resetAllFilters()">{{ 'BUTTON_RESET' | translate }}</button>
                 </div>
+
             </div>
         </div>
     </div>
-</div> -->
-
-    <div class="border-bottom pb-2 ml-2 mr">
-        <h4>{{ 'HEADER_FILTERS' | translate }}</h4>
-    </div>
-    <div [formGroup]="form" *ngIf="form">
-            <ng-container *ngFor="let filter of filters; trackBy: trackBySlug">
-                <div  class="" *ngIf="filter.type !== 'check' || filter.items?.length">
-            
-                        <div>
-                            <div class="">
-                                <app-filter-category *ngIf="filter.type === 'category'" [options]="filter"></app-filter-category>
-
-                                <app-filter-range *ngIf="filter.type === 'range'" [options]="filter" [formControlName]="filter.slug"></app-filter-range>
-                            
-                                <app-filter-check *ngIf="filter.type === 'check'" [options]="filter" [formControlName]="filter.slug"></app-filter-check>                            
-                            </div>
-                        
-                    </div>
-                </div>
-
-            </ng-container>
- 
-    </div>
-  
-    <div class="py-2 ml-3 rst-btn">
-        <div class="d-flex text-center">
-            <a href="#" class="cart-button-1" tabindex="0">Reset</a>
-        </div>
-    </div>
-
-
-
-
-
+</div>

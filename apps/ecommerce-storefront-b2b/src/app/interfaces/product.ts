@@ -66,44 +66,52 @@ export interface Category {
 
 
 export interface Variant {
-    availability: string;
-    available: boolean;
-    cost: number;
-    countryOfOrigin: string;
-    currency: string;
-    depth: string;
-    description: string;
-    dimensionUOM: string;
-    height: string;
-    id: string;
-    manufacturerItemCode: string;
-    manufacturerItemId: string;
-    ndcFreightClass: string;
-    ndcHarmonizedTariffCode: string;
-    ndcItemCode: string;
-    images: string[];
-    optionId: string;
-    optionId1: string;
-    optionId2: string;
-    optionId3: string;
-    optionValue: string;
-    optionValue1: string;
-    optionValue2: string;
-    optionValue3: string;
-    variantName: string;
-    packaging: string;
-    price: number;
-    quantity: number;
-    sku: string;
-    volume: string;
-    volumeUOM: string;
-    weight: string;
-    weightUOM: string;
-    width: string;
+    /**
+     * This item can only changed from the function, not by the user
+     * @default InterfaceUtils.generateRandomString(12)
+     */
+    readonly id: string
+    /** @default */
+    available?: boolean
+    /** @default {} */
+    attributes?: any
+    /** @default */
+    cost: number
+    /** @default USD */
+    currency?: string
+    depth?: number
+    description?: string
+    /** @default in */
+    dimensionUOM?: string
+    height?: number
+    width?: number
+    manufacturerItemCode?: string
+    manufacturerItemId?: string
+    packaging?: string
+    /** @default */
+    price: number
+    volume?: number
+    /** @default ci */
+    volumeUOM?: string
+    weight?: number
+    /** @default lb */
+    weightUOM?: string
+    optionName: string
+    optionsPath: string
+    optionItemsPath: string
+    images: Image[];
+    sku?: string
+    /** @default */
+    active?: boolean;
+
+    /**
+     * This is used only for FE, to set the paths based on all the options
+     */
+    optionsMapped?: {[key: string]: string | null}
 }
 
 export interface Product {
-    _id: string;
+    docId: string;
     data?: {
         availability: string;
         available: true;
@@ -112,7 +120,7 @@ export interface Product {
         currency: string;
         description: string;
         shortDescription: string;
-        images: string[];
+        images: Image[];
         isShippable: boolean;
         manufacturerId: string;
         name: string;
@@ -134,6 +142,13 @@ export interface Product {
         };
         reviews?: number;
     }
+}
+
+export interface Image {
+    fileName?: string
+    cdnLink?: string
+    i?: number
+    alt?: string
 }
 
 export interface ProductVariant {

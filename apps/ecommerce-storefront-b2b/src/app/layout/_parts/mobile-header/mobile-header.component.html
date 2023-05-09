@@ -4,7 +4,7 @@
             <app-icon icon="menu-18x14"></app-icon>
         </button>
         <a class="mobile-header__logo" routerLink="/">
-            <img [src]="generalSettings?.logo || '../../../../assets/images/logo/logo-simple.png'" alt="logo">
+            <img [src]="generalSettings?.companyLogo || '../../../../assets/images/logo/logo-simple.png'" alt="logo">
         </a>
         <div
             class="mobile-header__search mobile-search"
@@ -47,7 +47,7 @@
                     <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>
                 </a>
             </div>
-            <div *ngIf='isLoggedIn' class="mobile-indicator d-none d-md-block">
+            <div class="mobile-indicator d-none d-md-block" *showIfLoggedIn>
                 <a routerLink="/shop/my-lists" class="mobile-indicator__button">
                     <span class="mobile-indicator__icon">
                         <app-icon icon="heart-20"></app-icon>
@@ -58,7 +58,7 @@
                     </span>
                 </a>
             </div>
-            <div class="mobile-indicator">
+            <div class="mobile-indicator" *showIfLoggedIn>
                 <a routerLink="/shop/cart" class="mobile-indicator__button">
                     <span class="mobile-indicator__icon">
                         <app-icon icon="cart-20"></app-icon>

@@ -1,119 +1,191 @@
-<ng-container appAddToCart appAddToCompare #cart="addToCart" #compare="addToCompare">
-    <!-- <div class="product-card__actions-list">
-        <div appDropdown class="" [class.my-lists__menu--open]="myListsDropdown.isOpen" #myListsDropdown="appDropdown"
-            *ngIf="isLoggedIn">
-
-            <button appAddToMyLists type="button" style="background-color: white; border: 1px solid #fd7e14;
-            " class="product-card__action product-card__action--my-lists"
-                [class.product__actions-item--loading]="addToMyLists.inProgress"
-                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate" (click)="myListsDropdown.toggle()"
-                #addToMyLists="addToMyLists">
-                <app-icon style="fill: #fd7e14;" icon="wishlist-16"></app-icon>
+<ng-container
+        appAddToCart
+        appAddToCompare
+        #cart="addToCart"
+        #compare="addToCompare"
+        *ngIf="product?.data"
+    >
+        <div class="product-card__actions-list">
+            <button
+                class="product-card__action product-card__action--quickview"
+                type="button"
+                [class.product-card__action--loading]="showingQuickview"
+                [attr.aria-label]="'BUTTON_QUICKVIEW' | translate"
+                (click)="showQuickView()"
+            >
+                <app-icon icon="quickview-16"></app-icon>
             </button>
 
-            <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
-                <button *ngFor="let item of addToMyLists.myLists" class="my-lists__menu-item" type="button"
-                    (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
-                    {{ item.data?.name }}
+<!--            <button-->
+<!--                type="button"-->
+<!--                appAddToMyLists-->
+<!--                #myLists="addToMyLists"-->
+<!--                class="product-card__action product-card__action--my-lists"-->
+<!--                [class.product-card__action&#45;&#45;loading]="myLists.inProgress"-->
+<!--                [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"-->
+<!--                (click)="myLists.add('XXXXXXXXXX', product?.docId, product.data?.variants[0]?.id)"-->
+<!--            >-->
+<!--                <app-icon icon="wishlist-16"></app-icon>-->
+<!--            </button>-->
+
+
+
+            <div appDropdown
+                 class=""
+                 [class.my-lists__menu--open]="myListsDropdown.isOpen"
+                 #myListsDropdown="appDropdown"
+                 *ngIf="isLoggedIn">
+
+                <button
+                    appAddToMyLists
+                    type="button"
+                    class="product-card__action product-card__action--my-lists"
+                    [class.product__actions-item--loading]="addToMyLists.inProgress"
+                    [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate"
+                    (click)="myListsDropdown.toggle()"
+                    #addToMyLists="addToMyLists"
+                >
+                    <app-icon icon="wishlist-16"></app-icon>
                 </button>
-                <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
-                    {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
-                    <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate
-                        }}</a>
-                    {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
-                </div>
-            </div>
 
-        </div>
-    </div> -->
-
-    <figure class="snip1268">
-        <div class="image">
-            <img class="card-img-top"
-                [src]="product?.data?.images[0] | checkImageFallback: product?.data?.selectedVariant" alt="">
-            <div class="icons">
-                <a [class.product-card__action--loading]="showingQuickview"
-                    [attr.aria-label]="'BUTTON_QUICKVIEW' | translate" (click)="showQuickView()"
-                    class="btn btn-lg btn-primary" data-toggle="modal" data-target="#largeModal"> <i
-                        class="fa fa-search" aria-hidden="true"></i>
-                </a>
-                <div appDropdown class="wishlist" [class.my-lists__menu--open]="myListsDropdown.isOpen"
-                    #myListsDropdown="appDropdown" *ngIf="isLoggedIn">
-
-                    <button appAddToMyLists type="button" class="btn btn-lg btn-primary wishlistBtn"
-                        [class.product__actions-item--loading]="addToMyLists.inProgress"
-                        [attr.aria-label]="'BUTTON_ADD_TO_MY_LISTS' | translate" (click)="myListsDropdown.toggle()"
-                        #addToMyLists="addToMyLists">
-                        <app-icon style="fill: whitesmoke;" icon="wishlist-16"></app-icon>
+                <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+                    <button
+                        *ngFor="let item of addToMyLists.myLists"
+                        class="my-lists__menu-item"
+                        type="button"
+                        (click)="addToMyLists.add(item.docId, product, product.data?.variants[0]); myListsDropdown.close()">
+                        {{ item.data?.name }}
                     </button>
-
-                    <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
-                        <button *ngFor="let item of addToMyLists.myLists" class="my-lists__menu-item" type="button"
-                            (click)="addToMyLists.add(item._id, product, product.data?.variants[0]); myListsDropdown.close()">
-                            {{ item.data?.name }}
-                        </button>
-                        <!--Empty state-->
-                        <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
-                            {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
-                            <a style="background: white;" href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' |
-                                translate
-                                }}</a>
-                            {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
-                        </div>
+                    <!--Empty state-->
+                    <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+                        {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+                        <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+                        {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
                     </div>
+                </div>
 
+            </div>
+
+
+
+
+            <!--<button
+                type="button"
+                class="product-card__action product-card__action&#45;&#45;compare"
+                [class.product-card__action&#45;&#45;loading]="compare.inProgress"
+                [attr.aria-label]="'BUTTON_ADD_TO_COMPARE' | translate"
+                (click)="compare.add(product, product.data?.variants[0])"
+            >
+                <app-icon icon="compare-16"></app-icon>
+            </button>-->
+        </div>
+
+        <div class="product-card__image">
+            <div class="image image--type--product">
+                <a [routerLink]="url.product(product)" class="image__body">
+                    <img class="image__tag" [src]="product?.data?.images?.length && product?.data?.images[0].cdnLink | checkImageFallback: product?.data?.selectedVariant" alt="">
+                </a>
+            </div>
+        </div>
+
+        <div class="product-card__info">
+            <div *ngIf="!exclude.includes('meta')" class="product-card__meta">
+                <span class="product-card__meta-title">{{ 'TEXT_SKU' | translate }}:</span> {{ product?.data?.sku || product?.data?.variants[0]?.sku }}
+            </div>
+
+            <div class="product-card__name">
+                <div>
+    <!--                <div *ngIf="product?.badges?.length" class="product-card__badges">-->
+    <!--                    <div *ngFor="let badge of product.badges" class="tag-badge tag-badge&#45;&#45;{{ badge }}">{{ badge }}</div>-->
+    <!--                </div>-->
+                    <a [routerLink]="url.product(product)">{{ product?.data?.name }}</a>
                 </div>
             </div>
-            <a href="#" [routerLink]="url.product(product)" class="add-to-cart">{{ 'BUTTON_ADD_TO_CART' | translate
-                }}</a>
-            <figcaption>
-                <h5>
-                    <div class="product-card__info">
-                        <!-- <div *ngIf="!exclude.includes('meta')" class="product-card__meta">
-                            <span class="product-card__meta-title">{{ 'TEXT_SKU' | translate }}:</span> {{ product?.data?.sku ||
-                            product?.data?.variants[0]?.sku }}
-                        </div> -->
 
-                        <div class="product-card__name">
-                            <div>
-                                <!--                <div *ngIf="product?.badges?.length" class="product-card__badges">-->
-                                <!--                    <div *ngFor="let badge of product.badges" class="tag-badge tag-badge&#45;&#45;{{ badge }}">{{ badge }}</div>-->
-                                <!--                </div>-->
-                                <h5 [routerLink]="url.product(product)">{{ product?.data?.name }}</h5>
-                            </div>
-                        </div>
-
-                        <!--Show rating only if it's allowed in settings-->
-                        <!--This will have to be connected to ecomm in the future-->
-                        <div class="product-card__rating" *ngIf="appSettings?.rating">
-                            <app-rating class="product-card__rating-stars" [value]="product?.data?.rating || 0">
-                            </app-rating>
-                            <div class="product-card__rating-label">
-                                {{ 'TEXT_RATING_LABEL' | translate:{rating: product?.data?.rating, reviews:
-                                product?.data?.reviews} }}
-                            </div>
-                        </div>
-
-                        <div *ngIf="!exclude.includes('features')" class="product-card__features">
-                            <!--Show product description for now-->
-                            {{ product.data?.description }}
-                            <!--            <ul>-->
-                            <!--                <li *ngFor="let attribute of featuredAttributes">-->
-                            <!--                    {{ attribute.name }}:-->
-                            <!--                    <ng-container *ngFor="let value of attribute.values; let last = last">-->
-                            <!--                        {{ value.name + (!last ? ', ' : '') }}-->
-                            <!--                    </ng-container>-->
-                            <!--                </li>-->
-                            <!--            </ul>-->
-                        </div>
-                    </div>
-                </h5>
-                <div *ngIf="!exclude.includes('meta')">
-                    <span>{{ 'TEXT_SKU' | translate }}:</span> {{ product?.data?.sku ||
-                    product?.data?.variants[0]?.sku }}
+            <!--Show rating only if it's allowed in settings-->
+            <!--This will have to be connected to ecomm in the future-->
+            <div class="product-card__rating" *ngIf="appSettings?.rating">
+                <app-rating class="product-card__rating-stars" [value]="product?.data?.rating || 0"></app-rating>
+                <div class="product-card__rating-label">
+                    {{ 'TEXT_RATING_LABEL' | translate:{rating: product?.data?.rating, reviews: product?.data?.reviews} }}
                 </div>
-            </figcaption>
-        </div>
-    </figure>
+            </div>
 
-</ng-container>
+            <div *ngIf="!exclude.includes('features')" class="product-card__features">
+                <!--Show product description for now-->
+                {{ product?.data?.description }}
+    <!--            <ul>-->
+    <!--                <li *ngFor="let attribute of featuredAttributes">-->
+    <!--                    {{ attribute.name }}:-->
+    <!--                    <ng-container *ngFor="let value of attribute.values; let last = last">-->
+    <!--                        {{ value.name + (!last ? ', ' : '') }}-->
+    <!--                    </ng-container>-->
+    <!--                </li>-->
+    <!--            </ul>-->
+            </div>
+        </div>
+
+        <div class="product-card__footer">
+            <div class="product-card__prices">
+                <!--TODO:check the compare price-->
+                <!--TODO:check the compare price-->
+                <!--TODO:check the compare price-->
+                <!--TODO:check the compare price-->
+                <!--TODO:check the compare price-->
+    <!--            <ng-container *ngIf="product.compareAtPrice">-->
+    <!--                <div class="product-card__price product-card__price&#45;&#45;new">{{ product.data?.price | currencyFormat }}</div>-->
+    <!--                <div class="product-card__price product-card__price&#45;&#45;old">{{ product.compareAtPrice | currencyFormat }}</div>-->
+    <!--            </ng-container>-->
+    <!--            <ng-container *ngIf="!product.compareAtPrice">-->
+    <!--                <div class="product-card__price product-card__price&#45;&#45;current">{{ product.data?.price | currencyFormat }}</div>-->
+    <!--            </ng-container>-->
+                <ng-container *showIfLoggedIn>
+                    <div class="product-card__price product-card__price&#45;&#45;current" *ngIf="product.minPrice === product.maxPrice">{{ product.minPrice | currencyFormat }}</div>
+                    <div class="product-card__price product-card__price&#45;&#45;current" *ngIf="product.minPrice !== product.maxPrice">{{ product.minPrice | currencyFormat }} - {{ product.maxPrice | currencyFormat }}</div>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="!exclude.includes('buttons')">
+                <button
+                    type="button"
+                    disableIfNotLoggedIn
+                    class="product-card__addtocart-icon"
+                    [class.product-card__addtocart-icon--loading]="cart.inProgress"
+                    [attr.aria-label]="'BUTTON_ADD_TO_CART' | translate"
+                    [disabled]="!(product?.data?.variants[0]?.price >= 0)"
+                    (click)="cart.add(product, product.data?.variants[0])"
+                >
+                    <app-icon icon="cart-20"></app-icon>
+                </button>
+                <ng-container *ngIf="!exclude.includes('list-buttons')">
+                    <button
+                        type="button"
+                        disableIfNotLoggedIn
+                        class="product-card__addtocart-full"
+                        [class.product-card__addtocart-full--loading]="cart.inProgress"
+                        [disabled]="!(product?.data?.variants[0]?.price >= 0)"
+                        (click)="cart.add(product, product.data?.variants[0])"
+                    >
+                        {{ 'BUTTON_ADD_TO_CART' | translate }}
+                    </button>
+                    <!--<button
+                        type="button"
+                        class="product-card__my-lists"
+                        [class.product-card__my-lists--loading]="myLists.inProgress"
+                        (click)="myLists.add(product, product.data?.variants[0])"
+                    >
+                        <app-icon icon="wishlist-16"></app-icon>
+                        <span>{{ 'BUTTON_ADD_TO_MY_LISTS' | translate }}</span>
+                    </button>-->
+                    <!--<button
+                        type="button"
+                        class="product-card__compare"
+                        [class.product-card__compare&#45;&#45;loading]="compare.inProgress"
+                        (click)="compare.add(product, product.data?.variants[0])"
+                    >
+                        <app-icon icon="compare-16"></app-icon>
+                        <span>{{ 'BUTTON_ADD_TO_COMPARE' | translate }}</span>
+                    </button>-->
+                </ng-container>
+            </ng-container>
+        </div>
+    </ng-container>

@@ -1,6 +1,6 @@
 import { CategoryFilter, CheckFilter, RangeFilter } from "../../../interfaces/filter";
 import { nameToSlug } from "../../../shared/functions/utils";
-import { Vendor } from '../../../interfaces/vendor';
+import { AppInterface } from "../../../../app.interface";
 
 /**
  * Prepare: categories filter
@@ -16,19 +16,16 @@ function buildCategoriesFilter(items: any[], categoryId = null): CategoryFilter 
     // -->Check: if there si a category selected
     if (!categoryId) {
         // -->Get: categories with level 0 and add children
-        filterCategories = items.filter(c => c.level === 0 && c.showOnWebsite);
+        filterCategories = items.filter(c => !c.data.parentId);
     } else {
         // -->Get: current category
-        const currentCategory = items.find(c => c.id === categoryId)
+        const currentCategory = items.find(c => c.docId === categoryId)
         // -->Get: parent category
-        const parent = items.find(c => c?.id === currentCategory?.parentId)
+        const parent = items.find(c => c?.docId === currentCategory?.data?.parentId)
         // -->Get; children
-        const children = items.filter(c => c.parentId === currentCategory.id && c.showOnWebsite);
+        const children = items.filter(c => c.data?.parentId === currentCategory.docId);
         // -->Create: category
-        const category = {
-            ...currentCategory,
-            children
-        }
+        const category = { ...currentCategory, children };
 
         // -->Check: if this category has parent
         if (parent) {
@@ -53,8 +50,8 @@ function buildCategoriesFilter(items: any[], categoryId = null): CategoryFilter 
  */
 function getParentsCategory(items: any[], parentCategory: any): any {
     // -->Check: if the parent is root or not
-    if (parentCategory.level > 0) {
-        const parent = items.find(c => c?.id === parentCategory?.parentId)
+    if (parentCategory?.data?.parentId) {
+        const parent = items.find(c => c?.docId === parentCategory?.data?.parentId)
         // -->Return: and start the search again
         return { parent: getParentsCategory(items, parent), ...parentCategory }
 
@@ -65,7 +62,7 @@ function getParentsCategory(items: any[], parentCategory: any): any {
 /**
  * Prepare: manufactures filter
  */
-function buildManufacturerFilter(vendors: Vendor[], values: string[]): CheckFilter {
+function buildManufacturerFilter(vendors: AppInterface.Vendor[], values: string[]): CheckFilter {
     if(!Array.isArray(vendors)) {
         vendors = [];
     }
@@ -77,7 +74,7 @@ function buildManufacturerFilter(vendors: Vendor[], values: string[]): CheckFilt
     vendors.map(vendor => {
         if (vendor) {
             items.push({
-                _id: vendor._id,
+                docId: vendor.docId,
                 slug: nameToSlug(vendor.data?.name),
                 name: vendor.data?.name
             })

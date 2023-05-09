@@ -4,6 +4,7 @@ import { Product } from '../../interfaces/product';
 import { AppService } from "../../app.service";
 import { UrlService } from "../../services/url.service";
 import { ProductsCarouselData } from '../home.interface';
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-home',
@@ -29,13 +30,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe((value) => {
                 // -->Set: Primary featured product
-                this.primaryFeaturedProduct = value?.primaryFeaturedProduct || {};
+                this.primaryFeaturedProduct = value?.shopInfo?.featuredItems?.primaryFeaturedProduct || {};
                 // -->Set: featured products
-                this.featuredProducts.products = value?.featuredProducts || [];
+                this.featuredProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
                 // -->Set: generalSettings info
-                this.generalSettings = value?.generalSettings;
+                this.generalSettings = value?.shopInfo?.general?.data;
             })
         )
     }

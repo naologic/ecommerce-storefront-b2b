@@ -1,6 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subscription } from "rxjs";
-import { AppService } from "../../app.service";
+import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Subscription} from "rxjs";
+import {AppService} from "../../app.service";
+import {appInfo$} from "../../../app.static";
 
 @Component({
     selector: 'app-terms',
@@ -9,18 +10,19 @@ import { AppService } from "../../app.service";
 })
 export class TermsComponent implements OnInit, OnDestroy {
     private subs = new Subscription();
-    public generalSettings;
+    public termsText: string;
 
     constructor(
         public appService: AppService,
-    ) { }
+    ) {
+    }
 
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: generalSettings info
-                this.generalSettings = value?.generalSettings;
+                this.termsText = value?.shopInfo?.termsAndConditions?.data?.text;
             })
         );
     }

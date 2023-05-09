@@ -61,7 +61,7 @@ $local-gutter: 20px;
 }
 
 .products-list--grid--4[data-layout="grid"] {
-    @include local-layout(3, 20px);
+    @include local-layout(4, 20px);
 
     .products-list__head {
         display: none;

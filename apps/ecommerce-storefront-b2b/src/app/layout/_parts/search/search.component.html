@@ -2,34 +2,6 @@
     <div class="search__shadow"></div>
 
     <label class="sr-only" for="site-search">{{ 'INPUT_SEARCH_LABEL' | translate }}</label>
- <div class="header-email">
-
-    <input
-        type="text"
-        id="site-search"
-        autocapitalize="off"
-        autocomplete="off"
-        spellcheck="false"
-        name="search"
-        [value]="query$.getValue()"
-        [placeholder]="'INPUT_SEARCH_PLACEHOLDER' | translate"
-        (keyup)="onSearchKeyUp($event)"
-    >
-    <button class="drop-button-header"
-            type="submit" (click)="searchAndRedirect()">
-            <i class="fas fa-search"></i> 
-    </button>
-
-</div>
-</form>
-
-
-
-                                       <!-- OLD Design -->
-<!-- <form class="search search__body">
-    <div class="search__shadow"></div>
-
-    <label class="sr-only" for="site-search">{{ 'INPUT_SEARCH_LABEL' | translate }}</label>
     <input
         type="text"
         id="site-search"
@@ -54,4 +26,4 @@
         <div class="search__decor-end"></div>
     </div>
 
-</form> -->
+</form>

@@ -3,8 +3,8 @@
 
 <!--Featured product-->
 <div class="container">
-    <!-- <div class="home-showcase-primary-product row">
-        <div class="col-lg-5 mb-5 mb-lg-0 align-self-center">
+    <div class="home-showcase-primary-product row">
+        <div class="col-lg mb-5 mb-lg-0 align-self-center">
             <h1 class="showcase-product-name">
                 {{ primaryFeaturedProduct?.data?.name }}
             </h1>
@@ -12,76 +12,24 @@
                 {{ primaryFeaturedProduct?.data?.description }}
             </p>
             <div>
-                <button type="button" class="btn btn-primary btn-xl" [routerLink]="url.product(primaryFeaturedProduct)"
-                    style="
-                    border: solid 1px rgb(253 126 20);
-                    padding: 6px 10px;
-                    padding-block: 12px;
-                    padding-inline: 30px;
-                    border-radius: 25px;
-                    background: #fd7e14;
-                    color: #ffffff;
-                    text-decoration: none;
-                ">
+                <button
+                    type="button"
+                    class="btn btn-primary btn-xl"
+                    [routerLink]="url.product(primaryFeaturedProduct)">
                     {{ 'TEXT_BANNER_ONE_BUTTON' | translate }}
                 </button>
-
-                <button type="button" class="effect btn btn-primary btn-xl"
-                    [routerLink]="url.product(primaryFeaturedProduct)" style="
-                    border: solid 1px rgb(253 126 20);
-                    padding: 6px 10px;
-                    padding-block: 12px;
-                    padding-inline: 30px;
-                    border-radius: 25px;
-                    background: #ffffff;
-                    color: #000000;
-                    text-decoration: none;    margin-left: 23px;            ">
-                    View Product
-                </button>
             </div>
         </div>
 
-        <div class="col-lg-7">
-            <div style="text-align: center;">
-                <img class="floating-dashboard" src="../../../assets/images/hero-overlay-one.png" alt="">
-                <img src="../../../assets/images/hero.png" />
-                <img class="floating-dashboard2" src="../../../assets/images/hero-overlay-two.png" alt="">
+        <div class="col-lg">
+            <div class="d-flex">
+                <img class="ml-lg-auto featured-product-image"
+                     [src]="(primaryFeaturedProduct?.data?.selectedVariant?.images?.length && primaryFeaturedProduct?.data?.selectedVariant?.images[0].cdnLink) || (primaryFeaturedProduct?.data?.images?.length && primaryFeaturedProduct?.data?.images[0].cdnLink)"
+                     [alt]="primaryFeaturedProduct?.data?.name"
+                     *ngIf="primaryFeaturedProduct?.data?.images?.length || primaryFeaturedProduct?.data?.selectedVariant?.images?.length">
             </div>
         </div>
 
-    </div> -->
-
-    <div id="banner" class="container-fluid banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-5 col-md-6 col-12 left-banner wow animate__animated animate__fadeInLeft">
-                    <h1 class="showcase-product-name">
-                        {{ primaryFeaturedProduct?.data?.name }}
-                    </h1>
-                    <p class="showcase-product-description">
-                        {{ primaryFeaturedProduct?.data?.description }}
-                    </p>
-                    <div class="d-flex banner-signup-button">
-                        <!-- <a href="#" class="effect box-fill-center btn-mr">Buy Now</a> -->
-                        <button type="button" class="effect box-fill-center btn-mr"
-                            [routerLink]="url.product(primaryFeaturedProduct)" >
-                            {{ 'TEXT_BANNER_ONE_BUTTON' | translate }}
-                        </button>
-                        <!-- <a href="#" class="effect box-fill-center2">View Product</a> -->
-                        <button type="button" class="effect box-fill-center2"
-                            [routerLink]="url.product(primaryFeaturedProduct)">
-                            View Product
-                        </button>
-                    </div>
-                </div>
-                <div class="col-lg-7 col-md-6 col-12 left-right wow animate__animated animate__fadeInRight">
-                    <img class="floating-dashboard" src="../../../assets/images/hero-overlay-one.png" routerLink="/shop/products/edan-diagnostics-patient-monitors/613a13d988aeab001d88b2ab"  alt="">
-                    <img class="img-fluid" src="../../../assets/images/hero.png" alt="">
-                    <!-- <img class="ml-lg-auto featured-product-image" [src]="primaryFeaturedProduct.data?.selectedVariant?.images[0] || primaryFeaturedProduct.data.images[0]" [alt]="primaryFeaturedProduct?.data?.name" *ngIf="primaryFeaturedProduct?.data?.images?.length || primaryFeaturedProduct?.data?.selectedVariant?.images?.length"> -->
-                    <img class="floating-dashboard2" src="../../../assets/images/hero-overlay-two.png" routerLink="/shop/products/pro-advantage-urine-reagent-strips/613a137288aeab001d8897ce" alt="">
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -118,169 +66,24 @@
 <div class="nao-spacer-nl"></div>
 
 <!--Products carousel-->
-<app-featured-products-grid [blockTitle]="'HEADER_FEATURED_PRODUCTS' | translate" [loading]="featuredProducts.loading"
-    [products]="featuredProducts.products || []"></app-featured-products-grid>
+<app-featured-products-grid
+    [blockTitle]="'HEADER_FEATURED_PRODUCTS' | translate"
+    [loading]="featuredProducts.loading"
+    [products]="featuredProducts.products || []"
+></app-featured-products-grid>
 
 <!--Spacer-->
+<div class="nao-spacer-lg"></div>
 
-
-<!-- <div class="bg-wrapper">
-    <div class="row">
-        <div class="col-12 col-xl-6">
-
-            <img src="../../../assets/images/clean-img.png" alt="media" class="img-fluid">
-        </div>
-
-        <div class="col-12 col-xl-6">
-            <div class="quote-wrapper pt-60 px-5 py-5"><img src="../../../assets/images/26.svg" alt="icon" class="icon">
-                <h1 class="wow animate__  animate__fadeInDown animate__delay-1.5s animated"
-                    style="visibility: visible; animation-name: fadeInDown;font-size: 3.5rem;">Clean like lives
-                    depend on it</h1>
-                <h6 class="py-2 m-0 wow animate__  animate__fadeInUp animate__delay-1.8s animated"
-                    style="visibility: visible; animation-name: fadeInUp;">Empower
-                    EVS staff to help prevent HAIs.</h6>
-                <a class="theme-btn-two mt-45 md-mt-30" href="/about-cs"> Explore Solution</a>
-            </div>
-
-            <div class="cleaning-pro-white-section">
-                <a href="">
-                    <h3 class="m-1" style="font-size: 2.7rem;">Cleaning Products</h3><i class="fa fa-chevron-right"
-                        aria-hidden="true"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-<div style="margin-top: -10px;" class="fancy-text-block-seven mt-150 md-mt-100">
-    <div class="bg-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 nlrp" data-aos="fade-right" data-aos-duration="1200">
-                    <div class="img-holder wow animate__animated  animate__fadeIn animate__delay-1s">
-                        <img src="../../../assets/images/clean-img.png" alt="media" class="img-fluid">
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 p-0">
-                    <div class="quote-wrapper pt-60 px-5 py-5"><img src="../../../assets/images/26.svg" alt="icon"
-                            class="icon">
-                        <h1 class="wow animate__animated  animate__fadeInDown animate__delay-1.5s">Clean like lives
-                            depend on it</h1>
-                        <h6 class="py-2 m-0 wow animate__animated  animate__fadeInUp animate__delay-1.8s">Empower
-                            EVS staff to help prevent HAIs.</h6>
-                        <a class="theme-btn-two mt-45 md-mt-30" href="/about-cs"> Explore Solution</a>
-                    </div>
-                    <div class="cleaning-pro-white-section">
-                        <a href="">
-                            <h3 class="m-1">Cleaning Products</h3><i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- <div class="container counter">
-    <div class="row" style="padding: 3rem!important;">
-        <div class="col-12 col-xl-8">
-            <div class="col-12 col-xl-6">
-                <img class="round-image-counter" src="../../../assets/images/medical-researcher-in-lab-626x336.jpg"
-                    alt="">
-            </div>
-            <div class="col-12 col-xl-6 round-images-upper" style="padding: 1.5rem!important;">
-                <div class="progress wow animate__  animate__fadeInUp animate__delay-1.7s animated" data-percentage="74"
-                    style="visibility: visible; animation-name: fadeInUp;">
-                    <span class="progress-left">
-                        <span class="progress-bar"></span>
-                    </span>
-                    <span class="progress-right">
-                        <span class="progress-bar"></span>
-                    </span>
-                    <div class="progress-value">
-                        <div>
-                            <p>Every Week</p>
-                            <h2>06</h2>
-                            <span>Lorem, ipsum dolor sit amet</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-xl-4 counter-right">
-            <h5>Lorem Ipsum Doler</h5>
-            <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil sed iure rerum?</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat</p>
-            <a href="#">Explore Program</a>
-        </div>
-    </div>
-</div> -->
-<div class="container-fluid p-5 counter">
-    <div class="container p-5">
-        <div class="row">
-            <div class="col-lg-8" style="position: relative;">
-                <div class="col-6">
-                    <img class="round-image-counter" src="../../../assets/images/medical-researcher-in-lab-626x336.jpg" alt="">
-                </div>
-                <div class="col-6 round-images-upper p-4">
-                    <div class="progress wow animate__animated  animate__fadeInUp animate__delay-1.7s"
-                        data-percentage="74">
-                        <span class="progress-left">
-                            <span class="progress-bar"></span>
-                        </span>
-                        <span class="progress-right">
-                            <span class="progress-bar"></span>
-                        </span>
-                        <div class="progress-value">
-                            <div>
-                                <p>Every Week</p>
-                                <h2>06</h2>
-                                <span>Lorem, ipsum dolor sit amet</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 counter-right py-4 px-0">
-                <h5>Lorem Ipsum Doler</h5>
-                <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil sed iure rerum?</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat</p>
-                <a href="#">Explore Program</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="nao-spacer-lg" style="height: 0px;"></div>
-
-<div class="container" *ngIf="generalSettings?.partnersLogos?.length" style="max-width: 100%;padding: 0px 4%;">
-
-    <div class="container-fluid partner-section py-5">
-        <div class="ps-img-top">
-            <img src="../../../assets/images/37.3d6c12cf.svg" class="img-fluid">
-        </div>
-        <div class="row animate__animated  animate__fadeInDown">
-            <div style="position: relative; visibility: visible; animation-name: fadeInDown;"
-            class="col-lg-12 col-md-12 col-12 text-center wow animate__ animate__fadeInDown ">
-            <h1 style="font-family: var(--font-family);font-size: 58px;font-weight: 900;line-height: 1.15em;margin-bottom: 70px;">
-            {{ 'HEADER_PARTNERS' | translate }}</h1>
-            
-        </div>
-    </div>
-
-
-        <!--Partners logos-->
-        <app-block-brands [partners]="generalSettings?.partnersLogos"></app-block-brands>
-
-        <div class="ps-img-top">
-            <img src="../../../assets/images/37.3d6c12cf.svg" class="img-fluid">
-        </div>
-    </div>
-    <!-- <div class="section-header__body">
+<div class="container" *ngIf="generalSettings?.partnersLogos?.length">
+    <div class="section-header__body">
         <h2 class="section-header__title">{{ 'HEADER_PARTNERS' | translate }}</h2>
         <div class="section-header__divider"></div>
-    </div> -->
+    </div>
+
+    <!--Partners logos-->
+    <app-block-brands [partners]="generalSettings?.partnersLogos"></app-block-brands>
+
     <!--Spacer-->
     <div class="nao-spacer-lg"></div>
 
@@ -288,3 +91,8 @@
 
 <!--Show features like Free shipping, support 24/7-->
 <app-block-features layout="bottom-strip"></app-block-features>
+
+
+
+
+

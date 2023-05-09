@@ -2,7 +2,7 @@
 <div class="nao-spacer-ledge-height"></div>
 
 <div class="block faq">
-    <div class="container container--max--xl" style="margin-top: 90px;">
+    <div class="container container--max--xl">
         <div class="faq__header">
             <h1 class="faq__header-title">{{ 'TEXT_FAQ_TITLE' | translate }}</h1>
         </div>
@@ -25,11 +25,11 @@
         </div>
 
 
-        <div class="faq__footer">
+        <div class="faq__footer" *ngIf="supportEmailAddress">
             <div class="faq__footer-title">{{ 'TEXT_FAQ_FOOTER_TITLE' | translate }}</div>
             <div class="faq__footer-subtitle">{{ 'TEXT_FAQ_FOOTER_SUBTITLE' | translate }}</div>
-            <ng-container *ngIf="infoSupport?.supportEmailAddress">
-                <a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a>
+            <ng-container>
+                <a [href]="'mailto:' + supportEmailAddress">{{ supportEmailAddress }}</a>
             </ng-container>
         </div>
     </div>

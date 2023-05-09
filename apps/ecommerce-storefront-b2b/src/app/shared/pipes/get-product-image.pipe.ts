@@ -10,9 +10,9 @@ export class GetProductImagePipe implements PipeTransform {
         const fallback = 'assets/images/image-not-available.png';
         // -->Check: If the variant has any images
         if (variant?.images?.length) {
-            return variant.images[0] || fallback;
+            return variant.images[0].cdnLink || fallback;
         }
         // -->Check: if the product has any images as fallback
-        return product?.data?.images?.length ? (product?.data?.images[0] || fallback) : fallback;
+        return product?.data?.images?.length ? (product?.data?.images[0].cdnLink || fallback) : fallback;
     }
 }

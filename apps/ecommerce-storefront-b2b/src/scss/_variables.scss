@@ -137,7 +137,7 @@
 // -- schemes
 // ----------------------------------------
    // theme
-   $theme-color: #fd7e14;
+   $theme-color: #3E40DB;
    $theme-scheme: () !default;
    $theme-scheme: register-scheme(map_merge((
       name:         theme,
@@ -222,7 +222,7 @@
    $body-scheme-based-on: light !default;
    $body-scheme: () !default;
    $body-scheme: map-merge-all(get-scheme($body-scheme-based-on), (
-       main: white
+       main: #fafafa,
    ), $body-scheme);
 
    // carousel dots

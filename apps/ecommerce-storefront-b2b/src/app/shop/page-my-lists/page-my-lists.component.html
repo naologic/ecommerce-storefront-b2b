@@ -1,23 +1,21 @@
 <!--Loading-->
 <nao-loading *ngIf="refreshInProgress"></nao-loading>
-<!--Spacer-->
-<div class="nao-spacer-before-block-header"></div>
 
 <!--Content-->
 <div class="page-my-lists-content-wrapper" *ngIf="!refreshInProgress">
     <app-block-header
-    [pageTitle]="'HEADER_SHOPPING_CART' | translate"
         [breadcrumb]="[
                 {label: 'LINK_HOME' | translate, url: '/'},
                 {label: 'LINK_MY_LISTS' | translate, url: ''}
             ]"
     ></app-block-header>
 
-    <!--Spacer-->
-    <div class="nao-spacer-after-header"></div>
 
     <!--Empty state-->
     <ng-container *ngIf="!(myListsService.myLists|async)?.length">
+        <!--Spacer-->
+        <div class="nao-spacer-after-header"></div>
+
         <div class="block-empty">
             <div class="container">
                 <div class="block-empty__body">
@@ -62,14 +60,14 @@
                             <tr *ngFor="let myListItem of myListsService.myLists|async; let index = index">
                                 <td>
                                     <div>
-                                        <a [routerLink]="url.myList(myListItem._id)">{{ myListItem.data?.name }}</a>
+                                        <a [routerLink]="url.myList(myListItem.docId)">{{ myListItem.data?.name }}</a>
                                     </div>
                                 </td>
                                 <td class="my-list__column--button">
                                     <a (click)="onEditMyList(myListItem)" href="javascript:void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_EDIT' | translate }}</a>
                                 </td>
                                 <td class="my-list__column--remove">
-                                    <a (click)="onDeleteMyList(myListItem._id, index)" href="javascript:void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_DELETE' | translate }}</a>
+                                    <a (click)="onDeleteMyList(myListItem.docId, index)" href="javascript:void(0)" class="btn btn-primary btn-sm">{{ 'BUTTON_DELETE' | translate }}</a>
                                 </td>
                             </tr>
                         </tbody>

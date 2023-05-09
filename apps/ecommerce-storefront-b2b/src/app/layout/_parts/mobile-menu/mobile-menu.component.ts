@@ -22,6 +22,7 @@ import { AppService } from "../../../app.service";
 import { MobileMenuPanelComponent } from '../mobile-menu-panel/mobile-menu-panel.component';
 import { nameToSlug } from "../../../shared/functions/utils";
 import { MobileMenuLink } from '../../../interfaces/mobile-menu-link';
+import { appInfo$ } from "../../../../app.static";
 
 interface StackItem {
     content: TemplateRef<any>;
@@ -59,11 +60,14 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     public ngOnInit(): void {
         // -->Subscribe: to info changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe((value) => {
                 // -->Set: info
-                this.infoSupport = value?.support?.supportInfo;
+                this.infoSupport = {
+                    supportPhoneNumber: value?.shopInfo?.support?.data?.supportPhoneNumber || '',
+                    supportEmailAddress: value?.shopInfo?.support?.data?.supportEmailAddress || '',
+                }
                 // -->Set: categories
-                const categories = this.mapCategories(value?.categories?.items)
+                const categories = this.mapCategories(value?.categories);
 
                 // -->Set: mobile links
                 this.links = [
@@ -239,39 +243,48 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
         const items: MobileMenuLink[] = [];
 
         // -->Get: route level categories
-        const rootLevelCategories = categories.filter(c => (c.parentId === 0 || c.parentId === '0') && c.level === 0);
+        const rootLevelCategories = categories.filter((c) => !c?.data?.parentId);
         // -->Iterate: over categories and set the root level ones
         rootLevelCategories.forEach(category => {
+            // -->Check: if the category has the right fields
+            if (!category?.data?.name || !category?.docId) {
+                return;
+            }
             // -->Create: category
             const item: MobileMenuLink = {
-                title: category.name,
-                url: `/shop/category/${nameToSlug(category.name)}/${category.id}/products`
+                title: category.data.name,
+                url: `/shop/category/${nameToSlug(category.data.name)}/${category.docId}/products`
             }
 
-            // -->Get: all second level categories for this parent
-            const subCategories = categories.filter(c => c.parentId === category.id && c.level === 1);
+            /**
+             * Get: second level categories for this parent
+             */
+            const subCategories = categories.filter((c) => c.data?.parentId === category.docId);
             if (subCategories.length) {
                 // -->Init: submenu
                 item.submenu = [];
 
                 // -->Iterate: over subcategories and check if there are any other links inside
                 subCategories.forEach(subCategory => {
-                    // -->Get: links for sub category
-                    const links = categories.filter(c => c.parentId === subCategory.id && c.level === 2);
+                    /**
+                     * Get: links for sub category
+                     */
+                    const links = categories.filter((c) => c.data?.parentId === category.docId);
                     // -->Create: sub category
                     const subCategory$: MobileMenuLink = {
-                        title: subCategory.name,
-                        url: `/shop/category/${nameToSlug(subCategory.name)}/${subCategory.id}/products`
+                        title: subCategory.data.name,
+                        url: `/shop/category/${nameToSlug(subCategory.data.name)}/${subCategory.docId}/products`
                     }
 
                     // -->Check: links
                     if (links.length) {
-                        subCategory$.submenu = links.map(link => {
-                            return {
-                                title: link.name,
-                                url: `/shop/category/${nameToSlug(link.name)}/${link.id}/products`
-                            }
-                        })
+                        subCategory$.submenu = links.filter((link: any) => link?.data?.name && link?.docId)
+                            .map((link) => {
+                                return {
+                                    title: link.data.name,
+                                    url: `/shop/category/${nameToSlug(link.data.name)}/${link.docId}/products`,
+                                };
+                            });
                     }
 
                     // -->Push: subcategory (column)

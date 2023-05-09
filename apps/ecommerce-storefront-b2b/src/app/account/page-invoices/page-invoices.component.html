@@ -12,20 +12,29 @@
                         <th>{{ 'TABLE_NUMBER' | translate }}</th>
                         <th>{{ 'TABLE_DATE' | translate }}</th>
                         <th>{{ 'TABLE_STATUS' | translate }}</th>
-                        <th>{{ 'TABLE_TOTAL' | translate }}</th>
-                    </tr>
+                        <th>{{ 'TABLE_TOTAL_WITHOUT_TAX' | translate }}</th>
+                        <th>{{ 'TABLE_TOTAL_WITH_TAX' | translate }}</th>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let invoice of list.items">
-                        <td>
-                            <a [href]="invoice.link" target="_blank">
-                                {{ 'FORMAT_ORDER_NUMBER' | translate:{number: invoice?.data?.invoiceNumber} }}
-                            </a>
+                    <tr *ngIf="isLoading">
+                        <td colspan="100">
+                            <nao-loader-table></nao-loader-table>
                         </td>
-                        <td>{{ 'FORMAT_DATE_MEDIUM' | translate:{date: invoice?.info?.createdAt} }}</td>
-                        <td>{{ invoice?.data?.status | titlecase }}</td>
-                        <td>{{ invoice?.fullData?.summary?.total | currencyFormat }}</td>
                     </tr>
+
+                    <ng-container *ngIf="!isLoading">
+                        <tr *ngFor="let item of list.items">
+                            <td>
+                                <a (click)="getPublicLink(item.docId)" href="javascript:void(0)" [class.disabled]="linkIsLoading">
+                                    {{ item?.data?.invoiceNumber }}
+                                </a>
+                            </td>
+                            <td>{{ 'FORMAT_DATE_MEDIUM' | translate:{date: item?.info?.createdAt} }}</td>
+                            <td><nao-status-pill [text]="item?.data?.status" *ngIf="item?.data?.status"></nao-status-pill></td>
+                            <td>{{ item?.data?.summary?.totalWithoutTax | currencyFormat }}</td>
+                            <td>{{ item?.data?.summary?.totalWithTax | currencyFormat }}</td>
+                        </tr>
+                    </ng-container>
                     </tbody>
                 </table>
             </div>

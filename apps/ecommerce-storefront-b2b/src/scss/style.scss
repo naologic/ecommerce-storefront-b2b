@@ -181,9 +181,106 @@ button.disabled, button:disabled {
 
 // message text
 .message-text-not-logged {
-    font-size: 13px;
-    font-weight: bold;
-    //color: #6c7177;
+    font-size: 11px;
+    font-weight: 500;
+    color: #6c7177;
     margin-top: 10px;
-    text-decoration: underline;
+}
+
+// *****************************************************
+// Nao badge pill
+.nao-badge-pill {
+    display: inline-block;
+    vertical-align: baseline;
+    padding: 0.375rem 0.625rem;
+    font-size: .75rem;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 13.5px;
+
+    &.badge-danger {
+        background-color: rgba(182,0,93,.2);
+        color: #db3e8e;
+    }
+
+    &.badge-success {
+        background-color: rgba(62,219,139,.2);
+        color: #08a268;
+    }
+
+    &.badge-grey {
+        background-color: rgba(104,113,150,.1);
+        color: #687196;
+    }
+
+    &.badge-secondary-500 {
+        background-color: #e4f1ff;
+        color: #0073ff;
+    }
+
+    &.badge-secondary-200 {
+        background-color: rgba(119,184,255,.2);
+        color: #0073ff;
+    }
+
+    &.badge-secondary-300 {
+        background-color: #e4f1ff;
+        color: #2cb1ff;
+    }
+
+    &.badge-warning {
+        background-color: rgba(255,165,68,.2);
+        color: #ffa544;
+    }
+
+    &.badge-purple {
+        background-color: #e7ccff;
+        color: #80f;
+    }
+
+    &.badge-magenta {
+        background-color: #ffe4fd;
+        color: #b800a9;
+    }
+
+    &.badge-primary {
+        background-color: rgba(62,64,219,.2);
+        color: #3e40db;
+    }
+}
+
+// *****************************************************
+// Table loader
+.nao-loader-table {
+    animation: fadeIn 1s infinite alternate;
+    margin: 0;
+
+    .row-loading {
+        height: 48.5px;
+        align-items: center;
+        display: flex;
+    }
+
+    .content-loading {
+        align-self: center;
+        border-radius: 4px;
+        background-color: #C8CFE9;
+        width: 100%;
+        min-height: 16px;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+}
+
+
+a {
+    &.disabled {
+        opacity: 0.6;
+    }
 }

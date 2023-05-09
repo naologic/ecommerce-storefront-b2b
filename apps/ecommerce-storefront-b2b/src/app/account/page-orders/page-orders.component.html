@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-header">
+        <h5>{{ 'HEADER_INVOICES_HISTORY' | translate }}</h5>
+    </div>
+    <ng-container *ngIf="list">
+        <div class="card-divider"></div>
+        <div class="card-table">
+            <div class="table-responsive-sm">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>{{ 'TABLE_NUMBER' | translate }}</th>
+                        <th>{{ 'TABLE_DATE' | translate }}</th>
+                        <th>{{ 'TABLE_STATUS' | translate }}</th>
+                        <th>{{ 'TABLE_SHIPPING_STATUS' | translate }}</th>
+                        <th>{{ 'TABLE_TOTAL_WITHOUT_TAX' | translate }}</th>
+                        <th>{{ 'TABLE_TOTAL_WITH_TAX' | translate }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngIf="isLoading">
+                        <td colspan="100">
+                            <nao-loader-table></nao-loader-table>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="!isLoading">
+                        <tr *ngFor="let item of list.items">
+                            <td>
+                                <a (click)="getPublicLink(item.docId)" href="javascript:void(0)" [class.disabled]="linkIsLoading">
+                                    {{ item?.data?.salesOrderNumber }}
+                                </a>
+                            </td>
+                            <td>{{ 'FORMAT_DATE_MEDIUM' | translate:{date: item?.info?.createdAt} }}</td>
+                            <td><nao-status-pill [text]="item?.data?.status" *ngIf="item?.data?.status"></nao-status-pill></td>
+                            <td><nao-status-pill [text]="item?.data?.shippingStatus" *ngIf="item?.data?.shippingStatus"></nao-status-pill></td>
+                            <td>{{ item?.data?.summary?.totalWithoutTax | currencyFormat }}</td>
+                            <td>{{ item?.data?.summary?.totalWithTax | currencyFormat }}</td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-footer">
+            <app-pagination [formControl]="currentPage" [siblings]="2" [total]="list.pages"></app-pagination>
+        </div>
+    </ng-container>
+</div>

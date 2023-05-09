@@ -1,0 +1,4 @@
+<ng-container *ngIf="status$">
+  <span class="nao-badge-pill" [ngClass]="status$.colorClass" *ngIf="displayAs === 'pill'">{{ status$.text | uppercaseFirst }}</span>
+  <ng-container *ngIf="displayAs === 'text'">{{ status$.text | uppercaseFirst }}</ng-container>
+</ng-container>

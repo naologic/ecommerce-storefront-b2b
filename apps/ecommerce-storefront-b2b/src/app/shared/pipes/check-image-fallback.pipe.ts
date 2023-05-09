@@ -6,11 +6,12 @@ import { Variant } from "../../interfaces/product";
 })
 export class CheckImageFallbackPipe implements PipeTransform {
     public transform(value: string, selectedVariant?: Variant): string {
-        if (selectedVariant?.images?.length && selectedVariant?.images[0]) {
-            return selectedVariant.images[0];
-        }
         // -->Fallback: image
         const fallback = 'assets/images/image-not-available.png';
+        // -->Check: selected variant
+        if (selectedVariant?.images?.length && selectedVariant?.images[0].cdnLink) {
+            return selectedVariant.images[0]?.cdnLink;
+        }
         // -->Check: image
         return (typeof value === 'string' && value) ? value : fallback
     }

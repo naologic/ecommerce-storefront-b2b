@@ -1,28 +1,9 @@
-
-
-
-
 <div class="block block-brands"
      [class.block-brands--layout--columns-12-full]="layout === 'columns-12-full'"
      [class.block-brands--layout--columns-8-full]="layout === 'columns-8-full'"
-     [class.block-brands--layout--columns-7-sidebar]="layout === 'columns-7-sidebar'" style="margin-top: 50px;">
-    
-    <div class="container partners_container">
-
-        <div class="row" style="padding: 0px 3%;" >
-            <div class="col-12 col-xl-1 brandlogo" *ngFor="let brand of partners">
-                <div class="col-12 col-xl-12" style="padding: 0px;">
-                    <div class="brand wow animate__  animate__fadeInUp animate__delay-1s" style="visibility: visible; animation-name: fadeInUp;">
-                        <img [src]="brand" alt="" class="img-fluid hvr-bob">
-                    </div>
-                </div>
-                <!-- <div class="col-12 col-xl-6">
-                    &nbsp;
-                </div> -->
-
-            </div>
-        </div>
-        <!-- <ul class="block-brands__list">
+     [class.block-brands--layout--columns-7-sidebar]="layout === 'columns-7-sidebar'">
+    <div class="container">
+        <ul class="block-brands__list">
             <ng-container *ngFor="let brand of partners">
                 <li class="block-brands__item">
                     <a href="javascript:void(0)" class="block-brands__item-link">
@@ -31,6 +12,6 @@
                 </li>
                 <li class="block-brands__divider" role="presentation"></li>
             </ng-container>
-        </ul> -->
+        </ul>
     </div>
 </div>

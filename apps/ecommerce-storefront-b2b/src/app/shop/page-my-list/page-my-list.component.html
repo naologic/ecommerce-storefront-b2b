@@ -1,7 +1,6 @@
 <!--Loading-->
 <nao-loading *ngIf="inProgress"></nao-loading>
-<!--Spacer-->
-<div class="nao-spacer-before-block-header"></div>
+
 <!--Content-->
 <div class="page-my-lists-content-wrapper" *ngIf="!inProgress">
     <app-block-header
@@ -33,9 +32,6 @@
     <!--Content state-->
     <ng-container *ngIf="data?.products?.length">
 
-        <!--Spacer-->
-        <div class="nao-spacer-after-header"></div>
-
         <div class="block">
             <div class="container container--max--xl">
                 <div class="mb-3">
@@ -51,7 +47,7 @@
                                 <th class='my-list__column my-list__column--head my-list__column--image'>{{ 'TABLE_IMAGE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_PRODUCT' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--product'>{{ 'TABLE_VARIANT' | translate }}</th>
-                                <th class='my-list__column my-list__column--head my-list__column--stock'>{{ 'TABLE_STOCK_STATUS' | translate }}</th>
+<!--                                <th class='my-list__column my-list__column&#45;&#45;head my-list__column&#45;&#45;stock'>{{ 'TABLE_STOCK_STATUS' | translate }}</th>-->
                                 <th class='my-list__column my-list__column--head my-list__column--price'>{{ 'TABLE_PRICE' | translate }}</th>
                                 <th class='my-list__column my-list__column--head my-list__column--button'></th>
                                 <th class='my-list__column my-list__column--head my-list__column--remove'></th>
@@ -83,19 +79,19 @@
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--product'>
                                     <div class='my-list__product-name'>
-                                        {{ item.variant?.variantName }}
+                                        {{ item.variant?.optionName }}
                                     </div>
                                 </td>
 
 
-                                <td class='my-list__column my-list__column--body my-list__column--stock'>
-                                    <app-status-badge
-                                        class="product__stock"
-                                        [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"
-                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"
-                                    ></app-status-badge>
-                                </td>
-                                <td class='my-list__column my-list__column--body my-list__column--price'>
+<!--                                <td class='my-list__column my-list__column&#45;&#45;body my-list__column&#45;&#45;stock'>-->
+<!--                                    <app-status-badge-->
+<!--                                        class="product__stock"-->
+<!--                                        [type]="item.product?.data?.availability|stockToStatusBadgeType:item.product?.data?.available"-->
+<!--                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"-->
+<!--                                    ></app-status-badge>-->
+<!--                                </td>-->
+                                <td class='my-list__column my-list__column--body my-list__column--price' *showIfLoggedIn>
                                     {{ item.variant?.price | currencyFormat }}
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--button'>

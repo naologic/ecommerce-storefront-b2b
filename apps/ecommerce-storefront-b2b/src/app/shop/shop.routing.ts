@@ -35,6 +35,7 @@ const routes: Routes = [
     {
         path: 'cart',
         component: PageCartComponent,
+        canActivate: [NaoUserPermissionsGuard]
     },
     {
         path: 'checkout',

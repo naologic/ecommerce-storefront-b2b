@@ -20,6 +20,7 @@ import { MyListsService } from '../../../services/my-lists.service';
 import { NaoUserAccessService } from '@naologic/nao-user-access';
 import { AppService } from "../../../app.service";
 import { ShopProductService } from "../../../shop/shop-product.service";
+import {appInfo$} from "../../../../app.static";
 
 @Component({
     selector: 'app-mobile-header',
@@ -80,9 +81,9 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: generalSettings info
-                this.generalSettings = value?.generalSettings;
+                this.generalSettings = value?.shopInfo?.general?.data;
             })
         );
     }

@@ -61,7 +61,7 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         this.myListsService.get(this.docId).subscribe((res) => {
             if (res && res.data) {
                 // -->Set: data
-                this.data = res.data;
+                this.data = res.data?.data;
             } else {
                 // -->Show: toaster
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
@@ -87,7 +87,7 @@ export class PageMyListComponent implements OnInit, OnDestroy {
         }
 
         // -->Get: list
-        const list = this.myListsService.myLists?.getValue().find(f => f._id === this.docId);
+        const list = this.myListsService.myLists?.getValue().find(f => f.docId === this.docId);
         if (!list) {
             return;
         }

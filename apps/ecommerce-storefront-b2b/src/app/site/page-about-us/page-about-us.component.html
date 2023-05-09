@@ -2,19 +2,20 @@
 <div class="nao-spacer-ledge-height"></div>
 
 <div class="block">
-    <div class="container" style="margin-top: 90px;">
+    <div class="container">
         <div class="document">
             <div class="document__header">
                 <h1 class="document__title">{{ 'TEXT_ABOUT_US_TITLE' | translate }}</h1>
             </div>
-            <div class="document__content card" *ngIf="generalSettings?.aboutUs">
+            <div class="document__content card" *ngIf="aboutUs">
                 <div class="typography">
-                    <p [innerHTML]="generalSettings?.aboutUs | sanitizeHtml"></p>
+                    <p [innerHTML]="aboutUs | sanitizeHtml"></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <!--Spacer-->
 <div class="nao-spacer-before-footer"></div>

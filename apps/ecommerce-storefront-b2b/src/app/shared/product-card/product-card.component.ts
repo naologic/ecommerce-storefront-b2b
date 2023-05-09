@@ -89,7 +89,9 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
 
 
     public ngOnChanges(changes: SimpleChanges): void {
-        if (changes.product) {
+        if (changes.product?.currentValue) {
+
+            this.product = changes.product?.currentValue;
             // this.featuredAttributes = this.product.attributes.filter(x => x.featured);
 
             // -->Calculate: min and max price for this product
@@ -106,7 +108,6 @@ export class ProductCardComponent implements OnChanges, OnInit, OnDestroy {
      * Show: product quickview
      */
     public showQuickView(): void {
-
         // -->Check: if quickview is being shown already
         if (this.showingQuickview) {
             return;

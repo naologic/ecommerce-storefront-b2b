@@ -16,7 +16,7 @@ export class PageLoginComponent implements OnInit, OnDestroy {
     public loginInProgress = false;
     public errorMessage = 'INVALID_LOGIN';
     public errorMessageExtraData = {};
-    public userData = null;
+
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -43,9 +43,6 @@ export class PageLoginComponent implements OnInit, OnDestroy {
         if (this.loginInProgress || this.formGroup.invalid) {
             return;
         }
-        // --> SetCurrentUser 
-        // const user = this.formGroup.value; 
-        // localStorage.setItem('user',user.email); 
         // -->Get: formGroup data
         const fd = this.formGroup.getRawValue();
 
@@ -55,11 +52,7 @@ export class PageLoginComponent implements OnInit, OnDestroy {
         this.naoUsersService
             .loginWithEmail(fd.email, fd.password, fd.rememberMe)
             .then((res) => {
-                this.naoUsersService.userData.subscribe(userData => {
-                    // -->Set: user data
-                    this.userData = userData;
-                    localStorage.setItem("user", JSON.stringify(userData));
-                })
+                // -->Done: loading
                 this.loginInProgress = false;
                 // -->Redirect
                 return this.router.navigate(['/', 'account', 'dashboard']);

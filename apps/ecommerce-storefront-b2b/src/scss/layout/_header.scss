@@ -162,13 +162,13 @@ $header-variant-name: classic-one;
 @if(map_get($header-scheme, main) == map_get($navbar-scheme, main)) {
     .header__navbar {
         border-top: 1px solid map_get($header-scheme, divider);
-        margin-top: -12px;
+
         @if ($navbar-stretch) {
             height: 47px;
             padding-top: 0;
             padding-bottom: 0;
         } @else {
-            height: 45px;
+            height: 53px;
         }
     }
 } @else if($navbar-stretch) {
@@ -963,15 +963,11 @@ $local-gutter: 5px;
     }
 
     .departments__button-icon {
-        color: #fff; /*map_get($scheme, icon-color);*/
+        color: map_get($scheme, icon-color);
     }
-    // .departments__button-arrow {
-    //     color: map_get($scheme, arrow-color);
-    // }
     .departments__button-arrow {
-        color: #fff;
+        color: map_get($scheme, arrow-color);
     }
-
 }
 
 .departments {
@@ -1153,18 +1149,11 @@ $local-gutter: 5px;
             visibility: visible;
             opacity: 1;
             transform: translateY(0);
-            max-height: 400px;
-            overflow-x: hidden;
-            overflow-y: scroll;
         }
         .departments__button-arrow {
             transform: rotate(180deg);
         }
     }
-}
-.departments__button{
-    background-color: #fd7e14;
-    color: #fff;
 }
 .departments__button:hover,
 .departments--open .departments__button {
@@ -1475,17 +1464,17 @@ $local-open-transition-duration: .2s;
     }
     &__counter {
         position: absolute;
-        top: 10px;
+        top: 5px;
         font-size: 10px;
-        line-height: 1.5;
-        padding: 2px 7px 2px;
-        border-radius: 50%;
+        line-height: 1;
+        padding: 2px 3px 1px;
+        border-radius: (13px / 2);
         text-align: center;
         z-index: 0;
         color: map_get($indicator-counter-scheme, opposite);
 
         @include direction {
-            #{$inset-inline-end}: 10px;
+            #{$inset-inline-end}: 4px;
         }
 
         &:before {
@@ -1495,13 +1484,13 @@ $local-open-transition-duration: .2s;
             top: 0;
             bottom: 0;
             z-index: -1;
-            border-radius: 50%;
+            border-radius: 2.5px;
             background-color: map_get($indicator-counter-scheme, main);
 
             @include direction {
                 #{$inset-inline-start}: 0;
                 #{$inset-inline-end}: 0;
-                //transform: skewX(#{-11deg * $transform-direction});
+                transform: skewX(#{-11deg * $transform-direction});
             }
         }
 
@@ -1936,25 +1925,3 @@ $local-transition-duration: .2s;
 }
 
 @include local-topbar-define-scheme($topbar-scheme);
-
-/* width */
-::-webkit-scrollbar {
-    width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: red; 
-    border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #b30000; 
-}

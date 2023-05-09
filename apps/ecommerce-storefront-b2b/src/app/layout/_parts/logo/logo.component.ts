@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AppService } from "../../../app.service";
+import {appInfo$} from "../../../../app.static";
 
 @Component({
     selector: 'app-logo',
@@ -18,9 +19,9 @@ export class LogoComponent implements OnInit, OnDestroy {
     public ngOnInit(): void {
         // -->Subscribe: to appInfo changes
         this.subs.add(
-            this.appService.appInfo.subscribe(value => {
+            appInfo$.subscribe(value => {
                 // -->Set: generalSettings info
-                this.generalSettings = value?.generalSettings;
+                this.generalSettings = value?.shopInfo?.general?.data;
             })
         );
     }

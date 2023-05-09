@@ -124,18 +124,18 @@
 }
 .product__form {
     display: block;
-    //background: $product-form-bg-color;
+    background: $product-form-bg-color;
     margin-bottom: 24px;
     margin-top: -4px;
-    //padding: 16px 28px 18px;
-    //border-top: 1px solid map_get($card-scheme, divider);
+    padding: 16px 28px 18px;
+    border-top: 1px solid map_get($card-scheme, divider);
     border-bottom: 1px solid map_get($card-scheme, divider);
 }
 .product__actions {
     display: flex;
     flex-wrap: wrap;
     //white-space: nowrap;
-    //padding: 0 28px 24px;
+    padding: 0 28px 24px;
     margin-top: -20px;
 }
 .product__actions-item--quantity {
@@ -155,7 +155,7 @@
 .product__actions-item--my-lists,
 .product__actions-item--compare {
     position: relative;
-    //margin-top: 14px;
+    margin-top: 14px;
     margin-bottom: -8px;
     font-size: 13px;
     line-height: 16px;
@@ -183,7 +183,7 @@
         top: -1px;
 
         @include direction {
-           // #{$margin-inline-end}: 8px;
+            #{$margin-inline-end}: 8px;
         }
     }
 
@@ -193,7 +193,6 @@
     &:hover {
         background: map_get($my-lists-button-scheme, hover-bg-color);
         fill: map_get($my-lists-button-scheme, hover-icon-color);
-        border: solid 2px rgb(253 126 20);
     }
     &:active {
         background: map_get($my-lists-button-scheme, active-bg-color);

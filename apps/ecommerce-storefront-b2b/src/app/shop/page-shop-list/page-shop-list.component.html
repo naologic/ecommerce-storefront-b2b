@@ -1,25 +1,27 @@
 <!--Page header + breadcrumbs-->
-<!--Spacer-->
-<div class="nao-spacer-before-block-header"></div>
-<!--Spacer-->
-<app-block-header [pageTitle]="pageTitle$ || ''" [breadcrumb]="breadcrumbs || []"></app-block-header>
+<app-block-header
+    [pageTitle]="pageTitle$ || ''"
+    [breadcrumb]="breadcrumbs || []"
+></app-block-header>
 
 <!--Content-->
-<div class="container listing-sections" *ngIf="data">
-    <div class="row">
-        <div class="col-md-12">
+<div class="block-split block-split--has-sidebar" *ngIf="data">
+    <div class="container">
+        <div class="block-split__row row no-gutters">
             <!--Sidebar-->
-            <section id="sidebar">
+            <div class="block-split__item block-split__item-sidebar col-auto">
                 <app-shop-sidebar #sidebar></app-shop-sidebar>
-            </section>
+            </div>
             <!--Products view-->
-            <div id="products">
-                <div class="container">
+            <div class="block-split__item block-split__item-content col-auto">
+                <div class="block">
 
                     <div class="products-view" [class.products-view--loading]="status === 'loading'">
-                        <div class="" [formGroup]="filterFormGroup">
-                            <div class="">
-                                <!-- <div class="view-options__body">
+                        <div class="products-view__body" [formGroup]="filterFormGroup">
+                            <div class="products-view__loader"></div>
+                            <div
+                                class="products-view__options view-options view-options--offcanvas--mobile">
+                                <div class="view-options__body">
                                     <button type="button" class="view-options__filters-button filters-button" (click)="sidebar.open()">
                                         <span class="filters-button__icon"><app-icon icon="filters-16"></app-icon></span>
                                         <span class="filters-button__title">{{ 'BUTTON_FILTERS' | translate }}</span>
@@ -68,45 +70,15 @@
                                         </select>
 
                                     </div>
-                                </div> -->
-                                <div class="pro-filters">
-                                    <div class="text-muted m-2 show-resu" id="res" style="font-size: 14px">
-                                        {{ 'TEXT_SHOWING_PRODUCTS' | translate:{
-                                        from: data.from || 0,
-                                        to: data.to || 0,
-                                        total: data.total || 0
-                                        } }}</div>
-                                    <div class="filter-01">
-                                        <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">Sort
-                                                by</span>
-                                            <select id="sort" name="sort" formControlName="sort">
-                                                <option value="name_asc">{{ 'INPUT_SORT_OPTION_NAME_ASC' | translate }}
-                                                </option>
-                                                <option value="name_desc">{{ 'INPUT_SORT_OPTION_NAME_DESC' | translate
-                                                    }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="filter-02">
-                                        <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">{{
-                                                'INPUT_LIMIT_LABEL' | translate }}:</span>
-                                            <select id="sort" name="sort" formControlName="limit">
-                                                <option value="8">8</option>
-                                                <option value="16">16</option>
-                                                <option value="24">24</option>
-                                                <option value="32">32</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div class="view-options__body view-options__body--filters"
-                                    *ngIf="activeFilters?.length">
+
+                                <div class="view-options__body view-options__body--filters" *ngIf="activeFilters?.length">
                                     <div class="view-options__label">{{ 'TEXT_ACTIVE_FILTERS' | translate }}</div>
                                     <div class="view-options__applied-filters applied-filters">
                                         <ul class="applied-filters__list">
-                                            <li *ngFor="let filter of activeFilters; trackBy: trackBySlug"
-                                                class="applied-filters__item">
-                                                <button type="button"
+                                            <li *ngFor="let filter of activeFilters; trackBy: trackBySlug" class="applied-filters__item">
+                                                <button
+                                                    type="button"
                                                     class="applied-filters__button applied-filters__button--filter"
                                                     (click)="resetFilter(filter)">
                                                     {{ filter | activeFilterLabel }}
@@ -114,7 +86,8 @@
                                                 </button>
                                             </li>
                                             <li class="applied-filters__item">
-                                                <button type="button"
+                                                <button
+                                                    type="button"
                                                     class="applied-filters__button applied-filters__button--clear"
                                                     (click)="resetAllFilters()">
                                                     {{ 'BUTTON_CLEAR_ALL' | translate }}
@@ -136,8 +109,7 @@
                                         {{ 'TEXT_NO_MATCHING_ITEMS_SUBTITLE' | translate }}
                                     </div>
                                     <div class="products-view__empty-actions">
-                                        <button type="button" class="btn btn-primary btn-sm"
-                                            (click)="resetAllFilters()">
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="resetAllFilters()">
                                             {{ 'BUTTON_RESET_FILTERS' | translate }}
                                         </button>
                                     </div>
@@ -155,50 +127,42 @@
 
                             <!--View products-->
                             <div class="products-view__list products-list products-list--grid--4"
-                                *ngIf="data.items.length"
-                                [attr.data-layout]="viewLayout === 'grid-with-features' ? 'grid' : viewLayout"
-                                [attr.data-with-features]="viewLayout === 'grid-with-features' ? 'true' : 'false'">
+                                 *ngIf="data.items.length"
+                                 [attr.data-layout]="viewLayout === 'grid-with-features' ? 'grid' : viewLayout"
+                                 [attr.data-with-features]="viewLayout === 'grid-with-features' ? 'true' : 'false'">
                                 <!--Product list header-->
                                 <div class="products-list__head">
-                                    <div class="products-list__column products-list__column--image">{{ 'TABLE_IMAGE' |
-                                        translate }}</div>
-                                    <div class="products-list__column products-list__column--meta">{{ 'TABLE_SKU' |
-                                        translate }}</div>
-                                    <div class="products-list__column products-list__column--product">{{ 'TABLE_PRODUCT'
-                                        | translate }}</div>
+                                    <div class="products-list__column products-list__column--image">{{ 'TABLE_IMAGE' | translate }}</div>
+                                    <div class="products-list__column products-list__column--meta">{{ 'TABLE_SKU' | translate }}</div>
+                                    <div class="products-list__column products-list__column--product">{{ 'TABLE_PRODUCT' | translate }}</div>
 
                                     <!--Show rating only if it's allowed in settings-->
-                                    <div class="products-list__column products-list__column--rating"
-                                        *ngIf="appSettings?.rating">{{ 'TABLE_RATING' | translate }}</div>
+                                    <div class="products-list__column products-list__column--rating" *ngIf="appSettings?.rating">{{ 'TABLE_RATING' | translate }}</div>
 
-                                    <div class="products-list__column products-list__column--price">{{ 'TABLE_PRICE' |
-                                        translate }}</div>
+                                    <div class="products-list__column products-list__column--price">{{ 'TABLE_PRICE' | translate }}</div>
                                 </div>
 
 
                                 <!--Iterate: over products-->
-
                                 <div class="products-list__content">
-                                    <div *ngFor="let product of data.items; trackBy: trackByProductId"
-                                        class="products-list__item">
+                                    <div *ngFor="let product of data.items; trackBy: trackByProductId" class="products-list__item">
                                         <app-product-card [product]="product"></app-product-card>
                                     </div>
                                 </div>
                             </div>
 
                             <!--Pagination-->
-                            <div class="row-pagi" *ngIf="data.items.length">
-
-                                <app-pagination formControlName="page" [siblings]="2" [total]="data.pages">
-                                </app-pagination>
-
-                                <!-- <div class="products-view__pagination-legend">
+                            <div class="products-view__pagination" *ngIf="data.items.length">
+                                <nav aria-label="Page navigation example">
+                                    <app-pagination formControlName="page" [siblings]="2" [total]="data.pages"></app-pagination>
+                                </nav>
+                                <div class="products-view__pagination-legend">
                                     {{ 'TEXT_SHOWING_PRODUCTS' | translate:{
                                     from: data.from,
                                     to: data.to,
                                     total: data.total
                                 } }}
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>

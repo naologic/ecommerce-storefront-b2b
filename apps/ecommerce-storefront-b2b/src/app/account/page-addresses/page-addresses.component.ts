@@ -5,6 +5,9 @@ import { Subject, Subscription } from 'rxjs';
 import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-access";
 import { UrlService } from '../../services/url.service';
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
+import { accountData$ } from "../../../app.static";
+import { AppService } from "../../app.service";
 
 @Component({
     selector: 'app-page-addresses',
@@ -19,24 +22,24 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
 
 
     constructor(
-        private naoUsersService: NaoUserAccessService,
-        public url: UrlService,
-        private toastr: ToastrService,
-        private translate: TranslateService,
-        private userProfileService: AccountProfileService,
+        private readonly appService: AppService,
+        private readonly naoUsersService: NaoUserAccessService,
+        public readonly url: UrlService,
+        private readonly toastr: ToastrService,
+        private readonly translate: TranslateService,
+        private readonly userProfileService: AccountProfileService,
     ) { }
 
 
     public ngOnInit(): void {
-        // -->Subscribe: to linkedDoc
+        // -->Set: addresses
+        this.addresses = accountData$.getValue()?.addresses || [];
+        // -->Subscribe: to account data
         this.subs.add(
-            this.naoUsersService.linkedDoc.subscribe(linkedDoc => {
-                // -->Check: if there is an address
-                if (Array.isArray(linkedDoc?.data?.addresses) && linkedDoc.data.addresses.length) {
-                    // -->Set: first address as default for now
-                    this.addresses = linkedDoc.data.addresses;
-                }
-            })
+            accountData$.subscribe((accountData) => {
+                // -->Set: account information
+                this.addresses = Array.isArray(accountData?.addresses) ? accountData.addresses : [];
+            }),
         )
     }
 
@@ -59,35 +62,35 @@ export class PageAddressesComponent implements OnInit, OnDestroy {
         }
 
         // -->Update
-        this.userProfileService.update('addresses', data).subscribe(res => {
-            if (res && res.ok) {
-                // -->Refresh: session data
-                this.naoUsersService.refreshSessionData().then(res => {
-                    // -->Done: loading
-                    const index = this.removeInProgress.indexOf(address.id);
-                    // -->Filter: addresses
-                    this.addresses = this.addresses.filter(item => item.id !== address.id);
+        this.userProfileService.updateAccountData("addresses", { data, docId: NaoUserAccessData.userId.getValue()  }).subscribe(
+            (res) => {
+                if (res && res.ok) {
+                    // -->Refresh: account data information
+                    this.appService.getAccountDataInformation().then(res => {
+                        // -->Done: loading
+                        const index = this.removeInProgress.indexOf(address.id);
+                        // -->Filter: addresses
+                        this.addresses = this.addresses.filter((item) => item.id !== address.id);
 
-                    if (index !== -1) {
-                        this.removeInProgress.splice(index, 1);
-                    }
+                        if (index !== -1) {
+                            this.removeInProgress.splice(index, 1);
+                        }
+                        // -->Show: toaster
+                        this.toastr.success(this.translate.instant("TOASTER_ADDRESS_DELETED"));
+                    }).catch(err => {
+                        // -->Show: toaster
+                        this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                    })
+                } else {
                     // -->Show: toaster
-                    this.toastr.success(
-                        this.translate.instant('TOASTER_ADDRESS_DELETED'),
-                    );
-
-                }).catch(err => {
-                    // -->Show: toaster
-                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-                })
-            } else {
+                    this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+                }
+            },
+            (error) => {
                 // -->Show: toaster
-                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-            }
-        }, error => {
-            // -->Show: toaster
-            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        })
+                this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+            },
+        );
     }
 
 

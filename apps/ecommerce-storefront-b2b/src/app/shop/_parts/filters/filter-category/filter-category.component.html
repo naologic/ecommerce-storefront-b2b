@@ -1,34 +1,40 @@
-
+<div class="filter-category">
     <ng-template #parent let-item="item">
         <ng-container *ngIf="item.parent">
             <ng-container *ngTemplateOutlet="parent; context: {item: item.parent}"></ng-container>
         </ng-container>
-        <a class="sb-link" href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.name }}</a>
+        <li class="filter-category__item filter-category__item--parent">
+            <span class="filter-category__arrow">
+                <app-icon icon="arrow-rounded-left-6x9"></app-icon>
+            </span>
+            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.data?.name }}</a>
+        </li>
     </ng-template>
-    <div class="py-2 border-bottom ml-3">
-        <a *ngIf="options.value" class="sb-link">
-            <p>  <b><a href="javascript:void(0)" (click)="redirectToAllProducts()">{{ 'LINK_ALL_PRODUCTS' | translate }}</a></b></p> 
-        </a>
-        <h6 class="font-weight-bold">Categories</h6>
-            <div id="orange"><span class="fa fa-minus"></span></div>
-        <div class="cat-box scrollable">
-            <ul>
-           
-            <ng-container *ngFor="let item of options.items">
-                <ng-container *ngIf="item.parent">
-                    <ng-container *ngTemplateOutlet="parent; context: {item: item.parent}"></ng-container>
-                </ng-container>
-                <b></b>
-                <li class="" [class.filter-category__item--current]="+options.value === item.id">
-                    <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.name }}</a>
-                </li>
-                <ng-container *ngFor="let child of item.children">
-                    <li class="">
-                        <a href="javascript:void(0)" (click)="redirectCategory(child)">{{ child.name }}</a>
-                    </li>
-                </ng-container>
-            </ng-container>
-        </ul>
-    </div>
+    <ul class="filter-category__list">
+    <li
+        *ngIf="options.value"
+        class="filter-category__item filter-category__item--parent"
+    >
+        <span class="filter-category__arrow">
+            <app-icon icon="arrow-rounded-left-6x9"></app-icon>
+        </span>
+        <a href="javascript:void(0)" (click)="redirectToAllProducts()">{{ 'LINK_ALL_PRODUCTS' | translate }}</a>
+    </li>
+    <ng-container *ngFor="let item of options.items">
+        <ng-container *ngIf="item.parent">
+            <ng-container *ngTemplateOutlet="parent; context: {item: item.parent}"></ng-container>
+        </ng-container>
+        <li
+            class="filter-category__item"
+            [class.filter-category__item--current]="options.value === item.docId"
+        >
+            <a href="javascript:void(0)" (click)="redirectCategory(item)">{{ item.data.name }}</a>
+        </li>
+        <ng-container *ngFor="let child of item.children">
+            <li class="filter-category__item filter-category__item--child">
+                <a href="javascript:void(0)" (click)="redirectCategory(child)">{{ child.data.name }}</a>
+            </li>
+        </ng-container>
+    </ng-container>
+</ul>
 </div>
-    

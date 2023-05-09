@@ -1,18 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { ToastrService } from "ngx-toastr";
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from "rxjs";
 import { generateRandomString } from "@naologic/nao-utils";
 import { NaoUserAccessService, NaoUsersInterface } from "@naologic/nao-user-access";
 import { ActiveCountryList } from "../../app.locale";
 import { AccountProfileService } from "../account-profile.service";
+import { NaoUserAccessData } from "../../../../../../libs/nao-user-access/src";
+import { accountData$ } from "../../../app.static";
+import { AppService } from "../../app.service";
 
 @Component({
-    selector: 'app-page-edit-address',
-    templateUrl: './page-edit-address.component.html',
-    styleUrls: ['./page-edit-address.component.scss'],
+    selector: "app-page-edit-address",
+    templateUrl: "./page-edit-address.component.html",
+    styleUrls: ["./page-edit-address.component.scss"],
 })
 export class PageEditAddressComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
@@ -25,53 +28,43 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
     // -->Set: countries
     public countries = ActiveCountryList;
     public formGroup: FormGroup = new FormGroup({
-        city: new FormControl("", {validators: [Validators.required]}),
-        country: new FormControl('USA', {validators: [Validators.required]}),
+        city: new FormControl("", { validators: [Validators.required] }),
+        country: new FormControl("USA", { validators: [Validators.required] }),
         id: new FormControl(generateRandomString(12)),
-        line_1: new FormControl("", {validators: [Validators.required]}),
-        line_2: new FormControl(""),
-        state: new FormControl("", {validators: [Validators.required]}),
-        type: new FormControl('shipping', {validators: [Validators.required]}),
-        zip: new FormControl(null, {validators: [Validators.required]}),
+        line1: new FormControl("", { validators: [Validators.required] }),
+        line2: new FormControl(""),
+        state: new FormControl("", { validators: [Validators.required] }),
+        type: new FormControl("shipping", { validators: [Validators.required] }),
+        zip: new FormControl(null, { validators: [Validators.required] }),
     });
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private naoUsersService: NaoUserAccessService,
-        private toastr: ToastrService,
-        private translate: TranslateService,
-        private userProfileService: AccountProfileService,
-    ) {
-    }
+    constructor(private appService: AppService, private router: Router, private route: ActivatedRoute, private naoUsersService: NaoUserAccessService, private toastr: ToastrService, private translate: TranslateService, private userProfileService: AccountProfileService) {}
 
     public ngOnInit(): void {
         // -->Set: addresses
-        this.addresses = this.naoUsersService.linkedDoc.getValue()?.data?.addresses || [];
+        this.addresses = accountData$.getValue()?.addresses || [];
 
         // -->Subscribe: on route change
         this.subs.add(
-            this.route.params
-                .subscribe(params => {
-                    // -->Set: address id
-                    this.addressId = params.id;
-                    // -->Search: for address
-                    const address = this.addresses.find(item => item.id === this.addressId);
-                    if (address) {
-                        // -->Update: form group
-                        this.formGroup.setValue({
-                            id: address.id,
-                            country: address.country,
-                            line_1: address.line_1,
-                            line_2: address.line_2,
-                            city: address.city,
-                            state: address.state,
-                            type: address.type,
-                            zip: address.zip,
-                        });
-                    }
-                    }
-                )
+            this.route.params.subscribe((params) => {
+                // -->Set: address id
+                this.addressId = params.id;
+                // -->Search: for address
+                const address = this.addresses.find((item) => item.id === this.addressId);
+                if (address) {
+                    // -->Update: form group
+                    this.formGroup.setValue({
+                        id: address.id,
+                        country: address.country,
+                        line1: address.line1,
+                        line2: address.line2,
+                        city: address.city,
+                        state: address.state,
+                        type: address.type,
+                        zip: address.zip,
+                    });
+                }
+            }),
         );
     }
 
@@ -94,7 +87,7 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
         // -->Check: if it's edit or create
         if (this.addressId) {
             // -->Find: index
-            const index = this.addresses.findIndex(item => item.id === this.addressId);
+            const index = this.addresses.findIndex((item) => item.id === this.addressId);
             if (index > -1) {
                 // -->Update: address
                 this.addresses[index] = address;
@@ -104,52 +97,49 @@ export class PageEditAddressComponent implements OnInit, OnDestroy {
             this.addresses.unshift(address);
         }
 
-        // -->Set: data
-        const data = {
-            addresses: this.addresses
-        }
 
         // -->Update
-        this.userProfileService.update('addresses', data).subscribe(res => {
-            if (res && res.ok) {
-                // -->Refresh: session data
-                this.naoUsersService.refreshSessionData().then(res => {
-                    // -->Done: loading
-                    this.saveInProgress = false;
+        this.userProfileService
+            .updateAccountData("addresses", {
+                data: {
+                    addresses: this.addresses
+                },
+                docId: NaoUserAccessData.userId.getValue(),
+            })
+            .subscribe(
+                (res) => {
+                    if (res && res.ok) {
+                        // -->Refresh: account data information
+                        this.appService.getAccountDataInformation().then(res => {
+                            // -->Done: loading
+                            this.saveInProgress = false;
+                            // -->Redirect:
+                            this.router.navigateByUrl('/account/addresses').then((res => {
+                                // -->Show: toaster
+                                this.toastr.success(this.translate.instant(this.addressId ? 'TOASTER_ADDRESS_UPDATED' : 'TOASTER_ADDRESS_CREATED'));
+                            }));
+                        }).catch(err => {
+                            // -->Done: loading
+                            this.saveInProgress = false;
+                            // -->Show: toaster
+                            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
+                        })
 
-                    // -->Check: if it's edit or create
-                    if (this.addressId) {
-                        // -->Show: toaster
-                        this.toastr.success(
-                            this.translate.instant('TOASTER_ADDRESS_UPDATED'),
-                        );
                     } else {
+                        // -->Done: loading
+                        this.saveInProgress = false;
                         // -->Show: toaster
-                        this.toastr.success(
-                            this.translate.instant('TOASTER_ADDRESS_CREATED'),
-                        );
+                        this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
                     }
-
-                }).catch(err => {
+                },
+                (error) => {
                     // -->Done: loading
                     this.saveInProgress = false;
                     // -->Show: toaster
-                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-                })
-            } else {
-                // -->Done: loading
-                this.saveInProgress = false;
-                // -->Show: toaster
-                this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-            }
-        }, error => {
-            // -->Done: loading
-            this.saveInProgress = false;
-            // -->Show: toaster
-            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        })
+                    this.toastr.error(this.translate.instant("ERROR_API_REQUEST"));
+                },
+            );
     }
-
 
     public ngOnDestroy(): void {
         this.subs.unsubscribe();

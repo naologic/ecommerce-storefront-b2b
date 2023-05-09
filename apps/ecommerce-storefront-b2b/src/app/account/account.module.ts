@@ -13,6 +13,7 @@ import { PageProfileComponent } from './page-profile/page-profile.component';
 import { PageRegisterComponent } from './page-register/page-register.component';
 import { PageForgotPasswordComponent } from './page-forgot-password/page-forgot-password.component';
 import { AuthGuard } from "./auth-guard";
+import { PageOrdersComponent } from "./page-orders/page-orders.component";
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { AuthGuard } from "./auth-guard";
         PageEditAddressComponent,
         PageLoginComponent,
         PageInvoicesComponent,
+        PageOrdersComponent,
         PagePasswordComponent,
         PageProfileComponent,
         PageRegisterComponent,

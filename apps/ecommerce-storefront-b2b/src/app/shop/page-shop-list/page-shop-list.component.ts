@@ -15,6 +15,8 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ShopProductService } from "../shop-product.service";
 import { NaoUserAccessService } from "../../../../../../libs/nao-user-access/src";
 import { ActiveFilter, LayoutButton, PageShopLayout } from "../../interfaces/list";
+import { appInfo$ } from "../../../app.static";
+import { naoFetchInit } from "../../../../../../libs/nao-utils/src/lib/nao-fetch.init";
 
 
 
@@ -55,6 +57,10 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         limit: new FormControl(this.shopService.defaultOptions.limit),
         sort: new FormControl(this.shopService.defaultOptions.sort),
     });
+    /**
+     * Fetch
+     */
+    private fetch = naoFetchInit();
 
 
 
@@ -110,7 +116,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         this.subs.add(
             this.shopService.activeFilters.subscribe(value => {
                 // -->Set: active filters
-                this.activeFilters = Array.isArray(value) ? value : [];
+                this.activeFilters = Array.isArray(value) ? value.filter(f => f.type !== 'category') : [];
             })
         );
 
@@ -124,18 +130,21 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         )
 
         // -->Subscribe: to params change and reset filters based on state flag
-        this.subs.add(
-            this.route.params.subscribe(v => {
-                if (history?.state?.resetFilters) {
-                    this.shopService.resetAllFilters();
-                }
-            })
-        );
+        // this.subs.add(
+        //     this.route.params.subscribe(v => {
+        //         if (history?.state?.resetFilters) {
+        //             this.shopService.resetAllFilters();
+        //         }
+        //     })
+        // );
 
 
         // -->Subscribe: to params and query params
         this.subs.add(combineLatest([this.route.params, this.route.queryParams])
-            .subscribe(() => {
+            .subscribe((params$) => {
+                if (history?.state?.resetFilters) {
+                    this.shopService.resetAllFilters();
+                }
                 this.refresh();
             })
         );
@@ -155,106 +164,118 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             this.refreshSubs.unsubscribe();
             this.refreshSubs = null;
         }
+        // -->Set: fetchId
+        const fetchId = `list-products`;
         // -->Start: loading
         this.status = 'loading';
 
-        // -->Get: category id
-        const categoryId: number = this.route.snapshot.params.categoryId ? +this.route.snapshot.params.categoryId : undefined;
+        // -->Cancel: debouncer (if any)
+        this.fetch.f(fetchId).cancelDebounce();
 
-        // -->Create: filters options
-        const options = {
-            ...this.shopService.options,
-            filters: {
-                ...this.shopService.options.filters,
-                category: categoryId,
-            },
-        } as any;
+        // -->Set: debouncer
+        this.fetch.f(fetchId).setDebounce(() => {
+            // -->Get: category id
+            const categoryId: string = this.route.snapshot.params.categoryId;
 
-        // -->Get: Selected manufacturers
-        const selectedManufacturerIds = options.filters.manufacturer?.split(',')?.filter((f) => f) || [];
+            // -->Create: filters options
+            const options = {
+                ...this.shopService.options,
+                filters: {
+                    ...this.shopService.options.filters,
+                    category: categoryId,
+                },
+            } as any;
 
-        // -->Create: query
-        const query = {
-            searchTerm: options.searchTerm,
-            categoryId: options.filters.category,
-            manufacturerIds: selectedManufacturerIds,
-            sortBy: 'name',
-            sortOrder: options.sort === 'name_asc' ? 1 : -1, // 1 = asc/ -1 = desc
-            pageSize: options.limit || this.shopService.defaultOptions.limit,
-            pageNo: options.page || this.shopService.defaultOptions.page,
-            calculateFilters: true
-        } as any;
+            // -->Get: Selected manufacturers
+            const selectedManufacturerIds = options.filters.manufacturer?.split(',')?.filter((f) => f) || [];
 
-        // -->Get: min and max price range
-        let minPrice, maxPrice;
-        // -->Check: if there is a price already set, you are logged in and that you have a price filter
-        if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue() && options.filters.price?.split('-')?.length) {
-            // -->Split: string to get min and max price
-            [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
-            // -->Set: only if both of them are numbers
-            if (!isNaN(minPrice) && !isNaN(maxPrice)) {
-                query.minPrice = minPrice;
-                query.maxPrice = maxPrice;
+            // -->Create: query
+            const query = {
+                searchTerm: options.searchTerm,
+                categoryId: options.filters.category,
+                manufacturerIds: selectedManufacturerIds,
+                sortBy: 'name',
+                sortOrder: options.sort === 'name_asc' ? 1 : -1, // 1 = asc/ -1 = desc
+                pageSize: options.limit || this.shopService.defaultOptions.limit,
+                pageNo: options.page || this.shopService.defaultOptions.page,
+                calculateFilters: true
+            } as any;
+
+            // -->Get: min and max price range
+            let minPrice, maxPrice;
+            // -->Check: if there is a price already set, you are logged in and that you have a price filter
+            if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue() && options.filters.price?.split('-')?.length) {
+                // -->Split: string to get min and max price
+                [minPrice, maxPrice] = options.filters.price?.split('-').map(p => +p);
+                // -->Set: only if both of them are numbers
+                if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+                    query.minPrice = minPrice;
+                    query.maxPrice = maxPrice;
+                }
             }
-        }
 
 
-        // -->Execute
-        this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
-            // -->Check: res
-            if (res && res.ok && res.data) {
-                // -->Init: filters
-                const filters = [];
+            // -->Execute
+            this.refreshSubs = this.eCommerceService.productsFilter(query).subscribe((res) => {
 
-                // -->Push: category filters
-                filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], categoryId));
+                // -->Check: response
+                if (res?.ok && res?.data) {
+                    // -->Init: filters
+                    const filters = [];
 
-                // -->Check: if we show the price filter
-                if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
-                    const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
-                    // --->Push: price filter
-                    filters.push(filterPrice);
+                    // -->Push: category filters
+                    filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], categoryId));
+
+                    // -->Check: if we show the price filter
+                    if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
+                        const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
+                        // --->Push: price filter
+                        filters.push(filterPrice);
+                    }
+
+                    // -->Push: manufacturers filter
+                    filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
+
+                    // -->Compute: total pages and current page based on response data count and page size
+                    const pages = Math.ceil(res.data?.filterInfo?.count / query.pageSize);
+                    const page = options.page > pages ? 1 : options.page;
+
+                    // -->Update: breadcrumbs
+                    this.updateBreadcrumbs(categoryId);
+
+                    // -->Set: data
+                    this.data = {
+                        items: res.data.items || [],
+                        filters: filters,
+                        page: page,
+                        limit: query.pageSize,
+                        sort: options.sort || this.shopService.defaultOptions.sort,
+                        total: res.data?.filterInfo?.count || 0,
+                        pages: pages,
+                        from: (page - 1) * query.pageSize + 1 <= res.data?.filterInfo?.count ? (page - 1) * query.pageSize + 1 : 0,
+                        to: (page * query.pageSize) < res.data?.filterInfo?.count ? (page * query.pageSize) : res.data?.filterInfo?.count,
+                    }
+                    // -->Done: loading
+                    this.status = 'done';
+                    // -->Set: List and calculate pages and everything
+                    this.shopService.setList(this.data);
+
+                } else {
+                    // -->Done: loading
+                    this.status = 'done';
+                    // -->Show: errors
+                    this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
                 }
-
-                // -->Push: manufacturers filter
-                filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));
-
-                // -->Compute: total pages and current page based on response data count and page size
-                const pages = Math.ceil(res.data?.count / query.pageSize);
-                const page = options.page > pages ? 1 : options.page;
-
-                // -->Update: breadcrumbs
-                this.updateBreadcrumbs(categoryId);
-
-                // -->Set: data
-                this.data = {
-                    items: res.data.items || [],
-                    filters: filters,
-                    page: page,
-                    limit: query.pageSize,
-                    sort: options.sort || this.shopService.defaultOptions.sort,
-                    total: res.data?.count || 0,
-                    pages: pages,
-                    from: (page - 1) * query.pageSize + 1 <= res.data?.count ? (page - 1) * query.pageSize + 1 : 0,
-                    to: (page * query.pageSize) < res.data?.count ? (page * query.pageSize) : res.data?.count,
-                }
-                // -->Done: loading
-                this.status = 'done';
-                // -->Set: List and calculate pages and everything
-                this.shopService.setList(this.data);
-
-            } else {
+            }, err => {
                 // -->Done: loading
                 this.status = 'done';
                 // -->Show: errors
                 this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-            }
-        }, err => {
-            // -->Done: loading
-            this.status = 'done';
-            // -->Show: errors
-            this.toastr.error(this.translate.instant('ERROR_API_REQUEST'));
-        });
+            });
+        }, 100);
+        // -->Start: debouncer
+        this.fetch.f(fetchId).execDebounce();
+
     }
 
 
@@ -265,7 +286,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
         // -->Init: filters
         const filters = [];
         // -->Push: category filters
-        filters.push(buildCategoriesFilter(this.appService.appInfo?.getValue()?.categories?.items || [], null));
+        filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], null));
         // -->Check: if we show price filter
         if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
             const filterPrice = buildPriceFilter(0, 0, 0, 0, false);
@@ -273,7 +294,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
             filters.push(filterPrice);
         }
         // -->Push: manufacturers filter
-        filters.push(buildManufacturerFilter([], []));
+        filters.push(buildManufacturerFilter(appInfo$?.getValue()?.vendors, []));
 
         // -->Set: filters
         this.shopService.filters = filters;
@@ -283,9 +304,9 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     /**
      * Update: breadcrumbs and ttile
      */
-    public updateBreadcrumbs(categoryId: number): void {
+    public updateBreadcrumbs(categoryId: string): void {
         // -->Get: breadcrumbs
-        const breadcrumbs = getBreadcrumbs(this.appService.appInfo?.getValue()?.categories?.items, categoryId);
+        const breadcrumbs = getBreadcrumbs(appInfo$?.getValue()?.categories, categoryId);
         // -->Update: breadcrumbs
         this.breadcrumbs = [
             {
@@ -298,7 +319,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
                 state: { resetFilters: true }
             },
             ...breadcrumbs.map((x) => ({
-                label: x.name,
+                label: x?.data?.name,
                 url: this.url.category(x),
                 state: { resetFilters: true }
             })),
@@ -471,8 +492,8 @@ export class PageShopListComponent implements OnInit, OnDestroy {
     /**
      * Track: product id
      */
-    public trackByProductId(index: number, product: {_id?: string}): string {
-        return product._id;
+    public trackByProductId(index: number, product: {docId?: string}): string {
+        return product.docId;
     }
 
 

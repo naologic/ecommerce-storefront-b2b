@@ -17,12 +17,8 @@ import { CarouselComponent, SlidesOutputData } from 'ngx-owl-carousel-o';
 import { Subject, timer } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { LanguageService } from '../language/services/language.service';
-import {
-    PhotoSwipeItem,
-    PhotoSwipeOptions,
-    PhotoSwipeService,
-    PhotoSwipeThumbBounds,
-} from '../../services/photo-swipe.service';
+import { PhotoSwipeItem, PhotoSwipeOptions, PhotoSwipeService, PhotoSwipeThumbBounds } from '../../services/photo-swipe.service';
+import { Image } from "../../interfaces/product";
 
 export type ProductGalleryLayout = 'product-sidebar' | 'product-full' | 'quickview';
 
@@ -37,8 +33,8 @@ export interface ProductGalleryItem {
     styleUrls: ['./product-gallery.component.scss'],
 })
 export class ProductGalleryComponent implements OnInit, OnDestroy {
-    @Input() public set images(images: string[]) {
-        this.items = images.map((image, index) => ({ id: `image-${index}`, image }));
+    @Input() public set images(images: Image[]) {
+        this.items = images.map((image, index) => ({ id: `image-${index}`, image: image.cdnLink }));
         // -->Check: length
         if (!this.items.length) {
             // -->Set: fallback image
