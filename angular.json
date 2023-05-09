@@ -37,9 +37,15 @@
             ],
             "styles": [
               "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-              "apps/ecommerce-storefront-b2b/src/styles.scss"
+              "apps/ecommerce-storefront-b2b/src/styles.scss",
+              "node_modules/animate.css/animate.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "apps/ecommerce-storefront-b2b/src/scripts/stickyHeader.js",
+              "node_modules/wowjs/dist/wow.js",
+              "node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
+              "node_modules/xzoom/dist/xzoom.min.js"]
           },
           "configurations": {
             "production": {

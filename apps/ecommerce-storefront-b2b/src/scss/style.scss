@@ -284,3 +284,7 @@ a {
         opacity: 0.6;
     }
 }
+.xzoom-preview,
+.xzoom-source {
+    z-index: 99999 !important;
+} 

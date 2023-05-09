@@ -8,7 +8,7 @@ export namespace MetasInterface {
         shareImg?: string;
     }
     export const DefaultMetas = {
-        title: 'Welcome to Naologic B2B ecommerce',
+        title: 'Welcome to Directmed Supplies',
         description: 'Unify all your data and operations into a single platform'
     };
 }
