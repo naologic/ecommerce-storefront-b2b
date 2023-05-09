@@ -16,13 +16,22 @@ export const environment = {
     API: {
         server: {
             $id: 'server',
-            protocol: 'http',
-            port: 3010,
-            url: 'localhost',
+            protocol: 'https',
+            port: 443,
+            // url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
+            url: 'dms1-business-logic-api-d2651930-dev.naologic.space',
             prefix: 'api/v2/',
-            ssl: false
+            ssl: true
         },
-        naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
+        // server: {
+        //     $id: 'server',
+        //     protocol: 'https',
+        //     port: 443,
+        //     url: 'api-v2-dms.naologic.com',
+        //     prefix: 'api/v2/',
+        //     ssl: false
+        // },
+        naoToken: 'naoproductionCFNjXpqmXseZAYvGPv1F7W22p',
         webSocket: {
             enabled: false,
         },
