@@ -18,7 +18,7 @@ export class DepartmentsComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
 
     public isOpen = false;
-    public currentItem: DepartmentsLink | null = null;
+    public currentItem: DepartmentsLink|null = null;
 
     constructor(
         @Inject(PLATFORM_ID) private platformId: any,

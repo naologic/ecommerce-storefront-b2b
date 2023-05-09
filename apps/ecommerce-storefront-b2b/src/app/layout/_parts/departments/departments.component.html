@@ -1,21 +1,21 @@
 <div class="departments" [class.departments--open]="isOpen">
     <button class="departments__button" type="button" (click)="onClick()">
-        <span class="departments__button-icon">
-            <app-icon icon="menu-16x12"></app-icon>
-        </span>
+        <span class="departments__button-icon"><app-icon icon="menu-16x12"></app-icon></span>
         <span class="departments__button-title">{{ label }}</span>
-        <span class="departments__button-arrow">
-            <app-icon icon="arrow-rounded-down-9x6"></app-icon>
-        </span>
+        <span class="departments__button-arrow"><app-icon icon="arrow-rounded-down-9x6"></app-icon></span>
     </button>
     <div class="departments__menu">
         <div class="departments__arrow"></div>
         <div class="departments__body" (mouseleave)="onMouseleave()">
             <ul class="departments__list">
                 <li class="departments__list-padding" role="presentation" (mouseenter)="onMouseleave()"></li>
-                    <li *ngFor="let item of items" [class.departments__item--has-submenu]="item.submenu"
+                <li
+                    *ngFor="let item of items"
                     [class.departments__item--has-submenu]="item.submenu"
-                    [class.departments__item--hover]="item === currentItem" (mouseenter)="onMouseenter(item)">                
+                    [class.departments__item--submenu--megamenu]="item.submenu?.type === 'megamenu'"
+                    [class.departments__item--hover]="item === currentItem"
+                    (mouseenter)="onMouseenter(item)"
+                >
                     <ng-template #linkContent>
                         {{ item.title }}
                         <span *ngIf="item.submenu" class="departments__item-arrow">
@@ -23,9 +23,7 @@
                         </span>
                     </ng-template>
 
-                    <!-- <a href="javascript:void(0)" class="departments__item-link" (click)="navigateAndResetFilters(item.url);onItemClick()"> -->
-                    <a href="javascript:void(0)" class="departments__item-link"
-                    (click)="navigateAndResetFilters(item.url);onItemClick()">
+                    <a href="javascript:void(0)" class="departments__item-link" (click)="navigateAndResetFilters(item.url);onItemClick()">
                         <ng-container *ngTemplateOutlet="linkContent"></ng-container>
                     </a>
                 </li>
@@ -34,15 +32,12 @@
             <div class="departments__menu-container">
                 <ng-container *ngFor="let item of items">
                     <ng-container *ngIf="item.submenu">
-                        <!-- <app-megamenu
+                        <app-megamenu
                             class="departments__megamenu departments__megamenu--size--{{ item.submenu.size }}"
                             [class.departments__megamenu--open]="item === currentItem"
                             [menu]="item.submenu"
                             (itemClick)="onItemClick()"
-                        ></app-megamenu> -->
-                        <app-megamenu class="departments__megamenu departments__megamenu--size--{{ item.submenu.size }}"
-                        [class.departments__megamenu--open]="item === currentItem" [menu]="item.submenu"
-                        (itemClick)="onItemClick()"></app-megamenu>
+                        ></app-megamenu>
                     </ng-container>
                 </ng-container>
             </div>

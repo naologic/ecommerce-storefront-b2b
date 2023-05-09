@@ -8,7 +8,7 @@ export namespace MetasInterface {
         shareImg?: string;
     }
     export const DefaultMetas = {
-        title: 'Welcome to Directmed Supplies',
+        title: 'Welcome to DirectMed Supplies',
         description: 'Unify all your data and operations into a single platform'
     };
 }

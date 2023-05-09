@@ -7,7 +7,7 @@ import { NaoUsersInterface } from "@naologic/nao-user-access";
     styleUrls: ['./address-card.component.scss'],
 })
 export class AddressCardComponent {
-    @Input() public address!: NaoUsersInterface.Address
+    @Input() public address!: NaoUsersInterface.Address;
     @Input() public label: string = '';
     @Input() public featured = false;
     @Input() public footer?: TemplateRef<any>;
