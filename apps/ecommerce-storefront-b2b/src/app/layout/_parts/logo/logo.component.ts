@@ -21,7 +21,7 @@ export class LogoComponent implements OnInit, OnDestroy {
         this.subs.add(
             appInfo$.subscribe(value => {
                 // -->Set: generalSettings info
-                this.generalSettings = value?.shopInfo.general;
+                this.generalSettings = value?.shopInfo?.general?.data;
             })
         );
     }
