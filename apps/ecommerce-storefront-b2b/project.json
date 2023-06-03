@@ -1,0 +1,189 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "ecommerce-storefront-b2b",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    },
+    "@schematics/angular:application": {
+      "strict": true
+    }
+  },
+  "sourceRoot": "apps/ecommerce-storefront-b2b/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/ecommerce-storefront-b2b",
+        "index": "apps/ecommerce-storefront-b2b/src/index.html",
+        "main": "apps/ecommerce-storefront-b2b/src/main.ts",
+        "polyfills": "apps/ecommerce-storefront-b2b/src/polyfills.ts",
+        "tsConfig": "apps/ecommerce-storefront-b2b/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/ecommerce-storefront-b2b/src/favicon.ico",
+          "apps/ecommerce-storefront-b2b/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/photoswipe/dist",
+            "output": "assets/vendor/photoswipe"
+          }
+        ],
+        "styles": [
+          "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+          "apps/ecommerce-storefront-b2b/src/styles.scss"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "3mb",
+              "maximumError": "5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "16kb",
+              "maximumError": "32kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/ecommerce-storefront-b2b/src/environments/environment.ts",
+              "with": "apps/ecommerce-storefront-b2b/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "ecommerce-storefront-b2b:build:production"
+        },
+        "development": {
+          "browserTarget": "ecommerce-storefront-b2b:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "ecommerce-storefront-b2b:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/ecommerce-storefront-b2b/src/test.ts",
+        "polyfills": "apps/ecommerce-storefront-b2b/src/polyfills.ts",
+        "tsConfig": "apps/ecommerce-storefront-b2b/tsconfig.spec.json",
+        "karmaConfig": "apps/ecommerce-storefront-b2b/karma.conf.js",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/ecommerce-storefront-b2b/src/favicon.ico",
+          "apps/ecommerce-storefront-b2b/src/assets"
+        ],
+        "styles": [
+          "apps/ecommerce-storefront-b2b/src/styles.scss"
+        ],
+        "scripts": []
+      }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/server",
+        "main": "src/main.server.ts",
+        "tsConfig": "tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/ecommerce-storefront-b2b/src/environments/environment.ts",
+              "with": "apps/ecommerce-storefront-b2b/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production",
+      "outputs": [
+        "{options.outputPath}"
+      ]
+    },
+    "serve-ssr": {
+      "executor": "@nguniversal/builders:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "ecommerce-storefront-b2b:build:development",
+          "serverTarget": "ecommerce-storefront-b2b:server:development"
+        },
+        "production": {
+          "browserTarget": "ecommerce-storefront-b2b:build:production",
+          "serverTarget": "ecommerce-storefront-b2b:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@nguniversal/builders:prerender",
+      "options": {
+        "routes": [
+          "/"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "ecommerce-storefront-b2b:build:production"
+        },
+        "development": {
+          "browserTarget": "ecommerce-storefront-b2b:build:development"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "lint": {
+      "executor": "@angular-eslint/builder:lint",
+      "options": {
+        "lintFilePatterns": [
+          "projects/ecommerce-storefront-b2b/**/*.ts",
+          "projects/ecommerce-storefront-b2b/**/*.html"
+        ],
+        "tsConfig": [
+          "apps/ecommerce-storefront-b2b/tsconfig.app.json",
+          "apps/ecommerce-storefront-b2b/tsconfig.spec.json"
+        ]
+      },
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  }
+}

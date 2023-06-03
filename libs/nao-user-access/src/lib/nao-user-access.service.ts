@@ -300,7 +300,7 @@ export class NaoUserAccessService {
         return this.naoHttp2ApiService.postJson(
             `universal-public/users/auth/auth-login`, {data: {data: {email, password}, naoQueryOptions}})
             .toPromise()
-            .then(loginData => {
+            .then((loginData: any) => {
                 // -->Return
                 return this.updateAccessTokenData(loginData.data as any, rememberMe);
             })

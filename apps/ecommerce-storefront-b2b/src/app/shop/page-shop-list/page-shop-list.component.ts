@@ -151,7 +151,7 @@ export class PageShopListComponent implements OnInit, OnDestroy {
 
         // -->Subscribe: to pagination change
         this.filterFormGroup.valueChanges.pipe(distinctUntilChanged(), debounceTime(100)).subscribe(value => {
-            this.shopService.updatePagination(value);
+            this.shopService.updatePagination(value as any);
         })
     }
 

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { NgxPayPalModule } from 'ngx-paypal';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { ShopRoutingModule } from './shop.routing';
 import { ShopPartsModule } from './_parts/shop.parts-module';
 import { SharedModule } from '../shared/shared.module';
@@ -11,6 +10,7 @@ import { PageProductComponent } from './page-product/page-product.component';
 import { PageMyListComponent } from './page-my-list/page-my-list.component';
 import { PageMyListsComponent } from './page-my-lists/page-my-lists.component';
 import { PageShopListComponent } from "./page-shop-list/page-shop-list.component";
+import { NgxSliderModule } from 'ngx-slider-v2';
 
 @NgModule({
     declarations: [

@@ -21,7 +21,8 @@ export class FakeSlidesDirective implements OnInit, OnChanges, OnDestroy {
     ) { }
 
     public ngOnInit(): void {
-        this.resizeHandler = this.eventManager.addGlobalEventListener('window', 'resize', () => this.calc()) as () => void;
+        // addGlobalEventListener: doesn't exist
+        // this.resizeHandler = this.eventManager.addGlobalEventListener('window', 'resize', () => this.calc()) as () => void;
         this.calc();
     }
 

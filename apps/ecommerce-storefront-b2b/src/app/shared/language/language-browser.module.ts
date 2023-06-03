@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, PlatformLocation } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateCompiler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 import { browserLoaderFactory } from './services/browser-loader.service';
 import { USER_LANGUAGES } from './interfaces/language';
 
@@ -22,10 +21,10 @@ export function userLanguagesFactory(): string[] {
         CommonModule,
         HttpClientModule,
         TranslateModule.forRoot({
-            compiler: {
-                provide: TranslateCompiler,
-                useClass: TranslateMessageFormatCompiler,
-            },
+            // compiler: {
+            //     provide: TranslateCompiler,
+            //     useClass: TranslateMessageFormatCompiler,
+            // },
             loader: {
                 provide: TranslateLoader,
                 useFactory: browserLoaderFactory,

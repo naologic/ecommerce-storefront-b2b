@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgxSliderModule } from 'ngx-slider-v2';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { SharedModule } from '../../shared/shared.module';
 import { ProductTabComponent } from './product-tab/product-tab.component';
