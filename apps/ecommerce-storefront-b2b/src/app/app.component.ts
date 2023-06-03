@@ -1,6 +1,6 @@
 import { Component, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
+import {CommonModule, DOCUMENT, isPlatformBrowser} from '@angular/common';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -15,6 +15,8 @@ import {appInfo$} from "../app.static";
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
+    // imports: [CommonModule, RouterOutlet, RouterLink],
+    // standalone: true,
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {

@@ -1,17 +1,35 @@
-/***************************************************************************************************
- * Initialize the server environment - for example, adding DOM built-in types to the global scope.
- *
- * NOTE:
- * This import must come before any imports (direct or transitive) that rely on DOM built-ins being
- * available, such as `@angular/elements`.
- */
-import '@angular/platform-server/init';
-import { enableProdMode } from '@angular/core';
-import { environment } from './environments/environment';
+import "zone.js/dist/zone-node";
+import "@angular/platform-server/init";
 
-if (environment.production) {
-    enableProdMode();
+import { bootstrapApplication } from "@angular/platform-browser";
+import { renderApplication } from "@angular/platform-server";
+
+import { AppComponent } from "./app/app.component";
+import { config } from "./app/app.config.server";
+
+interface Env {
+	ASSETS: { fetch: typeof fetch };
 }
 
-export { AppServerModule } from './app/app-server.module';
-export { renderModule, renderModuleFactory } from '@angular/platform-server';
+// We attach the Cloudflare `fetch()` handler to the global scope
+// so that we can export it when we process the Angular output.
+// See tools/bundle.mjs
+(globalThis as any).__workerFetchHandler = async function fetch(
+	request: Request,
+	env: Env
+) {
+	const url = new URL(request.url);
+	console.log("render SSR", url.href);
+
+	// Get the root `index.html` content.
+	const indexUrl = new URL("/", url);
+	const indexResponse = await env.ASSETS.fetch(new Request(indexUrl));
+	const document = await indexResponse.text();
+
+	const content = await renderApplication(
+		() => bootstrapApplication(AppComponent, config),
+		{ document, url: url.pathname }
+	);
+	// console.log("rendered SSR", content);
+	return new Response(content, indexResponse);
+};

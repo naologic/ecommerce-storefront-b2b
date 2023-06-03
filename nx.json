@@ -5,20 +5,88 @@
   },
   "implicitDependencies": {
     "angular.json": "*",
-    "package.json": { "dependencies": "*", "devDependencies": "*" },
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
     "tsconfig.base.json": "*",
     "tslint.json": "*",
     ".eslintrc.json": "*",
     "nx.json": "*"
   },
   "projects": {
-    "ecommerce-storefront-b2b": { "tags": [] },
-    "nao-user-access": { "tags": [] },
-    "nao-http2": { "tags": [] },
-    "nao-interfaces": { "tags": [] },
-    "nao-utils": { "tags": [] },
-    "nao-locale": { "tags": [] }
+    "ecommerce-storefront-b2b": {
+      "tags": []
+    },
+    "nao-user-access": {
+      "tags": []
+    },
+    "nao-http2": {
+      "tags": []
+    },
+    "nao-interfaces": {
+      "tags": []
+    },
+    "nao-utils": {
+      "tags": []
+    },
+    "nao-locale": {
+      "tags": []
+    }
   },
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1
+  "version": 1,
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": []
+      }
+    }
+  },
+  "namedInputs": {
+    "sharedGlobals": [],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/**/*.spec.[jt]s",
+      "!{projectRoot}/karma.conf.js",
+      "!{projectRoot}/.eslintrc.json"
+    ]
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
+    },
+    "server": {
+      "inputs": [
+        "production",
+        "^production"
+      ]
+    },
+    "test": {
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/karma.conf.js"
+      ]
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json"
+      ]
+    }
+  },
+  "defaultProject": "ecommerce-storefront-b2b"
 }

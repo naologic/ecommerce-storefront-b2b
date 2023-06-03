@@ -137,7 +137,7 @@ export class CollapseItemDirective implements OnDestroy, AfterContentInit {
     }
 
     public ngOnDestroy(): void {
-        this.destroy$.next();
+        this.destroy$.next(null);
         this.destroy$.complete();
     }
 }

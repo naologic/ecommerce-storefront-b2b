@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { RootComponent } from './layout/root/root.component';
-import { PageNotFoundComponent } from './default-pages/page-not-found/page-not-found.component';
+import { Routes } from '@angular/router';
+import {RootComponent} from "./layout/root/root.component";
+import {PageNotFoundComponent} from "./default-pages/page-not-found/page-not-found.component";
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
         component: RootComponent,
@@ -32,19 +31,3 @@ const routes: Routes = [
         ],
     },
 ];
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routes, {
-            scrollPositionRestoration: 'disabled',
-            anchorScrolling: 'disabled',
-            // initialNavigation: 'enabled',
-            preloadingStrategy: PreloadAllModules,
-            // relativeLinkResolution: 'legacy',
-        }),
-    ],
-    exports: [
-        RouterModule,
-    ],
-})
-export class AppRoutingModule { }
