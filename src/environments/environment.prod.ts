@@ -20,13 +20,11 @@ export const environment = {
       $id: 'server',
       protocol: 'https',
       port: 443,
-      // url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
-      url: '{$NAO_API_ROUTE}',
+      url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
       prefix: 'api/v2/',
       ssl: true
     },
-    // naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
-    naoToken: '{$NAO_TOKEN}',
+    naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
     webSocket: {
       enabled: false
     },

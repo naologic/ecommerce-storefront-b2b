@@ -67,9 +67,12 @@ Static pages offer great performance at low cost and auto-scale with the number 
 3. open "Build and Output Settings"
 4. set the "OUTPUT DIRECTORY" to "dist/browser"
 5. open "Environment Variables" and set values from your [naologic](https://naologic.com) account
-  1. set `API_URL` to `api url value from Tokens`
-  2. set `NAO_TOKEN` to `token value from Tokens`
-6. Enjoy :rocket:
+   1. set `API_URL` to `api url value from Workspace`
+   2. set `NAO_TOKEN` to `token value from Tokens`
+6. Go to `src.environment.prod.ts`
+   1. set `API.server.url` to `API URL value from Workspace`
+   2. set `API.naoToken` to `token value from Tokens`
+7. Enjoy :rocket:
 
 ### Deploy to [Cloudflare Pages](https://pages.cloudflare.com/)
 
@@ -78,10 +81,13 @@ Static pages offer great performance at low cost and auto-scale with the number 
 3. open "Build command" and set "npm run build:ssr"
 4. open "Root directory (advanced)" and set "dist/browser"
 5. open "Environment Variables" and set values from your [naologic](https://naologic.com) account
-  1. set `API_URL` to `api url value from Tokens`
-  2. set `NAO_TOKEN` to `token value from Tokens`
-6. In "Build system version" select version 2
-7. Enjoy :rocket:
+   1. set `API_URL` to `api url value from Tokens`
+   2. set `NAO_TOKEN` to `token value from Tokens`
+6. Go to `src.environment.prod.ts`
+   1. set `API.server.url` to `API URL value from Workspace`
+   2. set `API.naoToken` to `token value from Tokens`
+7. In "Build system version" select version 2
+8. Enjoy :rocket:
 
 ### Deploy to [Cloudflare Pages](https://pages.cloudflare.com/) as SSR (COMING SOON)
 
