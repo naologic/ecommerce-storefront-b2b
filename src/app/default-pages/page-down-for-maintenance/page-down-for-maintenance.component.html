@@ -1,0 +1,12 @@
+<div class="block">
+    <div class="container">
+        <div class="server-error">
+            <div class="server-error__500">{{ 'UPGRADES_IN_PROGRESS_DOTS' | translate }}</div>
+            <div class="error-page__content">
+                <h1 class="error-page__title">{{ 'OOPS_WERE_DOWN_FOR_MAINTENANCE' | translate }}</h1>
+                <p class="error-page__text" *ngIf="downForMaintenanceMessage">{{ downForMaintenanceMessage }}</p>
+                <p class="error-page__text" *ngIf="!downForMaintenanceMessage">{{ 'WE_SHOULD_BE_BACK_ONLINE_SOON_PLEASE_CHECK_BACK_AGAIN_SHORTLY' | translate }}</p>
+            </div>
+        </div>
+    </div>
+</div>

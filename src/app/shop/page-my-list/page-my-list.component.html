@@ -91,7 +91,7 @@
 <!--                                        [text]="item.product?.data?.availability|stockToStatusBadgeText:item.product?.data?.available|translate"-->
 <!--                                    ></app-status-badge>-->
 <!--                                </td>-->
-                                <td class='my-list__column my-list__column--body my-list__column--price' *showIfLoggedIn>
+                                <td class='my-list__column my-list__column--body my-list__column--price' *showPrice>
                                     {{ item.variant?.price | currencyFormat }}
                                 </td>
                                 <td class='my-list__column my-list__column--body my-list__column--button'>

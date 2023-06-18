@@ -1,14 +1,15 @@
-import {Injectable, OnDestroy} from "@angular/core";
-import {StorageMap} from "@ngx-pwa/local-storage";
-import {BehaviorSubject, Subscription} from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { StorageMap } from "@ngx-pwa/local-storage";
+import { BehaviorSubject, Subscription } from "rxjs";
 import {NaoSettingsInterface} from "./nao-interfaces";
 import {NaoUserAccessService} from "./nao-user-access";
-import {ECommerceService} from "./e-commerce.service";
-import {MetasInterface} from "./interfaces/metas";
-import {Meta, Title} from "@angular/platform-browser";
-import {accountData$, appInfo$} from "../app.static";
-import {AccountProfileService} from "./account/account-profile.service";
-import {AccountAuthService} from "./account/account-auth.service";
+import { ECommerceService } from "./e-commerce.service";
+import { MetasInterface } from "./interfaces/metas";
+import { Meta, Title } from "@angular/platform-browser";
+import { accountData$, appInfo$ } from "../app.static";
+import { AccountProfileService } from "./account/account-profile.service";
+import { AccountAuthService } from "./account/account-auth.service";
+import { AppInterface } from "../app.interface";
 
 @Injectable({
   providedIn: "root",
@@ -22,24 +23,18 @@ export class AppService implements OnDestroy {
     freeShipping: false,
     hotOffers: false,
     showPriceFilter: false,
+    showProductSku: true,
+    showProductPrice: 'price-all-users',
+    defaultSortValue: 'name_asc'
   });
   private readonly subs = new Subscription();
 
-  constructor(
-    private readonly accountAuthService: AccountAuthService,
-    private userProfileService: AccountProfileService,
-    private eCommerceService: ECommerceService,
-    private readonly storageMap: StorageMap,
-    private naoUsersService: NaoUserAccessService,
-    public readonly titleService: Title,
-    public readonly metaService: Meta
-  ) {
+  constructor(private readonly accountAuthService: AccountAuthService, private userProfileService: AccountProfileService, private eCommerceService: ECommerceService, private readonly storageMap: StorageMap, private naoUsersService: NaoUserAccessService, public readonly titleService: Title, public readonly metaService: Meta) {
     this.subs.add(
       // @ts-ignore
       appInfo$.subscribe((info$: any) => {
         if (info$) {
-          return this.storageMap.set("uygsdf67ts76fguysdfsdf", info$).subscribe(() => {
-          });
+          return this.storageMap.set("uygsdf67ts76fguysdfsdf", info$).subscribe(() => {});
         }
       }),
     );
@@ -79,16 +74,19 @@ export class AppService implements OnDestroy {
 
       // -->Fresh: the data
       this.eCommerceService.getInfo().subscribe(
-        (info$) => {
+        (info$: { ok: boolean; data: AppInterface.AppInfo }) => {
           if (info$ && info$.ok) {
             // -->Set: app info
             appInfo$.next(info$.data);
             // --.Set: settings
             this.setSettings(info$.data);
+            // -->Set: title
+            this.setTitle();
             // -->Set: Metas
             this.setMetas({
-              title: info$.data?.generalSettings?.metaTitle,
-              description: info$.data?.generalSettings?.metaDescription,
+              title: info$.data?.shopInfo?.seo?.data?.metaTitle,
+              description: info$.data?.shopInfo?.seo?.data?.metaDescription,
+              keywords: info$.data?.shopInfo?.seo?.data?.metaKeywords || [],
             });
           } else {
             // -->Set: app info
@@ -114,30 +112,47 @@ export class AppService implements OnDestroy {
         // -->Set: account information
         accountData$.next(res.data);
         // -->Return:
-        return {ok: !!res?.ok, data: res?.data || null};
+        return { ok: !!res?.ok, data: res?.data || null };
       })
       .catch((err: any) => {
         // -->Clear: account information
         accountData$.next(null);
         // -->Return:
-        return {ok: false, data: null};
+        return { ok: false, data: null };
       });
   }
 
   /**
    * Set: settings
    */
-  public setSettings(info$: any): void {
-    const settings = {
+  public setSettings(info$: AppInterface.AppInfo): void {
+    const settings: NaoSettingsInterface.Settings = {
       rating: false,
       freeShipping: false,
       hotOffers: false,
       showPriceFilter: true,
+      showProductPrice: 'price-all-users',
+      showProductSku: true,
+      defaultSortValue: 'name_asc'
     };
 
-    // -->Check: if has price filter
-    if (info$?.generalSettings?.hasOwnProperty("showPriceFilter")) {
-      settings.showPriceFilter = info$.generalSettings.showPriceFilter;
+    // -->Check: if show product price
+    if (info$?.shopInfo?.productSettings?.data?.hasOwnProperty("showProductPrice")) {
+      if (['price-all-users', 'price-logged-users', 'hide-price'].includes(info$?.shopInfo?.productSettings?.data.showProductPrice)) {
+        settings.showProductPrice = info$.shopInfo?.productSettings?.data.showProductPrice;
+      }
+    }
+
+    // -->Check: if show product SKU
+    if (info$?.shopInfo?.productSettings?.data?.hasOwnProperty("showProductSku")) {
+      settings.showProductSku = info$?.shopInfo?.productSettings?.data.showProductSku;
+    }
+
+    // -->Check: if show product SKU
+    if (info$?.shopInfo?.storefrontSearch?.data?.hasOwnProperty("productSort")) {
+      if (['name_desc'].includes(info$?.shopInfo?.storefrontSearch?.data?.productSort)) {
+        settings.defaultSortValue = info$?.shopInfo?.storefrontSearch?.data.productSort;
+      }
     }
 
     // -->Set:
@@ -151,8 +166,6 @@ export class AppService implements OnDestroy {
     if (!metas) {
       throw new Error(`You have to send a meta tag object`);
     }
-    // -->Set: title
-    this.titleService.setTitle(metas.title || MetasInterface.DefaultMetas.title);
     // -->Set: description
     this.metaService.updateTag({
       name: "description",
@@ -167,10 +180,31 @@ export class AppService implements OnDestroy {
       content: metas.ogDescription || metas.description || MetasInterface.DefaultMetas.description,
     });
 
+    if (Array.isArray(metas.keywords) && metas.keywords?.length) {
+      // -->Get: keywords
+      const keywords = metas.keywords.filter((f) => f).join(", ");
+      // -->Check: if we need to update the keywords meta tag
+      this.metaService.updateTag({ name: "keywords", content: keywords });
+    }
+
     // -->Check: share img
     if (metas.shareImg) {
-      this.metaService.updateTag({property: "og:image", content: metas.shareImg});
+      this.metaService.updateTag({ property: "og:image", content: metas.shareImg });
     }
+  }
+
+  /**
+   * Set: title
+   */
+  public setTitle(title?: string): void {
+    // -->Get: store name
+    let finalTitle = appInfo$?.getValue()?.shopInfo?.storefrontSettings?.data?.storeName || MetasInterface.DefaultMetas.title;
+    if (title) {
+      finalTitle += ` - ${title}`;
+    }
+
+    // -->Set: title
+    this.titleService.setTitle(finalTitle);
   }
 
   /**

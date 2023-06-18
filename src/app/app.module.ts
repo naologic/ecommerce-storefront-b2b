@@ -27,6 +27,7 @@ import {PageNotFoundComponent} from './default-pages/page-not-found/page-not-fou
 import {PageServerErrorComponent} from './default-pages/page-server-error/page-server-error.component';
 import {BrowserJsonLdModule} from "./shared/seo-helper/json-ld.module";
 import {ShopProductService} from "./shop/shop-product.service";
+import { PageDownForMaintenanceComponent } from "./default-pages/page-down-for-maintenance/page-down-for-maintenance.component";
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {ShopProductService} from "./shop/shop-product.service";
     AppComponent,
     RootComponent,
     PageNotFoundComponent,
-    PageServerErrorComponent
+    PageServerErrorComponent,
+    PageDownForMaintenanceComponent
   ],
   imports: [
     BrowserJsonLdModule,

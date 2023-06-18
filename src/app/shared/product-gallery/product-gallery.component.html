@@ -4,9 +4,9 @@
      [class.product-gallery--layout--quickview]="layout === 'quickview'">
     <ng-container *ngIf="showGallery">
         <div class="product-gallery__featured">
-            <button type="button" class="product-gallery__zoom" (click)="openPhotoSwipe(currentItem)">
-                <app-icon icon="zoom-in-24"></app-icon>
-            </button>
+<!--            <button type="button" class="product-gallery__zoom" (click)="openPhotoSwipe(currentItem)">-->
+<!--                <app-icon icon="zoom-in-24"></app-icon>-->
+<!--            </button>-->
             <owl-carousel-o [options]="carouselOptions" (changed)="featuredCarouselTranslated($event)" appOwlPreventClick #featuredCarousel>
                 <!--suppress AngularUndefinedBinding -->
                 <ng-template *ngFor="let item of items" carouselSlide [id]="item.id">

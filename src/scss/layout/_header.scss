@@ -1243,7 +1243,7 @@ $local-ribbon-border-radius: 2.5px;
         & > * {
             flex-grow: 1;
         }
-        & > * + * {
+        & > :not(:first-child) {
             @include direction {
                 #{$margin-inline-start}: 8px;
             }

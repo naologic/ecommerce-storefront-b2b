@@ -13,12 +13,6 @@ interface LibrariesDef {
 export class ResourcesService {
     private loaded: { [url: string]: Promise<void>; } = {};
     private libraries: LibrariesDef = {
-        photoSwipe: ResourcesService.parallel(
-            this.styleTask('assets/vendor/photoswipe/photoswipe.css'),
-            this.styleTask('assets/vendor/photoswipe/default-skin/default-skin.css'),
-            this.scriptTask('assets/vendor/photoswipe/photoswipe.min.js'),
-            this.scriptTask('assets/vendor/photoswipe/photoswipe-ui-default.min.js'),
-        ),
     };
 
     /**

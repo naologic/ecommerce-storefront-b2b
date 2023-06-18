@@ -47,6 +47,10 @@ import {LoadingButtonDirective} from "./directives/disable-if-not-logged-in.dire
 import {UppercaseFirstPipe} from "./pipes/uppercaseFirst.pipe";
 import {NaoStatusPillComponent} from "./nao-status-pill/nao-status-pill.component";
 import {LoaderTableComponent} from "./loader-table/loader-table.component";
+import {CheckIfWeShowPriceDirective} from "./directives/check-if-we-show-price.directive";
+import {
+  CheckIfThePriceIsShownOnlyForLoggedUsersDirective
+} from "./directives/check-if-the-price-is-shown-only-for-logged-users.directive";
 
 @NgModule({
   imports: [
@@ -71,6 +75,7 @@ import {LoaderTableComponent} from "./loader-table/loader-table.component";
     RemoveFromCompareDirective,
     SplitStringDirective,
     ShowIfLoggedInDirective,
+    CheckIfWeShowPriceDirective,
     CollapseItemDirective,
     CollapseContentDirective,
     CheckboxGroupDirective,
@@ -100,7 +105,8 @@ import {LoaderTableComponent} from "./loader-table/loader-table.component";
     LoadingButtonDirective,
     UppercaseFirstPipe,
     NaoStatusPillComponent,
-    LoaderTableComponent
+    LoaderTableComponent,
+    CheckIfThePriceIsShownOnlyForLoggedUsersDirective
   ],
   exports: [
     CommonModule,
@@ -150,7 +156,9 @@ import {LoaderTableComponent} from "./loader-table/loader-table.component";
     LoadingButtonDirective,
     UppercaseFirstPipe,
     NaoStatusPillComponent,
-    LoaderTableComponent
+    LoaderTableComponent,
+    CheckIfWeShowPriceDirective,
+    CheckIfThePriceIsShownOnlyForLoggedUsersDirective
   ]
 })
 export class SharedModule {

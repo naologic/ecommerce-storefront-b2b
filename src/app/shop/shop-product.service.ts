@@ -36,7 +36,12 @@ export class ShopProductService {
         return this.optionsState;
     }
 
-    constructor(private appService: AppService) {}
+    constructor(private appService: AppService) {
+      // -->Set: sort defaults value
+      if (['name_desc'].includes(this.appService?.settings?.getValue()?.defaultSortValue)) {
+        this.defaultOptions.sort = this.appService.settings.getValue().defaultSortValue;
+      }
+    }
 
     /**
      * Update: list state, filters and options

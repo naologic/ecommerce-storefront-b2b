@@ -9,7 +9,7 @@
                     <div class="review__avatar"><img [src]="review.avatar" alt=""></div>
                     <div class="review__meta">
                         <div class="review__author">{{ review.author }}</div>
-                        <div class="review__date">{{ 'FORMAT_DATE_MEDIUM' | translate:{date: review.date} }}</div>
+                        <div class="review__date">{{ 'FORMAT_DATE_MEDIUM' | translate:{date: review.date | date: 'medium'} }}</div>
                     </div>
                     <!--Show rating only if it's allowed in settings-->
                     <!--This will have to be connected to ecomm in the future-->

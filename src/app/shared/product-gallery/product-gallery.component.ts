@@ -17,12 +17,6 @@ import {CarouselComponent, SlidesOutputData} from 'ngx-owl-carousel-o';
 import {Subject, timer} from 'rxjs';
 import {switchMap, takeUntil} from 'rxjs/operators';
 import {LanguageService} from '../language/services/language.service';
-import {
-  PhotoSwipeItem,
-  PhotoSwipeOptions,
-  PhotoSwipeService,
-  PhotoSwipeThumbBounds
-} from '../../services/photo-swipe.service';
 import {Image} from "../../interfaces/product";
 
 export type ProductGalleryLayout = 'product-sidebar' | 'product-full' | 'quickview';
@@ -74,7 +68,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     private language: LanguageService,
-    private photoSwipe: PhotoSwipeService,
     private cd: ChangeDetectorRef,
   ) {
   }
@@ -82,11 +75,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // -->Init: options
     this.initOptions();
-
-    if (this.layout !== 'quickview' && isPlatformBrowser(this.platformId)) {
-      // -->Load: photo swipe library
-      this.photoSwipe.load().subscribe();
-    }
 
     // Since ngx-owl-carousel-o cannot re-initialize itself, we will do it manually when the direction changes.
     this.language.directionChange$.pipe(
@@ -133,59 +121,9 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
     // -->Check: layout type
     if (this.layout !== 'quickview') {
       event.preventDefault();
-
-      // -->Open: photo swipe gallery
-      this.openPhotoSwipe(image);
     }
   }
 
-  /**
-   * Open: photo swipe gallery
-   */
-  public openPhotoSwipe(item: ProductGalleryItem | null): void {
-    // -->Check: item
-    if (!item) {
-      return;
-    }
-
-    const imageElements = this.imageElements.map(x => x.nativeElement);
-    // -->Get: images info from photo gallery items
-    const images: PhotoSwipeItem[] = this.items.map((eachItem, i) => {
-      const tag: HTMLImageElement = imageElements[i];
-      const width = (tag.dataset.width && parseFloat(tag.dataset.width)) || tag.naturalWidth;
-      const height = (tag.dataset.height && parseFloat(tag.dataset.height)) || tag.naturalHeight;
-
-      // -->Return: image info
-      return {
-        src: eachItem.image,
-        msrc: eachItem.image,
-        w: width,
-        h: height,
-      };
-    });
-
-    // -->Check: if images need to be played on reverse
-    if (this.language.isRTL()) {
-      images.reverse();
-    }
-
-    // noinspection JSUnusedGlobalSymbols
-    // -->Build: photo swipe options
-    const options = {
-      getThumbBoundsFn: ((index: number) => this.getThumbBounds(index)) as PhotoSwipeOptions['getThumbBoundsFn'],
-      index: this.getDirDependentIndex(this.items.indexOf(item)),
-      bgOpacity: .9,
-      history: false,
-    };
-
-    // -->Open: photo swipe gallery
-    this.photoSwipe.open(images, options).subscribe(galleryRef => {
-      galleryRef.listen('beforeChange', () => {
-        // -->Transition: between slides according to current item id
-        this.featuredCarousel.to(this.items[this.getDirDependentIndex(galleryRef.getCurrentIndex())].id);
-      });
-    });
-  }
 
   /**
    * Handle: thumbnails item click events
@@ -226,50 +164,6 @@ export class ProductGalleryComponent implements OnInit, OnDestroy {
         260: {items: 4, margin: 8},
         0: {items: 3},
       },
-    };
-  }
-
-  /**
-   * Get: direction dependent index
-   */
-  private getDirDependentIndex(index: number): number {
-    // -->Check language direction
-    if (this.language.isRTL()) {
-      // Invert: index id because photoswipe do not support rtl
-      return this.items.length - 1 - index;
-    }
-
-    return index;
-  }
-
-  /**
-   * Get: Thumbnail bounds
-   */
-  private getThumbBounds(index: number): PhotoSwipeThumbBounds | null {
-    // -->Set: elements
-    const imageElements = this.imageElements.toArray();
-    // -->Set: direction dependent index
-    const dirDependentIndex = this.getDirDependentIndex(index);
-
-    // -->Check: image in the specified index exist
-    if (!imageElements[dirDependentIndex]) {
-      return null;
-    }
-
-    // -->Compute: position and size related values
-    const tag = imageElements[dirDependentIndex].nativeElement;
-    const width = tag.naturalWidth;
-    const height = tag.naturalHeight;
-    const rect = tag.getBoundingClientRect();
-    const ration = Math.min(rect.width / width, rect.height / height);
-    const fitWidth = width * ration;
-    const fitHeight = height * ration;
-
-    // @FLORIN: FIX window not defined
-    return {
-      x: rect.left + (rect.width - fitWidth) / 2 + window.pageXOffset,
-      y: rect.top + (rect.height - fitHeight) / 2 + window.pageYOffset,
-      w: fitWidth,
     };
   }
 

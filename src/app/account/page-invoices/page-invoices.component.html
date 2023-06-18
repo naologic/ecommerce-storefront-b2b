@@ -29,7 +29,7 @@
                                     {{ item?.data?.invoiceNumber }}
                                 </a>
                             </td>
-                            <td>{{ 'FORMAT_DATE_MEDIUM' | translate:{date: item?.info?.createdAt} }}</td>
+                            <td>{{ 'FORMAT_DATE_MEDIUM' | translate:{date: item?.info?.createdAt | date: 'medium'} }}</td>
                             <td><nao-status-pill [text]="item?.data?.status" *ngIf="item?.data?.status"></nao-status-pill></td>
                             <td>{{ item?.data?.summary?.totalWithoutTax | currencyFormat }}</td>
                             <td>{{ item?.data?.summary?.totalWithTax | currencyFormat }}</td>

@@ -77,17 +77,16 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
       }
 
       // -->Iterate: over options and set controls
-      // @FLORIN: solve this
-      // this.options.forEach((option, i) => {
-      //   if (option && option.id) {
-      //     controls[option.id] = [
-      //       // -->Add: first variant as selected option if any, else just pick null
-      //       firstVariant.optionsMapped[`optionId${i + 1}`] ? firstVariant.optionsMapped[`optionId${i + 1}`] : null,
-      //       [Validators.required]
-      //     ];
-      //     firstValue[option.id] = firstVariant.optionsMapped[`optionId${i + 1}`]
-      //   }
-      // });
+      this.options.forEach((option, i) => {
+        if (option && option.id) {
+          controls[option.id] = [
+            // -->Add: first variant as selected option if any, else just pick null
+            firstVariant.optionsMapped[`optionId${i + 1}`] ? firstVariant.optionsMapped[`optionId${i + 1}`] : null,
+            [Validators.required]
+          ];
+          firstValue[option.id] = firstVariant.optionsMapped[`optionId${i + 1}`]
+        }
+      });
 
       // -->Create: formGroup
       this.form = this.fb.group(controls);
@@ -185,7 +184,6 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
 
   /**
    * Set: variant id for the current options
-   * @FLORIN
    */
   public setVariantId(): void {
     // -->Init
@@ -193,99 +191,94 @@ export class ProductVariantsComponent implements OnChanges, ControlValueAccessor
 
     // -->Search: for variantId based on the number of options
     if (this.optionsMapped.length === 1) {
-      // variantId = this.variants.find(variant => variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value)?.id;
+      variantId = this.variants.find(variant => variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value)?.id;
     } else if (this.optionsMapped.length === 2) {
-      // variantId = this.variants.find(variant =>
-      //   variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0].id).value &&
-      //   variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1].id).value
-      // )?.id;
+      variantId = this.variants.find(variant =>
+        variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0].id).value &&
+        variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1].id).value
+      )?.id;
     } else if (this.optionsMapped.length === 3) {
-      // variantId = this.variants.find(variant =>
-      //   variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0].id).value &&
-      //   variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1].id).value &&
-      //   variant?.optionsMapped?.optionId3 === this.form.get(this.optionsMapped[2].id).value
-      // )?.id;
+      variantId = this.variants.find(variant =>
+        variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0].id).value &&
+        variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1].id).value &&
+        variant?.optionsMapped?.optionId3 === this.form.get(this.optionsMapped[2].id).value
+      )?.id;
     }
 
     // -->Set: variantId value
-    // this.form.get('variantId').setValue(variantId);
+    this.form.get('variantId').setValue(variantId);
   }
 
   /**
    * Check: if a value from an option exists in the variants array
-   * @FLORIN: solve this
    */
   public checkIfValueExists(optionLevel: number, valueId: string): boolean {
-    // return this.variants.some(variant => {
-    //   // -->Check: the option level
-    //   if (optionLevel === 1) {
-    //     return variant?.optionsMapped?.optionId2 === valueId &&
-    //       variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value
-    //
-    //   } else if (optionLevel === 2) {
-    //     return variant?.optionsMapped?.optionId3 === valueId &&
-    //       variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
-    //       variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
-    //
-    //   } else {
-    //     return variant?.optionsMapped?.optionId1 === valueId
-    //   }
-    // });
-    return false;
+    return this.variants.some(variant => {
+      // -->Check: the option level
+      if (optionLevel === 1) {
+        return variant?.optionsMapped?.optionId2 === valueId &&
+          variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value
+
+      } else if (optionLevel === 2) {
+        return variant?.optionsMapped?.optionId3 === valueId &&
+          variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
+          variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+
+      } else {
+        return variant?.optionsMapped?.optionId1 === valueId
+      }
+    });
   }
 
   /**
    * Check: if current formGroup is a valid variant
-   * @FLORIN
    */
   public checkIfCurrentVariantIsValid(optionLevel: number): boolean {
-    // return this.variants.some(variant => {
-    //   // -->Check: the option level
-    //   if (optionLevel === 1) {
-    //     return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-    //       variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
-    //
-    //   } else if (optionLevel === 2) {
-    //     return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
-    //       variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value &&
-    //       variant?.optionsMapped?.optionId3 === this.form.get(this.optionsMapped[2]?.id)?.value
-    //   } else {
-    //     return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value
-    //   }
-    // });
-    return false;
+    return this.variants.some(variant => {
+      // -->Check: the option level
+      if (optionLevel === 1) {
+        return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+          variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+
+      } else if (optionLevel === 2) {
+        return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value &&
+          variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value &&
+          variant?.optionsMapped?.optionId3 === this.form.get(this.optionsMapped[2]?.id)?.value
+      } else {
+        return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id).value
+      }
+    });
   }
 
   /**
    * Set: first valid variant with the current options
    *     > we check everything until the level picked, and then pick a variant for the next level
-   *     @FLORIN
    */
   public setFirstValidVariant(optionLevel: 1 | 2): void {
     // -->If: option level is one, get the optionId1 from formGroup and set optionId2
-    // if (optionLevel === 1) {
-    //   const firstVariantFound = this.variants.find(variant => variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value);
-    //   // -->Set: variant
-    //   if (this.optionsMapped[1]?.id) {
-    //     this.form.get(this.optionsMapped[1]?.id)?.setValue(firstVariantFound?.optionsMapped?.optionId2);
-    //   }
-    // }
-    //
-    // // -->If: option level is one, get the optionId1 and optionId2 from formGroup and set optionId3
-    // if (optionLevel === 2) {
-    //   const firstVariantFound = this.variants.find(variant => {
-    //     if (this.optionsMapped[0]?.id && this.optionsMapped[1]?.id) {
-    //       return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
-    //         variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
-    //     }
-    //     return false;
-    //   });
-    //
-    //   // -->Set: variant
-    //   if (this.optionsMapped[2]?.id) {
-    //     this.form.get(this.optionsMapped[2]?.id)?.setValue(firstVariantFound?.optionsMapped?.optionId3);
-    //   }
-    // }
+    if (optionLevel === 1) {
+      const firstVariantFound = this.variants.find(variant => variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value);
+      // -->Set: variant
+      if (this.optionsMapped[1]?.id) {
+        this.form.get(this.optionsMapped[1]?.id)?.setValue(firstVariantFound?.optionsMapped?.optionId2);
+      }
+    }
+
+    // -->If: option level is one, get the optionId1 and optionId2 from formGroup and set optionId3
+    if (optionLevel === 2) {
+      const firstVariantFound = this.variants.find(variant => {
+        if (this.optionsMapped[0]?.id && this.optionsMapped[1]?.id) {
+          return variant?.optionsMapped?.optionId1 === this.form.get(this.optionsMapped[0]?.id)?.value &&
+            variant?.optionsMapped?.optionId2 === this.form.get(this.optionsMapped[1]?.id)?.value
+        }
+        return false;
+      });
+
+      // -->Set: variant
+      if (this.optionsMapped[2]?.id) {
+        this.form.get(this.optionsMapped[2]?.id)?.setValue(firstVariantFound?.optionsMapped?.optionId3);
+      }
+    }
   }
 
   /**

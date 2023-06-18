@@ -36,8 +36,8 @@
   "ERROR_FORM_PASSWORD_DOES_NOT_MATCH": "Пароли должны совпадать.",
   "ERROR_FORM_REQUIRED": "Обязательное поле.",
 
-  "FORMAT_DATE_MEDIUM": "{date, date, medium}",
-  "FORMAT_ORDER_NUMBER": "№{number}",
+  "FORMAT_DATE_MEDIUM": "{{date}}",
+  "FORMAT_ORDER_NUMBER": "№{{number}}",
 
   "HEADER_BILLING_DETAILS": "Платежные реквизиты",
   "HEADER_CART_TOTAL": "Итоги",

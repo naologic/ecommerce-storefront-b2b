@@ -320,7 +320,7 @@
             #{$inset-inline-start}: $local-padding;
         }
 
-        & > * + * {
+        & > :not(:first-child) {
             margin-top: 3px;
         }
     }
@@ -463,7 +463,7 @@
             #{$inset-inline-start}: 10px;
         }
 
-        & > * + * {
+        & > :not(:first-child) {
             margin-top: 3px;
         }
     }
@@ -559,7 +559,7 @@
         flex-direction: column;
         align-items: flex-start;
 
-        & > * + * {
+        & > :not(:first-child) {
             margin-top: 3px;
         }
     }

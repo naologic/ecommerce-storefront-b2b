@@ -4,23 +4,22 @@ import {
   ElementRef,
   Inject,
   NgZone,
-  OnDestroy,
-  OnInit,
+  OnDestroy, OnInit,
   PLATFORM_ID,
   ViewChild,
 } from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {Router} from "@angular/router";
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, Observable, Subject, Subscription} from "rxjs";
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
 import {filter, takeUntil} from 'rxjs/operators';
-import {fromOutsideClick} from '../../../shared/functions/rxjs/from-outside-click';
-import {LayoutMobileMenuService} from '../../layout-mobile-menu.service';
-import {CartService} from '../../../services/cart.service';
-import {MyListsService} from '../../../services/my-lists.service';
+import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
+import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
+import { CartService } from '../../../services/cart.service';
+import { MyListsService } from '../../../services/my-lists.service';
 import {NaoUserAccessService} from '../../../nao-user-access';
-import {AppService} from "../../../app.service";
-import {ShopProductService} from "../../../shop/shop-product.service";
+import { AppService } from "../../../app.service";
+import { ShopProductService } from "../../../shop/shop-product.service";
 import {appInfo$} from "../../../../app.static";
 
 @Component({
@@ -32,7 +31,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
   private subs = new Subscription();
 
-  public generalSettings;
+  public companyLogo;
   public searchIsOpen = false;
   public searchPlaceholder$!: Observable<string>;
   public query$: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -54,8 +53,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private naoUsersService: NaoUserAccessService,
     public appService: AppService,
-  ) {
-  }
+  ) { }
 
 
   public ngOnInit(): void {
@@ -84,8 +82,8 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     // -->Subscribe: to appInfo changes
     this.subs.add(
       appInfo$.subscribe(value => {
-        // -->Set: generalSettings info
-        this.generalSettings = value?.shopInfo?.general?.data;
+        // -->Set: companyLogo
+        this.companyLogo = value?.shopInfo?.storefrontDisplay?.data?.companyLogo;
       })
     );
   }
@@ -137,7 +135,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   public searchAndRedirect(): void {
     // -->Check: if the current route starts with shop
-    if (!this.router.url?.startsWith('/shop/category')) {
+    if(!this.router.url?.startsWith('/shop/category')) {
       // -->Redirect: to shop
       this.router.navigateByUrl('/shop').then();
     }

@@ -10,7 +10,8 @@ import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
 import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
-import {appInfo$} from "../app.static";
+import { appInfo$ } from "../app.static";
+import { AppInterface } from "../app.interface";
 
 @Component({
   selector: 'app-root',
@@ -19,8 +20,15 @@ import {appInfo$} from "../app.static";
 })
 export class AppComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
+  /**
+   * Status
+   */
+  public status : 'loading' | 'error' | 'done' | 'downForMaintenance' = 'loading';
+  /**
+   * Down for maintenance message
+   */
+  public downForMaintenanceMessage!: string;
 
-  public status : 'loading' | 'error' | 'done' = 'loading';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -46,16 +54,23 @@ export class AppComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     // -->Refresh: info
     this.appService.refreshInfo();
-
     if (isPlatformBrowser(this.platformId)) {
-
       this.zone.runOutsideAngular(() => {
-        appInfo$.pipe(filter<any>(info => info)).subscribe((info) => {
+        appInfo$.pipe(filter<any>(info => info)).subscribe((info: AppInterface.AppInfo) => {
           // -->Done: loading
           this.doneLoading();
-
-          // -->Set: status to done
-          this.status = 'done';
+          /**
+           * Check: if we need to show the page for Down For Maintenance
+           */
+          if (typeof info?.shopInfo?.storefrontSettings?.data?.online === "boolean" && !info?.shopInfo?.storefrontSettings?.data?.online) {
+            // -->Set: Maintenance message
+            this.downForMaintenanceMessage = info?.shopInfo?.storefrontSettings?.data?.downForMaintenanceMessage || '';
+            // -->Set: status to down for Maintenance
+            this.status = 'downForMaintenance';
+          } else {
+            // -->Set: status to done
+            this.status = 'done';
+          }
         }, (error) => {
           // -->Done: loading
           this.doneLoading();

@@ -231,12 +231,13 @@ export class PageShopListComponent implements OnInit, OnDestroy {
           // -->Push: category filters
           filters.push(buildCategoriesFilter(appInfo$?.getValue()?.categories || [], categoryId));
 
+          // todo: we remove this for now, bugs on slider
           // -->Check: if we show the price filter
-          if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
-            const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
-            // --->Push: price filter
-            filters.push(filterPrice);
-          }
+          // if (this.appSettings.showPriceFilter && this.naoUsersService.isLoggedIn$.getValue()) {
+          //   const filterPrice = buildPriceFilter(res.data?.filterInfo?.min, res.data?.filterInfo?.max, minPrice, maxPrice);
+          //   // --->Push: price filter
+          //   filters.push(filterPrice);
+          // }
 
           // -->Push: manufacturers filter
           filters.push(buildManufacturerFilter(res.data?.filterInfo?.vendors || [], selectedManufacturerIds));

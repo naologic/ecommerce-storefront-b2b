@@ -32,7 +32,7 @@
 .widget-filters__actions {
     padding: 20px $widget-padding $widget-padding;
 
-    & > * + * {
+    & > :not(:first-child) {
         @include direction {
             #{$margin-inline-start}: 8px;
         }

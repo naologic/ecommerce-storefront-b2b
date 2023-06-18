@@ -1,2 +1,3 @@
 <router-outlet *ngIf="status === 'done'"></router-outlet>
 <app-page-error *ngIf="status === 'error'"></app-page-error>
+<app-page-down-for-maintenance [downForMaintenanceMessage]="downForMaintenanceMessage" *ngIf="status === 'downForMaintenance'"></app-page-down-for-maintenance>

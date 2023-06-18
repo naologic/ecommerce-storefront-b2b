@@ -44,8 +44,8 @@
   "ERROR_API_REQUEST": "Apologies, we're having some issues getting this done for you right now. Please try again later.",
   "ERROR_PASSWORD_STRENGTH": "Please ensure your password contains at least one lowercase letter, one uppercase letter and one number.",
 
-  "FORMAT_DATE_MEDIUM": "{date, date, medium}",
-  "FORMAT_ORDER_NUMBER": "#{number}",
+  "FORMAT_DATE_MEDIUM": "{{date}}",
+  "FORMAT_ORDER_NUMBER": "#{{number}}",
 
   "HEADER_BILLING_DETAILS": "Billing Details",
   "HEADER_CART_TOTAL": "Cart Total",
@@ -57,7 +57,7 @@
   "HEADER_CONTACT_US": "Contact Us",
   "HEADER_EDIT_ADDRESS": "Edit Address",
   "HEADER_EDIT_PROFILE": "Edit Profile",
-  "HEADER_EDIT_MY_LIST": "Edit \"{name}\"",
+  "HEADER_EDIT_MY_LIST": "Edit \"{{name}}\"",
   "HEADER_FEATURED_PRODUCTS": "Featured Products",
   "HEADER_PARTNERS": "Partners",
   "HEADER_FILTERS": "Filters",
@@ -238,7 +238,7 @@
   "TEXT_SHOP_FEATURE_SUPPORT_SUBTITLE": "Call us anytime",
   "TEXT_SHOP_FEATURE_SUPPORT_TITLE": "Support 24/7",
   "TEXT_YOU_NEED_TO_LOGIN_FOR_PRICE": "You must be logged in to view the price for this item",
-  "TEXT_SHOWING_PRODUCTS": "Showing {from}–{to} of {total} {total, plural, one {product} other {products}}",
+  "TEXT_SHOWING_PRODUCTS": "Showing {{from}}–{{to}} of {{total}} products",
   "TEXT_SKU": "SKU",
   "TEXT_SLOGAN": "Auto parts for Cars, trucks and motorcycles",
   "TEXT_SOCIAL_LINKS_MESSAGE": "Follow us on social networks",
@@ -252,10 +252,10 @@
   "TEXT_TAB_DESCRIPTION": "Description",
   "TEXT_TAB_REVIEWS": "Reviews",
   "TEXT_TAB_SPECIFICATION": "Specification",
-  "TEXT_TOAST_PRODUCT_ADDED_TO_CART": "Product \"{productName}\" added to cart!",
-  "TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE": "Product \"{productName}\" added to compare!",
-  "TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE": "Product \"{productName}\" was already added to compare!",
-  "TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS": "Product \"{productName}\", \"{variantName}\" has been added to \"{listName}\" list!",
+  "TEXT_TOAST_PRODUCT_ADDED_TO_CART": "Product \"{{productName}}\" added to cart!",
+  "TEXT_TOAST_PRODUCT_ADDED_TO_COMPARE": "Product \"{{productName}}\" added to compare!",
+  "TEXT_TOAST_PRODUCT_NOT_ADDED_TO_COMPARE": "Product \"{{productName}}\" was already added to compare!",
+  "TEXT_TOAST_PRODUCT_ADDED_TO_MY_LISTS": "Product \"{{productName}}\", \"{{variantName}}\" has been added to \"{{listName}}\" list!",
   "TEXT_TOAST_PRODUCT_REMOVED_FROM_MY_LISTS": "Product was successfully removed from the list!",
   "TEXT_TOAST_PROFILE_SAVED": "Your account information was saved successfully.",
   "TEXT_TOAST_REVIEW_ADDED": "Thank you, your review has been published!",
@@ -271,7 +271,7 @@
   "MESSAGE_FOR_SIGNING_UP": "We’ve sent an approval notification to the shop administrator - as soon as they approve your guest account, we’ll send you an email to let you know that your profile is active and ready for you to sign in.",
   "PENDING_ACCOUNT": "Your account is still pending approval from an admin. Please check back again in a bit or reach out directly to an administrator.",
   "DUPLICATED_ACCOUNT": "This email already seems to have a registered user. Please log in with that email or continue creating a new account using a different email.",
-  "TOO_MANY_TRIES": "You've entered your login credentials incorrectly too many times and we've therefore temporarily locked your account for {number} minutes. Please try to log in again then.",
+  "TOO_MANY_TRIES": "You've entered your login credentials incorrectly too many times and we've therefore temporarily locked your account for {{number}} minutes. Please try to log in again then.",
 
   "SPECIFICATION_DIMENSIONS": "Dimensions",
   "VARIANT_SPECIFICATION_HEIGHT": "Height",
@@ -289,7 +289,7 @@
   "BUTTON_DELETE": "Delete",
   "BUTTON_CREATE_LIST": "Create list",
   "LIST_OVERVIEW": "List overview",
-  "HEADER_MY_LIST_EMPTY_TITLE": "\"{name}\" seems to be empty",
+  "HEADER_MY_LIST_EMPTY_TITLE": "\"{{name}}\" seems to be empty",
   "HEADER_MY_LIST_EMPTY_SUBTITLE": "Head to the product overview to start browsing and adding products to this list.",
   "BUTTON_GO_TO_PRODUCT_OVERVIEW": "Go to product overview",
 
@@ -301,5 +301,9 @@
   "PAGE_ERROR": "Page Error",
   "GO_TO_HOME_PAGE": "Go To Home Page",
   "TEXT_TOAST_PRODUCT_ALREADY_EXISTS": "Oops, that product already seems to be on your list.",
-  "ACTIVE_FILTER_SEARCH_TERM": "Search: \"{value}\""
+  "ACTIVE_FILTER_SEARCH_TERM": "Search: \"{{value}}\"",
+
+  "OOPS_WERE_DOWN_FOR_MAINTENANCE": "Oops, we’re down for maintenance.",
+  "UPGRADES_IN_PROGRESS_DOTS": "Upgrades in progress…",
+  "WE_SHOULD_BE_BACK_ONLINE_SOON_PLEASE_CHECK_BACK_AGAIN_SHORTLY": "We should be back online soon, please check back again shortly."
 }

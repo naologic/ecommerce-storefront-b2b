@@ -7,63 +7,63 @@ import { ProductsCarouselData } from '../home.interface';
 import {appInfo$} from "../../../app.static";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    private subs = new Subscription();
-    public generalSettings;
+  private subs = new Subscription();
+  public storefrontDisplay!: any;
 
-    public featuredProducts: ProductsCarouselData = {
-        loading: false,
-        products: []
-    };
-    public dataSub = new Subscription();
-    public primaryFeaturedProduct: Product;
+  public featuredProducts: ProductsCarouselData = {
+    loading: false,
+    products: []
+  };
+  public dataSub = new Subscription();
+  public primaryFeaturedProduct: Product;
 
-    constructor(
-        private appService: AppService,
-        public url: UrlService,
-    ) { }
+  constructor(
+    private appService: AppService,
+    public url: UrlService,
+  ) { }
 
-    public ngOnInit(): void {
-        // -->Subscribe: to appInfo changes
-        this.subs.add(
-            appInfo$.subscribe((value) => {
-                // -->Set: Primary featured product
-                this.primaryFeaturedProduct = value?.shopInfo?.featuredItems?.primaryFeaturedProduct || {};
-                // -->Set: featured products
-                this.featuredProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
-                // -->Set: generalSettings info
-                this.generalSettings = value?.shopInfo?.general?.data;
-            })
-        )
-    }
+  public ngOnInit(): void {
+    // -->Subscribe: to appInfo changes
+    this.subs.add(
+      appInfo$.subscribe((value) => {
+        // -->Set: Primary featured product
+        this.primaryFeaturedProduct = value?.shopInfo?.featuredItems?.primaryFeaturedProduct || {};
+        // -->Set: featured products
+        this.featuredProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
+        // -->Set: StorefrontDisplay info
+        this.storefrontDisplay = value?.shopInfo?.storefrontDisplay?.data;
+      })
+    )
+  }
 
-    // /**
-    //  * Make: carousel data
-    //  */
-    // private makeCarouselData(groups: ProductsCarouselGroup[]): ProductsCarouselData {
-    //     const subject = new BehaviorSubject<ProductsCarouselGroup>(groups[0]);
-    //     const carouselData: ProductsCarouselData = {
-    //         subject$: subject,
-    //         products$: subject.pipe(
-    //             filter(x => x !== null),
-    //             tap(() => carouselData.loading = true),
-    //             switchMap(group => group.products$),
-    //             tap(() => carouselData.loading = false),
-    //         ),
-    //         loading: true,
-    //         groups,
-    //     };
-    //
-    //     return carouselData;
-    // }
+  // /**
+  //  * Make: carousel data
+  //  */
+  // private makeCarouselData(groups: ProductsCarouselGroup[]): ProductsCarouselData {
+  //     const subject = new BehaviorSubject<ProductsCarouselGroup>(groups[0]);
+  //     const carouselData: ProductsCarouselData = {
+  //         subject$: subject,
+  //         products$: subject.pipe(
+  //             filter(x => x !== null),
+  //             tap(() => carouselData.loading = true),
+  //             switchMap(group => group.products$),
+  //             tap(() => carouselData.loading = false),
+  //         ),
+  //         loading: true,
+  //         groups,
+  //     };
+  //
+  //     return carouselData;
+  // }
 
 
 
-    public ngOnDestroy(): void {
-        this.subs.unsubscribe();
-    }
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
 }
