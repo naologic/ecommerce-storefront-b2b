@@ -35,7 +35,10 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/_routes.json"
+              "src/_routes.json",
+              "src/manifest.webmanifest",
+              "src/robots.txt",
+              "src/sitemap.xml"
             ],
             "styles": [
               "src/styles.scss"
