@@ -3,41 +3,42 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ecommerce-storefront-b2b": {
+    "ecommerce-storefront-ssr": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "standalone": true
         },
-        "@schematics/angular:application": {
-          "strict": true
+        "@schematics/angular:directive": {
+          "standalone": true
+        },
+        "@schematics/angular:pipe": {
+          "standalone": true
         }
       },
-      "root": "apps/ecommerce-storefront-b2b",
-      "sourceRoot": "apps/ecommerce-storefront-b2b/src",
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/apps/ecommerce-storefront-b2b",
-            "index": "apps/ecommerce-storefront-b2b/src/index.html",
-            "main": "apps/ecommerce-storefront-b2b/src/main.ts",
-            "polyfills": "apps/ecommerce-storefront-b2b/src/polyfills.ts",
-            "tsConfig": "apps/ecommerce-storefront-b2b/tsconfig.app.json",
+            "outputPath": "dist/browser",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "apps/ecommerce-storefront-b2b/src/favicon.ico",
-              "apps/ecommerce-storefront-b2b/src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/photoswipe/dist",
-                "output": "assets/vendor/photoswipe"
-              }
+              "src/favicon.ico",
+              "src/assets",
+              "src/_routes.json"
             ],
             "styles": [
-              "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
-              "apps/ecommerce-storefront-b2b/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -46,19 +47,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "16kb",
-                  "maximumError": "32kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "apps/ecommerce-storefront-b2b/src/environments/environment.ts",
-                  "with": "apps/ecommerce-storefront-b2b/src/environments/environment.prod.ts"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
               "outputHashing": "all"
@@ -78,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ecommerce-storefront-b2b:build:production"
+              "browserTarget": "ecommerce-storefront-ssr:build:production"
             },
             "development": {
-              "browserTarget": "ecommerce-storefront-b2b:build:development"
+              "browserTarget": "ecommerce-storefront-ssr:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,23 +84,24 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ecommerce-storefront-b2b:build"
+            "browserTarget": "ecommerce-storefront-ssr:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "apps/ecommerce-storefront-b2b/src/test.ts",
-            "polyfills": "apps/ecommerce-storefront-b2b/src/polyfills.ts",
-            "tsConfig": "apps/ecommerce-storefront-b2b/tsconfig.spec.json",
-            "karmaConfig": "apps/ecommerce-storefront-b2b/karma.conf.js",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "apps/ecommerce-storefront-b2b/src/favicon.ico",
-              "apps/ecommerce-storefront-b2b/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "apps/ecommerce-storefront-b2b/src/styles.scss"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -113,42 +109,24 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/apps/ecommerce-storefront-b2b-server",
-            "main": "projects/ecommerce-storefront-b2b/server.ts",
-            "tsConfig": "apps/ecommerce-storefront-b2b/tsconfig.server.json",
+            "outputPath": "dist/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json",
             "inlineStyleLanguage": "scss"
           },
           "configurations": {
             "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "apps/ecommerce-storefront-b2b/src/environments/environment.ts",
-                  "with": "apps/ecommerce-storefront-b2b/src/environments/environment.prod.ts"
-                }
-              ]
+              "outputHashing": "media"
             },
             "development": {
+              "buildOptimizer": false,
               "optimization": false,
               "sourceMap": true,
-              "extractLicenses": false
+              "extractLicenses": false,
+              "vendorChunk": true
             }
           },
           "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "ecommerce-storefront-b2b:build:development",
-              "serverTarget": "ecommerce-storefront-b2b:server:development"
-            },
-            "production": {
-              "browserTarget": "ecommerce-storefront-b2b:build:production",
-              "serverTarget": "ecommerce-storefront-b2b:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
@@ -159,118 +137,34 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "ecommerce-storefront-b2b:build:production"
+              "browserTarget": "ecommerce-storefront-ssr:build:production",
+              "serverTarget": "ecommerce-storefront-ssr:server:production"
             },
             "development": {
-              "browserTarget": "ecommerce-storefront-b2b:build:development"
+              "browserTarget": "ecommerce-storefront-ssr:build:development",
+              "serverTarget": "ecommerce-storefront-ssr:server:development"
             }
           },
           "defaultConfiguration": "production"
         },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/ecommerce-storefront-b2b/**/*.ts",
-              "projects/ecommerce-storefront-b2b/**/*.html"
-            ],
-            "tsConfig": [
-              "apps/ecommerce-storefront-b2b/tsconfig.app.json",
-              "apps/ecommerce-storefront-b2b/tsconfig.spec.json"
-            ]
-          }
-        }
-      }
-    },
-    "nao-user-access": {
-      "projectType": "library",
-      "root": "libs/nao-user-access",
-      "sourceRoot": "libs/nao-user-access/src",
-      "prefix": "naologic",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nao-user-access/src/**/*.ts",
-              "libs/nao-user-access/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "nao-http2": {
-      "projectType": "library",
-      "root": "libs/nao-http2",
-      "sourceRoot": "libs/nao-http2/src",
-      "prefix": "naologic",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nao-http2/src/**/*.ts",
-              "libs/nao-http2/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "nao-utils": {
-      "projectType": "library",
-      "root": "libs/nao-utils",
-      "sourceRoot": "libs/nao-utils/src",
-      "prefix": "naologic",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nao-utils/src/**/*.ts",
-              "libs/nao-utils/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "nao-locale": {
-      "projectType": "library",
-      "root": "libs/nao-locale",
-      "sourceRoot": "libs/nao-locale/src",
-      "prefix": "naologic",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nao-locale/src/**/*.ts",
-              "libs/nao-locale/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "nao-interfaces": {
-      "projectType": "library",
-      "root": "libs/nao-interfaces",
-      "sourceRoot": "libs/nao-interfaces/src",
-      "prefix": "naologic",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/nao-interfaces/src/**/*.ts",
-              "libs/nao-interfaces/src/**/*.html"
-            ]
-          }
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "ecommerce-storefront-ssr:build:development",
+              "serverTarget": "ecommerce-storefront-ssr:server:development"
+            },
+            "production": {
+              "browserTarget": "ecommerce-storefront-ssr:build:production",
+              "serverTarget": "ecommerce-storefront-ssr:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
         }
       }
     }
   },
-  "defaultProject": "ecommerce-storefront-b2b",
   "cli": {
-    "analytics": "29b8ae4a-2e19-40cc-9c70-4205dda407a3",
-    "defaultCollection": "@angular-eslint/schematics"
+    "analytics": false
   }
 }

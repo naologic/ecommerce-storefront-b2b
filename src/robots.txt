@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://naologic.com/sitemap.xml
+Disallow: /cdn-cgi/

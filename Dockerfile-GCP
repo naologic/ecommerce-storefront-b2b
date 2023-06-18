@@ -1,0 +1,62 @@
+FROM node:19.3.0
+LABEL maintainer="Naologic <contact@naologic.com>"
+LABEL org.label-schema.name="naologic-com-website"
+LABEL org.label-schema.description="The best description ever"
+LABEL org.label-schema.vendor="naologic.com"
+LABEL org.label-schema.url="naologic.com"
+LABEL org.label-schema.version="v1.0.0"
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV NPM_CONFIG_LOGLEVEL warn
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+
+# Set work dir
+WORKDIR /var/nao
+
+# Copy the files
+COPY . ./
+
+# Install nginx, set configs, create local dirs, install global modules
+RUN apt-get update && apt-get install -y nano htop nginx \
+    && rm -rf /etc/nginx/conf.d/default.conf && rm -rf /etc/nginx/sites-enabled/default \
+    && cp -nf ./deploy/GCP/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf \
+    && cp -nfr ./deploy/GCP/etc/nginx/nao /etc/nginx/nao \
+    && mkdir -p /var/nao && mkdir -p /var/nao/naologic.com/cache-www \
+    && chmod 0777 -R /var/nao/naologic.com/cache-www \
+    && mkdir -p /etc/pm2-web && npm install -g pm2 @nestjs/cli nx zx
+
+
+
+# Set user
+USER $USER_ID
+
+# Build it all here
+RUN npm install --legacy-peer-deps --production=false && npm run prod && rm -rf src && rm -rf gh* && rm -rf test
+
+# Expose API ports (3010)
+EXPOSE 9000
+
+
+# ENTRYPOINT ["/bin/bash", "/var/nao/deploy/GCP/entrypoint.sh"]
+
+# Run with PM2 ( THIS COMMAND WILL RUN IN THE CLOUD RUN CONFIG, NOT IN THE DOCKER )
+#CMD [ "pm2-runtime", "start", "app.pm2.json", "--env", "production" ]
+
+
+
+# /usr/sbin/nginx -s stop && /usr/sbin/nginx -c /etc/nginx/nginx.conf && /usr/sbin/nginx -s reload
+
+#####################
+## Debugging
+#####################
+
+# Build local container
+# docker build -t "web:1" --no-cache . -f Dockerfile-GCP
+
+# Run with bash so you can run: pm2 start app.pm2.json --env production
+# docker container run -p 9000:9000 -it web:1 /bin/bash
+# docker container run -m 2048m --cpus=2 -p 9000:9000 -it web:1 /bin/bash
+# docker container run -p 9000:9000 -it web:1 /bin/bash /var/nao/deploy/GCP/entrypoint.sh
+# docker container run --entrypoint "/bin/bash /var/nao/deploy/GCP/entrypoint.sh"  -p 9000:9000 -it web:1 /bin/bash
+
+# Run as daemon
