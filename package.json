@@ -10,7 +10,7 @@
     "test": "ng test",
     "dev:ssr": "ng run ecommerce-storefront-ssr:serve-ssr",
     "serve:ssr": "node dist/server/main.js",
-    "build:ssr": "ng build && ng run ecommerce-storefront-ssr:server",
+    "build:ssr": "ng build --configuration production && ng run ecommerce-storefront-ssr:server",
     "prerender": "ng run ecommerce-storefront-ssr:prerender",
     "cf:process": "node ./tools/copy-worker-files.mjs && node ./tools/copy-client-files.mjs && node ./tools/bundle.mjs",
     "prestart": "npm run build:ssr && npm run cf:process",
