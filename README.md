@@ -75,12 +75,13 @@ Static pages offer great performance at low cost and auto-scale with the number 
 
 1. pick your repository
 2. open "Framework preset" and set "None"
-2. open "Build command" and set "npm run build:ssr"
-2. open "Root directory (advanced)" and set "dist/browser"
+3. open "Build command" and set "npm run build:ssr"
+4. open "Root directory (advanced)" and set "dist/browser"
 5. open "Environment Variables" and set values from your [naologic](https://naologic.com) account
   1. set `API_URL` to `api url value from Tokens`
   2. set `NAO_TOKEN` to `token value from Tokens`
-6. Enjoy :rocket:
+6. In "Build system version" select version 2
+7. Enjoy :rocket:
 
 ### Deploy to [Cloudflare Pages](https://pages.cloudflare.com/) as SSR (COMING SOON)
 
