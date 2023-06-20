@@ -1,3 +1,6 @@
+![](https://naologic.com/assets/images/nav/logo.svg)
+
+
 ## Description
 This eCommerce open-source website is built with Angular 16 Server Side Rendering and optimized for SEO. It can be deployed to Google Cloud Run, a docker orchestration
 service with auto-scaling, self-healing and designed for large production deployments, without any loss of performance.
