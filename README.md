@@ -59,6 +59,12 @@ Run `npm run build:ssr` to build the project. The build artifacts will be stored
 ## Running
 Run `npm run serve:ssr` to serve it locally `http://localhost:4000/`.
 
+## Connecting API
+To connect the API you need to update the url and api token in the code.
+
+Go to `src.environment.prod.ts`
+1. set `API.server.url` to `API URL value from Workspace`
+2. set `API.naoToken` to `token value from Tokens`
 
 ## Deployment as a static page
 Static pages offer great performance at low cost and auto-scale with the number of requests.
