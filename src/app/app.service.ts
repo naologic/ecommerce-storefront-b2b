@@ -166,6 +166,11 @@ export class AppService implements OnDestroy {
     if (!metas) {
       throw new Error(`You have to send a meta tag object`);
     }
+    // -->Set: title
+    this.metaService.updateTag({
+      name: "title",
+      content: metas.title || MetasInterface.DefaultMetas.title,
+    });
     // -->Set: description
     this.metaService.updateTag({
       name: "description",

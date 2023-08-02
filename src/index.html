@@ -29,8 +29,10 @@
             script-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://ajax.cloudflare.com https://cdn.plaid.com https://js.stripe.com http://www.googletagmanager.com http://www.googleadservices.com https://connect.facebook.net https://tagmanager.google.com https://optimize.google.com https://www.google-analytics.com https://cdn.ampproject.org https://www.googletagmanager.com/ https://cdnjs.cloudflare.com https://static.cloudflareinsights.com">
 
 
-  <!-- fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i">
+  <!--Import Circular std font-->
+  <link rel="preload" href="assets/fonts/circular-std/circular-std.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="assets/fonts/circular-std/circular-std.css"></noscript>
+
 
   <style class="site-preloader-style">
     @keyframes site-preloader-animation {

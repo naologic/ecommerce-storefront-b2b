@@ -7,19 +7,156 @@
 @import '../mixins/status-badge';
 
 
+// **********************************************
+// Product card
+//
 .product-card {
-    @include product-card-base;
+  padding: 24px 16px;
+  border: 1px solid transparent;
+  transition: all .05s ease-in-out;
+  border-radius: 5px;
+
+  // -->Product image
+  .nao-product-card__image {
+    display: block;
+    position: relative;
+  }
+
+  // -->Content: for product card
+  .nao-product-card__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  // -->Product card name container
+  .nao-product-card__name-container {
+    margin-top: 18px;
+    padding-right: 21px;
+    position: relative;
+    margin-bottom: 8px;
+
+    // -->Quick: view button
+    .nao-product-card__action--quickview {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: var(--bg-4);
+    }
+
+    // -->Product card name
+    .nao-product-card__name {
+      font-weight: $font-weight-bold;
+      position: relative;
+      color: var(--text-primary);
+
+      &:hover {
+        color: var(--text-primary);
+      }
+
+      &::before {
+        box-sizing: border-box;
+        content: '';
+        display: block;
+        position: absolute;
+        left: -17px;
+        top: 0;
+        bottom: 0;
+        border-left: 1px solid var(--primary);
+      }
+    }
+  }
+
+  // -->Product price
+  .nao-product-card__price {
+    margin-top: 12px;
+    font-weight: $font-weight-medium;
+    line-height: 18px;
+    font-size: 15px;
+    color: var(--text-primary);
+  }
+
+  // -->Information
+  .nao-card-card__info-section {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text-4)
+  }
+
+  // -->Description
+  .nao-card-card__description-section {
+    display: none;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text-2)
+  }
+
+  // -->Base: for product action buttons
+  .nao-product-card__action--base {
+    box-shadow: 0 1px 3px 0 var(--shadow-1);
+    width: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    border-radius: 6px;
+    line-height: 0;
+  }
+
+  // --Add product to my list btn
+  .nao-product-card__action--my-list {
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+
+  // -->Push: price and footer to the bottom
+  .nao-product-card__push-bottom {
+    margin-top: auto;
+  }
+
+  // -->Footer
+  .nao-product-card__footer {
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+
+  // -->Hover and active state
+  &:hover, &:active {
+    background-color: var(--product-card-bg);
+    border-color: var(--border-1);
+    box-shadow: var(--box-shadow-1);
+  }
+
+  // -->Show: the hover effect on mobile
+  @include media-breakpoint-down(lg) {
+    background-color: var(--product-card-bg);
+    border-color: var(--border-1);
+    box-shadow: var(--box-shadow-1);
+  }
 }
+
 .product-card--layout--grid {
-    @include product-card-grid-base;
+  // todo:
+  // todo:
+  // todo:
+  // todo:
+  @include product-card-grid-base;
 }
+
 .product-card--layout--horizontal {
-    @include product-card-horizontal-base;
+  // todo:
+  // todo:
+  // todo:
+  // todo:
+  @include product-card-horizontal-base;
 }
 
 .nao-grid-5 {
-    display: grid;
-    grid-template-columns: repeat(5, auto);
-    gap: 20px
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: 20px
 }
 

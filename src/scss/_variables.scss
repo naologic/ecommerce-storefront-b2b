@@ -213,10 +213,12 @@
 // ----------------------------------------
 // -- body
 // ----------------------------------------
-   $body-font-family:  'Roboto', 'sans-serif' !default;
+   $body-font-family:  "Circular-Std", "Helvetica Neue", -apple-system, BlinkMacSystemFont, "Segoe UI", "Ubuntu", sans-serif !default;
+   $font-family-sans-serif:      system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+   $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
    $body-font-size:    16px                   !default;
    $body-font-weight:  $font-weight-normal    !default;
-   $body-line-height:  1.5                    !default;
+   $body-line-height:  normal                    !default;
    $body-loader-color: #000                   !default;
    // scheme
    $body-scheme-based-on: light !default;

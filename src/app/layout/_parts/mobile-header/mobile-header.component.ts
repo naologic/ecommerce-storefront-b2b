@@ -4,28 +4,29 @@ import {
   ElementRef,
   Inject,
   NgZone,
-  OnDestroy, OnInit,
+  OnDestroy,
+  OnInit,
   PLATFORM_ID,
-  ViewChild,
-} from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import {Router} from "@angular/router";
-import { TranslateService } from '@ngx-translate/core';
+  ViewChild
+} from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs";
-import {filter, takeUntil} from 'rxjs/operators';
-import { fromOutsideClick } from '../../../shared/functions/rxjs/from-outside-click';
-import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
-import { CartService } from '../../../services/cart.service';
-import { MyListsService } from '../../../services/my-lists.service';
-import {NaoUserAccessService} from '../../../nao-user-access';
+import { filter, takeUntil } from "rxjs/operators";
+import { fromOutsideClick } from "../../../shared/functions/rxjs/from-outside-click";
+import { LayoutMobileMenuService } from "../../layout-mobile-menu.service";
+import { CartService } from "../../../services/cart.service";
+import { MyListsService } from "../../../services/my-lists.service";
+import { NaoUserAccessService } from "../../../nao-user-access";
 import { AppService } from "../../../app.service";
 import { ShopProductService } from "../../../shop/shop-product.service";
-import {appInfo$} from "../../../../app.static";
+import { appInfo$ } from "../../../../app.static";
 
 @Component({
-  selector: 'app-mobile-header',
-  templateUrl: './mobile-header.component.html',
-  styleUrls: ['./mobile-header.component.scss'],
+  selector: "app-mobile-header",
+  templateUrl: "./mobile-header.component.html",
+  styleUrls: ["./mobile-header.component.scss"]
 })
 export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
@@ -38,9 +39,9 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   public disableSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public isLoggedIn = false;
 
-  @ViewChild('searchForm') searchForm!: ElementRef<HTMLElement>;
-  @ViewChild('searchInput') searchInput!: ElementRef<HTMLElement>;
-  @ViewChild('searchIndicator') searchIndicator!: ElementRef<HTMLElement>;
+  @ViewChild("searchForm") searchForm!: ElementRef<HTMLElement>;
+  @ViewChild("searchInput") searchInput!: ElementRef<HTMLElement>;
+  @ViewChild("searchIndicator") searchIndicator!: ElementRef<HTMLElement>;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -52,12 +53,13 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     private shopProductService: ShopProductService,
     private router: Router,
     private naoUsersService: NaoUserAccessService,
-    public appService: AppService,
-  ) { }
+    public appService: AppService
+  ) {
+  }
 
 
   public ngOnInit(): void {
-    this.searchPlaceholder$ = this.translate.stream('INPUT_SEARCH_PLACEHOLDER');
+    this.searchPlaceholder$ = this.translate.stream("INPUT_SEARCH_PLACEHOLDER");
 
     // -->Subscribe: to user LoggedIn state changes
     this.subs.add(
@@ -98,10 +100,10 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.zone.runOutsideAngular(() => {
       fromOutsideClick([
         this.searchForm.nativeElement,
-        this.searchIndicator.nativeElement,
+        this.searchIndicator.nativeElement
       ]).pipe(
         filter(() => this.searchIsOpen),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       ).subscribe(() => {
         this.zone.run(() => this.closeSearch());
       });
@@ -134,13 +136,18 @@ export class MobileHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
    * Search: term and redirect
    */
   public searchAndRedirect(): void {
+    if (this.disableSearch$.getValue()) {
+      return;
+    }
     // -->Check: if the current route starts with shop
-    if(!this.router.url?.startsWith('/shop/category')) {
+    if (!this.router.url?.startsWith("/shop/category")) {
       // -->Redirect: to shop
-      this.router.navigateByUrl('/shop').then();
+      this.router.navigateByUrl("/shop").then();
     }
     // -->Trigger: search
     this.shopProductService.setSearchTerm(this.query$.getValue());
+    // -->Close: search
+    this.closeSearch();
     // -->Disable: search until query changes
     this.disableSearch$.next(true);
   }

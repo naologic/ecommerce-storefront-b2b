@@ -1,0 +1,273 @@
+@mixin text-opacity($color, $opacity) {
+  color: $color; /* The Fallback */
+  color: rgba($color, $opacity);
+}
+
+$btn-box-shadow: 0 1px 3px 0 var(--shadow-1);
+$btn-box-shadow-disabled: 0 1px 3px 0 rgba(var(--shadow-1-rgb), 0.2);
+
+// *****************************************************
+// Button variant
+@mixin nao-button-variant($text-color, $bg-color, $bg-active) {
+  color: rgb($text-color);
+  background-color: rgb($bg-color);
+
+  &:not(.has-arrow):not(&:active):not(&.active):not(&:focus):hover {
+    @include text-opacity($text-color, 0.6);
+    background-color: rgba($bg-color, 0.8);
+  }
+
+  &:active, &.active, &:focus {
+    background-color: $bg-active;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include text-opacity($text-color, 0.4);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+};
+
+
+// *****************************************************
+// Button simple
+@mixin nao-button-simple(
+  $text-color,
+  $text-color-clicked,
+  $bg-color,
+  $bg-active: $bg-color,
+  $bg-color-disabled: $bg-color
+) {
+  background-color: $bg-color;
+  color: rgb($text-color);
+
+  &:not(.has-arrow):not(&:active):not(&.active):not(&:focus):hover {
+    @include text-opacity($text-color, 0.6);
+  }
+
+  &:active, &.active, &:focus {
+    background-color: $bg-active;
+    color: $text-color-clicked;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $bg-color-disabled;
+    box-shadow: $btn-box-shadow-disabled;
+    @include text-opacity($text-color, 0.4);
+    pointer-events: none;
+  }
+};
+
+// *****************************************************
+// White button
+@mixin nao-button-white($text-color, $text-color-active) {
+  background-color: var(--white);
+  box-shadow: 0 2.5px 5px -1px var(--text-6), 0 1.5px 3px -1.5px var(--shadow-1);
+  color: rgb($text-color);
+
+  &:not(.has-arrow):not(&:active):not(&.active):not(&:focus):hover {
+    @include text-opacity($text-color, 0.6);
+  }
+
+  &.has-arrow {
+    &:hover {
+      color: rgb($text-color);
+    }
+  }
+
+  &:active, &.active, &:focus {
+    color: $text-color-active;
+  }
+
+  &:disabled,
+  &.disabled {
+    @include text-opacity($text-color, 0.4);
+    pointer-events: none;
+  }
+};
+
+
+// *****************************************************
+// Base for most of the buttons
+.btn-base {
+  display: inline-flex;
+  align-items: center;
+  border: unset;
+  box-shadow: $btn-box-shadow;
+  outline: none !important;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  text-align: center;
+  user-select: none;
+  transition: 0.2s ease-in-out;
+}
+
+
+// *****************************************************
+// Button
+.nao-btn {
+  @extend .btn-base;
+  padding: 10.5px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1;
+
+  &.nao-btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+
+// *****************************************************
+// Button Round
+.btn-round {
+  @extend .btn-base;
+  padding: 6px 12px;
+  border-radius: 14.5px;
+  font-size: 13px;
+  line-height: 1.27;
+
+
+  // has left icon
+  &.has-left-icon {
+    .btn-icon {
+      margin-right: 8px;
+      display: flex;
+    }
+  }
+
+  // Arrow button
+  &.has-arrow {
+    padding-right: 8px;
+
+    .HoverArrow {
+      --hoverTransition: 150ms cubic-bezier(0.215,0.61,0.355,1);
+      --arrowSpacing: 5px;
+      --arrowHoverTransition: 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+      --arrowHoverOffset: translateX(3px);
+      --fixMarginTop: -2px;
+      position: relative;
+      margin-left: var(--arrowSpacing);
+      margin-top: var(--fixMarginTop);
+      stroke-width: 2px;
+      fill: none;
+      stroke: currentColor;
+
+      .HoverArrow__linePath {
+        opacity: 0;
+        transition: opacity var(--hoverTransition, var(--arrowHoverTransition));
+      }
+
+      .HoverArrow__tipPath {
+        transition: transform var(--hoverTransition,var(--arrowHoverTransition));
+      }
+    }
+
+    &:not(:disabled):not(.disabled):hover {
+      .HoverArrow {
+        .HoverArrow__tipPath {
+          transform: var(--arrowHoverOffset);
+        }
+        .HoverArrow__linePath {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // Sizes
+  &.btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+
+    &.has-arrow {
+      padding-right: 6px;
+
+      .HoverArrow {
+        --fixMarginTop: -1px;
+      }
+    }
+  }
+
+  &.btn-lg {
+    padding: 7px 16px;
+    border-radius: 14.5px;
+    font-size: 15px;
+  }
+
+  &.btn-xl {
+    padding: 9.5px 16px;
+    border-radius: 19px;
+    font-size: 15px;
+  }
+
+  &.btn-enlarge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+
+// *****************************************************
+// Variants
+.nao-btn-primary-dark {
+  @include nao-button-variant(var(--white-rgb), var(--primary-600-rgb), var(--primary));
+}
+
+.nao-btn-primary {
+  @include nao-button-variant(var(--white-rgb), var(--primary-rgb), var(--primary-600));
+}
+
+.nao-btn-simple-primary {
+  @include nao-button-simple(var(--primary-rgb), var(--primary-600), rgba(var(--primary-rgb), 0.1), rgba(var(--primary-rgb), 0.28));
+}
+
+.btn-white {
+  @include nao-button-white(var(--primary-rgb), var(--primary-600));
+}
+
+// *****************************************************
+// Nao button states
+.nao-button__state-icon {
+  margin-left: 8px;
+
+  line-height: 0;
+}
+
+.nao-button__loader {
+  g {
+    stroke: var(--white);
+  }
+}
+
+// -->Add opacity when it's disabled
+.nao-btn, .btn-round {
+  &:disabled,
+  &.disabled {
+    .nao-button__state-icon {
+      opacity: 0.4;
+    }
+  }
+}
+
+// *****************************************************
+// Buttons used as indicators
+.btn__indicator-2 {
+  border-radius: 12px;
+  font-size: 16px;
+  line-height: 1.25;
+  padding: 7px 8px 7px 12px;
+}
+
+.btn__indicator-1 {
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  padding: 7px 12px;
+}

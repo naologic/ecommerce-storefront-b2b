@@ -1,11 +1,9 @@
 <div class="departments" [class.departments--open]="isOpen">
     <button class="departments__button" type="button" (click)="onClick()">
-        <span class="departments__button-icon"><app-icon icon="menu-16x12"></app-icon></span>
         <span class="departments__button-title">{{ label }}</span>
-        <span class="departments__button-arrow"><app-icon icon="arrow-rounded-down-9x6"></app-icon></span>
+        <span class="departments__button-arrow"><app-icon icon="header-arrow"></app-icon></span>
     </button>
     <div class="departments__menu">
-        <div class="departments__arrow"></div>
         <div class="departments__body" (mouseleave)="onMouseleave()">
             <ul class="departments__list">
                 <li class="departments__list-padding" role="presentation" (mouseenter)="onMouseleave()"></li>

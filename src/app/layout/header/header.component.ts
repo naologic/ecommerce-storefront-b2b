@@ -14,16 +14,18 @@ import { appInfo$ } from "../../../app.static";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"],
+  styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private subs = new Subscription();
-
-  // public email$: Observable<string | null> = this.account.user$.pipe(map(x => x ? x.email : null));
   /**
-   * Categories
+   * All categories used for more menu
    */
-  public categories: DepartmentsLink[] = [];
+  public allCategories: DepartmentsLink[] = [];
+  /**
+   * Featured: categories
+   * TODO: @WIP
+   */
+  public featuredCategories: DepartmentsLink[] = [];
   /**
    * Info support for phone number and email address
    */
@@ -33,7 +35,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
    */
   public userData = null;
 
-  constructor(public myLists: MyListsService, public cart: CartService, public url: UrlService, public appService: AppService, private naoUsersService: NaoUserAccessService) {}
+
+  private subs = new Subscription();
+
+  constructor(public myLists: MyListsService, public cart: CartService, public url: UrlService, public appService: AppService, private naoUsersService: NaoUserAccessService) {
+  }
 
   public ngOnInit(): void {
     // -->Subscribe: to appInfo changes
@@ -42,24 +48,147 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // -->Set: info
         this.infoSupport = {
           supportPhoneNumber: value?.shopInfo?.storefrontSettings?.data?.phoneNumber || "",
-          supportEmailAddress: value?.shopInfo?.storefrontSettings?.data?.supportEmail || "",
+          supportEmailAddress: value?.shopInfo?.storefrontSettings?.data?.supportEmail || ""
         };
         // -->Set: categories
-        this.categories = this.mapCategories(value?.categories);
-      }),
+        this.initCategoriesForMore(value?.categories);
+        // -->Init: featured categories
+        this.initFeaturedCategories(value?.categories);
+      })
     );
 
     // -->Subscribe: to user data
-    this.naoUsersService.userData.subscribe((userData) => {
-      // -->Set: user data
-      this.userData = userData;
-    });
+    this.subs.add(
+      this.naoUsersService.userData.subscribe((userData) => {
+        // -->Set: user data
+        this.userData = userData;
+      })
+    );
   }
 
+
   /**
-   * Map: categories for header
+   * Init: featured categories
    */
-  public mapCategories(categories: any[]): DepartmentsLink[] {
+  private initFeaturedCategories(categories: any[]): void {
+    // -->Check: categories
+    if (!Array.isArray(categories)) {
+      categories = [];
+    }
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
+
+    // -->Init
+    let items: any = [];
+    /**
+     * Check: if this is a mega menu, mega menu column or a plain link
+     */
+    featuredCategoryIds.forEach(categoryId => {
+      // -->Get: category
+      const category = categories.find(f => f.docId === categoryId);
+      // -->Check: if the category has the right fields
+      if (category?.data?.name && category?.docId) {
+        // -->Create: category
+        const item: DepartmentsLink = {
+          title: category.data.name,
+          url: this.createCategoryLink(category.data.name, category.docId)
+        };
+
+        /**
+         * Get: second level categories for this parent
+         */
+        const subCategories = categories.filter((c) => c.data?.parentId === category.docId);
+        if (subCategories.length) {
+          // -->Init: submenu
+          item.submenu = {
+            type: "megamenu",
+            size: "full-width",
+            columns: []
+          };
+
+          // -->Iterate: over subcategories and check if there are any other links inside
+          subCategories.forEach((subCategory) => {
+            /**
+             * Get: links for sub category
+             */
+            const links = categories.filter((c) => c.data?.parentId === subCategory.docId);
+            // -->Init: column
+            const column: MegamenuColumn = {
+              size: "1of5",
+              links: []
+            };
+
+            // -->Check: if the category has the right fields
+            if (subCategory?.data?.name && subCategory?.docId) {
+              // -->Create: sub category
+              const subCategory$: NestedLink = {
+                title: subCategory.data.name,
+                url: this.createCategoryLink(subCategory.data.name, subCategory.docId)
+              };
+
+              // -->Check: links
+              if (links.length) {
+                // -->Map: subcategory links that have a name
+                subCategory$.links = links
+                  .filter((link: any) => link?.data?.name && link?.docId)
+                  .map((link) => {
+                    return {
+                      title: link.data.name,
+                      url: this.createCategoryLink(link.data.name, link.docId)
+                    };
+                  });
+              }
+              // -->Push: sub category
+              column.links.push(subCategory$);
+            }
+            // -->Push: column
+            item.submenu.columns.push(column);
+          });
+        }
+        // -->Push: category
+        items.push(item);
+      }
+    });
+
+
+    /**
+     * Iterate: over items and check if we have a menu item with only 2 levels and shrink everything
+     */
+    items = items.map(item => {
+      // -->Check: if the element doesn't have the third level of nesting (only 2)
+      if (!this.hasThirdLevelNesting(item)) {
+        // -->Check: if it's a plain routerlink or it has a submenu
+        if (Array.isArray(item?.submenu?.columns) && item?.submenu?.columns?.length) {
+          // -->Get: all the links
+          const links = this.getLinksFromColumns(item);
+          // -->Convert: it to a small menu
+          item.submenu = {
+            type: "megamenu",
+            size: "single-dropdown",
+            columns: [
+              {
+                size: "1",
+                links
+              }
+            ]
+          };
+        }
+      }
+
+      return item;
+    })
+    // -->Set: featured categories
+    this.featuredCategories = items;
+  }
+
+
+  /**
+   * Init: categories for more
+   */
+  private initCategoriesForMore(categories: any[]): void {
     // -->Check: categories
     if (!Array.isArray(categories)) {
       categories = [];
@@ -69,20 +198,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // -->Get: route level categories
     const rootLevelCategories = categories.filter((c) => !c?.data?.parentId);
-
     // -->Iterate: over categories and set the root level ones
     rootLevelCategories.forEach((category) => {
       // -->Check: if the category has the right fields
       if (!category?.data?.name || !category?.docId) {
         return;
       }
-
       // -->Create: category
       const item: DepartmentsLink = {
         title: category.data.name,
-        url: `/shop/category/${nameToSlug(category.data.name)}/${category.docId}/products`,
+        url: this.createCategoryLink(category.data.name, category.docId)
       };
-
       /**
        * Get: second level categories for this parent
        */
@@ -92,7 +218,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         item.submenu = {
           type: "megamenu",
           size: "xl",
-          columns: [],
+          columns: []
         };
 
         // -->Iterate: over subcategories and check if there are any other links inside
@@ -100,22 +226,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
           /**
            * Get: links for sub category
            */
-          const links = categories.filter((c) => c.data?.parentId === category.docId);
+          const links = categories.filter((c) => c.data?.parentId === subCategory.docId);
           // -->Init: column
           const column: MegamenuColumn = {
             size: "1of5",
-            links: [],
+            links: []
           };
 
           // -->Check: if the category has the right fields
           if (!subCategory?.data?.name || !subCategory?.docId) {
             return;
           }
-
           // -->Create: sub category
           const subCategory$: NestedLink = {
             title: subCategory.data.name,
-            url: `/shop/category/${nameToSlug(subCategory.data.name)}/${subCategory.docId}/products`,
+            url: this.createCategoryLink(subCategory.data.name, subCategory.docId)
           };
 
           // -->Check: links
@@ -126,11 +251,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
               .map((link) => {
                 return {
                   title: link.data.name,
-                  url: `/shop/category/${nameToSlug(link.data.name)}/${link.docId}/products`,
+                  url: this.createCategoryLink(link.data.name, link.docId)
                 };
               });
           }
-
           // -->Push: sub category
           column.links.push(subCategory$);
           // -->Push: column
@@ -142,8 +266,54 @@ export class HeaderComponent implements OnInit, OnDestroy {
       items.push(item);
     });
 
-    return items;
+    this.allCategories = items;
   }
+
+
+  /**
+   * Check: if it has the third level of nesting
+   */
+  private hasThirdLevelNesting(menuItem: DepartmentsLink) {
+    if (menuItem?.submenu && Array.isArray(menuItem.submenu.columns)) {
+      for (const column of menuItem.submenu.columns) {
+        if (column.links) {
+          for (const link of column.links) {
+            if (link.links) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Get: all the links from inside columns
+   */
+  private getLinksFromColumns(menuItem: DepartmentsLink): NestedLink[] {
+    const links: NestedLink[] = [];
+    if (menuItem?.submenu && Array.isArray(menuItem.submenu.columns)) {
+      for (const column of menuItem.submenu.columns) {
+        if (column.links) {
+          for (const link of column.links) {
+            links.push(link);
+          }
+        }
+      }
+    }
+    return links;
+  }
+
+
+  /**
+   * Create: link for a category
+   */
+  private createCategoryLink(name: string, docId: string): string {
+    return `/shop/category/${nameToSlug(name)}/${docId}/products`;
+  }
+
+
 
   public ngOnDestroy(): void {
     this.subs.unsubscribe();

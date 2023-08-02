@@ -1,0 +1,48 @@
+/*Font weight regular*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("./circular-std-regular.woff2") format('woff2');
+}
+/*Font weight regular-semibold*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 450;
+  font-style: normal;
+  font-display: swap;
+  src: url("./circular-std-book.woff2") format('woff2');
+}
+/*Font weight semi bold*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("./circular-std-medium.woff2") format('woff2');
+}
+/*Font weight bold*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("./circular-std-bold.woff2") format('woff2');
+}
+/*Font weight bold italic*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("./circular-std-bold-italic.woff2") format('woff2');
+}
+/*Font weight extra bold*/
+@font-face {
+  font-family: 'Circular-Std';
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("./circular-std-black.woff2") format('woff2');
+}

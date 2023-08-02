@@ -6,238 +6,255 @@
 
 
 @mixin local-layout($columns, $gutter) {
-    .products-list__content {
-        margin: -($gutter / 2);
-    }
-    .products-list__item {
-        margin: $gutter / 2;
-        width: calc((100% - #{$columns * $gutter}) / #{$columns});
-    }
+  .products-list__content {
+    margin: -($gutter / 2);
+  }
+  .products-list__item {
+    margin: $gutter / 2;
+    width: calc((100% - #{$columns * $gutter}) / #{$columns});
+  }
 }
+
 $local-columns: 4;
 $local-gutter: 20px;
 
 
-.products-list {}
-.products-list__content {
-    display: flex;
-    flex-wrap: wrap;
+.products-list {
 }
-.products-list__content + .products-list__content {
-    margin-top: $local-gutter / 2;
-}
-.products-list__item {
-    flex-shrink: 0;
-    display: flex;
 
-    .product-card {
-        width: 100%;
-    }
+.products-list__content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.products-list__content + .products-list__content {
+  margin-top: $local-gutter / 2;
+}
+
+.products-list__item {
+  flex-shrink: 0;
+  display: flex;
+
+  .product-card {
+    width: 100%;
+  }
 }
 
 
 .products-list[data-layout="grid"] {
-    .product-card {
-        @include product-card-grid-base;
-    }
+  .product-card {
+    @include product-card-grid-base;
+  }
 }
 
 .products-list--grid--3[data-layout="grid"] {
-    @include local-layout(3, 20px);
+  @include local-layout(3, 20px);
 
-    .products-list__head {
-        display: none;
-    }
+  .products-list__head {
+    display: none;
+  }
 
-    @include media-breakpoint-only(lg) {
-        @include local-layout(3, 16px);
-    }
-    @media (min-width: 420px) and (max-width: 767px) {
-        @include local-layout(2, 16px);
-    }
-    @media (max-width: 419px) {
-        @include local-layout(1, 16px);
-    }
+  @include media-breakpoint-only(lg) {
+    @include local-layout(3, 16px);
+  }
+  @media (min-width: 420px) and (max-width: 767px) {
+    @include local-layout(2, 16px);
+  }
+  @media (max-width: 419px) {
+    @include local-layout(1, 16px);
+  }
 }
 
 .products-list--grid--4[data-layout="grid"] {
-    @include local-layout(4, 20px);
+  @include local-layout(4, 18px);
 
-    .products-list__head {
-        display: none;
-    }
+  .products-list__head {
+    display: none;
+  }
 
-    @include media-breakpoint-between(md, lg) {
-        @include local-layout(3, 16px);
-    }
-    @media (min-width: 420px) and (max-width: 767px) {
-        @include local-layout(2, 16px);
-    }
-    @media (max-width: 419px) {
-        @include local-layout(1, 16px);
-    }
+  @include media-breakpoint-between(md, lg) {
+    @include local-layout(3, 16px);
+  }
+  @media (min-width: 420px) and (max-width: 767px) {
+    @include local-layout(2, 16px);
+  }
+  @media (max-width: 419px) {
+    @include local-layout(1, 16px);
+  }
 }
 
 .products-list--grid--5 {
-    @include local-layout(5, 20px);
+  @include local-layout(5, 20px);
 
-    .products-list__head {
-        display: none;
-    }
+  .products-list__head {
+    display: none;
+  }
 
-    @include media-breakpoint-only(lg) {
-        @include local-layout(4, 16px);
-    }
-    @include media-breakpoint-only(md) {
-        @include local-layout(3, 16px);
-    }
-    @media (min-width: 420px) and (max-width: 767px) {
-        @include local-layout(2, 16px);
-    }
-    @media (max-width: 419px) {
-        @include local-layout(1, 16px);
-    }
+  @include media-breakpoint-only(lg) {
+    @include local-layout(4, 16px);
+  }
+  @include media-breakpoint-only(md) {
+    @include local-layout(3, 16px);
+  }
+  @media (min-width: 420px) and (max-width: 767px) {
+    @include local-layout(2, 16px);
+  }
+  @media (max-width: 419px) {
+    @include local-layout(1, 16px);
+  }
 }
 
-.products-list--grid--6[data-layout="grid"] {
-    @include local-layout(6, 16px);
-
-    .products-list__head {
-        display: none;
-    }
-
-    @include media-breakpoint-only(xl) {
-        @include local-layout(5, 20px);
-    }
-    @include media-breakpoint-only(lg) {
-        @include local-layout(4, 20px);
-    }
-    @include media-breakpoint-only(md) {
-        @include local-layout(3, 16px);
-    }
-    @media (min-width: 420px) and (max-width: 767px) {
-        @include local-layout(2, 16px);
-    }
-    @media (max-width: 419px) {
-        @include local-layout(1, 16px);
-    }
-}
-
+// **********************************************
+// Product list view for when we wanna show the description (second type button in shop)
 .products-list[data-with-features="true"] {
-    .product-card {
-        .product-card__features {
-            display: block;
-        }
+  .product-card {
+    .nao-card-card__description-section {
+      display: block;
     }
+  }
 }
 
+// **********************************************
+// Product list view
+// This is used when you change the type (third button) of how you want to see the products in `shop`
 .products-list[data-layout="list"] {
-    @include local-layout(1, 20px);
+  @include local-layout(1, 12px);
 
-    .products-list__head {
-        display: none;
+  // remove header
+  .products-list__head {
+    display: none;
+  }
+
+  .product-card {
+    .nao-card-card__description-section {
+      display: block;
     }
 
-    .product-card {
-        @include product-card-layout-list;
+    @include media-breakpoint-up(md) {
+      display: flex;
+      padding: 16px;
+
+      .nao-product-card__image {
+        max-width: 220px;
+        width: 100%;
+      }
+
+      .nao-product-card__name-container {
+        margin-top: 0;
+        margin-bottom: 12px;
+        grid-area: header;
+
+        .nao-product-card__action--quickview {
+          top: -4px;
+        }
+      }
+
+      .nao-product-card__push-bottom {
+        grid-area: separator;
+      }
+
+      .nao-card-card__description-section {
+        grid-area: description;
+      }
+
+      .nao-product-card__price {
+        grid-area: price;
+        font-size: 22px;
+        margin-top: 0;
+        align-self: center;
+      }
+
+      .nao-card-card__info-section {
+        grid-area: info;
+        margin-bottom: 6px
+      }
+
+      .nao-product-card__footer {
+        padding-top: 0;
+        grid-area: footer;
+      }
+
+      .nao-product-card__content {
+        padding-left: 30px;
+        display: grid;
+        grid-template-areas:
+          'header header header header header header'
+          'description description description description description description'
+          'separator separator separator separator separator separator'
+          'info info info info info info'
+          'price price price footer footer footer';
+        grid-template-rows: auto minmax(0, 1fr);
+      }
     }
+  }
 }
 
+// **********************************************
+// Product list view
+// This is used when you change the type (last button) of how you want to see the products in `shop`
 .products-list[data-layout="table"] {
-    .product-card {
-        background: transparent;
-        box-shadow: none;
-    }
-    .products-list__item {
+  @include local-layout(1, 12px);
+
+  // remove header
+  .products-list__head {
+    display: none;
+  }
+
+  .product-card {
+    @include media-breakpoint-up(md) {
+      border-color: var(--border-1) !important;
+      background-color: var(--product-card-bg) !important;
+      box-shadow: var(--box-shadow-1) !important;
+      display: flex;
+      padding: 16px;
+
+      .nao-product-card__image {
+        max-width: 85px;
         width: 100%;
-    }
-    .products-list__head {
-        display: flex;
-        border-bottom: 1px solid map_get($card-scheme, divider);
-        padding: 10px 0;
-        font-size: 13px;
-        font-weight: $font-weight-bold;
-        text-transform: uppercase;
+      }
 
-        &:after {
-            display: block;
-            content: '';
-            width: 36px;
-            margin: 0 16px;
-        }
-    }
-    .products-list__column--image {
-        width: 90px;
-        box-sizing: content-box;
-        text-align: center;
-        padding: 0 16px;
-    }
-    .products-list__column--meta {
-        width: 140px;
-        text-align: center;
-        padding: 0 16px;
+      .nao-product-card__name-container {
+        margin-top: 0;
+        margin-bottom: 8px;
+        grid-area: header;
 
-        @include direction {
-            #{$margin-inline-start}: 1px;
+        .nao-product-card__action--quickview {
+          display: none;
         }
-    }
-    .products-list__column--product {
-        padding: 0 18px;
-        flex-grow: 1;
+      }
 
-        @include direction {
-            #{$margin-inline-start}: 1px;
-        }
-    }
-    .products-list__column--rating {
-        width: 140px;
-        text-align: center;
-        padding: 0 16px;
+      .nao-product-card__push-bottom {
+        display: none;
+      }
 
-        @include direction {
-            #{$margin-inline-start}: 1px;
-        }
-    }
-    .products-list__column--price {
-        width: (120px + 16px);
-        padding: 0 16px;
-        margin: 0 1px;
+      .nao-product-card__price {
+        grid-area: price;
+        font-size: 18px;
+        padding-right: 36px;
+        margin-top: 0;
+        align-self: center;
+      }
 
-        @include direction {
-            text-align: $inline-end;
-        }
-    }
+      .nao-card-card__info-section {
+        grid-area: info;
+        margin-bottom: 0;
+      }
 
-    .product-card {
-        @include product-card-layout-table;
-    }
+      .nao-product-card__footer {
+        padding-top: 0;
+        grid-area: footer;
+      }
 
-    @include media-breakpoint-down(xl) {
-        .products-list__column--image {
-            width: 60px;
-        }
+      .nao-product-card__content {
+        padding-left: 28px;
+        align-self: center;
+        display: grid;
+        grid-template-areas:
+          'header header price footer'
+          'info info price footer';
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+      }
     }
-    @include media-breakpoint-down(lg) {
-        .products-list__column--image {
-            width: 90px;
-        }
-        .products-list__column--meta,
-        .products-list__column--rating {
-            display: none;
-        }
-    }
-    @include media-breakpoint-up(sm) {
-        @include card;
-
-        .products-list__item + .products-list__item {
-            border-top: 1px solid map_get($card-scheme, divider);
-        }
-    }
-    @include media-breakpoint-down(xs) {
-        @include local-layout(1, 16px);
-
-        .products-list__head {
-            display: none;
-        }
-    }
+  }
 }

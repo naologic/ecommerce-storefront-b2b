@@ -1,13 +1,23 @@
 .logo__image {
-    img {
-        //max-width: 200px;
-        max-width: 160px;
-    }
+  img {
+    max-width: 160px;
+    max-height: 32px;
+    object-fit: contain;
+  }
 }
 
 .mobile-header__logo {
-    img {
-        //max-width: 140px;
-        max-width: 120px;
-    }
+  img {
+    max-width: 120px;
+    max-height: 22px;
+    object-fit: contain;
+  }
+}
+
+.nao-ml-8 {
+  margin-left: 8px !important;
+}
+
+.nao-mr-8 {
+  margin-right: 8px !important;
 }

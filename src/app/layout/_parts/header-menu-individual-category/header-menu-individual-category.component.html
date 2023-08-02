@@ -1,0 +1,35 @@
+<div class="departments"
+     [class.position-relative]="item?.submenu?.size === 'single-dropdown'"
+     [class.departments--open]="isOpen"
+     *ngIf="item">
+  <!--Routerlink type-->
+  <ng-container *ngIf="!item?.submenu?.columns?.length">
+    <button class="departments__button departments__button__no-arrow" type="button" (click)="navigateAndResetFilters(item.url)">
+      <span class="departments__button-title">{{ item.title }}</span>
+    </button>
+  </ng-container>
+
+  <!--Dropdown type-->
+  <ng-container *ngIf="item?.submenu?.columns?.length">
+    <button class="departments__button" type="button" (click)="onClick()">
+      <span class="departments__button-title">{{ item.title }}</span>
+      <span class="departments__button-arrow"><app-icon icon="header-arrow"></app-icon></span>
+    </button>
+  </ng-container>
+
+
+
+  <div class="departments__menu">
+    <div class="departments__body">
+      <div class="departments__menu-container">
+        <ng-container *ngIf="item?.submenu?.columns?.length">
+          <app-megamenu
+            class="departments__megamenu departments__megamenu--size--{{ item.submenu.size }} departments__megamenu--open"
+            [menu]="item.submenu"
+            (itemClick)="onItemClick()"
+          ></app-megamenu>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

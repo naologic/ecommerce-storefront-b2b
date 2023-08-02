@@ -1,31 +1,42 @@
 <div class="mobile-header">
   <div class="mobile-header__body">
+    <!--Open button-->
     <button class="mobile-header__menu-button" type="button" (click)="menu.open()">
-      <app-icon icon="menu-18x14"></app-icon>
+      <app-icon icon="mobile-menu"></app-icon>
     </button>
+
+    <!--Logo-->
     <a class="mobile-header__logo" routerLink="/">
       <img [src]="companyLogo || '../../../../assets/images/logo/logo-simple.png'" alt="logo">
     </a>
+
+    <!--Search-->
     <div
       class="mobile-header__search mobile-search"
       [class.mobile-header__search--open]="searchIsOpen"
-      #searchForm
-    >
-      <form class="mobile-search__body" (submit)="$event.preventDefault()">
-        <label class="sr-only" for="mobile-site-search">{{ 'INPUT_SEARCH_LABEL' | translate }}</label>
-        <input
-          type="text"
-          id="mobile-site-search"
-          class="mobile-search__input"
-          [value]="query$.getValue()"
-          [placeholder]="searchPlaceholder$|async"
-          (keyup)="onSearchKeyUp(searchInput.value)"
-          #searchInput
-        >
-        <button type="submit" class="mobile-search__button mobile-search__button--search"
-                [disabled]="disableSearch$.getValue()" (click)="searchAndRedirect()">
-          <app-icon icon="search-20"></app-icon>
-        </button>
+      #searchForm>
+
+      <!-- Search input -->
+      <div class="mobile-search__body">
+        <form (ngSubmit)="searchAndRedirect()" class="nao-smart-search">
+          <!-- Icon -->
+          <app-icon icon="nao-search-icon"></app-icon>
+          <!-- Input -->
+          <input
+            class="nao-smart-search__control"
+            type="text"
+            autocapitalize="off"
+            autocomplete="off"
+            spellcheck="false"
+            name="search"
+            [value]="query$.getValue()"
+            [placeholder]="searchPlaceholder$|async"
+            (keyup)="onSearchKeyUp(searchInput.value)"
+            (keyup.enter)="searchAndRedirect()"
+            #searchInput
+          />
+        </form>
+
         <button
           type="button"
           class="mobile-search__button mobile-search__button--close"
@@ -33,40 +44,29 @@
         >
           <app-icon icon="cross-20"></app-icon>
         </button>
-        <div class="mobile-search__field"></div>
-      </form>
+      </div>
     </div>
+
+
     <div class="mobile-header__indicators">
+
+      <!--Open search-->
       <div class="mobile-indicator d-md-none" #searchIndicator>
-        <button type="button" class="mobile-indicator__button" (click)="openSearch()">
-          <span class="mobile-indicator__icon"><app-icon icon="search-20"></app-icon></span>
-        </button>
-      </div>
-      <div class="mobile-indicator d-none d-md-block">
-        <a routerLink="/account" class="mobile-indicator__button">
-          <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>
+        <a href="javascript:void(0)"
+           class="btn-round btn-white has-left-icon btn__indicator-2 nao-ml-8"
+           (click)="openSearch()">
+          <app-icon icon="nao-search-icon" class="btn-icon nao-icon-search-mobile"> </app-icon>
+          <span>{{ 'TEXT_INDICATOR_SEARCH' | translate }}</span>
         </a>
       </div>
-      <div class="mobile-indicator d-none d-md-block" *showIfLoggedIn>
-        <a routerLink="/shop/my-lists" class="mobile-indicator__button">
-                    <span class="mobile-indicator__icon">
-                        <app-icon icon="heart-20"></app-icon>
-                        <span
-                          *ngIf="myLists.count$|async"
-                          class="mobile-indicator__counter"
-                        >{{ myLists.count$|async }}</span>
-                    </span>
-        </a>
-      </div>
+
+
       <div class="mobile-indicator" *showIfLoggedIn>
-        <a routerLink="/shop/cart" class="mobile-indicator__button">
-                    <span class="mobile-indicator__icon">
-                        <app-icon icon="cart-20"></app-icon>
-                        <span
-                          *ngIf="cart.quantity$|async"
-                          class="mobile-indicator__counter"
-                        >{{ cart.quantity$|async }}</span>
-                    </span>
+        <a href="javascript:void(0)"
+           class="btn-round nao-btn-simple-primary btn__indicator-1 has-left-icon nao-ml-8"
+           routerLink="/shop/cart">
+          <app-icon icon="nao-cart" class="btn-icon"></app-icon>
+          <span>{{ 'LINK_CART' | translate }}</span>
         </a>
       </div>
     </div>

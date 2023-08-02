@@ -28,6 +28,7 @@ import {PageServerErrorComponent} from './default-pages/page-server-error/page-s
 import {BrowserJsonLdModule} from "./shared/seo-helper/json-ld.module";
 import {ShopProductService} from "./shop/shop-product.service";
 import { PageDownForMaintenanceComponent } from "./default-pages/page-down-for-maintenance/page-down-for-maintenance.component";
+import { LayoutPartsModule } from "./layout/_parts/layout.parts-module";
 
 
 @NgModule({
@@ -40,10 +41,10 @@ import { PageDownForMaintenanceComponent } from "./default-pages/page-down-for-m
   ],
   imports: [
     BrowserJsonLdModule,
-    BrowserModule.withServerTransition({appId: 'serverApp'}),
+    BrowserModule.withServerTransition({ appId: "serverApp" }),
     ModalModule.forRoot(),
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-left',
+      positionClass: "toast-bottom-left"
     }),
     TooltipModule.forRoot(),
     TranslateModule.forChild(),
@@ -53,50 +54,51 @@ import { PageDownForMaintenanceComponent } from "./default-pages/page-down-for-m
       activeCountryList: ActiveCountryList,
       activeCurrencyList: ActiveCurrencyList,
       activeLanguageList: ActiveLanguageList,
-      defaultCountry: 'USA',
-      defaultCurrency: 'USD',
-      defaultLanguage: 'en-us',
-      defaultLocaleDate: 'en-ie'
+      defaultCountry: "USA",
+      defaultCurrency: "USD",
+      defaultLanguage: "en-us",
+      defaultLocaleDate: "en-ie"
     }),
     // todo: remove this and use or locale?
     CurrencyModule.config({
-      default: 'USD',
+      default: "USD",
       currencies: [
         {
-          symbol: '$',
-          name: 'US Dollar',
-          code: 'USD',
-          rate: 1,
+          symbol: "$",
+          name: "US Dollar",
+          code: "USD",
+          rate: 1
         }
-      ],
+      ]
     }),
     // todo: remove and use our type of language files?
     LanguageModule.config({
-      default: 'en',
+      default: "en",
       languages: [
         {
-          code: 'en',
-          name: 'English',
-          image: 'assets/images/languages/language-1.png',
-          direction: 'ltr',
+          code: "en",
+          name: "English",
+          image: "assets/images/languages/language-1.png",
+          direction: "ltr"
         },
         {
-          code: 'ru',
-          name: 'Russian',
-          image: 'assets/images/languages/language-2.png',
-          direction: 'ltr',
+          code: "ru",
+          name: "Russian",
+          image: "assets/images/languages/language-2.png",
+          direction: "ltr"
         },
         {
-          code: 'en-RTL',
-          name: 'RTL',
-          image: 'assets/images/languages/language-3.png',
-          direction: 'rtl',
-        },
-      ],
+          code: "en-RTL",
+          name: "RTL",
+          image: "assets/images/languages/language-3.png",
+          direction: "rtl"
+        }
+      ]
     }),
     LayoutModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    LayoutPartsModule
   ],
   providers: [
     { provide: APP_ID, useValue: 'ecommerce' },

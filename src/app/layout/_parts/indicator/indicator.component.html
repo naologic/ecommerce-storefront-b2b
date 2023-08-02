@@ -1,15 +1,38 @@
-<div class="indicator" [class.indicator--open]="classIndicatorOpen"
-     [class.indicator--trigger--click]="trigger === 'click'"
-     [class.indicator--trigger--hover]="trigger === 'hover'">
-    <a [attr.href]="href" class="indicator__button" (click)="onClick($event)">
-        <span class="indicator__icon">
-            <app-icon [icon]="icon"></app-icon>
-            <span class="indicator__counter" *ngIf="counter !== undefined && counter !== null">{{ counter }}</span>
-        </span>
-        <span *ngIf="label" class="indicator__title">{{ label }}</span>
-        <span *ngIf="value" class="indicator__value">{{ value }}</span>
+<div class="nao-header-indicator indicator--trigger--click"
+     [class.indicator--open]="classIndicatorOpen">
+  <!--Account-->
+  <ng-container *ngIf="type === 'account'">
+    <a href="javascript:void(0)"
+       class="btn-round btn-white has-arrow btn__indicator-2"
+       (click)="onClick($event)">
+      <span>{{ (userData?.email ? 'TEXT_INDICATOR_ACCOUNT_VALUE' : 'HEADER_LOGIN') | translate }}</span>
+      <app-icon icon="btnArrow"></app-icon>
     </a>
-    <div class="indicator__content">
-        <ng-content></ng-content>
-    </div>
+  </ng-container>
+
+  <!--Cart-->
+  <ng-container *ngIf="type === 'cart'">
+    <a href="javascript:void(0)"
+       class="btn-round nao-btn-simple-primary btn__indicator-1 has-left-icon"
+       (click)="onClick($event)">
+      <app-icon icon="nao-cart" class="btn-icon"></app-icon>
+      <span>{{ (((cart.subtotal$|async) || 0) | currencyFormat: '': '': '2.0-0') || '' }}</span>
+    </a>
+  </ng-container>
+
+  <!--My list-->
+  <ng-container *ngIf="type === 'my-list'">
+    <a href="javascript:void(0)"
+       routerLink="/shop/my-lists"
+       class="btn-round nao-btn-simple-primary btn__indicator-1 has-left-icon"
+       (click)="onClick($event)">
+      <app-icon icon="nao-cart" class="btn-icon"></app-icon>
+      <span>{{ 'HEADER_MY_LISTS' | translate }}</span>
+    </a>
+  </ng-container>
+
+  <div class="indicator__content">
+    <ng-content></ng-content>
+  </div>
 </div>
+

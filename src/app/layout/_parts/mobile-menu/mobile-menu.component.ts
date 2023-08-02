@@ -37,13 +37,11 @@ interface StackItem {
 export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   private destroy$: Subject<void> = new Subject<void>();
   private subs = new Subscription();
-
   public links = [];
   public currentLevel = 0;
   public panelsStack: StackItem[] = [];
   public panelsBin: StackItem[] = [];
   public forceConveyorTransition = false;
-  public infoSupport = null;
 
   @ViewChild('body') body!: ElementRef;
   @ViewChild('conveyor') conveyor!: ElementRef;
@@ -61,32 +59,21 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     // -->Subscribe: to info changes
     this.subs.add(
       appInfo$.subscribe((value) => {
-        // -->Set: info
-        this.infoSupport = {
-          supportPhoneNumber: value?.shopInfo?.storefrontSettings?.data?.phoneNumber || '',
-          supportEmailAddress: value?.shopInfo?.storefrontSettings?.data?.supportEmail || '',
-        }
+        // todo: change this to be dynamic
+        // todo: change this to be dynamic
+        // todo: change this to be dynamic
+        // todo: change this to be dynamic
+        const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
+
         // -->Set: categories
         const categories = this.mapCategories(value?.categories);
 
         // -->Set: mobile links
         this.links = [
           {
-            title: 'Shop',
-            url: '/shop/category/products',
-          },
-          {
             title: 'Categories',
             url: '/shop/category/products',
             submenu: categories
-          },
-          {
-            title: 'About Us',
-            url: '/site/about-us',
-          },
-          {
-            title: 'FAQ',
-            url: '/site/faq',
           }
         ]
       })
@@ -137,6 +124,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     });
   }
 
+
   public ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       // -->Track: clicks in order to transition between panels or close menu
@@ -166,6 +154,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     }
   }
 
+
   public ngAfterViewChecked(): void {
     if (this.forceConveyorTransition) {
       this.forceConveyorTransition = false;
@@ -181,12 +170,12 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     }
   }
 
+
   /**
    * Clean: panels on menu close
    */
   private onMenuClosed(): void {
     let panel: StackItem|undefined;
-
     // -->Get: and remove all panels from stack
     while (panel = this.panelsStack.pop()) {
       // -->Add: panel to bin to be clean up later on
@@ -194,11 +183,11 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
       // -->Update: current level
       this.currentLevel -= 1;
     }
-
     // -->Remove: unused panels
     this.removeUnusedPanels();
     this.forceConveyorTransition = true;
   }
+
 
   /**
    * Clean: panels on conveyor stop
@@ -206,6 +195,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
   private onConveyorStopped(): void {
     this.removeUnusedPanels();
   }
+
 
   /**
    * Remove: unused panels
@@ -220,6 +210,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     }
   }
 
+
   /**
    * Handle: link click.
    * Close menu if item has no submenu
@@ -230,10 +221,11 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     }
   }
 
+
   /**
    * Map: categories for mobile menu
    */
-  public mapCategories(categories: any[]): MobileMenuLink[] {
+  private mapCategories(categories: any[]): MobileMenuLink[] {
     // -->Check: categories
     if (!Array.isArray(categories)) {
       categories = [];
@@ -250,10 +242,11 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
       if (!category?.data?.name || !category?.docId) {
         return;
       }
+
       // -->Create: category
       const item: MobileMenuLink = {
         title: category.data.name,
-        url: `/shop/category/${nameToSlug(category.data.name)}/${category.docId}/products`
+        url: this.createCategoryLink(category.data.name, category.docId)
       }
 
       /**
@@ -273,7 +266,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
           // -->Create: sub category
           const subCategory$: MobileMenuLink = {
             title: subCategory.data.name,
-            url: `/shop/category/${nameToSlug(subCategory.data.name)}/${subCategory.docId}/products`
+            url: this.createCategoryLink(subCategory.data.name, subCategory.docId)
           }
 
           // -->Check: links
@@ -282,21 +275,27 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
               .map((link) => {
                 return {
                   title: link.data.name,
-                  url: `/shop/category/${nameToSlug(link.data.name)}/${link.docId}/products`,
+                  url: this.createCategoryLink(link.data.name, link.docId)
                 };
               });
           }
-
           // -->Push: subcategory (column)
           item.submenu.push(subCategory$);
         })
       }
-
       // -->Push: category
       items.push(item)
     });
 
     return items;
+  }
+
+
+  /**
+   * Create: link for a category
+   */
+  private createCategoryLink(name: string, docId: string): string {
+    return `/shop/category/${nameToSlug(name)}/${docId}/products`;
   }
 
   public ngOnDestroy(): void {

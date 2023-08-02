@@ -1,29 +1,21 @@
-<form class="search search__body">
-    <div class="search__shadow"></div>
-
-    <label class="sr-only" for="site-search">{{ 'INPUT_SEARCH_LABEL' | translate }}</label>
-    <input
-        type="text"
-        id="site-search"
-        autocapitalize="off"
-        autocomplete="off"
-        spellcheck="false"
-        name="search"
-        class="search__input"
-        [value]="query$.getValue()"
-        [placeholder]="'INPUT_SEARCH_PLACEHOLDER' | translate"
-        (keyup)="onSearchKeyUp($event)"
-    >
-    <button class="search__button search__button--end" [disabled]="disableSearch$.getValue()"
-            type="submit" (click)="searchAndRedirect()">
-        <span class="search__button-icon">
-            <app-icon icon="search-20"></app-icon>
-        </span>
-    </button>
-    <div class="search__box"></div>
-    <div class="search__decor">
-        <div class="search__decor-start"></div>
-        <div class="search__decor-end"></div>
-    </div>
-
+<!-- Search input -->
+<form (ngSubmit)="searchAndRedirect()" class="nao-smart-search">
+  <!-- Icon -->
+  <app-icon icon="nao-search-icon"></app-icon>
+  <!-- Input -->
+  <input
+    class="nao-smart-search__control"
+    type="text"
+    id="site-search"
+    autocapitalize="off"
+    autocomplete="off"
+    spellcheck="false"
+    name="search"
+    [value]="query$.getValue()"
+    [placeholder]="'INPUT_SEARCH_PLACEHOLDER' | translate"
+    (keyup)="onSearchKeyUp($event)"
+    (keyup.enter)="searchAndRedirect()"
+  />
 </form>
+
+

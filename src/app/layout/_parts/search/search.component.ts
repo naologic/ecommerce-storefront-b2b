@@ -1,24 +1,14 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  PLATFORM_ID,
-} from '@angular/core';
-import {isPlatformBrowser} from '@angular/common';
-import {Router} from "@angular/router";
-import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { ShopProductService } from "../../../shop/shop-product.service";
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  selector: "app-search",
+  templateUrl: "./search.component.html",
+  styleUrls: ["./search.component.scss"]
 })
 export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
@@ -27,12 +17,9 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public disableSearch$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: any,
-    private zone: NgZone,
-    private translate: TranslateService,
-    private elementRef: ElementRef,
-    private shopProductService: ShopProductService,
-    private router: Router
+    @Inject(PLATFORM_ID) private readonly platformId: any,
+    private readonly shopProductService: ShopProductService,
+    private readonly router: Router
   ) {
   }
 
@@ -50,7 +37,7 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.query$.next(null);
       }
-    })
+    });
   }
 
 
@@ -76,10 +63,13 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
    * Search: term and redirect
    */
   public searchAndRedirect(): void {
+    if (this.disableSearch$.getValue()) {
+      return;
+    }
     // -->Check: if the current route starts with shop
-    if (!this.router.url?.startsWith('/shop/category')) {
+    if (!this.router.url?.startsWith("/shop/category")) {
       // -->Redirect: to shop
-      this.router.navigateByUrl('/shop').then();
+      this.router.navigateByUrl("/shop").then();
     }
     // -->Trigger: search
     this.shopProductService.setSearchTerm(this.query$.getValue());

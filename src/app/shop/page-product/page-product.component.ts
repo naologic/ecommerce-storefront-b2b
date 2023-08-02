@@ -159,13 +159,13 @@ export class PageProductComponent implements OnInit, OnDestroy {
    * Set meta tags and description
    */
   public setMeta(): void {
-    if (!this.product || !this.product.data) {
+    if (!this.product?.data || !this.product?.data?.name) {
       return;
     }
 
     // -->Set: metas
     this.appService.setMetas({
-      title: `${this.product.data?.name} - ${this.product.data.shortDescription}`,
+      title: this.product.data.shortDescription ? `${this.product.data?.name} - ${this.product.data.shortDescription}` : `${this.product.data?.name}`,
       description: this.product.data?.description || this.product.data?.name,
       twitterDescription: this.product.data?.description || this.product.data?.name,
       ogDescription: this.product.data?.description || this.product.data?.name,
