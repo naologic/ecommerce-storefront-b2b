@@ -1,53 +1,56 @@
-/*
-// .input-radio-label
-*/
+// **********************************************
+// Input radio label
+.input-radio-label {
+  $local-gutter: 8px;
 
-
-$local-gutter: 6px;
-
-
-.input-radio-label {}
-.input-radio-label__list {
+  .input-radio-label__list {
     display: flex;
     flex-wrap: wrap;
     margin: -($local-gutter / 2);
-}
-.input-radio-label__item {
+  }
+
+  .input-radio-label__item {
     margin: ($local-gutter / 2);
-}
-.input-radio-label__input {
+  }
+
+  .input-radio-label__input {
     position: absolute;
     pointer-events: none;
     opacity: 0;
-}
-.input-radio-label__title {
+  }
+
+  .input-radio-label__title {
     display: flex;
     align-items: center;
-    background: $input-radio-label-bg-color;
-    min-height: 28px;
-    border-radius: 2px;
-    box-shadow: 0 0 0 1px $input-radio-label-border-color inset;
+    background: var(--white);
+    min-height: 25px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px #C8CFE9;
+    color: var(--text-primary);
     font-size: 13px;
-    font-weight: $font-weight-medium;
-    padding: 5px 12px 5px;
+    padding: 4px 10px;
     cursor: pointer;
     user-select: none;
-    transition:
-        box-shadow .15s;
-
-    &:hover {
-        box-shadow: 0 0 0 2px $input-radio-label-hover-border-color inset;
-    }
-    &:active {
-        box-shadow: 0 0 0 2px $input-radio-label-active-border-color inset;
-    }
-}
-.input-radio-label__input:checked ~ .input-radio-label__title {
-    box-shadow: 0 0 0 2px $input-radio-label-checked-border-color inset;
-}
-.input-radio-label__input:disabled ~ .input-radio-label__title {
-    color: $input-radio-label-disabled-font-color;
+    border: 1px solid transparent;
+    transition: background .15s, color .15s;
     font-weight: $font-weight-normal;
+
+    &:hover, &:active {
+      color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.1);
+      border-color: var(--primary-100);
+    }
+  }
+
+  .input-radio-label__input:checked ~ .input-radio-label__title {
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+    border-color: var(--primary-100);
+  }
+
+  .input-radio-label__input:disabled ~ .input-radio-label__title {
+    opacity: 0.6;
     cursor: default;
-    box-shadow: 0 0 0 1px $input-radio-label-border-color inset;
+  }
+
 }

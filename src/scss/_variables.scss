@@ -997,9 +997,9 @@
    // ----------------------------------------
    // -- .product-gallery
    // ----------------------------------------
-      $product-gallery-thumbnail-normal-border-color:  #f2f2f2                      !default;
-      $product-gallery-thumbnail-hover-border-color:   #e0e0e0                      !default;
-      $product-gallery-thumbnail-current-border-color: map_get($theme-scheme, main) !default;
+      $product-gallery-thumbnail-normal-border-color:  #E9EEF9                      !default;
+      $product-gallery-thumbnail-hover-border-color:   var(--primary)                      !default;
+      $product-gallery-thumbnail-current-border-color: var(--primary) !default;
 
    // ----------------------------------------
    // -- .product-tabs
@@ -1074,8 +1074,6 @@
    // ----------------------------------------
    // -- .product-variants
    // ----------------------------------------
-      $product-form-bg-color:    #f9f9f9 !default;
-      $product-form-title-color: #6c7177 !default;
 
    // ----------------------------------------
    // -- .categories-list

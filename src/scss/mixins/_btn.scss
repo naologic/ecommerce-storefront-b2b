@@ -18,14 +18,14 @@
 $local-btn-height: (
     xl: 60px,
     lg: 42px,
-    nl: 36px,
+    nl: 39px,
     sm: 30px,
     xs: 24px,
 );
 $local-btn-padding-x: (
     xl: 40px,
     lg: 24px,
-    nl: 16px,
+    nl: 18px,
     sm: 12px,
     xs: 9px,
 );
@@ -39,7 +39,7 @@ $local-btn-font-size: (
 $local-btn-border-radius: (
     xl: 8px,
     lg: 8px,
-    nl: 6px,
+    nl: 12px,
     sm: 6px,
     xs: 4px,
 );
@@ -138,7 +138,10 @@ $local-btn-line-height: (
     &:not(.btn-icon) {
         border-radius: map_get($local-btn-border-radius, $size);
         font-size: map_get($local-btn-font-size, $size);
-        line-height: map_get($local-btn-line-height, $size);
+        // todo
+        // todo
+        // todo
+        //line-height: map_get($local-btn-line-height, $size);
         padding:
             calc(#{map_get($local-btn-height, $size) - map_get($local-btn-line-height, $size)} / 2)
             map_get($local-btn-padding-x, $size);

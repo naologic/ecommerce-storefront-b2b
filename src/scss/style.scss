@@ -260,6 +260,21 @@ $nao-colors-default: (
   margin-right: 8px !important;
 }
 
+.emulated-flex-gap-12of24 {
+  --gapX: 24px;
+  --gapY: 12px;
+
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: calc(-1 * var(--gapY)) 0 0 calc(-1 * var(--gapX));
+  width: calc(100% + var(--gapX));
+
+  &>* {
+    margin: var(--gapY) 0 0 var(--gapX);
+  }
+}
+
+
 // *****************************************************
 // Scrollbars
 .nao-fancy-scrollbar-sm {
@@ -305,10 +320,24 @@ button.disabled, button:disabled {
 
 // message text
 .message-text-not-logged {
-  font-size: 11px;
-  font-weight: 500;
-  color: #6c7177;
-  margin-top: 10px;
+  font-size: 12px;
+  line-height: 18px;
+  color: #687196;
+  margin-top: 8px;
+}
+
+
+.box-disable-input-placeholder {
+  height: 44px;
+  border-radius: 6px;
+  background: rgba(var(--text-6-rgb), 0.2);
+  padding: 12px 8px;
+  font-size: 28px;
+  font-weight: $font-weight-medium;
+  line-height: 18px;
+  color: rgba(var(--text-primary-rgb), 0.1);
+  max-width: 165px;
+  width: 100%;
 }
 
 // *****************************************************

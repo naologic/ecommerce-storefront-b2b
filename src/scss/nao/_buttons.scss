@@ -119,6 +119,14 @@ $btn-box-shadow-disabled: 0 1px 3px 0 rgba(var(--shadow-1-rgb), 0.2);
     padding: 6px 12px;
     font-size: 13px;
   }
+
+  // has left icon
+  &.has-left-icon {
+    .btn-icon {
+      margin-right: 8px;
+      display: flex;
+    }
+  }
 }
 
 

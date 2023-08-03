@@ -1,68 +1,74 @@
-/*
-// .input-number
-*/
-
-
 .input-number {
-    display: block;
-    width: 100%;
-    position: relative;
-}
-.input-number__input {
+  display: block;
+  width: 100%;
+  position: relative;
+
+
+  .input-number__input {
     -moz-appearance: textfield;
     display: block;
     width: 100%;
-    min-width: 88px;
-    padding-left: 24px;
-    padding-right: 24px;
+    min-width: 100px;
+    max-width: 130px;
+    height: 42px;
+    padding-left: 42px;
+    padding-right: 42px;
     text-align: center;
+    border-radius: 7px;
+    font-size: 22px;
+    border-color: #EEF0F8;
 
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
-        -webkit-appearance: none;
+      -webkit-appearance: none;
     }
-}
-.input-number__sub,
-.input-number__add {
+  }
+
+  .input-number__sub,
+  .input-number__add {
     position: absolute;
     height: 100%;
-    width: 24px;
+    width: 42px;
     top: 0;
     cursor: pointer;
     user-select: none;
-    opacity: .3;
+    opacity: 1;
     transition: opacity .18s;
 
     &:before,
     &:after {
-        display: block;
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        background: currentColor;
-    }
-    &:before {
-        width: 8px;
-        height: 2px;
-    }
-    &:hover {
-        opacity: 1;
-    }
-}
-.input-number__sub {
-    @include direction {
-        #{$inset-inline-start}: 1px;
-    }
-}
-.input-number__add {
-    @include direction {
-        #{$inset-inline-end}: 1px;
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      background: currentColor;
     }
 
-    &:after {
-        width: 2px;
-        height: 8px;
+    &:before {
+      width: 16px;
+      height: 2px;
     }
+
+    &:hover {
+
+    }
+  }
+
+
+  .input-number__sub {
+    border-right: 1px solid #EEF0F8;
+  }
+
+  .input-number__add {
+    border-left: 1px solid #EEF0F8;
+    right: 0;
+
+    &:after {
+      width: 2px;
+      height: 16px;
+    }
+  }
 }
+
