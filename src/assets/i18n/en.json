@@ -242,6 +242,8 @@
   "TEXT_SHOP_FEATURE_SUPPORT_TITLE": "Support 24/7",
   "TEXT_YOU_NEED_TO_LOGIN_FOR_PRICE": "You must be logged in to view the price for this item.",
   "TEXT_SHOWING_PRODUCTS": "Showing {{from}}–{{to}} of {{total}} products",
+  "TEXT_PRODUCT_SPECIFICATIONS": "Product specifications",
+  "TEXT_EXTENDED_PRODUCT_DESCRIPTION": "Extended product description",
   "TEXT_SKU": "SKU",
   "TEXT_SEE_FULL_DETAILS": "See full details",
   "TEXT_ADD_TO_LIST": "Add to list",
@@ -285,6 +287,19 @@
   "VARIANT_SPECIFICATION_WEIGHT": "Weight",
   "VARIANT_SPECIFICATION_VOLUME": "Volume",
   "DISMISS": "Dismiss",
+
+  "PRODUCT_INFO_SUPPORT": "24/7 Support",
+  "PRODUCT_INFO_SUPPORT_DESCRIPTION": "No matter where you are, we'll provide what you need as soon as you need it.",
+
+
+  "PRODUCT_INFO_DELIVERY": "On-Schedule Delivery",
+  "PRODUCT_INFO_DELIVERY_DESCRIPTION": "You don’t have time to lose. We promise to not waste it. Urgent delivery for urgent care.",
+
+  "PRODUCT_INFO_REDUCING_COST": "Reducing Care Cost",
+  "PRODUCT_INFO_REDUCING_COST_DESCRIPTION": "Our low prices make healthcare accessible and affordable for everyone.",
+
+  "PRODUCT_INFO_HIGH_QUALITY": "High Quality",
+  "PRODUCT_INFO_HIGH_QUALITY_DESCRIPTION": "We only stock inventory from the most reliable suppliers in the industry.",
 
   "MY_LISTS_EMPTY_STATE_START": "You don't have any lists created, head to the",
   "MY_LISTS_EMPTY_STATE_LINK": "list overview",

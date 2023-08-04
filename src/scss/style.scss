@@ -1,3 +1,110 @@
+// **********************************************
+// TODO: move define root variables
+
+@function hexToRGB($hex) {
+  @return red($hex), green($hex), blue($hex);
+}
+
+@mixin generate-colors($colors) {
+  // Colors, RGB Colors
+  @each $color, $value in $colors {
+    @if str-slice(#{$value}, 1, 1) == "#" {
+      --#{"" + $color}: #{$value};
+      --#{"" + $color}-rgb: #{hexToRGB($value)};
+    } @else {
+      --#{"" + $color}: var(--#{$value});
+      --#{"" + $color}-rgb: var(--#{$value}-rgb);
+    }
+  }
+}
+
+
+$nao-colors-default: (
+  primary-600: #000293,
+  primary: #3E40DB,
+  primary-400: #5659FF,
+  primary-300: #6869D3,
+  primary-200: #7880FF,
+  primary-100: #AAAFFF,
+
+  secondary-500: #0073FF,
+  secondary: #4576FF,
+  secondary-300: #2CB1FF,
+  secondary-200: #77B8FF,
+  secondary-100: #E4F1FF,
+
+  purple-300: #8800FF,
+  purple-200: #AE48FF,
+  purple-100: #E7CCFF,
+
+  magenta-300: #B800A9,
+  magenta-200: #FF77F4,
+  magenta-100: #FFE4FD,
+
+  cyan-300: #00B0BF,
+  cyan-200: #77F4FF,
+  cyan-100: #E4FDFF,
+
+  yellow-300: #FFB800,
+  yellow-200: #F9D065,
+  yellow-100: #FEF6E0,
+
+  success: #3EDB8B,
+  success-light: #D8F8E8,
+  success-dark: #08A268,
+
+  warning: #FFA544,
+  warning-light: #FFEDDA,
+  warning-dark: #EE7C00,
+
+  danger: #DB3E8E,
+  danger-light: #F8D8E8,
+  danger-dark: #B6005D,
+
+  text-primary: #030929,
+  text-2: #2F3059,
+  text-3: #4E4F84,
+  text-4: #687196,
+  text-5: #A4AAC0,
+  text-6: #D8DCEB,
+
+  shadow-1: #C8CFE9,
+  shadow-2: #E6EBF0,
+  shadow-3: #D8DCEB,
+  shadow-4: #687196,
+  shadow-5: #A3A9C0,
+
+  bg-1: #F6F8FB,
+  bg-2: #F7F9FC,
+  bg-3: #F7F8FC,
+  bg-4: #F9FAFF,
+  bg-5: #f1f3f8,
+
+  modal-bg-light: #f3f4ff,
+  modal-bg-warning: #fff8ef,
+  modal-bg-danger: #fff2fe,
+
+  toaster-bg-dark: #47484C,
+
+  hover-1: #FAFBFD,
+  hover-2: #FAFBFD,
+  separator: #E6EBF0,
+  separator-2: #CACCD7,
+  icon-default: #C8CFE9,
+
+  white: #FFF,
+  input-border-color: #e9eef9,
+  border-color: #e3e5f0
+);
+
+:root {
+  // -->Variables used in product cards for now
+  --product-card-bg: #FDFDFE;
+  --border-1: #E9EEF9;
+  --box-shadow-1: 0 4px 4px -2px #D6D9FF, 0 1.5px 3px -1px #C8CFE9, 0 1px 0.5px -1px #D8DCEB;
+
+  @include generate-colors($nao-colors-default);
+}
 
 
 // **********************************************
@@ -140,113 +247,6 @@
 
 
 
-// **********************************************
-// TODO: move define root variables
-
-@function hexToRGB($hex) {
-  @return red($hex), green($hex), blue($hex);
-}
-
-@mixin generate-colors($colors) {
-  // Colors, RGB Colors
-  @each $color, $value in $colors {
-    @if str-slice(#{$value}, 1, 1) == "#" {
-      --#{"" + $color}: #{$value};
-      --#{"" + $color}-rgb: #{hexToRGB($value)};
-    } @else {
-      --#{"" + $color}: var(--#{$value});
-      --#{"" + $color}-rgb: var(--#{$value}-rgb);
-    }
-  }
-}
-
-
-$nao-colors-default: (
-  primary-600: #000293,
-  primary: #3E40DB,
-  primary-400: #5659FF,
-  primary-300: #6869D3,
-  primary-200: #7880FF,
-  primary-100: #AAAFFF,
-
-  secondary-500: #0073FF,
-  secondary: #4576FF,
-  secondary-300: #2CB1FF,
-  secondary-200: #77B8FF,
-  secondary-100: #E4F1FF,
-
-  purple-300: #8800FF,
-  purple-200: #AE48FF,
-  purple-100: #E7CCFF,
-
-  magenta-300: #B800A9,
-  magenta-200: #FF77F4,
-  magenta-100: #FFE4FD,
-
-  cyan-300: #00B0BF,
-  cyan-200: #77F4FF,
-  cyan-100: #E4FDFF,
-
-  yellow-300: #FFB800,
-  yellow-200: #F9D065,
-  yellow-100: #FEF6E0,
-
-  success: #3EDB8B,
-  success-light: #D8F8E8,
-  success-dark: #08A268,
-
-  warning: #FFA544,
-  warning-light: #FFEDDA,
-  warning-dark: #EE7C00,
-
-  danger: #DB3E8E,
-  danger-light: #F8D8E8,
-  danger-dark: #B6005D,
-
-  text-primary: #030929,
-  text-2: #2F3059,
-  text-3: #4E4F84,
-  text-4: #687196,
-  text-5: #A4AAC0,
-  text-6: #D8DCEB,
-
-  shadow-1: #C8CFE9,
-  shadow-2: #E6EBF0,
-  shadow-3: #D8DCEB,
-  shadow-4: #687196,
-  shadow-5: #A3A9C0,
-
-  bg-1: #F6F8FB,
-  bg-2: #F7F9FC,
-  bg-3: #F7F8FC,
-  bg-4: #F9FAFF,
-  bg-5: #f1f3f8,
-
-  modal-bg-light: #f3f4ff,
-  modal-bg-warning: #fff8ef,
-  modal-bg-danger: #fff2fe,
-
-  toaster-bg-dark: #47484C,
-
-  hover-1: #FAFBFD,
-  hover-2: #FAFBFD,
-  separator: #E6EBF0,
-  separator-2: #CACCD7,
-  icon-default: #C8CFE9,
-
-  white: #FFF,
-  input-border-color: #e9eef9,
-  border-color: #e3e5f0
-);
-
-:root {
-  // -->Variables used in product cards for now
-  --product-card-bg: #FDFDFE;
-  --border-1: #E9EEF9;
-  --box-shadow-1: 0 4px 4px -2px #D6D9FF, 0 1.5px 3px -1px #C8CFE9, 0 1px -0.5px -1px #D8DCEB;
-
-  @include generate-colors($nao-colors-default);
-}
 
 
 

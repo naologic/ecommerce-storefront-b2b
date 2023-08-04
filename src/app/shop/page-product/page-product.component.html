@@ -1,282 +1,188 @@
-<!--<app-block-header [breadcrumb]="(breadcrumb$|async) || []"></app-block-header>-->
-<!--Spacer-->
-<div class="nao-spacer-after-header"></div>
-
 <!--Loader-->
-<!--TODO: check a loading -->
 <nao-loading *ngIf="!product"></nao-loading>
 
+<!--Data-->
 <div class="block-split" *ngIf="product">
-  <div class="container">
-    <div class="block-split__row row no-gutters">
-      <div class="block-split__item block-split__item-content col-auto">
-        <div
-          class="product product--layout--full">
-          <div class="product__body">
-            <div class="product__card product__card--one"></div>
-            <div class="product__card product__card--two"></div>
+  <div class="container nao-pt-32">
 
-            <app-product-gallery class="product__gallery" [images]="(product?.data?.variants[variantIndex]?.images?.length ? product?.data?.variants[variantIndex]?.images : product?.data?.images) || []" layout="product-full"></app-product-gallery>
-
-            <div class="product__header">
-              <h1 class="product__title">{{ product.data?.name }}</h1>
-
-              <div class="product__subtitle">
-                <!--Show rating only if it's allowed in settings-->
-                <!--This will have to be connected to ecomm in the future-->
-                <div class="product__rating" *ngIf="appSettings?.rating">
-                  <div class="product__rating-stars">
-                    <app-rating [value]="product?.data?.rating || 0"></app-rating>
-                  </div>
-                  <div class="product__rating-label">
-                    <a routerLink="./" fragment="product-tab-reviews" (click)="scrollToTabs()">
-                      {{ 'TEXT_RATING_LABEL' | translate:{rating: product?.data?.rating, reviews: product?.data?.reviews} }}
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="product__main">
-              <div class="product__excerpt">{{ product.data?.shortDescription || product.data?.description }}</div>
-
-              <div class="product__features" *ngIf="featuredAttributes.length > 0">
-                <div class="product__features-title">{{ 'TEXT_KEY_FEATURES' | translate }}:</div>
-                <ul>
-                  <li *ngFor="let attribute of featuredAttributes">
-                    {{ attribute.name }}:
-                    <span>
-                                            <ng-container *ngFor="let value of attribute.values; let last = last">
-                                                {{ value.name + (!last ? ', ' : '') }}
-                                            </ng-container>
-                                        </span>
-                  </li>
-                </ul>
-                <div class="product__features-link">
-                  <a routerLink="./" fragment="product-tab-specification" (click)="scrollToTabs()">
-                    {{ 'LINK_SEE_FULL_SPECIFICATION' | translate }}
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="product__info">
-              <div class="product__info-card" [formGroup]="form">
-                <div class="product__info-body">
-                  <div class="product__prices-stock" *showPrice>
-                    <div class="product__prices">
-                      <div class="product__price product__price--current">{{ product?.data?.variants[variantIndex]?.price | currencyFormat }}</div>
-                    </div>
-                    <!--                                        <app-status-badge-->
-                    <!--                                            class="product__stock"-->
-                    <!--                                            [type]="product?.data?.availability | stockToStatusBadgeType:product?.data?.available"-->
-                    <!--                                            [text]="product?.data?.availability | stockToStatusBadgeText:product?.data?.available | translate"-->
-                    <!--                                        ></app-status-badge>-->
-                  </div>
-
-                  <div class="product__meta">
-                    <table>
-                      <tbody>
-                      <tr *ngIf="appSettings.showProductSku">
-                        <th>{{ 'TABLE_SKU' | translate }}</th>
-                        <td>{{ product?.data?.variants[variantIndex]?.sku || product.data?.sku }}</td>
-                      </tr>
-                      <tr *ngIf="product?.data?.manufacturer?.data?.name">
-                        <th>{{ 'TABLE_BRAND' | translate }}</th>
-                        <td>{{ product?.data?.manufacturer.data.name }}</td>
-                      </tr>
-                      <!--                                            <tr *ngIf="product?.data?.variants[variantIndex]?.countryOfOrigin">-->
-                      <!--                                                <th>{{ 'TABLE_COUNTRY' | translate }}</th>-->
-                      <!--                                                <td>{{ product.data.variants[variantIndex].countryOfOrigin }}</td>-->
-                      <!--                                            </tr>-->
-                      <tr>
-                        <th>{{ 'TABLE_PART_NUMBER' | translate }}</th>
-                        <td>{{ product?.data?.variants[variantIndex]?.manufacturerItemCode }}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                <!--Product: variants-->
-                <app-product-variants
-                  *ngIf="product?.data?.options?.length > 0"
-                  formControlName="options"
-                  class="product__form"
-                  [options]="product.data?.options"
-                  [variants]="product?.data?.variants"
-                ></app-product-variants>
-
-                <div class="product__actions">
-                  <ng-container *ngIf="product.data?.availability !== 'out-of-stock'">
-                    <div class="product__actions-item product__actions-item--quantity">
-                      <app-input-number formControlName="quantity" size="lg" [min]="1"></app-input-number>
-                    </div>
-                    <div class="product__actions-item product__actions-item--addtocart">
-                      <button
-                        class="btn btn-primary btn-lg btn-block"
-                        [class.btn-loading]="addToCartInProgress"
-                        disableIfNotLoggedIn
-                        [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)"
-                        (click)="addToCart()"
-                      >
-                        {{ 'BUTTON_ADD_TO_CART' | translate }}
-                      </button>
-                    </div>
-                    <div class="product__actions-divider"></div>
-                    <div class="message-text-not-logged" *ShowOnlyIfOnlyLoggedUsersSeePrices>
-                      {{ 'TEXT_YOU_NEED_TO_LOGIN_FOR_PRICE' | translate }}
-                    </div>
-                  </ng-container>
-                  <div class="product__actions-divider"></div>
-
-                  <div appDropdown
-                       class="position-relative w-50"
-                       [class.my-lists__menu--open]="myListsDropdown.isOpen"
-                       #myListsDropdown="appDropdown"
-                       *ngIf='isLoggedIn'>
-                    <button
-                      appAddToMyLists
-                      type="button"
-                      class="product__actions-item product__actions-item--my-lists"
-                      [class.product__actions-item--loading]="addToMyLists.inProgress"
-                      (click)="myListsDropdown.toggle()"
-                      #addToMyLists="addToMyLists"
-                    >
-                      <app-icon icon="wishlist-16"></app-icon>
-                      <span>{{ 'BUTTON_ADD_TO_MY_LISTS' | translate }}</span>
-                    </button>
-
-                    <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
-                      <button
-                        *ngFor="let item of addToMyLists.myLists"
-                        class="my-lists__menu-item"
-                        type="button"
-                        (click)="addToMyLists.add(item.docId, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
-                        {{ item.data?.name }}
-                      </button>
-                      <!--Empty state-->
-                      <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
-                        {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
-                        <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
-                        {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
-                      </div>
-                    </div>
-
-                  </div>
-
-
-
-                  <!--<button
-                      appAddToCompare
-                      type="button"
-                      class="product__actions-item product__actions-item&#45;&#45;compare w-50"
-                      [class.product__actions-item&#45;&#45;loading]="addToCompare.inProgress"
-                      (click)="addToCompare.add(this.product, product.data?.variants[variantIndex])"
-                      #addToCompare="addToCompare"
-                  >
-                      <app-icon icon="compare-16"></app-icon>
-                      <span>{{ 'BUTTON_ADD_TO_COMPARE' | translate }}</span>
-                  </button>-->
-                </div>
-
-                <!--                                <div class="product__tags-and-share-links">-->
-                <!--                                    <div *ngIf="product?.tags?.length" class="product__tags tags tags&#45;&#45;sm">-->
-                <!--                                        <div class="tags__list">-->
-                <!--                                            <a *ngFor="let tag of product.tags" routerLink="/">{{ tag }}</a>-->
-                <!--                                        </div>-->
-                <!--                                    </div>-->
-                <!--&lt;!&ndash;                                    <app-share-links class="product__share-links"></app-share-links>&ndash;&gt;-->
-                <!--                                </div>-->
-
-
-              </div>
-
-              <div class="product__shop-features shop-features">
-                <ul class="shop-features__list">
-                  <ng-container *ngIf="appSettings?.hotOffers">
-                    <li class="shop-features__item" >
-                      <div class="shop-features__item-icon">
-                        <app-icon icon="fi-free-delivery-48"></app-icon>
-                      </div>
-                      <div class="shop-features__info">
-                        <div class="shop-features__item-title">{{ 'TEXT_SHOP_FEATURE_FREE_SHIPPING_TITLE' | translate }}</div>
-                        <div class="shop-features__item-subtitle">{{ 'TEXT_SHOP_FEATURE_FREE_SHIPPING_SUBTITLE' | translate }}</div>
-                      </div>
-                    </li>
-                    <li class="shop-features__divider" role="presentation"></li>
-                  </ng-container>
-
-<!--                  <li class="shop-features__item">-->
-<!--                    <div class="shop-features__item-icon">-->
-<!--                      <app-icon icon="fi-24-hours-48"></app-icon>-->
-<!--                    </div>-->
-<!--                    <div class="shop-features__info">-->
-<!--                      <div class="shop-features__item-title">{{ 'TEXT_SHOP_FEATURE_SUPPORT_TITLE' | translate }}</div>-->
-<!--                      <div class="shop-features__item-subtitle">{{ 'TEXT_SHOP_FEATURE_SUPPORT_SUBTITLE' | translate }}</div>-->
-<!--                    </div>-->
-<!--                  </li>-->
-                  <li class="shop-features__divider" role="presentation"></li>
-                  <li class="shop-features__item">
-                    <div class="shop-features__item-icon">
-                      <app-icon icon="fi-payment-security-48"></app-icon>
-                    </div>
-                    <div class="shop-features__info">
-                      <div class="shop-features__item-title">{{ 'TEXT_SHOP_FEATURE_SECURITY_TITLE' | translate }}</div>
-                      <div class="shop-features__item-subtitle">{{ 'TEXT_SHOP_FEATURE_SECURITY_SUBTITLE' | translate }}</div>
-                    </div>
-                  </li>
-                  <li class="shop-features__divider" role="presentation"></li>
-
-                  <ng-container *ngIf="appSettings?.hotOffers">
-                    <li class="shop-features__item">
-                      <div class="shop-features__item-icon">
-                        <app-icon icon="fi-tag-48"></app-icon>
-                      </div>
-                      <div class="shop-features__info">
-                        <div class="shop-features__item-title">{{ 'TEXT_SHOP_FEATURE_HOT_OFFERS_TITLE' | translate }}</div>
-                        <div class="shop-features__item-subtitle">{{ 'TEXT_SHOP_FEATURE_HOT_OFFERS_SUBTITLE' | translate }}</div>
-                      </div>
-                    </li>
-                    <li class="shop-features__divider" role="presentation"></li>
-                  </ng-container>
-
-                </ul>
-              </div>
-            </div>
-
-            <app-product-tabs class="product__tabs" [layout]="'full'" #tabs>
-              <app-product-tab id="product-tab-description" [label]="'TEXT_TAB_DESCRIPTION' | translate">
-                <div class="typography" [innerHTML]="product.data?.description"></div>
-              </app-product-tab>
-              <app-product-tab id="product-tab-specification" [label]="'TEXT_TAB_SPECIFICATION' | translate">
-                <app-spec [groups]="spec"></app-spec>
-              </app-product-tab>
-              <!--Show this when we enable reviews-->
-              <!--                            <app-product-tab id="product-tab-reviews" [label]="'TEXT_TAB_REVIEWS' | translate" [counter]="product.data?.reviews || 0" [showCounter]="(product.data?.reviews || 0) > 0">-->
-              <!--                                <app-reviews-view [productPageLayout]="'full'" [productId]="product.docId"></app-reviews-view>-->
-              <!--                            </app-product-tab>-->
-              <!--                            <app-product-tab id="product-tab-analogs" [label]="'TEXT_TAB_ANALOGS' | translate">-->
-              <!--                                <app-analogs-table [productId]="product.docId"></app-analogs-table>-->
-              <!--                            </app-product-tab>-->
-            </app-product-tabs>
-          </div>
+    <div class="nao-product-individual-card__main nao-mb-24" [formGroup]="form">
+      <div class="nao-card-content">
+        <div class="gallery-container">
+          <app-product-gallery class="product__gallery"
+                               [images]="(product?.data?.variants[variantIndex]?.images?.length ? product?.data?.variants[variantIndex]?.images : product?.data?.images) || []"
+                               layout="product-full">
+          </app-product-gallery>
         </div>
 
-        <!--                <ng-container *ngIf="relatedProducts.length > 0">-->
-        <!--                    &lt;!&ndash;Spacer&ndash;&gt;-->
-        <!--<div class="nao-spacer-nl"></div>-->
+        <div class="product__content">
+          <h1 class="card__product-name">{{ product.data?.name }}</h1>
+          <div class="card__product-description"
+               *ngIf="product.data?.shortDescription || product.data?.description">{{ product.data?.shortDescription || product.data?.description }}</div>
+
+          <!--Meta info-->
+          <div class="emulated-flex-gap-12of24">
+            <div *ngIf="appSettings.showProductSku">
+              <div class="product-meta__label">{{ 'TABLE_SKU' | translate }}</div>
+              <div
+                class="product-meta__value">{{ product?.data?.variants[variantIndex]?.sku || product.data?.sku }}</div>
+            </div>
+            <div *ngIf="product?.data?.manufacturer?.data?.name">
+              <div class="product-meta__label">{{ 'TABLE_BRAND' | translate }}</div>
+              <div class="product-meta__value">{{ product?.data?.manufacturer.data.name }}</div>
+            </div>
+            <div>
+              <div class="product-meta__label">{{ 'TABLE_PART_NUMBER' | translate }}</div>
+              <div class="product-meta__value">{{ product?.data?.variants[variantIndex]?.manufacturerItemCode }}</div>
+            </div>
+
+          </div>
 
 
-        <!--                    <app-block-products-carousel-->
-        <!--                        [blockTitle]="'HEADER_RELATED_PRODUCTS' | translate"-->
-        <!--                        [products]="relatedProducts"-->
-        <!--                        [layout]="layout === 'sidebar' ? 'grid-4-sidebar' : 'grid-5'"-->
-        <!--                    ></app-block-products-carousel>-->
-        <!--                </ng-container>-->
+          <!--Product: variants-->
+          <app-product-variants
+            *ngIf="product?.data?.options?.length > 0"
+            formControlName="options"
+            class="card__product-variants"
+            [options]="product.data?.options"
+            [variants]="product?.data?.variants"
+          ></app-product-variants>
+
+
+          <div class="card__product-actions">
+
+            <div class="card__product-prices-stock" *showPrice>
+              {{ product?.data?.variants[variantIndex]?.price | currencyFormat }}
+            </div>
+
+            <!--Now price placeholder-->
+            <div class="box-disable-input-placeholder" *ShowOnlyIfOnlyLoggedUsersSeePrices>
+              $
+            </div>
+
+            <div class="card__product-actions-controls">
+              <div>
+                <app-input-number formControlName="quantity" [min]="1"></app-input-number>
+              </div>
+
+              <div class="nao-ml-8">
+                <button
+                  disableIfNotLoggedIn
+                  class="btn btn-primary btn-block"
+                  [class.btn-loading]="addToCartInProgress"
+                  [disabled]="!(product?.data?.variants[variantIndex]?.price >= 0)"
+                  (click)="addToCart()"
+                >
+                  {{ 'BUTTON_ADD_TO_CART' | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
       </div>
+      <div class="nao-card-footer" *ngIf="isLoggedIn">
+        <div appDropdown
+             class="position-relative"
+             [class.my-lists__menu--open]="myListsDropdown.isOpen"
+             #myListsDropdown="appDropdown"
+             *ngIf="isLoggedIn">
+          <button
+            type="button"
+            appAddToMyLists
+            (click)="myListsDropdown.toggle()"
+            #addToMyLists="addToMyLists"
+            class="nao-btn nao-btn-sm nao-btn-simple-primary has-left-icon me-8">
+            <app-icon icon="favorite" class="btn-icon"></app-icon>
+            <span>{{ 'TEXT_ADD_TO_LIST' | translate }}</span>
+          </button>
 
+          <div class="my-lists__menu-body" (mouseleave)="myListsDropdown.close()">
+            <button
+              *ngFor="let item of addToMyLists.myLists"
+              class="my-lists__menu-item"
+              type="button"
+              (click)="addToMyLists.add(item.docId, product, product.data?.variants[variantIndex]); myListsDropdown.close()">
+              {{ item.data?.name }}
+            </button>
+            <!--Empty state-->
+            <div class="p-3 text-center" *ngIf="!addToMyLists.myLists || addToMyLists.myLists.length === 0">
+              {{ 'MY_LISTS_EMPTY_STATE_START' | translate }}
+              <a href="javascript:void(0)" routerLink="/shop/my-lists">{{ 'MY_LISTS_EMPTY_STATE_LINK' | translate }}</a>
+              {{ 'MY_LISTS_EMPTY_STATE_END' | translate }}
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+    <!--Card with column layout-->
+    <div class="nao-card-info-layout nao-mb-24">
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/call.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_SUPPORT' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_SUPPORT_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/shipping-methods.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_DELIVERY' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_DELIVERY_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/ecommerce-storefront.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_REDUCING_COST' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_REDUCING_COST_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/approval-app.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_HIGH_QUALITY' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_HIGH_QUALITY_DESCRIPTION' | translate }}</div>
+      </div>
+    </div>
+
+
+    <!--Card for product specifications-->
+    <div class="nao-card-1 nao-mb-24" *ngIf="spec?.length">
+      <div class="nao-card-header d-flex align-items-center">
+        <app-icon class="nao-mr-8" icon="product-specifications"></app-icon>
+        <div class="">{{ 'TEXT_PRODUCT_SPECIFICATIONS' | translate }}</div>
+      </div>
+        <table class="nao-card-table">
+          <thead>
+            <tr>
+              <th style="min-width: 70px; width: 130px">{{ 'VARIANT_SPECIFICATION_VOLUME' | translate }}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of spec">
+              <td class="nao-card-table__name">{{ item.name }}</td>
+              <td class="nao-card-table__value">{{ item.value }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <!--Card for description-->
+    <div class="nao-card-1 nao-mb-24" *ngIf="product.data?.description">
+      <div class="nao-card-header d-flex align-items-center">
+        <app-icon class="nao-mr-8" icon="product-description"></app-icon>
+        <div class="">{{ 'TEXT_EXTENDED_PRODUCT_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="nao-card-content">{{ product.data?.description }}</div>
+    </div>
+
+
   </div>
 </div>
 

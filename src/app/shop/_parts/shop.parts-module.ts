@@ -1,9 +1,6 @@
 import {NgModule} from '@angular/core';
-import {NgxSliderModule} from '@angular-slider/ngx-slider';
 import {NgxPayPalModule} from 'ngx-paypal';
 import {SharedModule} from '../../shared/shared.module';
-import {ProductTabComponent} from './product-tab/product-tab.component';
-import {ProductTabsComponent} from './product-tabs/product-tabs.component';
 import {ShopSidebarComponent} from './shop-sidebar/shop-sidebar.component';
 import {SpecComponent} from './spec/spec.component';
 import {WidgetProductsComponent} from './widget-products/widget-products.component';
@@ -22,8 +19,6 @@ import {EditMyListComponent} from './edit-my-list/edit-my-list.component';
 
 @NgModule({
   declarations: [
-    ProductTabComponent,
-    ProductTabsComponent,
     ShopSidebarComponent,
     SpecComponent,
     WidgetProductsComponent,
@@ -41,8 +36,6 @@ import {EditMyListComponent} from './edit-my-list/edit-my-list.component';
     EditMyListComponent
   ],
   exports: [
-    ProductTabComponent,
-    ProductTabsComponent,
     ShopSidebarComponent,
     SpecComponent,
     WidgetProductsComponent,

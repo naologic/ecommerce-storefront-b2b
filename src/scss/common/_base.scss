@@ -10,7 +10,7 @@ html {
 
 body {
     height: 100%;
-    background: map_get($body-scheme, main);
+    background: #F7F9FC;
     color: map_get($body-scheme, opposite);
     font-family: $body-font-family;
     font-size: $body-font-size;

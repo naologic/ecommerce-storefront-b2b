@@ -58,7 +58,7 @@
 
 .quickview__product {
   border-left: 1px solid var(--separator);
-  padding-left: 14px;
+  padding-left: 16px;
   display: flex;
   flex-direction: column;
 
@@ -74,7 +74,7 @@
       content: '';
       display: block;
       position: absolute;
-      left: -15px;
+      left: -17px;
       height: 30px;
       top: 0px;
       border-left: 1px solid var(--primary);
@@ -113,7 +113,7 @@
       content: '';
       display: block;
       position: absolute;
-      left: -15px;
+      left: -17px;
       height: 30px;
       top: 0;
       border-left: 1px solid var(--primary);
