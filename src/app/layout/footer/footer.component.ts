@@ -13,14 +13,6 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   public infoSupport = null;
 
-  // Newsletter social links
-  // public socialLinks = [
-  //     // { type: 'facebook',  url: theme.author.profile_url, icon: 'fab fa-facebook-f' },
-  //     // { type: 'twitter',   url: theme.author.profile_url, icon: 'fab fa-twitter' },
-  //     // { type: 'youtube',   url: theme.author.profile_url, icon: 'fab fa-youtube' },
-  //     // { type: 'instagram', url: theme.author.profile_url, icon: 'fab fa-instagram' },
-  //     // { type: 'rss',       url: theme.author.profile_url, icon: 'fas fa-rss' },
-  // ];
 
   constructor(public appService: AppService) { }
 

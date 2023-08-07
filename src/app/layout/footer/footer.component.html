@@ -1,95 +1,66 @@
-<div class="site-footer">
-    <div class="site-footer__widgets">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 col-xl-4 footer-contacts">
-                    <h5 class="footer-contacts__title">{{ 'HEADER_CONTACT_US' | translate }}</h5>
+<div class="nao-footer-container">
+  <div class="mx-auto nao-footer-content container d-flex flex-wrap justify-content-between">
 
-                    <div class="footer-contacts__text">{{ 'TEXT_CONTACT_US_MESSAGE' | translate }}</div>
-
-                    <address class="footer-contacts__contacts">
-                        <dl>
-                            <dt>{{ 'TEXT_PHONE_NUMBER' | translate }}</dt>
-                            <dd>{{ infoSupport?.supportPhoneNumber }}</dd>
-                        </dl>
-                        <dl>
-                            <dt>{{ 'TEXT_EMAIL_ADDRESS' | translate }}</dt>
-                            <dd *ngIf="infoSupport?.supportEmailAddress">
-                                <a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>{{ 'TEXT_OUR_LOCATION' | translate }}</dt>
-                            <dd>{{ infoSupport?.location }}
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt>{{ 'TEXT_WORKING_HOURS' | translate }}</dt>
-                            <dd >{{ infoSupport?.workingHours }}</dd>
-                        </dl>
-                    </address>
-                </div>
-                <!-- Links section -->
-                <div class="col-6 col-md-3 col-xl-2 footer-links">
-                    <div class="site-footer__widget">
-                        <h5 class="footer-links__title">{{ 'HEADER_INFORMATION' | translate }}</h5>
-                        <ul class="footer-links__list">
-                            <li class="footer-links__item" *ngFor="let link of [
-                                {title: 'LINK_ABOUT_US' | translate, url: '/site/about-us'},
-                                {title: 'LINK_FAQ' | translate, url: '/site/faq'},
-                                {title: 'LINK_TERMS_AND_CONDITIONS' | translate, url: '/site/terms'},
-                                {title: 'LINK_SITE_MAP' | translate}
-                            ]">
-                                <a [routerLink]="link.url" class="footer-links__link">{{ link.title }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Newsletter section -->
-                <!-- <div class="col-12 col-md-6 col-xl-4 footer-newsletter">
-                    <h5 class="footer-newsletter__title">{{ 'HEADER_NEWSLETTER' | translate }}</h5>
-                    <div class="footer-newsletter__text">{{ 'TEXT_NEWSLETTER_MESSAGE' | translate }}</div>
-
-                    <form class="footer-newsletter__form" (submit)="$event.preventDefault()">
-                        <label class="sr-only" for="footer-newsletter-address">
-                            {{ 'INPUT_EMAIL_ADDRESS_LABEL' | translate }}
-                        </label>
-                        <input
-                            type="text"
-                            class="footer-newsletter__form-input"
-                            id="footer-newsletter-address"
-                            [placeholder]="'INPUT_EMAIL_ADDRESS_PLACEHOLDER' | translate"
-                        >
-                        <button type="submit" class="footer-newsletter__form-button">{{ 'BUTTON_SUBSCRIBE' | translate }}</button>
-                    </form>
-
-                    <div class="footer-newsletter__text footer-newsletter__text--social" *ngIf="socialLinks?.length">
-                        {{ 'TEXT_SOCIAL_LINKS_MESSAGE' | translate }}
-                    </div>
-
-                    <div class="footer-newsletter__social-links social-links">
-                        <ul class="social-links__list">
-                            <li *ngFor="let link of socialLinks" class="social-links__item social-links__item--{{ link.type }}">
-                                <a href="{{ link.url }}" target="_blank"><i [ngClass]="link.icon"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> -->
-            </div>
-        </div>
+    <div class="footer-group footer-about">
+      <div class="footer-title">{{ 'TEXT_CONTACT_US' | translate }}</div>
+      <div class="footer-description">
+        Hi, we are always open for cooperation and suggestions.
+      </div>
     </div>
-    <div class="site-footer__bottom">
-        <div class="container">
-            <div class="site-footer__bottom-row">
-                <div class="site-footer__copyright">
-                    <!-- copyright -->
-                    Powered by <a href="https://naologic.com/" target="_blank">Naologic</a>
-                    <!-- copyright / end -->
-                </div>
-<!--                <div class="site-footer__payments">-->
-<!--                    <img src="assets/images/payments.png" alt="">-->
-<!--                </div>-->
-            </div>
-        </div>
+
+
+    <div class="footer-group">
+      <div class="footer-title">{{ 'TEXT_INFORMATION' | translate }}</div>
+      <ul class="footer-links">
+        <li><a routerLink="/site/about-us" href="javascript:void(0)">{{ 'LINK_ABOUT_US' | translate }}</a></li>
+        <li><a routerLink="/site/faq" href="javascript:void(0)">{{ 'LINK_FAQ' | translate }}</a></li>
+        <li><a routerLink="/site/terms" href="javascript:void(0)">{{ 'LINK_TERMS_AND_CONDITIONS' | translate }}</a></li>
+        <li><a href="javascript:void(0)">{{ 'LINK_SITE_MAP' | translate }}</a></li>
+      </ul>
     </div>
+
+
+    <div class="footer-group">
+      <div class="footer-title">{{ 'TEXT_MORE_LINKs' | translate }}</div>
+      <ul class="footer-links">
+        <li><a routerLink="/shop/category/products" href="javascript:void(0)">{{ 'TEXT_PRODUCT_CATEGORIES' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-group">
+      <div class="footer-title">{{ 'TEXT_OUR_GUARANTEE' | translate }}</div>
+      <div class="footer-description">
+        100% safety. We only process two-way encrypted payments and operate under strict security protocols.
+      </div>
+    </div>
+
+    <div class="footer-group">
+      <div class="footer-title">{{ 'TEXT_CONTACT' | translate }}</div>
+      <ul class="footer-links">
+        <li *ngIf="infoSupport?.supportPhoneNumber">{{ infoSupport?.supportPhoneNumber }}</li>
+        <li *ngIf="infoSupport?.location">{{ infoSupport?.location }}</li>
+        <li *ngIf="infoSupport?.supportEmailAddress"><a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a></li>
+        <li *ngIf="infoSupport?.workingHours">{{ infoSupport?.workingHours }}</li>
+      </ul>
+
+      <div class="nao-mt-24">
+        <div class="emulated-flex-gap-8 align-items-center">
+          <a href="www.facebook.com"><img src="assets/images/social/twitter.png" alt="Twitter" width="28" height="22"></a>
+          <a href="www.facebook.com"><img src="assets/images/social/facebook.png" alt="Facebook" width="22" height="22"></a>
+          <a href="www.facebook.com"><img src="assets/images/social/linkedin.png" alt="Linkedin" width="20" height="20"></a>
+          <a href="www.facebook.com"><img src="assets/images/social/tiktok.png" alt="TikTok" width="20" height="22"></a>
+          <a href="www.facebook.com"><img src="assets/images/social/instagram.png" alt="Instagram" width="22" height="22"></a>
+          <a href="www.facebook.com"><img src="assets/images/social/youtube.png" alt="Youtube" width="32" height="22"></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--Footer bottom-->
+  <div class="nao-footer-bottom container mx-auto">
+    <div class="d-flex align-items-center">
+      Powered by <a href="https://naologic.com/" target="_blank" class="nao-ml-8"><img src="assets/images/logo/naologic-logo.svg" alt="Naologic" width="96" height="12"></a>
+    </div>
+  </div>
 </div>
