@@ -14,22 +14,22 @@ export const environment = {
         },
     },
     API: {
-        server: {
-            $id: 'server',
-            protocol: 'http',
-            port: 3010,
-            url: 'localhost',
-            prefix: 'api/v2/',
-            ssl: false
-        },
-        naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
-        webSocket: {
-            enabled: false,
-        },
-        basicAuth: {
-            user: 'gabriel',
-            password: 'gabriel',
-        }
+      server: {
+        $id: 'server',
+        protocol: 'https',
+        port: 443,
+        url: 'template-b2b-commerce-business-logic-api-d8039-dev.naologic.space',
+        prefix: 'api/v2/',
+        ssl: true
+      },
+      naoToken: 'naoproductionwBnqYEc2CfI68lN6JBEqSBEzi',
+      webSocket: {
+        enabled: false
+      },
+      basicAuth: {
+        user: 'gabriel',
+        password: 'gabriel'
+      }
     },
     naoUsers: {
         ws: {

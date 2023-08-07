@@ -324,6 +324,15 @@
   "TEXT_TOAST_PRODUCT_ALREADY_EXISTS": "Oops, that product already seems to be on your list.",
   "ACTIVE_FILTER_SEARCH_TERM": "Search: \"{{value}}\"",
 
+  "TEXT_MOST_SEARCHED_PRODUCTS": "Most searched products",
+  "TEXT_KEY_PARTNERS": "Key partners",
+  "TEXT_PRODUCT_HITS": "Product hits",
+  "TEXT_SEASONAL_FAVORITES": "Seasonal favorites",
+  "TEXT_BEST_SELLING_CATEGORIES": "Best-selling categories",
+  "TEXT_BEST_SELLING_CATEGORIES_DESCRIPTION": "Shop from the most popular categories",
+  "TEXT_EXPLORE_THE_BEST_SELLING_PRODUCTS": "Explore the best selling products",
+  "TEXT_EXPLORE_SEASONAL_FAVORITES": "Explore the highest selling items of the month",
+
   "OOPS_WERE_DOWN_FOR_MAINTENANCE": "Oops, we’re down for maintenance.",
   "UPGRADES_IN_PROGRESS_DOTS": "Upgrades in progress…",
   "WE_SHOULD_BE_BACK_ONLINE_SOON_PLEASE_CHECK_BACK_AGAIN_SHORTLY": "We should be back online soon, please check back again shortly."

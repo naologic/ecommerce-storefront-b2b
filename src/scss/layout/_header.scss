@@ -64,6 +64,7 @@ $header-variant-name: classic-one;
     align-self: center;
     align-items: center;
     padding: 2px $local-grid-padding-xxl 12px;
+    background: var(--white);
 
     @include media-breakpoint-only(xl) {
       padding: 2px $local-grid-padding-xl 12px;

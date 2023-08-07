@@ -203,7 +203,6 @@ $nao-colors-default: (
 // Blocks
 @import 'blocks/block-brands';
 @import 'blocks/block-empty';
-@import 'blocks/block-features';
 @import 'blocks/block-header';
 @import 'blocks/block-products-carousel';
 @import 'blocks/block-slideshow';
@@ -256,12 +255,30 @@ $nao-colors-default: (
 
 
 
+// **********************************************
+// Home page
+
+
 .me-8 {
   margin-right: 8px !important;
 }
 
 .emulated-flex-gap-12of24 {
   --gapX: 24px;
+  --gapY: 12px;
+
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: calc(-1 * var(--gapY)) 0 0 calc(-1 * var(--gapX));
+  width: calc(100% + var(--gapX));
+
+  &>* {
+    margin: var(--gapY) 0 0 var(--gapX);
+  }
+}
+
+.emulated-flex-gap-12of8 {
+  --gapX: 8px;
   --gapY: 12px;
 
   display: inline-flex;
@@ -439,5 +456,400 @@ a {
 
   &:hover, &:focus {
     text-decoration: none;
+  }
+}
+
+
+// **********************************************
+// Home page
+.hero-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 24px;
+  padding-top: 100px;
+  padding-bottom: 32px;
+
+  .nao-title {
+    font-weight: $font-weight-black;
+    font-size: 45px;
+    line-height: 53px;
+    color: var(--primary);
+    margin-bottom: 16px;
+  }
+
+  .nao-description {
+    font-size: 18px;
+    line-height: 25px;
+    color: var(--text-2);
+    margin-bottom: 16px;
+    font-weight: normal;
+  }
+
+  @include media-breakpoint-down(md) {
+    padding-top: 50px;
+    grid-template-columns: 1fr;
+  }
+}
+// ***************************************
+// Nao section radial gradients
+.nao-section-radial-gradient-1 {
+  position: relative;
+  z-index: 0;
+
+  &:before {
+    content: "";
+    width: 100%;
+    height: 130%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    background-image: radial-gradient(500px 500px at calc(50% + 500px) 31%, rgba(167, 200, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+
+    @media only screen and (max-width: 980px) {
+      background-image: radial-gradient(300px 300px at calc(90%) 31%, rgba(167, 200, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+    }
+  }
+}
+
+// *******************************************************************************
+// Card used for custom grids
+.nao-card-5 {
+  border-radius: 12px;
+  padding: 20px;
+  background: var(--white);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 13px 27px -5px #C8CFE9, 0 0 16px -8px #E6EBF0;
+
+  .nao-card-title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .nao-card-content {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--text-3);
+  }
+
+  &.has-bg-gradient-1 {
+    background-image: linear-gradient(116deg, #5BFFC7 0%, #F8DBFB 100%);
+  }
+
+  &.has-bg-gradient-2 {
+    background-image: linear-gradient(0deg, #FFDBFC 0%, #45C4EB 100%);
+  }
+
+  &.has-bg-gradient-3 {
+    background-image: linear-gradient(180deg, #FAE0FF 0%, #C29BFF 100%);
+  }
+
+  &.has-bg-gradient-4 {
+    background-image: linear-gradient(180deg, #FFFFFF 0%, #FFF3FE 100%);
+  }
+}
+
+
+// *******************************************************************************
+// Grid with 4 elements
+// - first element is used similar to a sidebar, expanded on 2 rows
+// - second element is full width on both columns
+// - third and fourth are used by spliting the space on the second row
+.nao-grid-custom-4-elements {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: minmax(226px, auto);
+  gap: 24px;
+
+
+  @include media-breakpoint-up(lg) {
+    .grid-element-1 {
+      grid-row: 1 / span 2;
+      grid-column: 1 / 3;
+    }
+
+    .grid-element-2 {
+      grid-row: 1;
+      grid-column: 3 / 9;
+    }
+
+    .grid-element-3 {
+      grid-row: 2;
+      grid-column: 3 / 6;
+    }
+
+    .grid-element-4 {
+      grid-row: 2;
+      grid-column: 6 / 9;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// *******************************************************************************
+// Grid with 4 elements version 2
+// - first element is used similar to a sidebar, expanded on 2 rows
+// - second and third are used by spliting the space on the first row, but the second element is smaller
+// - forth element is using the remaining width on the second row
+.nao-grid-custom-4-elements-2 {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: minmax(226px, auto);
+  gap: 24px;
+
+
+  @include media-breakpoint-up(lg) {
+    .grid-element-1 {
+      grid-row: 1 / span 2;
+      grid-column: 1 / 3;
+    }
+
+    .grid-element-2 {
+      grid-row: 1;
+      grid-column: 3 / 5;
+    }
+
+    .grid-element-3 {
+      grid-row: 1;
+      grid-column: 5 / 9;
+    }
+
+    .grid-element-4 {
+      grid-row: 2;
+      grid-column: 3 / 9;
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+// *******************************************************************************
+// Icons grid
+.nao-icons-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 30px;
+
+  .nao-icon-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 130px;
+
+    img {
+      max-width: 150px;
+      max-height: 82px;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &.mobile-1-column {
+    @include media-breakpoint-down(xs) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.nao-title-2 {
+  font-size: 18px;
+  letter-spacing: 0.51px;
+  font-weight: $font-weight-medium;
+  color: var(--text-4)
+}
+
+.nao-title-3 {
+  font-size: 24px;
+  font-weight: $font-weight-medium;
+  color: var(--text-primary);
+}
+
+.nao-badge-link {
+  border-radius: 18px;
+  background: rgba(var(--primary-rgb), 0.2);
+  font-size: 18px;
+  padding: 6px 12px;
+  font-weight: $font-weight-medium;
+  color: var(--primary);
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+// **********************************************************
+// NAO text gradients
+.nao-text-gradient-1, .nao-text-gradient-2, .nao-text-gradient-3, .nao-text-gradient-4 {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nao-text-gradient-1 {
+  background-image:  linear-gradient(90deg, #0445B5 0%,  #052EB2 100%);
+}
+.nao-text-gradient-2 {
+  background-image:  linear-gradient(90deg, #3DADD0 0%,  #052EB2 100%);
+}
+.nao-text-gradient-3 {
+  background-image:  linear-gradient(90deg, #812BED 0%, #5753DC 50%,  #2A7DCA 100%);
+}
+.nao-text-gradient-4 {
+  background-image:  linear-gradient(90deg, #D05C85 0%, #B620E0 50%,  #7E67EC 100%);
+}
+
+.nao-bg-2-gradient {
+  background: linear-gradient(90deg, #F6F8FB 0%, #F6F8FB 40%, #FFFFFF 59%, #FFFFFF 100%);
+}
+
+.nao-bg-2 {
+  background: var(--bg-2);
+}
+
+// **********************************************************
+// NAO text gradients
+.nao-card-info-layout {
+  padding: 12px 8px;
+  display: grid;
+  gap: 24px;
+  align-items: flex-start;
+  grid-template-columns: repeat(4, 1fr);
+
+  &.has-bg {
+    background: var(--product-card-bg);
+    border-radius: 5px;
+    border: 1px solid var(--border-1);
+    box-shadow: var(--box-shadow-1);
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-breakpoint-down(xs) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .variant-stat {
+    padding: 12px 16px;
+
+    .variant-image-container {
+      margin-bottom: 16px;
+    }
+
+    .variant-title {
+      position: relative;
+      font-size: 18px;
+      font-weight: $font-weight-bold;
+      margin-bottom: 8px;
+
+      &::before {
+        display: block;
+        position: absolute;
+        content: "";
+        top: 0;
+        left: -16px;
+        width: 1px;
+        height: 30px;
+        background-color: var(--primary);
+      }
+    }
+
+    .variant-description {
+      font-size: 12px;
+      line-height: 18px;
+      color: var(--text-4);
+    }
+  }
+}
+
+// **********************************************
+// Category card
+//
+.nao-category-card {
+  padding: 24px 16px;
+  border: 1px solid var(--border-1);
+  transition: all .05s ease-in-out;
+  border-radius: 5px;
+
+
+  // -->Content: for Category card
+  .nao-category-card__content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .nao-category-card__name-container {
+    margin-top: 18px;
+    padding-right: 21px;
+    position: relative;
+    margin-bottom: 4px;
+
+    // -->Category card name
+    .nao-category-card__name {
+      font-weight: $font-weight-bold;
+      position: relative;
+      color: var(--text-primary);
+
+      &:hover {
+        color: var(--text-primary);
+      }
+
+      &::before {
+        box-sizing: border-box;
+        content: '';
+        display: block;
+        position: absolute;
+        left: -17px;
+        top: 0;
+        height: 30px;
+        border-left: 1px solid var(--primary);
+      }
+    }
+  }
+
+  // -->Information
+  .nao-card-card__info-section {
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text-4)
+  }
+
+  .nao-category-card__footer {
+    opacity: 0;
+  }
+
+  // -->Hover and active state
+  &:hover, &:active {
+    background-color: var(--product-card-bg);
+    box-shadow: var(--box-shadow-1);
+
+
+    .nao-category-card__footer {
+      opacity: 1;
+    }
+  }
+
+  // -->Show: the hover effect on mobile
+  @include media-breakpoint-down(lg) {
+    background-color: var(--product-card-bg);
+    box-shadow: var(--box-shadow-1);
+
+
+    .nao-category-card__footer {
+      opacity: 1;
+    }
   }
 }

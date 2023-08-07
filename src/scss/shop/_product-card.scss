@@ -61,7 +61,7 @@
         position: absolute;
         left: -17px;
         top: 0;
-        bottom: 0;
+        height: 30px;
         border-left: 1px solid var(--primary);
       }
     }
@@ -139,18 +139,10 @@
 }
 
 .product-card--layout--grid {
-  // todo:
-  // todo:
-  // todo:
-  // todo:
   @include product-card-grid-base;
 }
 
 .product-card--layout--horizontal {
-  // todo:
-  // todo:
-  // todo:
-  // todo:
   @include product-card-horizontal-base;
 }
 

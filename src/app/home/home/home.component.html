@@ -1,96 +1,224 @@
-<!--Spacer-->
-<div class="nao-spacer-xs"></div>
-
-<!--Featured product-->
-<div class="container">
-  <div class="home-showcase-primary-product row">
-    <div class="col-lg mb-5 mb-lg-0 align-self-center">
-      <h1 class="showcase-product-name">
-        {{ primaryFeaturedProduct?.data?.name }}
-      </h1>
-      <p class="showcase-product-description">
-        {{ primaryFeaturedProduct?.data?.description }}
-      </p>
-      <div>
-        <button
-          type="button"
-          class="btn btn-primary btn-xl"
-          [routerLink]="url.product(primaryFeaturedProduct)">
-          {{ 'TEXT_BANNER_ONE_BUTTON' | translate }}
-        </button>
+<!--Hero-->
+<div class="nao-section-radial-gradient-1">
+  <div class="container">
+    <div class="hero-section">
+      <div class="d-flex flex-column justify-content-center">
+        <h1 class="nao-title" *ngIf="info?.hero?.title">{{ info.hero.title }}</h1>
+        <h2 class="nao-description" *ngIf="info?.hero?.description">{{ info.hero.description }}</h2>
+        <div>
+          <button type="button" class="btn btn-primary"
+                  routerLink="/account/register">{{ 'BUTTON_REGISTER' | translate }}</button>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-center">
+        <img src="assets/images/image-not-available.png">
       </div>
     </div>
-
-    <div class="col-lg">
-      <div class="d-flex">
-        <img class="ml-lg-auto featured-product-image"
-             [src]="(primaryFeaturedProduct?.data?.selectedVariant?.images?.length && primaryFeaturedProduct?.data?.selectedVariant?.images[0].cdnLink) || (primaryFeaturedProduct?.data?.images?.length && primaryFeaturedProduct?.data?.images[0].cdnLink)"
-             [alt]="primaryFeaturedProduct?.data?.name"
-             *ngIf="primaryFeaturedProduct?.data?.images?.length || primaryFeaturedProduct?.data?.selectedVariant?.images?.length">
-      </div>
-    </div>
-
   </div>
 </div>
 
-<!--<app-block-slideshow-->
-<!--    [slides]="[-->
-<!--        {-->
-<!--            url: '/shop',-->
-<!--            desktopImage: 'assets/images/slides/slide-3.jpg',-->
-<!--            mobileImage: 'assets/images/slides/slide-3-mobile.jpg',-->
-<!--            title: 'When Buying Parts <br>With Installation',-->
-<!--            details: 'Installation of parts in the services of <br>our partners.',-->
-<!--            buttonLabel: 'Shop Now'-->
-<!--        },-->
-<!--        {-->
-<!--            url: '/shop',-->
-<!--            desktopImage: 'assets/images/slides/slide-2.jpg',-->
-<!--            mobileImage: 'assets/images/slides/slide-2-mobile.jpg',-->
-<!--            title: 'Not enough <br>spare parts?',-->
-<!--            details: 'We have everything you need – replacement parts, <br>performance parts, accessories, oil & fluids, <br>tools and much more...',-->
-<!--            buttonLabel: 'Shop Now'-->
-<!--        },-->
-<!--        {-->
-<!--            url: '/shop',-->
-<!--            desktopImage: 'assets/images/slides/slide-1.jpg',-->
-<!--            mobileImage: 'assets/images/slides/slide-1-mobile.jpg',-->
-<!--            title: 'Big Choice Of <br>Wheel Tires',-->
-<!--            details: 'Any size and diameter, with or without spikes, <br>summer or winter, rain or snow.',-->
-<!--            buttonLabel: 'Shop Now'-->
-<!--        }-->
-<!--    ]"-->
-<!--&gt;</app-block-slideshow>-->
 
-<!--Spacer-->
-<div class="nao-spacer-nl"></div>
+<div class="container position-relative nao-pb-36 nao-pt-36">
+  <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_KEY_PARTNERS' | translate }}</div>
 
-<!--Products carousel-->
-<app-featured-products-grid
-  [blockTitle]="'HEADER_FEATURED_PRODUCTS' | translate"
-  [loading]="featuredProducts.loading"
-  [products]="featuredProducts.products || []"
-></app-featured-products-grid>
+  <div class="nao-icons-grid-4">
+    <div class="nao-icon-item" *ngFor="let item of storefrontDisplay?.partnerLogos">
+      <img [src]="item.cdnLink" fetchpriority="low" decoding="async">
+    </div>
+  </div>
+</div>
+
+
+<!--TODO: custom featured categories-->
+<div class="container nao-pt-36" *ngIf="info?.featuredCategories?.length">
+  <div class="nao-grid-custom-4-elements-2">
+    <!--Iterate over featured categories-->
+    <div class="nao-card-5"
+         [ngClass]="item.cssClass"
+         *ngFor="let item of info?.featuredCategories">
+      <div class="nao-card-title">
+        {{ item.title }}
+      </div>
+      <div class="nao-card-content">
+        {{ item.description }}
+      </div>
+      <div class="nao-mt-16">
+        <a href="javascript:void(0)" [routerLink]="item.routerLink" class="nao-btn-arrow-2">
+          {{ 'TEXT_BANNER_ONE_BUTTON' | translate }}
+          <svg class="HoverArrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+            <g fill-rule="evenodd">
+              <path class="HoverArrow__linePath" d="M0 5h7"></path>
+              <path class="HoverArrow__tipPath" d="M1 1l4 4-4 4"></path>
+            </g>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container nao-pt-100 nao-pb-100">
+  <div class="nao-title-3 nao-mb-48 text-center">
+    <span class="nao-text-gradient-1">
+      {{ 'TEXT_MOST_SEARCHED_PRODUCTS' | translate }}
+    </span>
+  </div>
+
+  <div class="emulated-flex-gap-12of8 justify-content-center">
+    <a href="javascript:void(0)"
+       class="nao-badge-link"
+       [routerLink]="item.routerLink"
+       *ngFor="let item of info.mostSearchProducts">
+      {{ item.name }}
+    </a>
+  </div>
+</div>
+
+
+<div class="nao-bg-2-gradient">
+  <div class="container nao-pt-100 nao-pb-100">
+    <div class="nao-title-2 nao-mb-12 text-center">{{ info.kpiSection.title }}</div>
+
+    <div class="nao-title-3 nao-mb-24 text-center">
+      <span class="nao-text-gradient-2">
+       {{ info.kpiSection.subtitle }}
+      </span>
+    </div>
+
+    <div class="nao-card-info-layout">
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/call.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_SUPPORT' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_SUPPORT_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/shipping-methods.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_DELIVERY' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_DELIVERY_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/ecommerce-storefront.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_REDUCING_COST' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_REDUCING_COST_DESCRIPTION' | translate }}</div>
+      </div>
+      <div class="variant-stat">
+        <div class="variant-image-container">
+          <img src="assets/images/icons/approval-app.png">
+        </div>
+        <div class="variant-title">{{ 'PRODUCT_INFO_HIGH_QUALITY' | translate }}</div>
+        <div class="variant-description">{{ 'PRODUCT_INFO_HIGH_QUALITY_DESCRIPTION' | translate }}</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!--Featured products-->
+<div class="container nao-pt-100 nao-pb-100" *ngIf="info?.featuredProducts?.products?.length">
+  <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_PRODUCT_HITS' | translate }}</div>
+
+  <div class="nao-title-3 nao-mb-36 text-center">
+      <span class="nao-text-gradient-2">
+       {{ 'TEXT_EXPLORE_THE_BEST_SELLING_PRODUCTS' | translate }}
+      </span>
+  </div>
+
+  <div class="position-relative products-view__list products-list products-list--grid--4">
+    <!--Products-->
+    <div class="products-list__content">
+      <app-product-card
+        *ngFor="let product of info?.featuredProducts?.products"
+        layout="grid"
+        class="products-list__item"
+        [product]="product"
+      ></app-product-card>
+    </div>
+  </div>
+</div>
+
+<!--Best selling categories-->
+<div class="nao-bg-2" *ngIf="info?.bestSellingCategories?.categories?.length">
+  <div class="container nao-pt-100 nao-pb-100">
+    <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_BEST_SELLING_CATEGORIES' | translate }}</div>
+
+    <div class="nao-title-3 nao-mb-36 text-center">
+      <span class="nao-text-gradient-4">
+       {{ 'TEXT_BEST_SELLING_CATEGORIES_DESCRIPTION' | translate }}
+      </span>
+    </div>
+
+    <div class="position-relative products-view__list products-list products-list--grid--5">
+      <div class="products-list__content">
+        <div class="nao-category-card products-list__item"
+             *ngFor="let item of info?.bestSellingCategories?.categories">
+
+          <div class="nao-category-card__content">
+            <!--Category name-->
+            <div class="nao-category-card__name-container">
+              <a class="nao-category-card__name" >{{ item?.name }}</a>
+            </div>
+
+            <div class="nao-card-card__info-section">
+              {{ item.itemsNo || 0 }} items
+            </div>
+
+            <!--Category card footer-->
+            <div class="nao-category-card__footer">
+              <!--Shop category-->
+              <button
+                type="button"
+                [routerLink]="item.routerLink"
+                class="nao-btn nao-btn-sm nao-btn-simple-primary">
+                {{ 'Shop category' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!--Seasonal products-->
+<div class="container nao-pt-100 nao-pb-100" *ngIf="info?.seasonalProducts?.products?.length">
+  <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_SEASONAL_FAVORITES' | translate }}</div>
+
+  <div class="nao-title-3 nao-mb-36 text-center">
+      <span class="nao-text-gradient-3">
+       {{ 'TEXT_EXPLORE_SEASONAL_FAVORITES' | translate }}
+      </span>
+  </div>
+
+  <div class="position-relative products-view__list products-list products-list--grid--4">
+    <!--Products-->
+    <div class="products-list__content">
+      <app-product-card
+        *ngFor="let product of info?.seasonalProducts?.products"
+        layout="grid"
+        class="products-list__item"
+        [product]="product"
+      ></app-product-card>
+    </div>
+  </div>
+</div>
+
 
 <!--Spacer-->
 <div class="nao-spacer-lg"></div>
 
-<div class="container" *ngIf="storefrontDisplay?.partnerLogos?.length">
-  <div class="section-header__body">
-    <h2 class="section-header__title">{{ 'HEADER_PARTNERS' | translate }}</h2>
-    <div class="section-header__divider"></div>
-  </div>
 
-  <!--Partners logos-->
-  <app-block-brands [partners]="storefrontDisplay?.partnerLogos"></app-block-brands>
 
-  <!--Spacer-->
-  <div class="nao-spacer-lg"></div>
-
-</div>
-
-<!--Show features like Free shipping, support 24/7-->
-<app-block-features layout="bottom-strip"></app-block-features>
 
 
 
