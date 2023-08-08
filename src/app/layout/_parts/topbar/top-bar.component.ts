@@ -18,7 +18,7 @@ export class TopBarComponent {
     text: string,
     colorClass: "is-primary" | "is-text-3" | "is-purple-300" | "is-primary-600"
   } = {
-    show: false,
+    show: true,
     text: "Special Summer Sale - 10% off all orders over $1000!",
     colorClass: "is-primary-600"
   };
