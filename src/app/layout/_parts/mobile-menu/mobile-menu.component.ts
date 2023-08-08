@@ -13,16 +13,19 @@ import {
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-} from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { fromEvent, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { LayoutMobileMenuService } from '../../layout-mobile-menu.service';
+} from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { fromEvent, Subject, Subscription } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { LayoutMobileMenuService } from "../../layout-mobile-menu.service";
 import { AppService } from "../../../app.service";
-import { MobileMenuPanelComponent } from '../mobile-menu-panel/mobile-menu-panel.component';
+import { MobileMenuPanelComponent } from "../mobile-menu-panel/mobile-menu-panel.component";
 import { nameToSlug } from "../../../shared/functions/utils";
-import { MobileMenuLink } from '../../../interfaces/mobile-menu-link';
+import { MobileMenuLink } from "../../../interfaces/mobile-menu-link";
 import { appInfo$ } from "../../../../app.static";
+import { DepartmentsLink } from "../../../interfaces/departments-link";
+import { MegamenuColumn } from "../../../interfaces/menu";
+import { NestedLink } from "../../../interfaces/link";
 
 interface StackItem {
   content: TemplateRef<any>;
@@ -30,9 +33,9 @@ interface StackItem {
 }
 
 @Component({
-  selector: 'app-mobile-menu',
-  templateUrl: './mobile-menu.component.html',
-  styleUrls: ['./mobile-menu.component.scss'],
+  selector: "app-mobile-menu",
+  templateUrl: "./mobile-menu.component.html",
+  styleUrls: ["./mobile-menu.component.scss"],
 })
 export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
   private destroy$: Subject<void> = new Subject<void>();
@@ -43,9 +46,9 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
   public panelsBin: StackItem[] = [];
   public forceConveyorTransition = false;
 
-  @ViewChild('body') body!: ElementRef;
-  @ViewChild('conveyor') conveyor!: ElementRef;
-  @ViewChild('panelsContainer', { read: ViewContainerRef }) panelsContainer!: ViewContainerRef;
+  @ViewChild("body") body!: ElementRef;
+  @ViewChild("conveyor") conveyor!: ElementRef;
+  @ViewChild("panelsContainer", { read: ViewContainerRef }) panelsContainer!: ViewContainerRef;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
@@ -53,31 +56,29 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     private zone: NgZone,
     public menu: LayoutMobileMenuService,
     public appService: AppService,
-  ) { }
+  ) {
+  }
 
   public ngOnInit(): void {
     // -->Subscribe: to info changes
     this.subs.add(
       appInfo$.subscribe((value) => {
-        // todo: change this to be dynamic
-        // todo: change this to be dynamic
-        // todo: change this to be dynamic
-        // todo: change this to be dynamic
-        const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
-
+        const links: any[] = this.getFeaturedCategories(value?.categories);
         // -->Set: categories
         const categories = this.mapCategories(value?.categories);
 
         // -->Set: mobile links
-        this.links = [
+        links.push(
           {
-            title: 'Categories',
-            url: '/shop/category/products',
-            submenu: categories
-          }
-        ]
-      })
-    )
+            title: "More",
+            url: "/shop/category/products",
+            submenu: categories,
+          },
+        );
+
+        this.links = links;
+      }),
+    );
 
     // -->Set: menu
     this.menu.onOpenPanel.pipe(takeUntil(this.destroy$)).subscribe(({ content, label }) => {
@@ -130,22 +131,22 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
       // -->Track: clicks in order to transition between panels or close menu
       this.zone.runOutsideAngular(() => {
         // -->Emit: on body element transition events
-        fromEvent<TransitionEvent>(this.body.nativeElement, 'transitionend').pipe(
+        fromEvent<TransitionEvent>(this.body.nativeElement, "transitionend").pipe(
           takeUntil(this.destroy$),
         ).subscribe((event) => {
           // -->Check: target, event name and menu state
-          if (event.target === this.body.nativeElement && event.propertyName === 'transform' && !this.menu.isOpen) {
+          if (event.target === this.body.nativeElement && event.propertyName === "transform" && !this.menu.isOpen) {
             // -->Close: all panels
             this.zone.run(() => this.onMenuClosed());
           }
         });
 
         // -->Emit: on conveyor element transition events
-        fromEvent<TransitionEvent>(this.conveyor.nativeElement, 'transitionend').pipe(
+        fromEvent<TransitionEvent>(this.conveyor.nativeElement, "transitionend").pipe(
           takeUntil(this.destroy$),
         ).subscribe((event) => {
           // -->Check: target and event name
-          if (event.target === this.conveyor.nativeElement && event.propertyName === 'transform') {
+          if (event.target === this.conveyor.nativeElement && event.propertyName === "transform") {
             // -->Remove: unused panels
             this.zone.run(() => this.onConveyorStopped());
           }
@@ -161,11 +162,11 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
 
       if (isPlatformBrowser(this.platformId)) {
         // -->Set: element transition
-        this.conveyor.nativeElement.style.transition = 'none';
+        this.conveyor.nativeElement.style.transition = "none";
         // -->Force: reflow
         this.conveyor.nativeElement.getBoundingClientRect();
         // -->Clean: element transition
-        this.conveyor.nativeElement.style.transition = '';
+        this.conveyor.nativeElement.style.transition = "";
       }
     }
   }
@@ -175,7 +176,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
    * Clean: panels on menu close
    */
   private onMenuClosed(): void {
-    let panel: StackItem|undefined;
+    let panel: StackItem | undefined;
     // -->Get: and remove all panels from stack
     while (panel = this.panelsStack.pop()) {
       // -->Add: panel to bin to be clean up later on
@@ -201,7 +202,7 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
    * Remove: unused panels
    */
   private removeUnusedPanels(): void {
-    let panel: StackItem|undefined;
+    let panel: StackItem | undefined;
 
     // -->Get: and remove panel from bin
     while (panel = this.panelsBin.pop()) {
@@ -246,8 +247,8 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
       // -->Create: category
       const item: MobileMenuLink = {
         title: category.data.name,
-        url: this.createCategoryLink(category.data.name, category.docId)
-      }
+        url: this.createCategoryLink(category.data.name, category.docId),
+      };
 
       /**
        * Get: second level categories for this parent
@@ -266,8 +267,8 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
           // -->Create: sub category
           const subCategory$: MobileMenuLink = {
             title: subCategory.data.name,
-            url: this.createCategoryLink(subCategory.data.name, subCategory.docId)
-          }
+            url: this.createCategoryLink(subCategory.data.name, subCategory.docId),
+          };
 
           // -->Check: links
           if (links.length) {
@@ -275,16 +276,95 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
               .map((link) => {
                 return {
                   title: link.data.name,
-                  url: this.createCategoryLink(link.data.name, link.docId)
+                  url: this.createCategoryLink(link.data.name, link.docId),
                 };
               });
           }
           // -->Push: subcategory (column)
           item.submenu.push(subCategory$);
-        })
+        });
       }
       // -->Push: category
-      items.push(item)
+      items.push(item);
+    });
+
+    return items;
+  }
+
+
+  /**
+   * Get: featured categories
+   */
+  private getFeaturedCategories(categories: any[]): MobileMenuLink[] {
+    // -->Check: categories
+    if (!Array.isArray(categories)) {
+      categories = [];
+    }
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    // todo: change this to be dynamic
+    const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
+
+    // -->Init
+    let items: MobileMenuLink[] = [];
+    /**
+     * Check: if this is a mega menu, mega menu column or a plain link
+     */
+    featuredCategoryIds.forEach(categoryId => {
+      // -->Get: category
+      const category = categories.find(f => f.docId === categoryId);
+      // -->Check: if the category has the right fields
+      if (category?.data?.name && category?.docId) {
+        // -->Create: category
+        const item: MobileMenuLink = {
+          title: category.data.name,
+          url: this.createCategoryLink(category.data.name, category.docId),
+        };
+
+        /**
+         * Get: second level categories for this parent
+         */
+        const subCategories = categories.filter((c) => c.data?.parentId === category.docId);
+        if (subCategories.length) {
+          // -->Init: submenu
+          item.submenu = [];
+
+          // -->Iterate: over subcategories and check if there are any other links inside
+          subCategories.forEach((subCategory) => {
+
+            // -->Check: if the category has the right fields
+            if (subCategory?.data?.name && subCategory?.docId) {
+              /**
+               * Get: links for sub category
+               */
+              const links = categories.filter((c) => c.data?.parentId === subCategory.docId);
+              // -->Create: sub category
+              const subCategory$: MobileMenuLink = {
+                title: subCategory.data.name,
+                url: this.createCategoryLink(subCategory.data.name, subCategory.docId),
+              };
+              // -->Check: links
+              if (links.length) {
+                // -->Map: subcategory links that have a name
+                subCategory$.submenu = links
+                  .filter((link: any) => link?.data?.name && link?.docId)
+                  .map((link) => {
+                    return {
+                      title: link.data.name,
+                      url: this.createCategoryLink(link.data.name, link.docId),
+                    };
+                  });
+              }
+              // -->Push: column
+              item.submenu.push(subCategory$);
+            }
+
+          });
+        }
+        // -->Push: category
+        items.push(item);
+      }
     });
 
     return items;

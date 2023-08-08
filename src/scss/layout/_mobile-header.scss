@@ -282,12 +282,6 @@ $local-gutter: 0px;
     backface-visibility: hidden;
   }
 
-  .mobile-menu__divider {
-    flex-shrink: 0;
-    height: 1px;
-    background: map_get($card-scheme, divider);
-  }
-
   .mobile-menu__spring {
     flex-grow: 1;
   }

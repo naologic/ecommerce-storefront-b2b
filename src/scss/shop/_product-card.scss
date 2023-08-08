@@ -121,6 +121,7 @@
     display: flex;
     align-items: center;
     justify-content: end;
+    opacity: 0;
   }
 
   // -->Hover and active state
@@ -128,6 +129,10 @@
     background-color: var(--product-card-bg);
     border-color: var(--border-1);
     box-shadow: var(--box-shadow-1);
+
+    .nao-product-card__footer {
+      opacity: 1;
+    }
   }
 
   // -->Show: the hover effect on mobile
@@ -135,6 +140,10 @@
     background-color: var(--product-card-bg);
     border-color: var(--border-1);
     box-shadow: var(--box-shadow-1);
+
+    .nao-product-card__footer {
+      opacity: 1;
+    }
   }
 }
 
