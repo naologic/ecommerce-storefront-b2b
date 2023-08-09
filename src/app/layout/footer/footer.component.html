@@ -1,10 +1,10 @@
 <div class="nao-footer-container">
   <div class="mx-auto nao-footer-content container d-flex flex-wrap justify-content-between">
 
-    <div class="footer-group footer-about">
+    <div class="footer-group footer-about"  *ngIf="infoSupport?.contactUs">
       <div class="footer-title">{{ 'TEXT_CONTACT_US' | translate }}</div>
       <div class="footer-description">
-        Hi, we are always open for cooperation and suggestions.
+        {{ infoSupport?.contactUs }}
       </div>
     </div>
 
@@ -27,10 +27,10 @@
       </ul>
     </div>
 
-    <div class="footer-group">
+    <div class="footer-group" *ngIf="infoSupport?.ourGuarantee">
       <div class="footer-title">{{ 'TEXT_OUR_GUARANTEE' | translate }}</div>
       <div class="footer-description">
-        100% safety. We only process two-way encrypted payments and operate under strict security protocols.
+        {{ infoSupport?.ourGuarantee }}
       </div>
     </div>
 
@@ -44,14 +44,7 @@
       </ul>
 
       <div class="nao-mt-24">
-        <div class="emulated-flex-gap-8 align-items-center">
-          <a href="www.facebook.com"><img src="assets/images/social/twitter.png" alt="Twitter" width="28" height="22"></a>
-          <a href="www.facebook.com"><img src="assets/images/social/facebook.png" alt="Facebook" width="22" height="22"></a>
-          <a href="www.facebook.com"><img src="assets/images/social/linkedin.png" alt="Linkedin" width="20" height="20"></a>
-          <a href="www.facebook.com"><img src="assets/images/social/tiktok.png" alt="TikTok" width="20" height="22"></a>
-          <a href="www.facebook.com"><img src="assets/images/social/instagram.png" alt="Instagram" width="22" height="22"></a>
-          <a href="www.facebook.com"><img src="assets/images/social/youtube.png" alt="Youtube" width="32" height="22"></a>
-        </div>
+        <app-socials></app-socials>
       </div>
     </div>
 

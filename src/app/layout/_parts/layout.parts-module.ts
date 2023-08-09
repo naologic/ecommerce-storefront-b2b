@@ -18,6 +18,7 @@ import { QuickViewComponent } from "./quickview/quick-view.component";
 import {
   HeaderMenuIndividualCategoryComponent
 } from "./header-menu-individual-category/header-menu-individual-category.component";
+import { SocialsComponent } from "./socials/socials.component";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {
     MobileMenuLinksComponent,
     MobileMenuPanelComponent,
     LoadingBarComponent,
-    QuickViewComponent
+    QuickViewComponent,
+    SocialsComponent
   ],
   exports: [
     AccountMenuComponent,
@@ -55,7 +57,8 @@ import {
     MobileMenuLinksComponent,
     MobileMenuPanelComponent,
     LoadingBarComponent,
-    QuickViewComponent
+    QuickViewComponent,
+    SocialsComponent
   ],
   imports: [
     SharedModule

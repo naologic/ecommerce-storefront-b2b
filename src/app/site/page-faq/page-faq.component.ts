@@ -11,10 +11,8 @@ import {appInfo$} from "../../../app.static";
 })
 export class PageFaqComponent implements OnInit, OnDestroy {
   private subs = new Subscription();
-
   public faq = [];
   public supportEmailAddress: string;
-  public supportPhoneNumber: string;
 
   constructor(
     public url: UrlService,
@@ -27,7 +25,7 @@ export class PageFaqComponent implements OnInit, OnDestroy {
       appInfo$.subscribe(value => {
         // -->Set: faq items
         this.faq = value?.shopInfo?.support?.data?.faqItems || [];
-        this.supportEmailAddress = value?.shopInfo?.storefrontSettings?.data?.supportEmail || '';
+        this.supportEmailAddress = value?.shopInfo?.companyInformation?.data?.supportEmail || '';
       })
     );
   }

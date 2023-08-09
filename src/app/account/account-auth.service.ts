@@ -24,7 +24,6 @@ export class AccountAuthService<T = any> {
 
   /**
    * Create: new user
-   * todo: wip
    */
   public createUser(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({
     docName: 'shop',
@@ -41,7 +40,6 @@ export class AccountAuthService<T = any> {
 
   /**
    * Send: email for password reset
-   * todo: wip
    */
   public sendResetPasswordEmail(email: string, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({
     docName: 'doc',
@@ -60,8 +58,6 @@ export class AccountAuthService<T = any> {
 
   /**
    * Ensure user data
-   * todo: wip
-   *
    */
   public ensureUserData(data: any, naoQueryOptions = NaoDocumentInterface.naoQueryOptionsDefault({
     docName: 'shop',

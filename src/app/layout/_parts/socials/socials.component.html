@@ -1,0 +1,12 @@
+<div class="emulated-flex-gap-8 align-items-center" *ngIf="data?.show && data?.socialMedia?.length">
+  <ng-container *ngFor="let item of data?.socialMedia">
+    <a [href]="item.url" target="_blank">
+      <img src="assets/images/social/twitter.png" alt="Twitter" width="28" height="22" *ngIf="item.socialMediaType === 'twitter'">
+      <img src="assets/images/social/youtube.png" alt="Youtube" width="32" height="22" *ngIf="item.socialMediaType === 'youtube'">
+      <img src="assets/images/social/instagram.png" alt="Instagram" width="22" height="22" *ngIf="item.socialMediaType === 'instagram'">
+      <img src="assets/images/social/tiktok.png" alt="TikTok" width="20" height="22" *ngIf="item.socialMediaType === 'tiktok'">
+      <img src="assets/images/social/linkedin.png" alt="Linkedin" width="20" height="20" *ngIf="item.socialMediaType === 'linkedin'">
+      <img src="assets/images/social/facebook.png" alt="Facebook" width="22" height="22" *ngIf="item.socialMediaType === 'facebook'">
+    </a>
+  </ng-container>
+</div>

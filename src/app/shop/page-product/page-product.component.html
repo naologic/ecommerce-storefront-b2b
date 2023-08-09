@@ -119,34 +119,19 @@
     </div>
 
     <!--Card with column layout-->
-    <div class="nao-card-info-layout has-bg nao-mb-24">
-      <div class="variant-stat">
+    <div class="nao-card-info-layout has-bg nao-mb-24" *ngIf="keyAdvantages?.show && keyAdvantages?.items?.length">
+      <div class="variant-stat" *ngFor="let item of keyAdvantages.items">
         <div class="variant-image-container">
-          <img src="assets/images/icons/call.png">
+          <ng-container [ngSwitch]="item.icon">
+            <img src="assets/images/icons/shipping-methods.png" *ngSwitchCase="'truck'">
+            <img src="assets/images/icons/ecommerce-storefront.png" *ngSwitchCase="'store'">
+            <img src="assets/images/icons/approval-app.png" *ngSwitchCase="'stamp'">
+            <img src="assets/images/icons/call.png" *ngSwitchDefault>
+          </ng-container>
+
         </div>
-        <div class="variant-title">{{ 'PRODUCT_INFO_SUPPORT' | translate }}</div>
-        <div class="variant-description">{{ 'PRODUCT_INFO_SUPPORT_DESCRIPTION' | translate }}</div>
-      </div>
-      <div class="variant-stat">
-        <div class="variant-image-container">
-          <img src="assets/images/icons/shipping-methods.png">
-        </div>
-        <div class="variant-title">{{ 'PRODUCT_INFO_DELIVERY' | translate }}</div>
-        <div class="variant-description">{{ 'PRODUCT_INFO_DELIVERY_DESCRIPTION' | translate }}</div>
-      </div>
-      <div class="variant-stat">
-        <div class="variant-image-container">
-          <img src="assets/images/icons/ecommerce-storefront.png">
-        </div>
-        <div class="variant-title">{{ 'PRODUCT_INFO_REDUCING_COST' | translate }}</div>
-        <div class="variant-description">{{ 'PRODUCT_INFO_REDUCING_COST_DESCRIPTION' | translate }}</div>
-      </div>
-      <div class="variant-stat">
-        <div class="variant-image-container">
-          <img src="assets/images/icons/approval-app.png">
-        </div>
-        <div class="variant-title">{{ 'PRODUCT_INFO_HIGH_QUALITY' | translate }}</div>
-        <div class="variant-description">{{ 'PRODUCT_INFO_HIGH_QUALITY_DESCRIPTION' | translate }}</div>
+        <div class="variant-title">{{ item.title }}</div>
+        <div class="variant-description">{{ item.description }}</div>
       </div>
     </div>
 

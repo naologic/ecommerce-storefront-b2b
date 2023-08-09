@@ -1,17 +1,22 @@
 <!--Top bar-->
-<div class="nao-top-bar" *ngIf="topNavBar?.show && topNavBar?.text" [ngClass]="topNavBar.colorClass">
-  <div class="top-bar-content">
-    <app-icon icon="promotions" class="nao-mr-8"></app-icon>
-    <div>
-      {{ topNavBar.text }}
+<ng-container
+  *ngIf="topNavBar?.show && (topNavBar.bannerVisibilityType === 'show' || (topNavBar.bannerVisibilityType === 'show-logged-only' && isLoggedIn))">
+  <div class="nao-top-bar"
+       [ngClass]="topNavBar.colorClass">
+    <div class="top-bar-content">
+      <app-icon icon="promotions" class="nao-mr-8"></app-icon>
+      <div>
+        {{ topNavBar.text }}
+      </div>
     </div>
+
+    <!--Dismiss button-->
+    <button
+      (click)="dismissTopNavBar()"
+      type="button"
+      class="top-bar-dismiss-button">
+      {{ 'DISMISS' | translate }}
+    </button>
   </div>
 
-  <!--Dismiss button-->
-  <button
-    (click)="dismissTopNavBar()"
-    type="button"
-    class="top-bar-dismiss-button">
-    {{ 'DISMISS' | translate }}
-  </button>
-</div>
+</ng-container>

@@ -76,6 +76,8 @@ export class AppService implements OnDestroy {
       this.eCommerceService.getInfo().subscribe(
         (info$: { ok: boolean; data: AppInterface.AppInfo }) => {
           if (info$ && info$.ok) {
+            console.log("info$.data>>>>>", info$.data)
+
             // -->Set: app info
             appInfo$.next(info$.data);
             // --.Set: settings
@@ -203,7 +205,7 @@ export class AppService implements OnDestroy {
    */
   public setTitle(title?: string): void {
     // -->Get: store name
-    let finalTitle = appInfo$?.getValue()?.shopInfo?.storefrontSettings?.data?.storeName || MetasInterface.DefaultMetas.title;
+    let finalTitle = appInfo$?.getValue()?.shopInfo?.companyInformation?.data?.storeName || MetasInterface.DefaultMetas.title;
     if (title) {
       finalTitle += ` - ${title}`;
     }

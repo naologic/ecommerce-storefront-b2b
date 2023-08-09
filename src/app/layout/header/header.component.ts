@@ -45,15 +45,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // -->Subscribe: to appInfo changes
     this.subs.add(
       appInfo$.subscribe((value) => {
-        // -->Set: info
-        this.infoSupport = {
-          supportPhoneNumber: value?.shopInfo?.storefrontSettings?.data?.phoneNumber || "",
-          supportEmailAddress: value?.shopInfo?.storefrontSettings?.data?.supportEmail || ""
-        };
         // -->Set: categories
         this.initCategoriesForMore(value?.categories);
+        // -->Get: featured categories ids
+        let featuredCategoryIds = []
+        if (Array.isArray(value?.shopInfo?.navigationAndFooter?.data?.featuredHeaderCategories)) {
+          featuredCategoryIds = value.shopInfo.navigationAndFooter.data.featuredHeaderCategories.map(f => f.categoryId).filter(f => f);
+        }
         // -->Init: featured categories
-        this.initFeaturedCategories(value?.categories);
+        this.initFeaturedCategories(value?.categories, featuredCategoryIds);
       })
     );
 
@@ -70,17 +70,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   /**
    * Init: featured categories
    */
-  private initFeaturedCategories(categories: any[]): void {
+  private initFeaturedCategories(categories: any[], featuredCategoryIds: string[]): void {
     // -->Check: categories
-    if (!Array.isArray(categories)) {
+    if (!Array.isArray(categories) || !Array.isArray(featuredCategoryIds) || !featuredCategoryIds.length) {
       categories = [];
     }
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
-
     // -->Init
     let items: any = [];
     /**

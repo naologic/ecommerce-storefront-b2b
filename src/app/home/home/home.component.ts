@@ -1,8 +1,57 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { AppService } from "../../app.service";
 import { UrlService } from "../../services/url.service";
 import { appInfo$ } from "../../../app.static";
+
+
+interface PageInfo {
+  hero: {
+    title?: string;
+    description?: string;
+    imageUrl?: string;
+  },
+  featuredCategories: {
+    routerLink?: string;
+    title?: string;
+    description?: string;
+  }[]
+  mostSearchProducts: {
+    name: string;
+    routerLink: string;
+  }[]
+  keyAdvantages: {
+    show: boolean
+    title?: string;
+    description?: string;
+    items: any[];
+  },
+  featuredProducts: {
+    products: any[];
+  },
+  seasonalProducts: {
+    products: any[];
+  },
+  bestSellingCategories: {
+    categories: {
+      name: string;
+      itemsNo: string;
+      imageUrl: string;
+      routerLink: string;
+    }[]
+  }
+  categoryExplainers: {
+    show: false,
+    categories: {
+      name: string;
+      description: string;
+      buttonCopy: string;
+      imageUrl: string;
+      routerLink: string;
+    }[]
+  }
+  partnerLogos: any[]
+}
+
 
 @Component({
   selector: "app-home",
@@ -10,142 +59,156 @@ import { appInfo$ } from "../../../app.static";
   styleUrls: ["./home.component.scss"],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  private subs = new Subscription();
-  public storefrontDisplay!: any;
-
-
   /**
    * Home info
    */
-  public info = {
+  public pageInfo: PageInfo = {
     hero: {
-      title: 'Over 100k medical supplies instantly available',
-      description: 'Your patients trust you to provide for them. You can trust us to provide the healthcare essentials you need.'
+      title: "Over 100k medical supplies instantly available",
+      description: "Your patients trust you to provide for them. You can trust us to provide the healthcare essentials you need.",
+      imageUrl: "",
     },
     // todo: set css classes
     featuredCategories: [
       {
-        routerLink: '/',
-        cssClass: 'grid-element-1',
-        title: 'Patient Care & Exam Room Supplies',
-        description: 'Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.'
+        routerLink: "/",
+        title: "Patient Care & Exam Room Supplies",
+        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
       },
       {
-        routerLink: '/',
-        cssClass: 'grid-element-2 has-bg-gradient-4',
-        title: 'Patient Care & Exam Room Supplies',
-        description: 'Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.'
+        routerLink: "/",
+        title: "Patient Care & Exam Room Supplies",
+        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
       },
       {
-        routerLink: '/',
-        cssClass: 'grid-element-3',
-        title: 'Patient Care & Exam Room Supplies',
-        description: 'Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.'
+        routerLink: "/",
+        title: "Patient Care & Exam Room Supplies",
+        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
       },
       {
-        routerLink: '/',
-        cssClass: 'grid-element-4',
-        title: 'Patient Care & Exam Room Supplies',
-        description: 'Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.'
-      }
+        routerLink: "/",
+        title: "Patient Care & Exam Room Supplies",
+        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
+      },
     ],
     // -->Most; searched products
     // todo
     mostSearchProducts: [
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
-      { name: 'Syringes and needles', routerLink: '/' },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
+      { name: "Syringes and needles", routerLink: "/" },
     ],
-    // todo:
-    kpiSection: {
-      title: 'The Direct Med Advantage',
-      subtitle: 'Learn why Direct Med Supplies is the only choice for your business'
+    keyAdvantages: {
+      show: false,
+      items: []
     },
     featuredProducts: {
-      products: []
+      products: [],
     },
     seasonalProducts: {
-      products: []
+      products: [],
     },
     bestSellingCategories: {
       categories: [
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
         },
         {
-          name: 'Needles and syringes',
-          itemsNo: 110,
-          imageUrl: 'assets/images/icons/call.png',
-          routerLink: '/'
-        }
-      ]
-    }
-  }
-
+          name: "Needles and syringes",
+          itemsNo: "110",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
+        },
+      ],
+    },
+    categoryExplainers: {
+      show: false,
+      categories: [
+        {
+          name: "Needles and syringes",
+          description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
+          buttonCopy: "Learn more",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
+        },
+        {
+          name: "Needles and syringes",
+          description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
+          buttonCopy: "Learn more",
+          imageUrl: "assets/images/category-placeholder.png",
+          routerLink: "/",
+        },
+      ],
+    },
+    partnerLogos: [],
+  };
+  /**
+   * Subs
+   */
+  private subs = new Subscription();
 
 
   constructor(
-    private appService: AppService,
     public url: UrlService,
   ) {
   }
@@ -154,34 +217,31 @@ export class HomeComponent implements OnInit, OnDestroy {
     // -->Subscribe: to appInfo changes
     this.subs.add(
       appInfo$.subscribe((value) => {
-        // -->Set: featured products
-        this.info.featuredProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
-        this.info.seasonalProducts.products = Array.isArray(value?.shopInfo?.featuredItems?.featuredProducts) ? value.shopInfo.featuredItems.featuredProducts.filter(f => f) : [];
-        // -->Set: StorefrontDisplay info
-        this.storefrontDisplay = value?.shopInfo?.storefrontDisplay?.data;
+        // -->Get: all categories
+        const allCategories = value?.categories || [];
+        /**
+         * Set: hero section
+         */
+
+        /**
+         * Set: featured categories
+         */
+        // -->Get: company information data
+        const companyInformationData = value?.shopInfo?.companyInformation?.data;
+
+        /**
+         * Set: key advantages
+         */
+        this.pageInfo.keyAdvantages = {
+          show: companyInformationData?.showKeyAdvantages || false,
+          title: companyInformationData?.keyAdvantagesTitle || '',
+          description: companyInformationData?.keyAdvantagesDescription || '',
+          items: Array.isArray(companyInformationData?.keyAdvantages) ? companyInformationData?.keyAdvantages : []
+        }
+
       }),
     );
   }
-
-  // /**
-  //  * Make: carousel data
-  //  */
-  // private makeCarouselData(groups: ProductsCarouselGroup[]): ProductsCarouselData {
-  //     const subject = new BehaviorSubject<ProductsCarouselGroup>(groups[0]);
-  //     const carouselData: ProductsCarouselData = {
-  //         subject$: subject,
-  //         products$: subject.pipe(
-  //             filter(x => x !== null),
-  //             tap(() => carouselData.loading = true),
-  //             switchMap(group => group.products$),
-  //             tap(() => carouselData.loading = false),
-  //         ),
-  //         loading: true,
-  //         groups,
-  //     };
-  //
-  //     return carouselData;
-  // }
 
 
   public ngOnDestroy(): void {

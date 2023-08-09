@@ -9,7 +9,6 @@ export interface BaseFilter<T extends string, V> {
 }
 export interface BaseFilterItem {
     docId?: string;
-    // todo: remove slug????
     slug: string;
     name: string;
     count: number;

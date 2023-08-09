@@ -15,7 +15,9 @@ export namespace AppInterface {
       storefrontDisplay: StorefrontDisplay;
       about: About;
       termsAndConditions: TermsAndConditions;
-      featuredItems: any;
+      navigationAndFooter: NavigationAndFooter;
+      companyInformation: CompanyInformation;
+      featuredItems: FeaturedItems;
     };
   }
 
@@ -80,13 +82,8 @@ export namespace AppInterface {
   export interface StorefrontSettings {
     docId: string;
     data: {
-      online: boolean;
-      downForMaintenanceMessage: string;
-      storeName: string;
-      location: string;
-      supportEmail: string;
-      phoneNumber: string;
-      workingHours: string;
+      online?: boolean
+      downForMaintenanceMessage?: string
     };
   }
 
@@ -126,6 +123,108 @@ export namespace AppInterface {
     };
   }
 
+  /**
+   * Interface for Navigation and Footer
+   */
+  export interface NavigationAndFooter {
+    docId: string;
+    data: {
+      /** @default primary */
+      bannerColor?: string
+      bannerText?: string
+      /** @default hidden */
+      bannerVisibility?: "hidden" | "show" | "show-logged-only"
+      featuredHeaderCategories?: {
+        categoryId: string
+      }[]
+      /** @default */
+      displaySocialIcons?: boolean
+      socialMediaIcons?: {
+        socialMediaType: string
+        url: string
+      }[]
+      footerContactUs: string
+      footerOurGuarantee?: string
+    };
+  }
+
+  /**
+   * Interface for Featured items
+   */
+  export interface FeaturedItems {
+    docId: string;
+    data: {
+      heroTitle: string
+      heroImageUrl: string
+      heroDescription: string
+      primaryFeaturedCategories?: FeaturedCategory[]
+      mostPopularProducts?: FeaturedProduct[]
+      productHits?: FeaturedProduct[]
+      bestSellingCategories?: FeaturedCategory[]
+      seasonalProducts?: FeaturedProduct[]
+      /** @default */
+      showCategoryExplainers: boolean
+      categoryExplainers?: CategoryExplainer[]
+    };
+  }
+
+  /**
+   * Interface for Company Information
+   */
+  export interface CompanyInformation {
+    docId: string,
+    data: {
+      storeName: string
+      location: string
+      supportEmail?: string
+      phoneNumber?: string
+      workingHours?: string
+      /** @default */
+      showKeyAdvantages: boolean
+      keyAdvantagesTitle?: string
+      keyAdvantagesDescription?: string
+      keyAdvantages?: {
+        title: string
+        description: string
+        /** @default phone */
+        icon: string
+      }[]
+      /** @default */
+      showCallToAction: boolean
+      callToActionTitle?: string
+      callToActionDescription?: string
+      callToActionOptions?: {
+        title: string
+        description: string
+        /** @default phone */
+        icon: string
+        button: string
+      }[]
+    }
+  }
+
+  /**
+   * Featured: products
+   */
+  interface FeaturedProduct {
+    productId: string
+  }
+
+  /**
+   * Featured category
+   */
+  interface FeaturedCategory {
+    categoryId?: string
+  }
+
+  /**
+   * Category Explainer
+   */
+  interface CategoryExplainer {
+    categoryId: string
+    buttonCopy: string
+  }
+
 
   /**
    * Category interface
@@ -143,6 +242,9 @@ export namespace AppInterface {
     children?: this[];
   }
 
+  /**
+   * Vendor
+   */
   export interface Vendor {
     docId: string;
     data: {

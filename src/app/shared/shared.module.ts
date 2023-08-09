@@ -51,6 +51,7 @@ import {CheckIfWeShowPriceDirective} from "./directives/check-if-we-show-price.d
 import {
   CheckIfThePriceIsShownOnlyForLoggedUsersDirective
 } from "./directives/check-if-the-price-is-shown-only-for-logged-users.directive";
+import { NaoFallbackImageDirective } from "./directives/nao-fallback-image";
 
 @NgModule({
   imports: [
@@ -106,7 +107,8 @@ import {
     UppercaseFirstPipe,
     NaoStatusPillComponent,
     LoaderTableComponent,
-    CheckIfThePriceIsShownOnlyForLoggedUsersDirective
+    CheckIfThePriceIsShownOnlyForLoggedUsersDirective,
+    NaoFallbackImageDirective
   ],
   exports: [
     CommonModule,
@@ -158,7 +160,8 @@ import {
     NaoStatusPillComponent,
     LoaderTableComponent,
     CheckIfWeShowPriceDirective,
-    CheckIfThePriceIsShownOnlyForLoggedUsersDirective
+    CheckIfThePriceIsShownOnlyForLoggedUsersDirective,
+    NaoFallbackImageDirective
   ]
 })
 export class SharedModule {

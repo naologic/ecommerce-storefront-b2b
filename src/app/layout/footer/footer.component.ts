@@ -21,10 +21,12 @@ export class FooterComponent implements OnInit, OnDestroy {
       appInfo$.subscribe(value => {
         // -->Set: info
         this.infoSupport = {
-          supportPhoneNumber: value?.shopInfo?.storefrontSettings?.data?.phoneNumber || '',
-          supportEmailAddress: value?.shopInfo?.storefrontSettings?.data?.supportEmail || '',
-          location: value?.shopInfo?.storefrontSettings?.data?.location || '',
-          workingHours: value?.shopInfo?.storefrontSettings?.data?.workingHours || '',
+          supportPhoneNumber: value?.shopInfo?.companyInformation?.data?.phoneNumber || '',
+          supportEmailAddress: value?.shopInfo?.companyInformation?.data?.supportEmail || '',
+          location: value?.shopInfo?.companyInformation?.data?.location || '',
+          workingHours: value?.shopInfo?.companyInformation?.data?.workingHours || '',
+          contactUs: value?.shopInfo?.navigationAndFooter?.data?.footerContactUs || '',
+          ourGuarantee: value?.shopInfo?.navigationAndFooter?.data?.footerOurGuarantee || '',
         }
       })
     )

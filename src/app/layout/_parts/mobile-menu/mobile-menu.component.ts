@@ -63,7 +63,12 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
     // -->Subscribe: to info changes
     this.subs.add(
       appInfo$.subscribe((value) => {
-        const links: any[] = this.getFeaturedCategories(value?.categories);
+        // -->Get: featured categories ids
+        let featuredCategoryIds = []
+        if (Array.isArray(value?.shopInfo?.navigationAndFooter?.data?.featuredHeaderCategories)) {
+          featuredCategoryIds = value.shopInfo.navigationAndFooter.data.featuredHeaderCategories.map(f => f.categoryId).filter(f => f);
+        }
+        const links: any[] = this.getFeaturedCategories(value?.categories, featuredCategoryIds);
         // -->Set: categories
         const categories = this.mapCategories(value?.categories);
 
@@ -295,17 +300,11 @@ export class MobileMenuComponent implements OnInit, OnDestroy, AfterViewInit, Af
   /**
    * Get: featured categories
    */
-  private getFeaturedCategories(categories: any[]): MobileMenuLink[] {
+  private getFeaturedCategories(categories: any[], featuredCategoryIds: string[]): MobileMenuLink[] {
     // -->Check: categories
     if (!Array.isArray(categories)) {
       categories = [];
     }
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    // todo: change this to be dynamic
-    const featuredCategoryIds = ["ZLqMw3fp8BvnoYgE-1dF9c-X", "Pr3RLMzv_wZAl92PaF5oe87H", "KUKJnxeF2RkCdQS_ia8b5at6"];
-
     // -->Init
     let items: MobileMenuLink[] = [];
     /**

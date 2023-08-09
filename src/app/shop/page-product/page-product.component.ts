@@ -13,6 +13,7 @@ import { ECommerceService } from "../../e-commerce.service";
 import { NaoUserAccessService } from "../../nao-user-access";
 import { Product } from "../../interfaces/product";
 import { JsonLdService } from "../../shared/seo-helper/json-ld.service";
+import { appInfo$ } from "../../../app.static";
 
 export type PageProductLayout = "sidebar" | "full";
 
@@ -24,6 +25,7 @@ export type PageProductLayout = "sidebar" | "full";
 export class PageProductComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   private subs = new Subscription();
+  private formSubs = new Subscription();
   // -->Based on this index we show specifications and price
   public variantIndex = 0;
   public appSettings: NaoSettingsInterface.Settings;
@@ -33,6 +35,19 @@ export class PageProductComponent implements OnInit, OnDestroy {
   public addToCartInProgress = false;
   public isLoggedIn = false;
   public docId;
+
+  /**
+   * Key advantages
+   */
+  public keyAdvantages: {
+    show: boolean
+    title?: string;
+    description?: string;
+    items: any[];
+  } = {
+    show: false,
+    items: []
+  }
 
 
   constructor(
@@ -69,6 +84,23 @@ export class PageProductComponent implements OnInit, OnDestroy {
       options: [{}],
       quantity: [1, [Validators.required]],
     });
+    // -->Subscribe: to appInfo changes
+    this.subs.add(
+      appInfo$.subscribe((value) => {
+        // -->Get: company information data
+        const companyInformationData = value?.shopInfo?.companyInformation?.data;
+
+        /**
+         * Set: key advantages
+         */
+        this.keyAdvantages = {
+          show: companyInformationData?.showKeyAdvantages || false,
+          title: companyInformationData?.keyAdvantagesTitle || '',
+          description: companyInformationData?.keyAdvantagesDescription || '',
+          items: Array.isArray(companyInformationData?.keyAdvantages) ? companyInformationData?.keyAdvantages : []
+        }
+      }),
+    );
   }
 
 
@@ -81,6 +113,8 @@ export class PageProductComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(this.url.allProducts()).then();
       return;
     }
+    this.formSubs.unsubscribe();
+    this.formSubs = new Subscription()
     // -->Execute:
     this.eCommerceService.productsGet(this.docId).subscribe(res => {
       // -->Set: data
@@ -97,7 +131,7 @@ export class PageProductComponent implements OnInit, OnDestroy {
         this.refreshSpecifications();
 
         // -->Subscribe: to options change and change the variant id
-        this.subs.add(
+        this.formSubs.add(
           this.form.get("options").valueChanges.subscribe(value => {
             // -->Match: search for variant index
             const index = this.product.data.variants.findIndex(v => v.id === value?.variantId);
@@ -251,5 +285,6 @@ export class PageProductComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     this.subs.unsubscribe();
+    this.formSubs.unsubscribe();
   }
 }
