@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AppService } from "../../../app.service";
 import { appInfo$ } from "../../../../app.static";
@@ -10,6 +10,7 @@ import { appInfo$ } from "../../../../app.static";
   styleUrls: ["./socials.component.scss"],
 })
 export class SocialsComponent implements OnInit, OnDestroy {
+  @HostBinding('class.d-none') hideComponent = true;
   /**
    * data
    */
@@ -41,6 +42,8 @@ export class SocialsComponent implements OnInit, OnDestroy {
         this.data.show = value?.shopInfo?.navigationAndFooter?.data?.displaySocialIcons || false;
         // -->Set: companyLogo
         this.data.socialMedia = (value?.shopInfo?.navigationAndFooter?.data?.socialMediaIcons || []).filter(f => this.acceptedSocialTypes.includes(f.socialMediaType));
+        // -->Check: if we need to hide the component
+        this.hideComponent = !(this.data.show && this.data.socialMedia.length);
       }),
     );
   }
