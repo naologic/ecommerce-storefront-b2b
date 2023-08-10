@@ -1,5 +1,5 @@
 <!--Hero-->
-<div class="nao-section-radial-gradient-1" *ngIf="pageInfo?.hero">
+<div class="nao-hero-section-gradient" *ngIf="pageInfo?.hero">
   <div class="container">
     <div class="hero-section">
       <div class="d-flex flex-column justify-content-center">
@@ -10,7 +10,7 @@
                   routerLink="/shop/category/products">{{ 'BUTTON_EXPLORE_PRODUCTS' | translate }}</button>
         </div>
       </div>
-      <div class="d-flex align-items-center justify-content-center">
+      <div class="hero-image-container">
         <img [src]="pageInfo?.hero?.imageUrl" naoFallbackImage fallbackImage="assets/images/image-not-available.png">
       </div>
     </div>
@@ -18,7 +18,7 @@
 </div>
 
 <!--Key partners-->
-<div class="container position-relative nao-pb-36 nao-pt-36" *ngIf="pageInfo?.partnerLogos?.length">
+<div class="container position-relative nao-pb-24 nao-pb-md-36 nao-pt-36" *ngIf="pageInfo?.partnerLogos?.length">
   <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_KEY_PARTNERS' | translate }}</div>
 
   <div class="nao-icons-grid-4">
@@ -55,7 +55,7 @@
 </div>
 
 <!--Most searched products-->
-<div class="container nao-pt-100 nao-pb-100" *ngIf="pageInfo?.mostSearchProducts?.length">
+<div class="container nao-pt-100 nao-pb-50 nao-pb-md-100" *ngIf="pageInfo?.mostSearchProducts?.length">
   <div class="nao-title-3 nao-mb-48 text-center">
     <span class="nao-text-gradient-1">
       {{ 'TEXT_MOST_SEARCHED_PRODUCTS' | translate }}
@@ -74,7 +74,7 @@
 
 <!--KPI section-->
 <div class="nao-bg-2-gradient" *ngIf="pageInfo?.keyAdvantages?.show">
-  <div class="container nao-pt-100 nao-pb-100">
+  <div class="container nao-pt-50 nao-pb-50 nao-pt-md-100 nao-pb-md-100">
     <div class="nao-title-2 nao-mb-12 text-center">{{ pageInfo.keyAdvantages.description }}</div>
 
     <div class="nao-title-3 nao-mb-24 text-center">
@@ -103,8 +103,8 @@
 
 
 <!--Product hits-->
-<div class="container nao-pt-100 nao-pb-100" *ngIf="pageInfo?.productHits?.products?.length">
-  <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_PRODUCT_HITS' | translate }}</div>
+<div class="container nao-pt-50 nao-pb-50 nao-pt-md-100 nao-pb-md-100" *ngIf="pageInfo?.productHits?.products?.length">
+  <div class="nao-title-2 nao-mb-12 text-center d-none d-md-block">{{ 'TEXT_PRODUCT_HITS' | translate }}</div>
 
   <div class="nao-title-3 nao-mb-36 text-center">
       <span class="nao-text-gradient-2">
@@ -114,7 +114,7 @@
 
   <div class="position-relative products-view__list products-list products-list--grid--4">
     <!--Products-->
-    <div class="products-list__content">
+    <div class="products-list__content product-list__content-limit-width">
       <app-product-card
         *ngFor="let product of pageInfo?.productHits?.products"
         layout="grid"
@@ -128,7 +128,7 @@
 
 <!--Best selling categories-->
 <div class="nao-bg-2" *ngIf="pageInfo?.bestSellingCategories?.categories?.length">
-  <div class="container nao-pt-100 nao-pb-100">
+  <div class="container nao-pt-50 nao-pb-50 nao-pt-md-100 nao-pb-md-100">
     <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_BEST_SELLING_CATEGORIES' | translate }}</div>
 
     <div class="nao-title-3 nao-mb-36 text-center">
@@ -137,7 +137,7 @@
       </span>
     </div>
 
-    <div class="position-relative products-view__list products-list products-list--grid--5">
+    <div class="position-relative products-view__list products-list category-list--grid--5">
       <div class="products-list__content">
         <div class="nao-category-card products-list__item"
              *ngFor="let item of pageInfo?.bestSellingCategories?.categories">
@@ -177,7 +177,7 @@
 
 
 <!--Seasonal products-->
-<div class="container nao-pt-100 nao-pb-100" *ngIf="pageInfo?.seasonalProducts?.products?.length">
+<div class="container nao-pt-50 nao-pb-50 nao-pt-md-100 nao-pb-md-100" *ngIf="pageInfo?.seasonalProducts?.products?.length">
   <div class="nao-title-2 nao-mb-12 text-center">{{ 'TEXT_SEASONAL_FAVORITES' | translate }}</div>
 
   <div class="nao-title-3 nao-mb-36 text-center">
@@ -188,7 +188,7 @@
 
   <div class="position-relative products-view__list products-list products-list--grid--4">
     <!--Products-->
-    <div class="products-list__content">
+    <div class="products-list__content product-list__content-limit-width">
       <app-product-card
         *ngFor="let product of pageInfo?.seasonalProducts?.products"
         layout="grid"
@@ -229,7 +229,7 @@
 
 <!--Category explainers-->
 <div class="nao-bg-2" *ngIf="pageInfo?.categoryExplainers.show && pageInfo?.categoryExplainers?.categories?.length">
-  <div class="container nao-category-explainers nao-pt-100 nao-pb-100">
+  <div class="container nao-category-explainers nao-pt-50 nao-pb-50 nao-pt-md-100 nao-pb-md-100">
 
     <div class="nao-category-explainer-card" *ngFor="let item of pageInfo?.categoryExplainers?.categories">
       <div class="category-explainer-content">

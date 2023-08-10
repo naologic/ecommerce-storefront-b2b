@@ -241,6 +241,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
         });
 
+        /**
+         * Set: partner logos
+         */
+        this.pageInfo.partnerLogos = Array.isArray(value?.shopInfo?.storefrontDisplay?.data?.partnerLogos) ? value?.shopInfo?.storefrontDisplay?.data?.partnerLogos : [];
+
       }),
     );
   }

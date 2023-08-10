@@ -75,10 +75,10 @@ $local-gutter: 20px;
   @include media-breakpoint-between(md, lg) {
     @include local-layout(3, 16px);
   }
-  @media (min-width: 420px) and (max-width: 767px) {
+  @include media-breakpoint-between(xs, md) {
     @include local-layout(2, 16px);
   }
-  @media (max-width: 419px) {
+  @include media-breakpoint-down(xs) {
     @include local-layout(1, 16px);
   }
 }
@@ -93,11 +93,26 @@ $local-gutter: 20px;
   @include media-breakpoint-only(md) {
     @include local-layout(3, 12px);
   }
-  @media (min-width: 420px) and (max-width: 767px) {
+  @include media-breakpoint-between(xs, md) {
     @include local-layout(2, 16px);
   }
-  @media (max-width: 419px) {
+  @include media-breakpoint-down(xs) {
     @include local-layout(1, 16px);
+  }
+}
+
+.category-list--grid--5 {
+  @include local-layout(5, 12px);
+
+
+  @include media-breakpoint-only(lg) {
+    @include local-layout(4, 12px);
+  }
+  @include media-breakpoint-only(md) {
+    @include local-layout(3, 12px);
+  }
+  @include media-breakpoint-down(md) {
+    @include local-layout(2, 16px);
   }
 }
 

@@ -485,18 +485,37 @@ a {
     font-weight: normal;
   }
 
-  img {
-    max-height: 420px;
+  .hero-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      max-height: 420px;
+    }
   }
 
+
+
   @include media-breakpoint-down(md) {
-    padding-top: 50px;
+    padding-top: 65px;
+    padding-bottom: 74px;
     grid-template-columns: 1fr;
+    text-align: center;
+
+    .nao-title {
+      font-size: 34px;
+      line-height: 48px;
+    }
+
+    .hero-image-container {
+      display: none;
+    }
   }
 }
 // ***************************************
 // Nao section radial gradients
-.nao-section-radial-gradient-1 {
+.nao-hero-section-gradient {
   position: relative;
   z-index: 0;
 
@@ -512,7 +531,7 @@ a {
     background-image: radial-gradient(500px 500px at calc(50% + 500px) 31%, rgba(167, 200, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
 
     @media only screen and (max-width: 980px) {
-      background-image: radial-gradient(300px 300px at calc(90%) 31%, rgba(167, 200, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
+      background-image: radial-gradient(300px 300px at 90% 11%, rgba(167, 200, 255, 0.5) 0%, rgba(255, 255, 255, 0.5) 100%);
     }
   }
 }
@@ -725,6 +744,12 @@ a {
 
   @include media-breakpoint-down(xs) {
     grid-template-columns: repeat(1, 1fr);
+
+    .variant-stat {
+      min-width: 235px;
+      max-width: 235px;
+      justify-self: center;
+    }
   }
 
   .variant-stat {
@@ -759,6 +784,16 @@ a {
     }
   }
 }
+
+
+// Utility class to limit the widht of product cards on mobile
+.product-list__content-limit-width {
+  @include media-breakpoint-down(xs) {
+    max-width: 254px;
+    margin: auto !important;
+  }
+}
+
 
 // **********************************************
 // Category card
@@ -864,24 +899,26 @@ a {
     gap: 50px;
     justify-items: center;
 
-    &:nth-child(odd) {
-      grid-template-areas: "content image";
-    }
-
-    &:nth-child(even) {
-      grid-template-areas: "image content";
-    }
-
-    .category-explainer-content {
-      grid-area: content;
-    }
-
-    .category-explainer-image-card {
-      grid-area: image;
-    }
-
     &:not(:last-child) {
       margin-bottom: 50px;
+    }
+
+    @include media-breakpoint-up(md) {
+      &:nth-child(odd) {
+        grid-template-areas: "content image";
+      }
+
+      &:nth-child(even) {
+        grid-template-areas: "image content";
+      }
+
+      .category-explainer-content {
+        grid-area: content;
+      }
+
+      .category-explainer-image-card {
+        grid-area: image;
+      }
     }
   }
 
@@ -939,6 +976,18 @@ a {
       object-fit: contain;
     }
   }
+
+  @include media-breakpoint-down(sm) {
+    .nao-category-explainer-card {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .category-explainer-content {
+      width: 100%;
+      padding-right: unset;
+    }
+  }
 }
 
 // **********************************************
@@ -974,7 +1023,8 @@ a {
   .nao-card-icons-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    column-gap: 10px;
+    row-gap: 24px;
 
     .nao-card-icon-item {
       padding-left: 16px;
@@ -1018,6 +1068,20 @@ a {
       padding: 4px 10px;
       color: var(--primary);
       display: inline-flex;
+    }
+  }
+
+  @include media-breakpoint-down(sm) {
+    flex-direction: column;
+    padding: 36px 48px;
+
+    .nao-card-content {
+      padding: 0;
+    }
+
+    .nao-card-icons-grid {
+      margin-top: 24px;
+      grid-template-columns: 1fr;
     }
   }
 }

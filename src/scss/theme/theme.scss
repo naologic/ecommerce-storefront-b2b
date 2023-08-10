@@ -18,20 +18,51 @@
   padding-top: 32px;
 }
 
+.nao-pt-24 {
+  padding-top: 24px;
+}
+
 .nao-pt-36 {
   padding-top: 36px;
+}
+
+.nao-pb-24 {
+  padding-bottom: 24px;
+}
+
+.nao-pb-md-36 {
+  @include media-breakpoint-up(md) {
+    padding-bottom: 36px !important;
+  }
 }
 
 .nao-pb-36 {
   padding-bottom: 36px;
 }
-
+.nao-pt-50 {
+  padding-top: 50px;
+}
+.nao-pt-md-100 {
+  @include media-breakpoint-up(md) {
+    padding-top: 100px !important;
+  }
+}
 .nao-pt-100 {
   padding-top: 100px;
 }
 
+.nao-pb-50 {
+  padding-bottom: 50px;
+}
+
 .nao-pb-100 {
   padding-bottom: 100px;
+}
+
+.nao-pb-md-100 {
+  @include media-breakpoint-up(md) {
+    padding-bottom: 100px !important;
+  }
 }
 
 .nao-ml-8 {
