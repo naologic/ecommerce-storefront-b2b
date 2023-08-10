@@ -76,8 +76,6 @@ export class AppService implements OnDestroy {
       this.eCommerceService.getInfo().subscribe(
         (info$: { ok: boolean; data: AppInterface.AppInfo }) => {
           if (info$ && info$.ok) {
-            console.log("info$.data>>>>>", info$.data)
-
             // -->Set: app info
             appInfo$.next(info$.data);
             // --.Set: settings

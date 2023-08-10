@@ -1,3 +1,5 @@
+import { Product } from "./app/interfaces/product";
+
 export namespace AppInterface {
   /**
    * Interface: holding all the app info
@@ -158,10 +160,10 @@ export namespace AppInterface {
       heroImageUrl: string
       heroDescription: string
       primaryFeaturedCategories?: FeaturedCategory[]
-      mostPopularProducts?: FeaturedProduct[]
-      productHits?: FeaturedProduct[]
-      bestSellingCategories?: FeaturedCategory[]
-      seasonalProducts?: FeaturedProduct[]
+      mostPopularProducts?: Product[]
+      productHits?: Product[]
+      bestSellingCategories?: { docId: string, totalProducts: number }[]
+      seasonalProducts?: Product[]
       /** @default */
       showCategoryExplainers: boolean
       categoryExplainers?: CategoryExplainer[]
@@ -204,13 +206,6 @@ export namespace AppInterface {
   }
 
   /**
-   * Featured: products
-   */
-  interface FeaturedProduct {
-    productId: string
-  }
-
-  /**
    * Featured category
    */
   interface FeaturedCategory {
@@ -232,8 +227,14 @@ export namespace AppInterface {
   export interface Category {
     docId: string;
     data: {
-      name: string;
-      parentId: string;
+      name: string
+      parentId?: string
+      /** A numeric id that represents the category Id from other data sources */
+      categoryId?: string
+      metaTitle?: string
+      metaDescription?: string
+      description?: string
+      imageUrl?: string
     };
     /**
      * This: is optional and set from FE for filtering and other stuff we need

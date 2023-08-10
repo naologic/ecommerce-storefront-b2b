@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { UrlService } from "../../services/url.service";
 import { appInfo$ } from "../../../app.static";
+import { nameToSlug } from "../../shared/functions/utils";
 
 
 interface PageInfo {
@@ -12,7 +13,7 @@ interface PageInfo {
   },
   featuredCategories: {
     routerLink?: string;
-    title?: string;
+    name?: string;
     description?: string;
   }[]
   mostSearchProducts: {
@@ -25,7 +26,7 @@ interface PageInfo {
     description?: string;
     items: any[];
   },
-  featuredProducts: {
+  productHits: {
     products: any[];
   },
   seasonalProducts: {
@@ -34,13 +35,24 @@ interface PageInfo {
   bestSellingCategories: {
     categories: {
       name: string;
-      itemsNo: string;
+      itemsNo: number;
       imageUrl: string;
       routerLink: string;
     }[]
-  }
+  },
+  callToAction: {
+    show: boolean,
+    title: string,
+    description: string,
+    items: {
+      title: string
+      description: string
+      icon: string
+      button: string
+    }[]
+  },
   categoryExplainers: {
-    show: false,
+    show: boolean,
     categories: {
       name: string;
       description: string;
@@ -48,7 +60,7 @@ interface PageInfo {
       imageUrl: string;
       routerLink: string;
     }[]
-  }
+  },
   partnerLogos: any[]
 }
 
@@ -64,143 +76,36 @@ export class HomeComponent implements OnInit, OnDestroy {
    */
   public pageInfo: PageInfo = {
     hero: {
-      title: "Over 100k medical supplies instantly available",
-      description: "Your patients trust you to provide for them. You can trust us to provide the healthcare essentials you need.",
+      title: "",
+      description: "",
       imageUrl: "",
     },
-    // todo: set css classes
-    featuredCategories: [
-      {
-        routerLink: "/",
-        title: "Patient Care & Exam Room Supplies",
-        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-      },
-      {
-        routerLink: "/",
-        title: "Patient Care & Exam Room Supplies",
-        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-      },
-      {
-        routerLink: "/",
-        title: "Patient Care & Exam Room Supplies",
-        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-      },
-      {
-        routerLink: "/",
-        title: "Patient Care & Exam Room Supplies",
-        description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-      },
-    ],
-    // -->Most; searched products
-    // todo
-    mostSearchProducts: [
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-      { name: "Syringes and needles", routerLink: "/" },
-    ],
+    featuredCategories: [],
+    mostSearchProducts: [],
     keyAdvantages: {
       show: false,
-      items: []
+      items: [],
     },
-    featuredProducts: {
+    productHits: {
       products: [],
     },
     seasonalProducts: {
       products: [],
     },
     bestSellingCategories: {
-      categories: [
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          itemsNo: "110",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-      ],
+      categories: [],
     },
     categoryExplainers: {
       show: false,
-      categories: [
-        {
-          name: "Needles and syringes",
-          description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-          buttonCopy: "Learn more",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-        {
-          name: "Needles and syringes",
-          description: "Includes examination gloves, medical gowns, diagnostic tools, sterilization equipment, and other disposables needed in a clinical setting.",
-          buttonCopy: "Learn more",
-          imageUrl: "assets/images/category-placeholder.png",
-          routerLink: "/",
-        },
-      ],
+      categories: [],
     },
     partnerLogos: [],
+    callToAction: {
+      show: false,
+      title: '',
+      description: '',
+      items: []
+    },
   };
   /**
    * Subs
@@ -219,13 +124,61 @@ export class HomeComponent implements OnInit, OnDestroy {
       appInfo$.subscribe((value) => {
         // -->Get: all categories
         const allCategories = value?.categories || [];
+        // -->Get: featured items
+        const featuredItems = value?.shopInfo?.featuredItems;
         /**
          * Set: hero section
          */
+        this.pageInfo.hero = {
+          title: featuredItems?.data?.heroTitle || "",
+          description: featuredItems?.data?.heroDescription || "",
+          imageUrl: featuredItems?.data?.heroImageUrl || "assets/images/image-not-available.png",
+        };
 
         /**
          * Set: featured categories
          */
+        this.pageInfo.featuredCategories = [];
+        (featuredItems?.data?.primaryFeaturedCategories || []).map(item => {
+          // -->Find: category
+          const category = allCategories.find(f => f.docId === item.categoryId);
+          if (category?.data?.name && category?.docId) {
+            this.pageInfo.featuredCategories.push({
+              name: category?.data?.name,
+              description: category?.data?.description,
+              routerLink: this.createCategoryLink(category?.data?.name, category?.docId),
+            });
+          }
+        });
+
+        /**
+         * Set: product hits
+         */
+        this.pageInfo.productHits = {
+          products: Array.isArray(featuredItems?.data?.productHits) ? featuredItems?.data?.productHits : [],
+        };
+        /**
+         * Set: seasonal products
+         */
+        this.pageInfo.seasonalProducts = {
+          products: Array.isArray(featuredItems?.data?.seasonalProducts) ? featuredItems?.data?.seasonalProducts : [],
+        };
+        /**
+         * Set: most popular products
+         */
+        this.pageInfo.mostSearchProducts = [];
+        if (Array.isArray(featuredItems?.data?.mostPopularProducts)) {
+          featuredItems?.data?.mostPopularProducts.map(product => {
+            if (product?.data?.name) {
+              this.pageInfo.mostSearchProducts.push({
+                name: product?.data?.name,
+                routerLink: this.url.product(product),
+              });
+            }
+          });
+        }
+
+
         // -->Get: company information data
         const companyInformationData = value?.shopInfo?.companyInformation?.data;
 
@@ -234,13 +187,70 @@ export class HomeComponent implements OnInit, OnDestroy {
          */
         this.pageInfo.keyAdvantages = {
           show: companyInformationData?.showKeyAdvantages || false,
-          title: companyInformationData?.keyAdvantagesTitle || '',
-          description: companyInformationData?.keyAdvantagesDescription || '',
-          items: Array.isArray(companyInformationData?.keyAdvantages) ? companyInformationData?.keyAdvantages : []
+          title: companyInformationData?.keyAdvantagesTitle || "",
+          description: companyInformationData?.keyAdvantagesDescription || "",
+          items: Array.isArray(companyInformationData?.keyAdvantages) ? companyInformationData?.keyAdvantages : [],
+        };
+
+        /**
+         * Set: call to action
+         */
+        this.pageInfo.callToAction = {
+          show: companyInformationData?.showCallToAction || false,
+          title: companyInformationData?.callToActionTitle || "",
+          description: companyInformationData?.callToActionDescription || "",
+          items: Array.isArray(companyInformationData?.callToActionOptions) ? companyInformationData?.callToActionOptions : [],
         }
+
+        /**
+         * Set: category explainers
+         */
+        this.pageInfo.categoryExplainers = {
+          show: featuredItems.data.showCategoryExplainers || false,
+          categories: []
+        };
+        (featuredItems?.data?.categoryExplainers || []).map(item => {
+          // -->Find: category
+          const category = allCategories.find(f => f.docId === item.categoryId);
+          if (category?.data?.name && category?.docId) {
+            this.pageInfo.categoryExplainers.categories.push({
+              name: category?.data?.name,
+              description: category?.data?.description,
+              buttonCopy: item.buttonCopy || 'Learn more',
+              imageUrl: category?.data?.imageUrl || 'assets/images/category-placeholder.png',
+              routerLink: this.createCategoryLink(category?.data?.name, category?.docId),
+            });
+          }
+        });
+
+
+        /**
+         * Set: best selling categories
+         */
+        this.pageInfo.bestSellingCategories.categories = [];
+        (featuredItems?.data?.bestSellingCategories || []).map(item => {
+          // -->Find: category
+          const category = allCategories.find(f => f.docId === item.docId);
+          if (category?.data?.name && category?.docId) {
+            this.pageInfo.bestSellingCategories.categories.push({
+              name: category?.data?.name,
+              itemsNo: item.totalProducts || 0,
+              imageUrl: category?.data?.imageUrl || 'assets/images/category-placeholder.png',
+              routerLink: this.createCategoryLink(category?.data?.name, category?.docId),
+            });
+          }
+        });
 
       }),
     );
+  }
+
+
+  /**
+   * Create: link for a category
+   */
+  private createCategoryLink(name: string, docId: string): string {
+    return `/shop/category/${nameToSlug(name)}/${docId}/products`;
   }
 
 
