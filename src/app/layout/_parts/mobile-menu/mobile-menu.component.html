@@ -5,23 +5,6 @@
     </button>
 
 
-    <!--        <div class="mobile-indicator d-none d-md-block">-->
-    <!--            <a routerLink="/account" class="mobile-indicator__button">-->
-    <!--                <span class="mobile-indicator__icon"><app-icon icon="person-20"></app-icon></span>-->
-    <!--            </a>-->
-    <!--        </div>-->
-    <!--        <div class="mobile-indicator d-none d-md-block" *showIfLoggedIn>-->
-    <!--            <a routerLink="/shop/my-lists" class="mobile-indicator__button">-->
-    <!--          <span class="mobile-indicator__icon">-->
-    <!--              <app-icon icon="heart-20"></app-icon>-->
-    <!--              <span-->
-    <!--                *ngIf="myLists.count$|async"-->
-    <!--                class="mobile-indicator__counter"-->
-    <!--              >{{ myLists.count$|async }}</span>-->
-    <!--          </span>-->
-    <!--            </a>-->
-    <!--        </div>-->
-
     <div class="mobile-menu__conveyor" [style.transform]="'translateX(-' + currentLevel * 100 + '%)'" #conveyor>
       <app-mobile-menu-panel label="{{ 'TEXT_MENU' | translate }}">
         <div class="mobile-menu__divider"></div>
@@ -34,6 +17,5 @@
       <ng-container #panelsContainer></ng-container>
     </div>
 
-    <app-socials></app-socials>
   </div>
 </div>

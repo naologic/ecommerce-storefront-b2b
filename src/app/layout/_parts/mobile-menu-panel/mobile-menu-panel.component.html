@@ -1,14 +1,49 @@
 <div class="mobile-menu__panel" [style.transform]="'translateX(' + level * 100 + '%)'">
   <div class="mobile-menu__panel-header">
-<!--      <ng-container *ngIf="level === 0">-->
-<!--        Level: 0-->
-<!--      </ng-container>-->
+      <ng-container *ngIf="level === 0">
+        <div>
+          <div class="mobile-header-logo nao-mb-24">
+            <img [src]="companyLogo || '../../../../assets/images/logo/logo-simple.png'" alt="logo">
+          </div>
+
+          <div class="d-flex align-items-center">
+            <!--Account-->
+            <a href="javascript:void(0)"
+               [routerLink]="userData?.email ? '/account' : '/account/login'"
+               class="btn-round btn-white has-arrow btn__indicator-2 nao-mr-8"
+               (click)="menu.close()">
+              <span>{{ (userData?.email ? 'TEXT_INDICATOR_ACCOUNT_VALUE' : 'HEADER_LOGIN') | translate }}</span>
+              <app-icon icon="btnArrow"></app-icon>
+            </a>
+
+            <!--Cart-->
+            <a href="javascript:void(0)"
+               routerLink="/shop/cart"
+               *showIfLoggedIn
+               class="btn-round nao-btn-simple-primary btn__indicator-1 has-left-icon nao-mr-8"
+               (click)="menu.close()">
+              <app-icon icon="nao-cart" class="btn-icon"></app-icon>
+              <span>{{ 'LINK_CART' | translate }}</span>
+            </a>
+
+            <!--My list-->
+            <a href="javascript:void(0)"
+               routerLink="/shop/my-lists"
+               *showIfLoggedIn
+               class="btn-round nao-btn-simple-primary btn__indicator-1"
+               (click)="menu.close()">
+              <app-icon icon="favorite" class="btn-icon"></app-icon>
+            </a>
+
+          </div>
+        </div>
+      </ng-container>
+
     <ng-container *ngIf="level > 0">
       <button class="mobile-menu__panel-back" type="button" (click)="menu.closeCurrentPanel()">
         <app-icon icon="arrow-rounded-left-7x11"></app-icon>
       </button>
       <div class="mobile-menu__panel-title">{{ label | translate }}</div>
-<!--      Level > 0-->
     </ng-container>
 
 
@@ -16,5 +51,20 @@
   <div class="mobile-menu__panel-body">
     <ng-container *ngTemplateOutlet="content"></ng-container>
     <ng-content></ng-content>
+  </div>
+  <div class="mobile-menu__panel-footer" *ngIf="level === 0">
+    <div class="footer-title">{{ 'TEXT_CONTACT' | translate }}</div>
+    <div class="footer-item" *ngIf="infoSupport?.supportPhoneNumber">{{ infoSupport?.supportPhoneNumber }}</div>
+    <div class="footer-item" *ngIf="infoSupport?.location">{{ infoSupport?.location }}</div>
+    <div class="footer-item" *ngIf="infoSupport?.supportEmailAddress"><a [href]="'mailto:' + infoSupport.supportEmailAddress">{{ infoSupport.supportEmailAddress }}</a></div>
+    <div class="footer-item" *ngIf="infoSupport?.workingHours">{{ infoSupport?.workingHours }}</div>
+
+    <app-socials class="footer-socials"></app-socials>
+
+
+    <div class="mobile-menu__panel-footer_powered">
+      Powered by <a href="https://naologic.com/" target="_blank" class="nao-ml-8 d-flex"><img src="assets/images/logo/naologic-logo.svg" alt="Naologic" width="96" height="12"></a>
+    </div>
+
   </div>
 </div>
