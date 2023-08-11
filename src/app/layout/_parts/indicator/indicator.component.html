@@ -16,7 +16,7 @@
        class="btn-round nao-btn-simple-primary btn__indicator-1 has-left-icon"
        (click)="onClick($event)">
       <app-icon icon="nao-cart" class="btn-icon"></app-icon>
-      <span>{{ (((cart.subtotal$|async) || 0) | currencyFormat: '': '': '2.0-0') || '' }}</span>
+      <span>{{ (((cart.subtotal$|async) || 0) | currencyFormat: '': '': '1.0-0') || '' }}</span>
     </a>
   </ng-container>
 

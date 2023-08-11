@@ -14,6 +14,15 @@ export const appInfo$ = new BehaviorSubject<AppInterface.AppInfo>(null);
 // @ts-ignore
 export const accountData$ = new BehaviorSubject<AppInterface.AccountData|null>(null);
 
+/**
+ * Store all the watchers in static
+ */
+export const AppStatic$ = {
+  windowDetails: new BehaviorSubject<AppInterface.WindowDetails>({
+    innerScreen: { width: 0, height: 0 }, screen: { width: 0, height: 0 }, devicePixelRatio: 1, isApple: false }
+  ),
+};
+
 
 /*
     If you want to see the old appInfo, go to https://ecommerce-storefront-ssr.naologic.com,

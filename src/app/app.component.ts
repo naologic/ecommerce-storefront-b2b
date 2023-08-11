@@ -1,17 +1,18 @@
-import { Component, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
+import { Component, HostListener, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, Renderer2 } from "@angular/core";
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 import { filter, takeUntil } from 'rxjs/operators';
 import { LanguageService } from './shared/language/services/language.service';
 import { CartService } from './services/cart.service';
 import { CompareService } from './services/compare.service';
 import { MyListsService } from './services/my-lists.service';
 import { AppService } from './app.service';
-import { appInfo$ } from "../app.static";
+import { appInfo$, AppStatic$ } from "../app.static";
 import { AppInterface } from "../app.interface";
+import { debounce } from "lodash";
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,19 @@ export class AppComponent implements OnInit, OnDestroy {
    * Down for maintenance message
    */
   public downForMaintenanceMessage!: string;
+  /**
+   * List: with all apple devices
+   */
+  private appleDevicesArr = ['MacIntel', 'MacPPC', 'Mac68K', 'Macintosh', 'iPhone', 'iPod', 'iPad', 'iPhone Simulator', 'iPod Simulator', 'iPad Simulator', 'Pike v7.6 release 92', 'Pike v7.8 release 517'];
+  /**
+   * Debouncer for resizing
+   */
+  private debouncedOnResize = debounce(() => this.updateWindowDetails(), 50, {});
 
+  @HostListener('window:resize', ['$event'])
+  private onResize(): void {
+    this.debouncedOnResize();
+  }
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -49,6 +62,8 @@ export class AppComponent implements OnInit, OnDestroy {
     ).subscribe(direction => {
       this.renderer.setAttribute(this.document.documentElement, 'dir', direction);
     });
+    // -->Update: window details
+    this.updateWindowDetails();
   }
 
   public ngOnInit(): void {
@@ -113,6 +128,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.translate.instant('TEXT_TOAST_PRODUCT_ALREADY_EXISTS')
       );
     });
+
+    // -->Update: window details
+    this.updateWindowDetails();
   }
 
 
@@ -145,6 +163,23 @@ export class AppComponent implements OnInit, OnDestroy {
       preloaderElement.parentNode.removeChild(preloaderElement);
     }
   }
+
+
+  /**
+   * Update window details
+   */
+  public updateWindowDetails(): void {
+    // -->Set: window details
+    const windowDetails = {
+      innerScreen: { width: window.innerWidth || 0, height: window.innerHeight || 0 },
+      screen: { width: window.screen?.width || 0, height: window.screen?.height || 0 },
+      devicePixelRatio: window.devicePixelRatio || 1,
+      isApple: window.navigator && window.navigator.platform && this.appleDevicesArr.includes(window.navigator.platform) || false
+    };
+    // -->Update: window details
+    AppStatic$.windowDetails.next(windowDetails);
+  }
+
 
 
   public ngOnDestroy(): void {

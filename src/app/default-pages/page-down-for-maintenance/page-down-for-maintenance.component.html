@@ -1,9 +1,12 @@
 <div class="block">
     <div class="container">
-        <div class="server-error">
-            <div class="server-error__500">{{ 'UPGRADES_IN_PROGRESS_DOTS' | translate }}</div>
-            <div class="error-page__content">
-                <h1 class="error-page__title">{{ 'OOPS_WERE_DOWN_FOR_MAINTENANCE' | translate }}</h1>
+        <div class="server-error" style="top: 50%; transform: translateY(-50%); padding: 0">
+          <div class="">
+            <img src="assets/images/down-for-maintenance.png" alt="Down for maintenance" style="max-height: 400px">
+          </div>
+            <div class="d-none d-md-block server-error__500">{{ 'UPGRADES_IN_PROGRESS_DOTS' | translate }}</div>
+            <div class="error-page__content nao-mt-24">
+                <h1 class="error-page__title nao-mb-12">{{ 'OOPS_WERE_DOWN_FOR_MAINTENANCE' | translate }}</h1>
                 <p class="error-page__text" *ngIf="downForMaintenanceMessage">{{ downForMaintenanceMessage }}</p>
                 <p class="error-page__text" *ngIf="!downForMaintenanceMessage">{{ 'WE_SHOULD_BE_BACK_ONLINE_SOON_PLEASE_CHECK_BACK_AGAIN_SHORTLY' | translate }}</p>
             </div>

@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AppService } from "../../../app.service";
-import { appInfo$ } from "../../../../app.static";
+import { appInfo$, AppStatic$ } from "../../../../app.static";
 
 
 @Component({
@@ -29,6 +29,10 @@ export class SocialsComponent implements OnInit, OnDestroy {
    * Subs
    */
   private subs = new Subscription();
+  /**
+   * Device DPI
+   */
+  private deviceDpi = 1;
 
   constructor(
     public appService: AppService,
@@ -46,6 +50,20 @@ export class SocialsComponent implements OnInit, OnDestroy {
         this.hideComponent = !(this.data.show && this.data.socialMedia.length);
       }),
     );
+
+    this.subs.add(
+      AppStatic$.windowDetails.subscribe(value => {
+        this.deviceDpi = value?.devicePixelRatio || 1
+      })
+    )
+  }
+
+
+  /**
+   * Get: image src using DPI
+   */
+  public getImageSrc(basePath: string): string {
+    return this.deviceDpi > 1 ? `${basePath}@4x.png` : `${basePath}.png`;
   }
 
   public ngOnDestroy(): void {

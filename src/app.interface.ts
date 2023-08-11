@@ -2,6 +2,21 @@ import { Product } from "./app/interfaces/product";
 
 export namespace AppInterface {
   /**
+   * Window details
+   */
+  export interface WindowDetails {
+    innerScreen: {
+      width: number,
+      height: number
+    },
+    screen: {
+      width: number,
+      height: number
+    },
+    devicePixelRatio: number
+    isApple: boolean
+  }
+  /**
    * Interface: holding all the app info
    */
   export interface AppInfo {

@@ -2,19 +2,22 @@
 <div class="nao-spacer-ledge-height"></div>
 
 <div class="block">
-    <div class="container">
-        <div class="not-found">
-            <div class="not-found__404">
-                {{ 'PAGE_404_TITLE' | translate }}
-            </div>
+  <div class="container">
+    <div class="not-found">
+      <div class="mx-auto" style="max-width: 800px">
+        <img class="img-fluid" src="assets/images/404.png" alt="404">
+      </div>
+      <div class="not-found__404">
+        {{ 'PAGE_404_TITLE' | translate }}
+      </div>
 
-            <div class="error__content">
-                <p class="error__text">{{ 'PAGE_404_DESCRIPTION' | translate }}</p>
+      <div class="error__content">
+        <p class="error__text">{{ 'PAGE_404_DESCRIPTION' | translate }}</p>
 
-                <a class="btn btn-secondary btn-sm" [routerLink]="url.home()">{{ 'GO_TO_HOME_PAGE' | translate }}</a>
-            </div>
-        </div>
+        <a class="btn btn-secondary btn-sm" [routerLink]="url.home()">{{ 'GO_TO_HOME_PAGE' | translate }}</a>
+      </div>
     </div>
+  </div>
 </div>
 
 <!--Spacer-->

@@ -4,35 +4,44 @@
 @import '../mixins/scheme';
 
 
-.layout-switcher {}
+.layout-switcher {
+}
+
 .layout-switcher__list {
-    display: flex;
+  display: flex;
+
+  @include media-breakpoint-down(xs) {
+    display: none;
+  }
 }
+
 .layout-switcher__button {
-    padding: 7px;
-    margin: 0;
-    border: none;
+  padding: 7px;
+  margin: 0;
+  border: none;
+  display: block;
+  border-radius: 2px;
+
+  @include define-button-state($layout-switcher-scheme, normal);
+
+  &:focus {
+    outline: none;
+  }
+
+  svg {
     display: block;
-    border-radius: 2px;
-
-    @include define-button-state($layout-switcher-scheme, normal);
-
-    &:focus {
-        outline: none;
-    }
-
-    svg {
-        display: block;
-        fill: currentColor;
-    }
+    fill: currentColor;
+  }
 }
+
 .layout-switcher__button:hover {
-    @include define-button-state($layout-switcher-scheme, hover);
+  @include define-button-state($layout-switcher-scheme, hover);
 }
-.layout-switcher__button--active {
-    @include define-button-state($layout-switcher-scheme, current);
 
-    &:hover {
-        background-color: transparent;
-    }
+.layout-switcher__button--active {
+  @include define-button-state($layout-switcher-scheme, current);
+
+  &:hover {
+    background-color: transparent;
+  }
 }
