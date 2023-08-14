@@ -169,15 +169,17 @@ export class AppComponent implements OnInit, OnDestroy {
    * Update window details
    */
   public updateWindowDetails(): void {
-    // -->Set: window details
-    const windowDetails = {
-      innerScreen: { width: window.innerWidth || 0, height: window.innerHeight || 0 },
-      screen: { width: window.screen?.width || 0, height: window.screen?.height || 0 },
-      devicePixelRatio: window.devicePixelRatio || 1,
-      isApple: window.navigator && window.navigator.platform && this.appleDevicesArr.includes(window.navigator.platform) || false
-    };
-    // -->Update: window details
-    AppStatic$.windowDetails.next(windowDetails);
+    if (typeof window !== 'undefined') {
+      // -->Set: window details
+      const windowDetails = {
+        innerScreen: { width: window?.innerWidth || 0, height: window?.innerHeight || 0 },
+        screen: { width: window?.screen?.width || 0, height: window?.screen?.height || 0 },
+        devicePixelRatio: window?.devicePixelRatio || 1,
+        isApple: window?.navigator && window?.navigator?.platform && this.appleDevicesArr.includes(window?.navigator.platform) || false
+      };
+      // -->Update: window details
+      AppStatic$.windowDetails.next(windowDetails);
+    }
   }
 
 
