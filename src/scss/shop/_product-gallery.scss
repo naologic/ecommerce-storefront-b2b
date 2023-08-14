@@ -6,6 +6,10 @@
 .product-gallery {
 }
 
+.owl-carousel {
+  z-index: unset !important;
+}
+
 .product-gallery__featured {
   position: relative;
 
