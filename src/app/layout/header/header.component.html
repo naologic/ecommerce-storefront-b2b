@@ -5,12 +5,6 @@
     <app-search class="nao-header-search"></app-search>
 
     <div class="d-flex align-items-center">
-      <!--My list indicator-->
-      <app-indicator
-        *showIfLoggedIn
-        class="nao-ml-8"
-        type="my-list"
-      ></app-indicator>
 
       <!--Cart indicator-->
       <app-indicator
@@ -21,6 +15,13 @@
       >
         <app-dropcart (closeMenu)="cartIndicator.close()"></app-dropcart>
       </app-indicator>
+
+      <!--My list indicator-->
+      <app-indicator
+        *showIfLoggedIn
+        class="nao-ml-8"
+        type="my-list"
+      ></app-indicator>
 
       <!--Account/log in indicator-->
       <app-indicator
