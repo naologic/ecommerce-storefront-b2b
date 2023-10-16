@@ -55,7 +55,7 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     const input = event.target as HTMLInputElement;
 
     this.query$.next(input.value);
-    this.disableSearch$.next(input.value === this.shopProductService.options.searchTerm);
+    this.disableSearch$.next(!input.value);
   }
 
 
@@ -75,6 +75,14 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.shopProductService.setSearchTerm(this.query$.getValue());
     // -->Disable: search until query changes
     this.disableSearch$.next(true);
+  }
+
+  /**
+   * On: field focus make sure the search is not disabled
+   */
+  public onSearchFocus(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.disableSearch$.next(!input.value);
   }
 
 

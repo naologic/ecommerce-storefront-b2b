@@ -1,5 +1,5 @@
 <!-- Search input -->
-<form (ngSubmit)="searchAndRedirect()" class="nao-smart-search">
+<form class="nao-smart-search">
   <!-- Icon -->
   <app-icon icon="nao-search-icon"></app-icon>
   <!-- Input -->
@@ -14,6 +14,7 @@
     [value]="query$.getValue()"
     [placeholder]="'INPUT_SEARCH_PLACEHOLDER' | translate"
     (keyup)="onSearchKeyUp($event)"
+    (focus)="onSearchFocus($event)"
     (keyup.enter)="searchAndRedirect()"
   />
 </form>
