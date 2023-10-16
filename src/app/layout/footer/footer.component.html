@@ -28,7 +28,7 @@
     </div>
 
     <div class="footer-group" *ngIf="infoSupport?.ourGuarantee">
-      <div class="footer-title">{{ 'TEXT_OUR_GUARANTEE' | translate }}</div>
+      <div class="footer-title">{{ infoSupport.ourGuaranteeTitle || ('TEXT_OUR_GUARANTEE' | translate) }}</div>
       <div class="footer-description">
         {{ infoSupport?.ourGuarantee }}
       </div>

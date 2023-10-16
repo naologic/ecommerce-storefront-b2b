@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from "rxjs";
 import { AppService } from "../../app.service";
-import {appInfo$} from "../../../app.static";
+import { appInfo$ } from "../../../app.static";
 
 @Component({
   selector: 'app-footer',
@@ -27,6 +27,7 @@ export class FooterComponent implements OnInit, OnDestroy {
           workingHours: value?.shopInfo?.companyInformation?.data?.workingHours || '',
           contactUs: value?.shopInfo?.navigationAndFooter?.data?.footerContactUs || '',
           ourGuarantee: value?.shopInfo?.navigationAndFooter?.data?.footerOurGuarantee || '',
+          ourGuaranteeTitle: value?.shopInfo?.navigationAndFooter?.data?.footerOurGuaranteeTitle || '',
         }
       })
     )

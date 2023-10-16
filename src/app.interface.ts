@@ -162,6 +162,7 @@ export namespace AppInterface {
       }[]
       footerContactUs: string
       footerOurGuarantee?: string
+      footerOurGuaranteeTitle?: string
     };
   }
 
