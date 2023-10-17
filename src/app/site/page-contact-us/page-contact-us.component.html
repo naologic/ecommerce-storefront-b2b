@@ -1,0 +1,145 @@
+<div class="contact-us-page">
+
+  <div class="container">
+    <div class="contact-us-info">
+      <div class="contact-us-info_title">Contact us</div>
+      <div class="contact-us-info_subtitle">Reach out to get in touch</div>
+      <div class="contact-us-info_description">Whether you have questions, concerns or just want to kick off a dialogue, please reach out to us via
+        the contact form and someone will be in touch as soon as possible, typically within 24 hours.
+      </div>
+      <img class="contact-us-info_icon" src="assets/images/icons/email-icon.png">
+
+    </div>
+
+
+    <!--Success state-->
+    <div class="form-card-1 form-card-1-state" *ngIf="viewState === 'success'">
+      <app-icon class="state-icon" icon="success-checkmarks"></app-icon>
+      <div class="state-title">Message successfully sent</div>
+      <div class="state-description">We’ll be in touch as soon as possible!</div>
+    </div>
+
+    <!--Form-->
+    <div class="form-card-1" [formGroup]="formGroup" *ngIf="formGroup && viewState === 'form'">
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-fullName">{{ 'INPUT_FULL_NAME_LABEL' | translate }}</label>
+        <input
+          type="text"
+          id="form-fullName"
+          formControlName="fullName"
+          class="form-control"
+          [class.is-invalid]="formGroup.controls.fullName|isInvalid"
+          [placeholder]="'Jennifer McMahon' | translate"
+        >
+        <div class="invalid-feedback">
+          <div *ngIf="formGroup.controls.fullName|hasError:'required'">
+            {{ 'ERROR_FORM_REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-email">{{ 'INPUT_EMAIL_LABEL' | translate }}</label>
+        <input
+          type="text"
+          id="form-email"
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="formGroup.controls.email|isInvalid"
+          [placeholder]="'www.deloitte.com' | translate"
+        >
+        <div class="invalid-feedback">
+          <div *ngIf="formGroup.controls.email|hasError:'required'">
+            {{ 'ERROR_FORM_REQUIRED' | translate }}
+          </div>
+          <div *ngIf="formGroup.controls.email|hasError:'email'">
+            {{ 'ERROR_FORM_INCORRECT_EMAIL' | translate }}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-companyName">{{ 'INPUT_COMPANY_LABEL' | translate }}</label>
+        <input
+          type="text"
+          id="form-companyName"
+          formControlName="companyName"
+          class="form-control"
+          [class.is-invalid]="formGroup.controls.companyName|isInvalid"
+          [placeholder]="'Deloitte' | translate"
+        >
+      </div>
+
+
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-orderNumber">{{ 'INPUT_ORDER_NUMBER_LABEL' | translate }}</label>
+        <input
+          type="text"
+          id="form-orderNumber"
+          formControlName="orderNumber"
+          class="form-control"
+          [class.is-invalid]="formGroup.controls.orderNumber|isInvalid"
+          [placeholder]="'1280312-129' | translate"
+        >
+      </div>
+
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-contactType">{{ 'INPUT_CONTACT_TYPE_LABEL' | translate }}</label>
+        <select
+          id="form-contactType"
+          class="form-control"
+          formControlName="contactType"
+          [class.is-invalid]="formGroup?.controls?.contactType|isInvalid"
+        >
+          <option *ngFor="let item of contactTypes" [value]="item.value">
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="nao-mb-18">
+        <label class="nao-mb-8 font-size-12 text-uppercase text-color-4"
+               for="form-message">{{ 'INPUT_MESSAGE_LABEL' | translate }}</label>
+
+        <textarea
+          id="form-message"
+          rows="8"
+          formControlName="message"
+          class="form-control"
+          placeholder="I’d like to raise a point regarding…"
+          [class.is-invalid]="formGroup.controls.message|isInvalid"
+        ></textarea>
+        <div class="invalid-feedback">
+          <div *ngIf="formGroup.controls.message|hasError:'required'">
+            {{ 'ERROR_FORM_REQUIRED' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <div class="font-size-13 text-danger nao-mb-18" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="d-flex align-items-center justify-content-end">
+        <button
+          type="submit"
+          class="btn btn-primary mt-3"
+          [class.btn-loading]="isSendingInProgress"
+          (click)="sendContactMessage()"
+        >
+          {{ 'BUTTON_SEND_MESSAGE' | translate }}
+        </button>
+      </div>
+
+
+
+    </div>
+  </div>
+
+</div>
+

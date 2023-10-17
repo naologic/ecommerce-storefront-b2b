@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PageAboutUsComponent } from './page-about-us/page-about-us.component';
 import { PageFaqComponent } from './page-faq/page-faq.component';
 import { PageTermsComponent } from './page-terms/page-terms.component';
+import { PageContactUsComponent } from "./page-contact-us/page-contact-us.component";
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'faq',
         component: PageFaqComponent,
+    },
+    {
+        path: 'contact-us',
+        component: PageContactUsComponent,
     },
 ];
 
