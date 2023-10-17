@@ -94,8 +94,8 @@ export class ECommerceService<T = any> {
   /**
    * Register: contact message
    */
-  public registerContactMessage(data: T, naoQueryOptions = { docName: 'shop', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
-    return this.naoHttp2ApiService.postJson<T>(`universal-public/ecommerce/data/register-contact-us`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
+  public registerContactMessage(data: T, naoQueryOptions = { docName: 'message', cfpPath: 'ecommerce/ecommerce' }): Observable<T> {
+    return this.naoHttp2ApiService.postJson<T>(`${this.apiRoot}/ecommerce/data/send-message`, { data: { data: { ...(data || {}) }, naoQueryOptions } });
   }
 
 
