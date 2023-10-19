@@ -9,12 +9,13 @@
 .contact-us-page-wrapper {
   background: var(--white);
   position: relative;
-  z-index: -1;
 }
 
 .contact-us-page {
   padding-top: 48px;
   padding-bottom: 100px;
+  position: relative;
+  z-index: 1;
 
   // -->Gradients
   &:before {
